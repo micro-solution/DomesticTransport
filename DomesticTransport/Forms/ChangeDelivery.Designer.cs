@@ -1,6 +1,6 @@
 ﻿namespace DomesticTransport.Forms
 {
-    partial class ChengeDelivery
+    partial class ChangeDelivery
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChengeDelivery));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangeDelivery));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.invoice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();

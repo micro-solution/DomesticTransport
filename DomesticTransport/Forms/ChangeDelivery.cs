@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
 {
-    public partial class ChengeDelivery : Form
+    public partial class ChangeDelivery : Form
     {
-        public ChengeDelivery()
+        public ChangeDelivery()
         {
             InitializeComponent();
             DialogResult = DialogResult.None;
@@ -22,12 +22,13 @@ namespace DomesticTransport.Forms
         private void Accept_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.None;
-            Close();
+            Hide();
         }
 
         private void Cancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

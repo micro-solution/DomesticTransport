@@ -17,8 +17,20 @@ namespace DomesticTransport
 
         private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
         {
-            ChengeDelivery chengeDelivery = new ChengeDelivery();
-            chengeDelivery.Show();
+            ChangeDelivery chengeDelivery = new ChangeDelivery();
+            chengeDelivery.ShowDialog();
+        }
+
+        private void btnChangePoint_Click(object sender, RibbonControlEventArgs e)
+        {
+            ChangeRoute changeRoute = new ChangeRoute();
+            changeRoute.ShowDialog();
+        }
+
+        private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
+        {
+            MessageCarrier messageCarrier = new MessageCarrier();
+            messageCarrier.ShowDialog();
         }
     }
 }

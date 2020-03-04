@@ -38,13 +38,13 @@
             this.ShefflerRibbon = this.Factory.CreateRibbonTab();
             this.groupGeneral = this.Factory.CreateRibbonGroup();
             this.groupEdit = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.btnStart = this.Factory.CreateRibbonButton();
             this.btnAcept = this.Factory.CreateRibbonButton();
             this.btnChangeSet = this.Factory.CreateRibbonButton();
             this.btnChangePoint = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
+            this.btnSendShippingCompany = this.Factory.CreateRibbonButton();
+            this.btnReadCarrierInvoice = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -73,6 +73,13 @@
             this.groupEdit.Items.Add(this.btnChangePoint);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.btnSendShippingCompany);
+            this.group1.Items.Add(this.btnReadCarrierInvoice);
+            this.group1.Label = "Сообщения";
+            this.group1.Name = "group1";
             // 
             // btnStart
             // 
@@ -107,29 +114,24 @@
             this.btnChangePoint.Label = "Изменить маршрут";
             this.btnChangePoint.Name = "btnChangePoint";
             this.btnChangePoint.ShowImage = true;
+            this.btnChangePoint.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangePoint_Click);
             // 
-            // group1
+            // btnSendShippingCompany
             // 
-            this.group1.Items.Add(this.button1);
-            this.group1.Items.Add(this.button2);
-            this.group1.Label = "Сообщения";
-            this.group1.Name = "group1";
+            this.btnSendShippingCompany.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSendShippingCompany.Image = ((System.Drawing.Image)(resources.GetObject("btnSendShippingCompany.Image")));
+            this.btnSendShippingCompany.Label = "Заказать перевозку";
+            this.btnSendShippingCompany.Name = "btnSendShippingCompany";
+            this.btnSendShippingCompany.ShowImage = true;
+            this.btnSendShippingCompany.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSendShippingCompany_Click);
             // 
-            // button1
+            // btnReadCarrierInvoice
             // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Label = "Отправить заявки перевозчикам";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            // 
-            // button2
-            // 
-            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Label = "Сканировать ответ";
-            this.button2.Name = "button2";
-            this.button2.ShowImage = true;
+            this.btnReadCarrierInvoice.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnReadCarrierInvoice.Image = ((System.Drawing.Image)(resources.GetObject("btnReadCarrierInvoice.Image")));
+            this.btnReadCarrierInvoice.Label = "Сканировать ответ";
+            this.btnReadCarrierInvoice.Name = "btnReadCarrierInvoice";
+            this.btnReadCarrierInvoice.ShowImage = true;
             // 
             // RibbonDelivery
             // 
@@ -157,8 +159,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangeSet;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ShefflerRibbon;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSendShippingCompany;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadCarrierInvoice;
     }
 
     partial class ThisRibbonCollection
