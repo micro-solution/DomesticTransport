@@ -135,6 +135,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Ribbon.resx" />
+    <None Include="app.config" />
     <None Include="DomesticTransport.xlsx" />
     <None Include="DomesticTransport_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
