@@ -41,6 +41,34 @@
             button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
+            // button2
+            // 
+            button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            button2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            button2.Location = new System.Drawing.Point(521, 13);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(32, 27);
+            button2.TabIndex = 3;
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            button1.Location = new System.Drawing.Point(521, 45);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(32, 27);
+            button1.TabIndex = 3;
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // tbOrders
             // 
             this.tbOrders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -64,7 +92,6 @@
             // Cancel
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Cancel.Location = new System.Drawing.Point(461, 83);
             this.Cancel.Name = "Cancel";
@@ -97,6 +124,7 @@
             // Accept
             // 
             this.Accept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Accept.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Accept.Location = new System.Drawing.Point(364, 83);
             this.Accept.Name = "Accept";
@@ -105,34 +133,6 @@
             this.Accept.Text = "Выбрать";
             this.Accept.UseVisualStyleBackColor = true;
             this.Accept.Click += new System.EventHandler(this.Accept_Click);
-            // 
-            // button2
-            // 
-            button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            button2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            button2.Location = new System.Drawing.Point(521, 13);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(32, 27);
-            button2.TabIndex = 3;
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            button1.Location = new System.Drawing.Point(521, 45);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(32, 27);
-            button1.TabIndex = 3;
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // SapFiles
             // 

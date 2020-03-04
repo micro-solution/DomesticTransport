@@ -23,29 +23,26 @@ namespace DomesticTransport
             sapFiles.ShowDialog();
             if (sapFiles.DialogResult == DialogResult.OK)
             {
-                string sap="";
+                string sap = "";
                 string orders = "";
                 try
                 {
-                 sap = sapFiles.ExportFile;
-                 orders = sapFiles.OrderFile;                
+                    sap = sapFiles.ExportFile;
+                    orders = sapFiles.OrderFile;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return;
                 }
                 finally
                 {
-                    sapFiles.Close();                    
-                }                
-
+                    sapFiles.Close();
+                }
 
                 List<Delivery> deliveries = GetDeliveries(sap, orders);
 
                 if (deliveries != null)
-                {
-
-                    int i = 0;
+                {                    
                     foreach (Delivery delivery in deliveries)
                     {
                         PrintDelivery(delivery);
@@ -123,10 +120,10 @@ namespace DomesticTransport
             List<Delivery> deliveries = null;
             Delivery delivery = null;
             Workbook sapBook = null;
-            Workbook ordersBook = null;
+            Workbook orderBook = null;
             try
             {
-                ordersBook = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: orders);
+                orderBook = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: orders);
                 sapBook = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: sap);
             }
             catch (Exception ex)
@@ -136,8 +133,6 @@ namespace DomesticTransport
             Worksheet sheet = sapBook.Sheets[1];
             if (sheet != null)
             {
-
-
                 int lastRow = sheet.Cells[sheet.Rows.Count, 1].End(XlDirection.xlUp).Row;
                 int lastColumn = sheet.UsedRange.Column + sheet.UsedRange.Columns.Count - 1;
                 Range range = sheet.Range[sheet.Cells[2, 1], sheet.Cells[lastRow, lastColumn]];
@@ -156,19 +151,19 @@ namespace DomesticTransport
 
                 foreach (Range row in range.Rows)
                 {
-                    Order invoice = ReadSapRow(row);
-                    if (invoice != null)
+                    Order order = ReadSapRow(row);
+                    if (order != null)
                     {
-                        delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == invoice.Route) != null);
+                        delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == order.Route) != null);
                         if (delivery != null)
                         {
-                            delivery.Invoices.Add(invoice);
+                            delivery.Invoices.Add(order);
                         }
                         else
                         {
                             delivery = new Delivery();
                             delivery.Invoices = new List<Order>();
-                            delivery.Invoices.Add(invoice);
+                            delivery.Invoices.Add(order);
                             if (deliveries == null) deliveries = new List<Delivery>();
                             deliveries.Add(delivery);
                         }
@@ -188,13 +183,12 @@ namespace DomesticTransport
         {
             /// ТТН
             string TranSportationUnit = row.Cells[1, 4].Value;
-
-
-
-
-            string idDocInvoice = row.Cells[1, 3].Value;
-            if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
             Order invoice = new Order();
+            string idDocInvoice = row.Cells[1, 3].Value;
+
+
+
+            if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
             invoice.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
             string idCusomer = row.Cells[1, 5].Value;
             invoice.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);

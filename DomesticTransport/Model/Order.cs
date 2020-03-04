@@ -19,6 +19,8 @@ namespace DomesticTransport.Model
         public Customer Customer { get;set;}
         public int ItemsCount { get; set; }
         public double Weight { get; set; }
+
+
         public double Cost { get; set; }
 
         public string Route { get; set; }

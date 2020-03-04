@@ -12,29 +12,22 @@ namespace DomesticTransport
 {
     public partial class SapFiles : Form
     {
-      public string ExportFile { 
-            get {
-                if (!CheckPath(tbExport.Text))
-                {
-                throw new   FileNotFoundException("Файла не существует");
-                }                
-               else { return tbExport.Text; }
-            } 
-        }
-        public string OrderFile {
+        public string ExportFile
+        {
             get
             {
-                if (!CheckPath(tbOrders.Text))
-                {
-                    throw new FileNotFoundException("Файла не существует");
-                }
-                else   { return tbOrders.Text; }
+                CheckPath(tbExport.Text);
+                return tbExport.Text;
             }
-        }      
-
-
-
-
+        }
+        public string OrderFile
+        {
+            get
+            {
+                CheckPath(tbOrders.Text);
+                return tbOrders.Text;
+            }
+        }
 
         public SapFiles()
         {
@@ -42,27 +35,25 @@ namespace DomesticTransport
             DialogResult = DialogResult.None;
         }
 
-        private void Accept_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.OK;
-            Hide();
-        }
-
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.None;
-            this.Close();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Кнопка выбрать папку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-
+            tbOrders.Text = SelectFile();
         }
+        /// <summary>
+        /// Кнопка выбрать папку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            tbExport.Text = SelectFile();
+        }
+
 
         /// <summary>
         ///  Выбрать файл выгрузки SAP
@@ -86,8 +77,12 @@ namespace DomesticTransport
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     sapUnload = ofd.FileName;
-                    Config.Default.SapUnloadPath = new FileInfo(ofd.FileName).DirectoryName;
-                    Config.Default.Save();
+                    FileInfo fi = new FileInfo(ofd.FileName); 
+                    if (fi.DirectoryName != Config.Default.SapUnloadPath)
+                    {
+                        Config.Default.SapUnloadPath = fi.DirectoryName;
+                        Config.Default.Save();
+                    }
                 }
             }
             return sapUnload;
@@ -98,9 +93,22 @@ namespace DomesticTransport
             if (!File.Exists(path))
             {
                 MessageBox.Show("Указан неверный путь к файлу!", "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
+                throw new FileNotFoundException("Файла не существует");
             }
             return true;
         }
+
+        private void Accept_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Hide();
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.None;
+            this.Close();
+        }
     }
+
 }
