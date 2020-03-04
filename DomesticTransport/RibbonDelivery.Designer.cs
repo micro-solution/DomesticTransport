@@ -42,15 +42,20 @@
             this.btnAcept = this.Factory.CreateRibbonButton();
             this.btnChangeSet = this.Factory.CreateRibbonButton();
             this.btnChangePoint = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.button1 = this.Factory.CreateRibbonButton();
+            this.button2 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
+            this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ShefflerRibbon
             // 
             this.ShefflerRibbon.Groups.Add(this.groupGeneral);
             this.ShefflerRibbon.Groups.Add(this.groupEdit);
+            this.ShefflerRibbon.Groups.Add(this.group1);
             this.ShefflerRibbon.Label = "Шеффлер";
             this.ShefflerRibbon.Name = "ShefflerRibbon";
             this.ShefflerRibbon.Position = this.Factory.RibbonPosition.BeforeOfficeId("TabHome");
@@ -103,6 +108,29 @@
             this.btnChangePoint.Name = "btnChangePoint";
             this.btnChangePoint.ShowImage = true;
             // 
+            // group1
+            // 
+            this.group1.Items.Add(this.button1);
+            this.group1.Items.Add(this.button2);
+            this.group1.Label = "Сообщения";
+            this.group1.Name = "group1";
+            // 
+            // button1
+            // 
+            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Label = "Отправить заявки перевозчикам";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
+            // 
+            // button2
+            // 
+            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
+            this.button2.Label = "Сканировать ответ";
+            this.button2.Name = "button2";
+            this.button2.ShowImage = true;
+            // 
             // RibbonDelivery
             // 
             this.Name = "RibbonDelivery";
@@ -114,6 +142,8 @@
             this.groupGeneral.PerformLayout();
             this.groupEdit.ResumeLayout(false);
             this.groupEdit.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -126,6 +156,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAcept;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangeSet;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ShefflerRibbon;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
     }
 
     partial class ThisRibbonCollection
