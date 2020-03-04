@@ -37,9 +37,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonDelivery));
             this.ShefflerRibbon = this.Factory.CreateRibbonTab();
             this.groupGeneral = this.Factory.CreateRibbonGroup();
+            this.groupEdit = this.Factory.CreateRibbonGroup();
             this.btnStart = this.Factory.CreateRibbonButton();
             this.btnAcept = this.Factory.CreateRibbonButton();
-            this.groupEdit = this.Factory.CreateRibbonGroup();
             this.btnChangeSet = this.Factory.CreateRibbonButton();
             this.btnChangePoint = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -62,6 +62,13 @@
             this.groupGeneral.Label = "Список";
             this.groupGeneral.Name = "groupGeneral";
             // 
+            // groupEdit
+            // 
+            this.groupEdit.Items.Add(this.btnChangeSet);
+            this.groupEdit.Items.Add(this.btnChangePoint);
+            this.groupEdit.Label = "Редактирование";
+            this.groupEdit.Name = "groupEdit";
+            // 
             // btnStart
             // 
             this.btnStart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -79,13 +86,6 @@
             this.btnAcept.Name = "btnAcept";
             this.btnAcept.ShowImage = true;
             // 
-            // groupEdit
-            // 
-            this.groupEdit.Items.Add(this.btnChangeSet);
-            this.groupEdit.Items.Add(this.btnChangePoint);
-            this.groupEdit.Label = "Редактирование";
-            this.groupEdit.Name = "groupEdit";
-            // 
             // btnChangeSet
             // 
             this.btnChangeSet.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -93,6 +93,7 @@
             this.btnChangeSet.Label = "Изменить набор";
             this.btnChangeSet.Name = "btnChangeSet";
             this.btnChangeSet.ShowImage = true;
+            this.btnChangeSet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangeSet_Click);
             // 
             // btnChangePoint
             // 

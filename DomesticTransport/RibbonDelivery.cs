@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DomesticTransport.Forms;
 using Microsoft.Office.Tools.Ribbon;
 
 namespace DomesticTransport
@@ -12,6 +13,12 @@ namespace DomesticTransport
         {
             Functions functions = new Functions();
             functions.SetDelivery();
+        }
+
+        private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
+        {
+            ChengeDelivery chengeDelivery = new ChengeDelivery();
+            chengeDelivery.Show();
         }
     }
 }

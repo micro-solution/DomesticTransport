@@ -139,7 +139,13 @@
     <Compile Include="Лист1.Designer.cs">
       <DependentUpon>Лист1.Designer.xml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\ChengeDelivery.ja.resx">
+      <DependentUpon>ChengeDelivery.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChengeDelivery.resx">
+      <DependentUpon>ChengeDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChengeDelivery.ru-RU.resx">
       <DependentUpon>ChengeDelivery.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

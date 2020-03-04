@@ -3,6 +3,7 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using Config = DomesticTransport.Properties.Settings;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -152,8 +153,15 @@ namespace DomesticTransport
                 foreach (Range row in range.Rows)
                 {
                     Order order = ReadSapRow(row);
-                    if (order != null)
+                    if (order != null )
                     {
+                        if (! string.IsNullOrWhiteSpace(order.TransportationUnit))
+                        {
+                            Range orderInfo =  GetOrderInfo(orderBook.Sheets[1], order.TransportationUnit );
+                        }
+
+
+
                         delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == order.Route) != null);
                         if (delivery != null)
                         {
@@ -182,22 +190,43 @@ namespace DomesticTransport
         private Order ReadSapRow(Range row)
         {
             /// ТТН
-            string TranSportationUnit = row.Cells[1, 4].Value;
-            Order invoice = new Order();
+            Order order = new Order();
+
+            order.TransportationUnit = row.Cells[1, 4].Value;
             string idDocInvoice = row.Cells[1, 3].Value;
 
 
 
             if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
-            invoice.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
+            order.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
             string idCusomer = row.Cells[1, 5].Value;
-            invoice.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
-            invoice.Route = row.Cells[1, 11].Value;
+            order.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
+            order.Route = row.Cells[1, 11].Value;
             string itemsCount = row.Cells[1, 9].Text;
-            invoice.ItemsCount = int.TryParse(itemsCount, out int count) ? count : 0;
+            order.ItemsCount = int.TryParse(itemsCount, out int count) ? count : 0;
             string weight = row.Cells[1, 8].Text;
-            invoice.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
-            return invoice;
+            order.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
+            return order;
+        }
+
+       private Range GetOrderInfo(Worksheet sh , string TU)
+        {
+            Range findRange = sh.Columns[1];
+            string search = "№ ТТН:" + new string('0', 18 - TU.Length);
+            Range fcell = findRange.Find(What: search,  LookIn: XlFindLookIn.xlValues);
+            if (fcell == null) return null;
+            int rowStart = fcell.Row;
+            int lastRow = sh.Cells[sh.Rows.Count,1].End(XlDirection.xlUp).Row;
+
+            int rowEnd = rowStart;
+            do
+            {
+                fcell = findRange.Cells[++rowEnd, 1];
+                if (string.IsNullOrEmpty(fcell.Value)) break;
+            }
+            while (rowEnd <= lastRow);
+
+                return findRange[findRange.Cells[rowStart,1], findRange.Cells[rowEnd, 1]];
         }
 
 

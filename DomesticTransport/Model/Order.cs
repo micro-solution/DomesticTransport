@@ -16,11 +16,13 @@ namespace DomesticTransport.Model
     class Order
     {
         public int Id { get; set; }
+
+
         public Customer Customer { get;set;}
         public int ItemsCount { get; set; }
         public double Weight { get; set; }
 
-
+        public string TransportationUnit { get; set; }
         public double Cost { get; set; }
 
         public string Route { get; set; }
