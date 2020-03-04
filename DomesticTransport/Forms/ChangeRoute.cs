@@ -10,22 +10,22 @@ using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
 {
-    public partial class ChengeDelivery : Form
+    public partial class ChangeRoute : Form
     {
-        public ChengeDelivery()
+        public ChangeRoute()
         {
             InitializeComponent();
             DialogResult = DialogResult.None;
             
         }
 
-        private void Accept_Click(object sender, EventArgs e)
+        private void Cancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.None;
             Close();
         }
 
-        private void Cancel_Click(object sender, EventArgs e)
+        private void Accept_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }

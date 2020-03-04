@@ -94,6 +94,7 @@
             resources.ApplyResources(this.Accept, "Accept");
             this.Accept.Name = "Accept";
             this.Accept.UseVisualStyleBackColor = true;
+            this.Accept.Click += new System.EventHandler(this.Accept_Click);
             // 
             // Cancel
             // 
@@ -101,6 +102,7 @@
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Name = "Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
+            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // lbCost
             // 
@@ -132,7 +134,7 @@
             // 
             // ChengeDelivery
             // 
-            this.AcceptButton = this.Cancel;
+            this.AcceptButton = this.Accept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
