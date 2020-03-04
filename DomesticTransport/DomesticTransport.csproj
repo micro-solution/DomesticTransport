@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="Functions.cs" />
     <Compile Include="Model\Carrier.cs" />
+    <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Delivery.cs" />
     <Compile Include="Model\Invoice.cs" />
     <Compile Include="Model\ShippingCompany.cs" />
