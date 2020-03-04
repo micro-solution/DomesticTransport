@@ -18,18 +18,40 @@ namespace DomesticTransport
         /// </summary>
         public void SetDelivery()
         {
-            string sap = SelectFile();
-            if (string.IsNullOrWhiteSpace(sap)) return;
-            List<Delivery> deliveries = GetDeliveries(sap);
-            if (deliveries != null)
+
+            SapFiles sapFiles = new SapFiles();
+            sapFiles.ShowDialog();
+            if (sapFiles.DialogResult == DialogResult.OK)
             {
-
-                int i = 0;
-                foreach (Delivery delivery in deliveries)
-                {                  
-                    PrintDelivery(delivery);
+                string sap="";
+                string orders = "";
+                try
+                {
+                 sap = sapFiles.ExportFile;
+                 orders = sapFiles.OrderFile;                
                 }
+                catch(Exception ex)
+                {
+                    return;
+                }
+                finally
+                {
+                    sapFiles.Close();                    
+                }                
 
+
+                List<Delivery> deliveries = GetDeliveries(sap, orders);
+
+                if (deliveries != null)
+                {
+
+                    int i = 0;
+                    foreach (Delivery delivery in deliveries)
+                    {
+                        PrintDelivery(delivery);
+                    }
+
+                }
             }
         }
 
@@ -38,28 +60,28 @@ namespace DomesticTransport
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject CarrierTable = deliverySheet.ListObjects["TableCarrier"];
             ListObject InvoiciesTable = deliverySheet.ListObjects["TableInvoicies"];
-            if (CarrierTable==null || InvoiciesTable == null)
+            if (CarrierTable == null || InvoiciesTable == null)
             {
                 MessageBox.Show("Отсутствует таблица");
                 return;
             }
-           // if (CarrierTable.ListRows.Count ==0) CarrierTable.ListRows.AddEx();
+            // if (CarrierTable.ListRows.Count ==0) CarrierTable.ListRows.AddEx();
 
             ListRow rowCarrier = CarrierTable.ListRows.AddEx();  //CarrierTable.ListRows[CarrierTable.ListRows.Count];            
 
             System.Windows.Forms.Application.DoEvents();
             // ListRow rowCarrier =  CarrierTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
-            rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
-            rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
-            rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
-            rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
+            //  rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
+            // rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
+            // rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
+            //  rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
             rowCarrier.Range[1, 5].Value = delivery.Carrier?.Truck?.Tonnage ?? 0;
             rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
 
             ListRow rowInvoice;
-            int i=0;
+            int column = 0;
 
-            foreach (Invoice invoice in delivery.Invoices)
+            foreach (Order invoice in delivery.Invoices)
             {
                 // if (CarrierTable.ListRows.Count == 0) CarrierTable.ListRows.AddEx()
                 rowInvoice = InvoiciesTable.ListRows.Count == 0 ?
@@ -67,14 +89,14 @@ namespace DomesticTransport
                        InvoiciesTable.ListRows[InvoiciesTable.ListRows.Count]; // InvoiciesTable.ListRows.AddEx(InvoiciesTable.ListRows.Count - 1);
 
 
-                rowInvoice.Range[1, ++i].Value = delivery.Carrier?.Id ?? 0;
-                rowInvoice.Range[1, ++i].Value = invoice.Id;
-                rowInvoice.Range[1, ++i].Value = invoice?.Customer.Id ?? 0;
-                rowInvoice.Range[1, ++i].Value = "" ;
-                rowInvoice.Range[1, ++i].Value = invoice.Route ;
-                rowInvoice.Range[1, ++i].Value = invoice.ItemsCount ;
-                rowInvoice.Range[1, ++i].Value = invoice.Weight ;
-                rowInvoice.Range[1, ++i].Value = invoice.Cost ;
+                rowInvoice.Range[1, ++column].Value = delivery.Carrier?.Id ?? 0;
+                rowInvoice.Range[1, ++column].Value = invoice.Id;
+                rowInvoice.Range[1, ++column].Value = invoice?.Customer.Id ?? 0;
+                rowInvoice.Range[1, ++column].Value = "";
+                rowInvoice.Range[1, ++column].Value = invoice.Route;
+                rowInvoice.Range[1, ++column].Value = invoice.ItemsCount;
+                rowInvoice.Range[1, ++column].Value = invoice.Weight;
+                rowInvoice.Range[1, ++column].Value = invoice.Cost;
 
             }
 
@@ -96,13 +118,15 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="sap"></param>
         /// <returns></returns>
-        public List<Delivery> GetDeliveries(string sap)
+        public List<Delivery> GetDeliveries(string sap, string orders)
         {
             List<Delivery> deliveries = null;
             Delivery delivery = null;
             Workbook sapBook = null;
+            Workbook ordersBook = null;
             try
             {
+                ordersBook = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: orders);
                 sapBook = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: sap);
             }
             catch (Exception ex)
@@ -132,7 +156,7 @@ namespace DomesticTransport
 
                 foreach (Range row in range.Rows)
                 {
-                    Invoice invoice = ReadSapRow(row);
+                    Order invoice = ReadSapRow(row);
                     if (invoice != null)
                     {
                         delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == invoice.Route) != null);
@@ -143,7 +167,7 @@ namespace DomesticTransport
                         else
                         {
                             delivery = new Delivery();
-                            delivery.Invoices = new List<Invoice>();
+                            delivery.Invoices = new List<Order>();
                             delivery.Invoices.Add(invoice);
                             if (deliveries == null) deliveries = new List<Delivery>();
                             deliveries.Add(delivery);
@@ -160,11 +184,17 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="row"></param>
         /// <returns></returns>
-        private Invoice ReadSapRow(Range row)
+        private Order ReadSapRow(Range row)
         {
+            /// ТТН
+            string TranSportationUnit = row.Cells[1, 4].Value;
+
+
+
+
             string idDocInvoice = row.Cells[1, 3].Value;
             if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
-            Invoice invoice = new Invoice();
+            Order invoice = new Order();
             invoice.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
             string idCusomer = row.Cells[1, 5].Value;
             invoice.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
@@ -191,33 +221,6 @@ namespace DomesticTransport
             return fcell == null ? 0 : fcell.Column;
         }
 
-        /// <summary>
-        ///  Выбрать файл выгрузки SAP
-        /// </summary>
-        /// <returns></returns>
-        public string SelectFile()
-        {
-            string sapUnload = "";
-            string defaultPath = Config.Default.SapUnloadPath;
 
-            using (OpenFileDialog ofd = new OpenFileDialog()
-            {
-                DefaultExt = "*.xls*",
-                CheckFileExists = true,
-                InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,
-                ValidateNames = true,
-                Multiselect = false,
-                Filter = "Excel|*.xls*"
-            })
-            {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    sapUnload = ofd.FileName;
-                    Config.Default.SapUnloadPath = new FileInfo(ofd.FileName).DirectoryName;
-                    Config.Default.Save();
-                }
-            }
-            return sapUnload;
-        }
     }
 }

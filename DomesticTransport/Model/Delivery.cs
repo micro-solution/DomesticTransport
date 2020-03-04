@@ -25,19 +25,19 @@ namespace DomesticTransport.Model
             }
         }
 
-        public List<Invoice> Invoices
+        public List<Order> Invoices
         {
             get { return _invoices; }
             set
             {
                 if (_invoices == null)
                 {
-                    _invoices = new List<Invoice>();                    
+                    _invoices = new List<Order>();                    
                 }
                 _invoices = value;
              }
         }
-        List<Invoice> _invoices;
+        List<Order> _invoices;
 
 
     }

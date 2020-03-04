@@ -13,7 +13,7 @@ namespace DomesticTransport.Model
         Canceled,
         Done
     }
-    class Invoice
+    class Order
     {
         public int Id { get; set; }
         public Customer Customer { get;set;}

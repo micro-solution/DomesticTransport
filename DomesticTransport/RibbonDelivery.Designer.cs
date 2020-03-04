@@ -1,13 +1,13 @@
 ﻿namespace DomesticTransport
 {
-    partial class Ribbon : Microsoft.Office.Tools.Ribbon.RibbonBase
+    partial class RibbonDelivery : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
         /// <summary>
         /// Обязательная переменная конструктора.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        public Ribbon()
+        public RibbonDelivery()
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
@@ -34,27 +34,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonDelivery));
             this.ShefflerRibbon = this.Factory.CreateRibbonTab();
             this.groupGeneral = this.Factory.CreateRibbonGroup();
             this.btnStart = this.Factory.CreateRibbonButton();
-            this.groupEdit = this.Factory.CreateRibbonGroup();
-            this.btnChangePoint = this.Factory.CreateRibbonButton();
-            this.btnChangeSet = this.Factory.CreateRibbonButton();
             this.btnAcept = this.Factory.CreateRibbonButton();
-            this.groupMap = this.Factory.CreateRibbonGroup();
-            this.btnMap = this.Factory.CreateRibbonButton();
+            this.groupEdit = this.Factory.CreateRibbonGroup();
+            this.btnChangeSet = this.Factory.CreateRibbonButton();
+            this.btnChangePoint = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
-            this.groupMap.SuspendLayout();
             this.SuspendLayout();
             // 
             // ShefflerRibbon
             // 
             this.ShefflerRibbon.Groups.Add(this.groupGeneral);
             this.ShefflerRibbon.Groups.Add(this.groupEdit);
-            this.ShefflerRibbon.Groups.Add(this.groupMap);
             this.ShefflerRibbon.Label = "Шеффлер";
             this.ShefflerRibbon.Name = "ShefflerRibbon";
             this.ShefflerRibbon.Position = this.Factory.RibbonPosition.BeforeOfficeId("TabHome");
@@ -75,20 +71,20 @@
             this.btnStart.ShowImage = true;
             this.btnStart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStart_Click);
             // 
+            // btnAcept
+            // 
+            this.btnAcept.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnAcept.Image = ((System.Drawing.Image)(resources.GetObject("btnAcept.Image")));
+            this.btnAcept.Label = "Принять ";
+            this.btnAcept.Name = "btnAcept";
+            this.btnAcept.ShowImage = true;
+            // 
             // groupEdit
             // 
             this.groupEdit.Items.Add(this.btnChangeSet);
             this.groupEdit.Items.Add(this.btnChangePoint);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
-            // 
-            // btnChangePoint
-            // 
-            this.btnChangePoint.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnChangePoint.Image = ((System.Drawing.Image)(resources.GetObject("btnChangePoint.Image")));
-            this.btnChangePoint.Label = "Изменить маршрут";
-            this.btnChangePoint.Name = "btnChangePoint";
-            this.btnChangePoint.ShowImage = true;
             // 
             // btnChangeSet
             // 
@@ -98,42 +94,25 @@
             this.btnChangeSet.Name = "btnChangeSet";
             this.btnChangeSet.ShowImage = true;
             // 
-            // btnAcept
+            // btnChangePoint
             // 
-            this.btnAcept.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnAcept.Image = ((System.Drawing.Image)(resources.GetObject("btnAcept.Image")));
-            this.btnAcept.Label = "Принять ";
-            this.btnAcept.Name = "btnAcept";
-            this.btnAcept.ShowImage = true;
+            this.btnChangePoint.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnChangePoint.Image = ((System.Drawing.Image)(resources.GetObject("btnChangePoint.Image")));
+            this.btnChangePoint.Label = "Изменить маршрут";
+            this.btnChangePoint.Name = "btnChangePoint";
+            this.btnChangePoint.ShowImage = true;
             // 
-            // groupMap
+            // RibbonDelivery
             // 
-            this.groupMap.Items.Add(this.btnMap);
-            this.groupMap.Label = "Карта";
-            this.groupMap.Name = "groupMap";
-            // 
-            // btnMap
-            // 
-            this.btnMap.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnMap.Image = ((System.Drawing.Image)(resources.GetObject("btnMap.Image")));
-            this.btnMap.Label = "Показать маршрут";
-            this.btnMap.Name = "btnMap";
-            this.btnMap.ShowImage = true;
-            // 
-            // Ribbon
-            // 
-            this.Name = "Ribbon";
+            this.Name = "RibbonDelivery";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.ShefflerRibbon);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
             this.ShefflerRibbon.ResumeLayout(false);
             this.ShefflerRibbon.PerformLayout();
             this.groupGeneral.ResumeLayout(false);
             this.groupGeneral.PerformLayout();
             this.groupEdit.ResumeLayout(false);
             this.groupEdit.PerformLayout();
-            this.groupMap.ResumeLayout(false);
-            this.groupMap.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -145,16 +124,14 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangePoint;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAcept;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangeSet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMap;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMap;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ShefflerRibbon;
     }
 
     partial class ThisRibbonCollection
     {
-        internal Ribbon Ribbon
+        internal RibbonDelivery Ribbon
         {
-            get { return this.GetRibbon<Ribbon>(); }
+            get { return this.GetRibbon<RibbonDelivery>(); }
         }
     }
 }
