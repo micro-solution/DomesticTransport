@@ -3,9 +3,6 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Config = DomesticTransport.Properties.Settings;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -29,15 +26,14 @@ namespace DomesticTransport
 
                 int i = 0;
                 foreach (Delivery delivery in deliveries)
-                {
-                    ++i;
-                    PrintDelivery(delivery, i);
+                {                  
+                    PrintDelivery(delivery);
                 }
 
             }
         }
 
-        private void PrintDelivery(Delivery delivery, int number)
+        private void PrintDelivery(Delivery delivery)
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject CarrierTable = deliverySheet.ListObjects["TableCarrier"];
@@ -47,30 +43,38 @@ namespace DomesticTransport
                 MessageBox.Show("Отсутствует таблица");
                 return;
             }
-            
-            ListRow rowCarrier =  CarrierTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
-            rowCarrier.Range[1, 1].Value = delivery.Carrier.Id ;
-            rowCarrier.Range[1, 2].Value = delivery.Carrier.Name;
-            rowCarrier.Range[1, 3].Value = delivery.Carrier.Truck.Number;
-            rowCarrier.Range[1, 4].Value = delivery.Carrier.Truck.Mark;
-            rowCarrier.Range[1, 5].Value = delivery.Carrier.Truck.Tonnage;
-            rowCarrier.Range[1, 6].Value = delivery.Carrier.Name;
+           // if (CarrierTable.ListRows.Count ==0) CarrierTable.ListRows.AddEx();
+
+            ListRow rowCarrier = CarrierTable.ListRows.AddEx();  //CarrierTable.ListRows[CarrierTable.ListRows.Count];            
+
+            System.Windows.Forms.Application.DoEvents();
+            // ListRow rowCarrier =  CarrierTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
+            rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
+            rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
+            rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
+            rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
+            rowCarrier.Range[1, 5].Value = delivery.Carrier?.Truck?.Tonnage ?? 0;
+            rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
 
             ListRow rowInvoice;
             int i=0;
+
             foreach (Invoice invoice in delivery.Invoices)
             {
+                // if (CarrierTable.ListRows.Count == 0) CarrierTable.ListRows.AddEx()
+                rowInvoice = InvoiciesTable.ListRows.Count == 0 ?
+                       InvoiciesTable.ListRows.AddEx() :
+                       InvoiciesTable.ListRows[InvoiciesTable.ListRows.Count]; // InvoiciesTable.ListRows.AddEx(InvoiciesTable.ListRows.Count - 1);
 
-            rowInvoice = InvoiciesTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
-               
-                rowInvoice.Range[1, ++i].Value = delivery.Carrier.Id;
+
+                rowInvoice.Range[1, ++i].Value = delivery.Carrier?.Id ?? 0;
                 rowInvoice.Range[1, ++i].Value = invoice.Id;
-                rowInvoice.Range[1, ++i].Value = invoice.Customer.Id;
+                rowInvoice.Range[1, ++i].Value = invoice?.Customer.Id ?? 0;
                 rowInvoice.Range[1, ++i].Value = "" ;
-                rowInvoice.Range[1, ++i].Value = invoice.Route;
-                rowInvoice.Range[1, ++i].Value = invoice.ItemsCount;
-                rowInvoice.Range[1, ++i].Value = invoice.Weight;
-                rowInvoice.Range[1, ++i].Value = invoice.Cost;
+                rowInvoice.Range[1, ++i].Value = invoice.Route ;
+                rowInvoice.Range[1, ++i].Value = invoice.ItemsCount ;
+                rowInvoice.Range[1, ++i].Value = invoice.Weight ;
+                rowInvoice.Range[1, ++i].Value = invoice.Cost ;
 
             }
 
