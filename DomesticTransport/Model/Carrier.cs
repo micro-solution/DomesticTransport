@@ -10,7 +10,12 @@ namespace DomesticTransport.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        Truck truck { get; set; }
+
+        public string Phone { get; set; }
+        public Truck Truck { get; set; }
+
+        
+
         ShippingCompany ShippingCompany{ get; set; }
 
 

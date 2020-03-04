@@ -11,6 +11,19 @@ namespace DomesticTransport.Model
     {
       public  DateTime DateCreate { get { return DateTime.Now;  } }
         public Carrier Carrier { get; set; }
+        public double CostDelivery {
+            get
+            {
+                int pointCount = Invoices.Count;
+                double cost = Carrier.Truck.CostOnePoint;
+
+                if (pointCount > 1)
+                {
+                    cost = Carrier.Truck.CostOnePoint * (pointCount - 1);
+                }
+                return cost;
+            }
+        }
 
         public List<Invoice> Invoices
         {

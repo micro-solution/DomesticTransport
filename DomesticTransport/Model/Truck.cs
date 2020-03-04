@@ -8,10 +8,15 @@ namespace DomesticTransport.Model
 {
     class Truck
     {
-        string Number { get; set; }
-        int Tonnage { get; set; }
-        int CostOnePoint { get; set; }
-        int CostSecondPoint { get; set; }
+        public string Number { get; set; }
+
+        public string Mark { get; set; }
+        public int Tonnage { get; set; }
+
+
+        public int CostOnePoint { get; set; }
+        public int CostSecondPoint { get; set; }
+
 
     }
 }

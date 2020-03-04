@@ -40,21 +40,49 @@ namespace DomesticTransport
         private void PrintDelivery(Delivery delivery, int number)
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject CarrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject InvoiciesTable = deliverySheet.ListObjects["TableInvoicies"];
+            if (CarrierTable==null || InvoiciesTable == null)
+            {
+                MessageBox.Show("Отсутствует таблица");
+                return;
+            }
+            
+            ListRow rowCarrier =  CarrierTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
+            rowCarrier.Range[1, 1].Value = delivery.Carrier.Id ;
+            rowCarrier.Range[1, 2].Value = delivery.Carrier.Name;
+            rowCarrier.Range[1, 3].Value = delivery.Carrier.Truck.Number;
+            rowCarrier.Range[1, 4].Value = delivery.Carrier.Truck.Mark;
+            rowCarrier.Range[1, 5].Value = delivery.Carrier.Truck.Tonnage;
+            rowCarrier.Range[1, 6].Value = delivery.Carrier.Name;
 
-            //tableTruck =  // .Controls.AddListObject(this.get_Range("$A$1:$D$4"), Config.Default.DeliverySheetName);
-            int offset = number > 1 ? 20 : Config.Default.HeaderRow;
-            int tableRows = 10;
-            int tableColumns = 10;
+            ListRow rowInvoice;
+            int i=0;
+            foreach (Invoice invoice in delivery.Invoices)
+            {
 
-            Range range = deliverySheet.Range[deliverySheet.Cells[number + offset, 2],
-                                                    deliverySheet.Cells[number + offset + tableRows, 2 + tableColumns]];
-            range.Cells[1, 1].Text = "s11s";
-            range.Cells[2, 1].Value = delivery.DateCreate.ToString();   //"22";
+            rowInvoice = InvoiciesTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
+               
+                rowInvoice.Range[1, ++i].Value = delivery.Carrier.Id;
+                rowInvoice.Range[1, ++i].Value = invoice.Id;
+                rowInvoice.Range[1, ++i].Value = invoice.Customer.Id;
+                rowInvoice.Range[1, ++i].Value = "" ;
+                rowInvoice.Range[1, ++i].Value = invoice.Route;
+                rowInvoice.Range[1, ++i].Value = invoice.ItemsCount;
+                rowInvoice.Range[1, ++i].Value = invoice.Weight;
+                rowInvoice.Range[1, ++i].Value = invoice.Cost;
 
-            ListObject tableTruck = deliverySheet.ListObjects.AddEx(SourceType: Excel.XlListObjectSourceType.xlSrcRange,
-                                                                          Source: range,
-                                                                          XlListObjectHasHeaders: Excel.XlYesNoGuess.xlNo);
-            tableTruck.Name = $"Truck[{number}]";
+            }
+
+
+            //int offset = number > 1 ? 20 : Config.Default.HeaderRow;
+            //int tableRows = 10;
+            //int tableColumns = 10;
+
+            // Range range = deliverySheet.Range[deliverySheet.Cells[number + offset, 2],
+            //                                         deliverySheet.Cells[number + offset + tableRows, 2 + tableColumns]];
+            //range.Cells[1, 1].Value = "s11s";
+            // range.Cells[2, 1].Value = delivery.DateCreate.ToString(); 
 
 
         }
@@ -101,22 +129,22 @@ namespace DomesticTransport
                 foreach (Range row in range.Rows)
                 {
                     Invoice invoice = ReadSapRow(row);
-                        if (invoice != null)
+                    if (invoice != null)
+                    {
+                        delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == invoice.Route) != null);
+                        if (delivery != null)
                         {
-                            delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == invoice.Route) != null);
-                                if (delivery != null)
-                                {
-                                    delivery.Invoices.Add(invoice);
-                                }
-                                else
-                                {
-                                    delivery = new Delivery();
-                                    delivery.Invoices = new List<Invoice>();
-                                    delivery.Invoices.Add(invoice);
-                                    if (deliveries == null) deliveries = new List<Delivery>();
-                                    deliveries.Add(delivery);
-                                }
+                            delivery.Invoices.Add(invoice);
                         }
+                        else
+                        {
+                            delivery = new Delivery();
+                            delivery.Invoices = new List<Invoice>();
+                            delivery.Invoices.Add(invoice);
+                            if (deliveries == null) deliveries = new List<Delivery>();
+                            deliveries.Add(delivery);
+                        }
+                    }
                 }
 
             }
@@ -132,15 +160,15 @@ namespace DomesticTransport
         {
             string idDocInvoice = row.Cells[1, 3].Value;
             if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
-                Invoice invoice = new Invoice();            
-                invoice.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
-                    string idCusomer = row.Cells[1, 5].Value;
-                invoice.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
-                invoice.Route = row.Cells[1, 11].Value;
-                        string itemsCount = row.Cells[1, 9].Text;
-                invoice.ItemsCount = int.TryParse(itemsCount, out int count) ? count : 0;
-                    string weight = row.Cells[1, 8].Text;
-                invoice.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
+            Invoice invoice = new Invoice();
+            invoice.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
+            string idCusomer = row.Cells[1, 5].Value;
+            invoice.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
+            invoice.Route = row.Cells[1, 11].Value;
+            string itemsCount = row.Cells[1, 9].Text;
+            invoice.ItemsCount = int.TryParse(itemsCount, out int count) ? count : 0;
+            string weight = row.Cells[1, 8].Text;
+            invoice.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
             return invoice;
         }
 
