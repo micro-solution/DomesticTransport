@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomesticTransport.Model
 {
-    enum Status
-    {
-        Awaiting,
-        ReadyToShip,
-        Canceled,
-        Done
-    }
+
     class Order
     {
         public string Id { get; set; }
@@ -26,7 +20,7 @@ namespace DomesticTransport.Model
         public double Cost { get; set; }
 
         public string Route { get; set; }
-        public Status Status { get; set; }
+        
 
     }
 }

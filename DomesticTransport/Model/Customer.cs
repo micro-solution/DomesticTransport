@@ -9,6 +9,9 @@
 
 
         Customer() { }
-     public   Customer(string id) { }
+     public   Customer(string id)
+        {
+        
+        }
     }
 }

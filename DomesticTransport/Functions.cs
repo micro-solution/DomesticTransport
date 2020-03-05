@@ -43,71 +43,119 @@ namespace DomesticTransport
 
                 List<Delivery> deliveries = GetDeliveries(sap, orders);
 
+                Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+                ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+                ListObject invoiciesTable = deliverySheet.ListObjects["TableInvoicies"];
+
+                ClearListObj(carrierTable);
+                if (invoiciesTable.DataBodyRange.Rows.Count > 0)
+                { invoiciesTable.DataBodyRange.Rows.Delete();}
+
                 if (deliveries != null)
                 {
                     foreach (Delivery delivery in deliveries)
                     {
-                        PrintDelivery(delivery);
+                        PrintDelivery(delivery, deliverySheet,carrierTable, invoiciesTable);
+                        System.Windows.Forms.Application.DoEvents();
                     }
 
                 }
             }
         }
 
-        private void PrintDelivery(Delivery delivery)
+        private void ClearListObj(ListObject listObject)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject CarrierTable = deliverySheet.ListObjects["TableCarrier"];
-            ListObject InvoiciesTable = deliverySheet.ListObjects["TableInvoicies"];
-            if (CarrierTable == null || InvoiciesTable == null)
+          
+            Worksheet worksheet = listObject.Parent;
+            for (int i= listObject.ListRows.Count; i>0;i--)
+            {
+                    ListRow listRow = listObject.ListRows[i];
+                worksheet.Rows[listRow.Range.Row].Delete();
+            }
+            
+        }
+        private void AddListRow(ListObject listObject)
+        {
+            Worksheet worksheet = listObject.Parent;
+            if ( listObject.ListRows.Count > 0)
+            {
+            worksheet.Rows[listObject.ListRows[listObject.ListRows.Count].Range.Row + 1].Insert();
+            }
+            else
+            {
+                worksheet.Rows[listObject.HeaderRowRange.Row+2].Insert();
+            }
+            listObject.ListRows.Add();
+        }
+
+        private void PrintDelivery(Delivery delivery, Worksheet deliverySheet, ListObject CarrierTable, ListObject OrderTable)
+        {
+            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            //ListObject CarrierTable = deliverySheet.ListObjects["TableCarrier"];
+            //ListObject InvoiciesTable = deliverySheet.ListObjects["TableInvoicies"];
+            if (CarrierTable == null || OrderTable == null)
             {
                 MessageBox.Show("Отсутствует таблица");
                 return;
             }
-            CarrierTable.ListRows.Add(); // if (CarrierTable.ListRows.Count ==0)
-
-            ListRow rowCarrier = CarrierTable.ListRows[CarrierTable.ListRows.Count];
-            deliverySheet.Rows[rowCarrier.Range.Offset[1, 0].Row].Insert();
-            //rowCarrier.Range.Offset[1, 0].Row] Insert() ;
-            System.Windows.Forms.Application.DoEvents();
-            // ListRow rowCarrier =  CarrierTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
-            //  rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
-            // rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
-            // rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
-            //  rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
-            rowCarrier.Range[1, 5].Value = delivery.Carrier?.Truck?.Tonnage ?? 0;
-            rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
-
-            ListRow rowInvoice;
-
-            foreach (Order invoice in delivery.Invoices)
+            ListRow rowCarrier = null;
+            if (CarrierTable.ListRows.Count == 0)
             {
-                // if (CarrierTable.ListRows.Count == 0) CarrierTable.ListRows.AddEx()
-                rowInvoice = InvoiciesTable.ListRows.Count == 0 ?
-                       InvoiciesTable.ListRows.Add() :
-                       InvoiciesTable.ListRows[InvoiciesTable.ListRows.Count]; // InvoiciesTable.ListRows.AddEx(InvoiciesTable.ListRows.Count - 1);
-                int column = 0;
-                rowInvoice.Range[1, ++column].Value = delivery.Carrier?.Id ?? 0;
-                rowInvoice.Range[1, ++column].Value = invoice.Id;
-                rowInvoice.Range[1, ++column].Value = invoice?.Customer.Id ?? 0;
-                rowInvoice.Range[1, ++column].Value = "";
-                rowInvoice.Range[1, ++column].Value = invoice.Route;
-                rowInvoice.Range[1, ++column].Value = invoice.PalletsCount;
-                rowInvoice.Range[1, ++column].Value = invoice.Weight;
-                rowInvoice.Range[1, ++column].Value = invoice.Cost;
-
+                AddListRow(CarrierTable);
+                rowCarrier = CarrierTable.ListRows[1];//  }
             }
+            else
+            {
+                AddListRow(CarrierTable);
+                rowCarrier = CarrierTable.ListRows[CarrierTable.ListRows.Count-1];
+            }                
+                rowCarrier.Range[1, 1].Value = rowCarrier.Index;
+                
+                //  rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
+                // rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
+                // rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
+                //  rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
+                rowCarrier.Range[1, 5].Value = delivery.Carrier?.Truck?.Tonnage ?? 0;
+                rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
+
+                ListRow rowOrder;
+
+                foreach (Order order in delivery.Invoices)
+                {
+                    // if (CarrierTable.ListRows.Count == 0) CarrierTable.ListRows.AddEx()
+
+                    if (OrderTable.ListRows.Count == 0)
+                    {
+                        OrderTable.ListRows.Add();
+                    rowOrder = OrderTable.ListRows[1];
+                    }
+                    else
+                    {
+                        OrderTable.ListRows.Add();
+                        rowOrder = OrderTable.ListRows[OrderTable.ListRows.Count-1]; // InvoiciesTable.ListRows.AddEx(InvoiciesTable.ListRows.Count - 1);
+                    }
+                    int column = 0;
+                        rowOrder.Range[1, ++column].Value = rowCarrier.Index; //delivery.Carrier?.Id ?? 0;
+                        rowOrder.Range[1, ++column].Value = order.TransportationUnit;
+                        rowOrder.Range[1, ++column].Value = order.Customer?.Id ?? 0;
+                        rowOrder.Range[1, ++column].Value = "";
+                        rowOrder.Range[1, ++column].Value = order.Route;
+                        rowOrder.Range[1, ++column].Value = order.PalletsCount;
+                        rowOrder.Range[1, ++column].Value = order.Weight;
+                        rowOrder.Range[1, ++column].Value = order.Cost;
+
+                }
 
 
-            //int offset = number > 1 ? 20 : Config.Default.HeaderRow;
-            //int tableRows = 10;
-            //int tableColumns = 10;
+                //int offset = number > 1 ? 20 : Config.Default.HeaderRow;
+                //int tableRows = 10;
+                //int tableColumns = 10;
 
-            // Range range = deliverySheet.Range[deliverySheet.Cells[number + offset, 2],
-            //                                         deliverySheet.Cells[number + offset + tableRows, 2 + tableColumns]];
-            //range.Cells[1, 1].Value = "s11s";
-            // range.Cells[2, 1].Value = delivery.DateCreate.ToString(); 
-
+                // Range range = deliverySheet.Range[deliverySheet.Cells[number + offset, 2],
+                //                                         deliverySheet.Cells[number + offset + tableRows, 2 + tableColumns]];
+                //range.Cells[1, 1].Value = "s11s";
+                // range.Cells[2, 1].Value = delivery.DateCreate.ToString(); 
+            
 
         }
 
