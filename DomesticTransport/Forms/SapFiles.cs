@@ -7,6 +7,7 @@ using System.IO;
 using Config = DomesticTransport.Properties.Settings;
 
 using System.Windows.Forms;
+using DomesticTransport.Properties;
 
 namespace DomesticTransport
 {
@@ -77,7 +78,7 @@ namespace DomesticTransport
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     sapUnload = ofd.FileName;
-                    FileInfo fi = new FileInfo(ofd.FileName); 
+                    FileInfo fi = new FileInfo(ofd.FileName);
                     if (fi.DirectoryName != Config.Default.SapUnloadPath)
                     {
                         Config.Default.SapUnloadPath = fi.DirectoryName;
@@ -108,6 +109,35 @@ namespace DomesticTransport
         {
             DialogResult = DialogResult.None;
             this.Close();
+        }
+
+        private void SapFiles_Load(object sender, EventArgs e)
+        {
+            string path = Settings.Default.SapUnloadPath;
+            if (Directory.Exists(path))
+            {
+                string[] files = Directory.GetFiles(path);
+                foreach (string file in files)
+                {
+
+                    FileInfo fi = new FileInfo(file);
+                    if (!fi.Name.Contains("~$") &&
+                        (fi.Extension.ToLower().Contains("xls") | 
+                         fi.Extension.ToLower().Contains("csv")))
+                    {
+
+                        if (fi.Name.Contains("Export"))
+                        {
+                            tbExport.Text = file;
+                        }
+                        if (file.Contains("orders"))
+                        {
+                            tbOrders.Text = file;
+                        }
+                        if (tbOrders.Text != "" && tbExport.Text != "") break;
+                    }
+                }
+            }
         }
     }
 

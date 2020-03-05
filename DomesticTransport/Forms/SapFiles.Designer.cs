@@ -92,6 +92,7 @@
             // Cancel
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Cancel.Location = new System.Drawing.Point(461, 83);
             this.Cancel.Name = "Cancel";
@@ -152,6 +153,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "SapFiles";
             this.Text = "Выбор файлов";
+            this.Load += new System.EventHandler(this.SapFiles_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

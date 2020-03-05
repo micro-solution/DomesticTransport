@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -63,10 +64,11 @@ namespace DomesticTransport
                 MessageBox.Show("Отсутствует таблица");
                 return;
             }
-            // if (CarrierTable.ListRows.Count ==0) CarrierTable.ListRows.AddEx();
+            CarrierTable.ListRows.Add(); // if (CarrierTable.ListRows.Count ==0)
 
-            ListRow rowCarrier = CarrierTable.ListRows.AddEx();  //CarrierTable.ListRows[CarrierTable.ListRows.Count];            
-
+            ListRow rowCarrier = CarrierTable.ListRows[CarrierTable.ListRows.Count];
+            deliverySheet.Rows[rowCarrier.Range.Offset[1, 0].Row].Insert();
+            //rowCarrier.Range.Offset[1, 0].Row] Insert() ;
             System.Windows.Forms.Application.DoEvents();
             // ListRow rowCarrier =  CarrierTable.ListRows.AddEx(CarrierTable.ListRows.Count - 1);
             //  rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
@@ -77,16 +79,14 @@ namespace DomesticTransport
             rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
 
             ListRow rowInvoice;
-            int column = 0;
 
             foreach (Order invoice in delivery.Invoices)
             {
                 // if (CarrierTable.ListRows.Count == 0) CarrierTable.ListRows.AddEx()
                 rowInvoice = InvoiciesTable.ListRows.Count == 0 ?
-                       InvoiciesTable.ListRows.AddEx() :
+                       InvoiciesTable.ListRows.Add() :
                        InvoiciesTable.ListRows[InvoiciesTable.ListRows.Count]; // InvoiciesTable.ListRows.AddEx(InvoiciesTable.ListRows.Count - 1);
-
-
+                int column = 0;
                 rowInvoice.Range[1, ++column].Value = delivery.Carrier?.Id ?? 0;
                 rowInvoice.Range[1, ++column].Value = invoice.Id;
                 rowInvoice.Range[1, ++column].Value = invoice?.Customer.Id ?? 0;
@@ -136,28 +136,28 @@ namespace DomesticTransport
             {
                 int lastRow = sheet.Cells[sheet.Rows.Count, 1].End(XlDirection.xlUp).Row;
                 int lastColumn = sheet.UsedRange.Column + sheet.UsedRange.Columns.Count - 1;
-                Range range = sheet.Range[sheet.Cells[2, 1], sheet.Cells[lastRow, lastColumn]];
-
-                //List<Invoice> sapInvoicies = new List<Invoice>();
-                //foreach (Range row in range.Rows)
-                //{
-                //    Invoice invoice = ReadSapRow(row);
-                //    sapInvoicies.Add(invoice);
-                //}
-                //List<Invoice> uniRoute =(List<Invoice>)sapInvoicies.GroupBy(x => x.Route);//.ToList(); //Where(x=> Gro x.Route)
-                //foreach(Invoice i in uniRoute)
-                //{
-                //    deliveries.Add(new Delivery() { Invoices = sapInvoicies.Where(x => x.Route == i.Route).ToList() });
-                //}
+                Range range = sheet.Range[sheet.Cells[2, 1], sheet.Cells[lastRow, lastColumn]];         
 
                 foreach (Range row in range.Rows)
                 {
                     Order order = ReadSapRow(row);
                     if (order != null)
                     {
+                        Debug.WriteLine(row.Row+ " "+ order.TransportationUnit );
                         if (!string.IsNullOrWhiteSpace(order.TransportationUnit))
                         {
-                            Range orderInfo = GetOrderInfo(orderBook.Sheets[1], order.TransportationUnit);
+                            List<string>  orderInfo = GetOrderInfo(orderBook.Sheets[1], order.TransportationUnit);
+                            if (orderInfo != null)
+                            {
+                                string costStr = orderInfo[1];
+                                costStr= costStr.Replace("Стоимость товаров без НДС:","");
+                                costStr = costStr.Replace("RUB", "");
+                                costStr = costStr.Replace(".", "");                                
+                                costStr = costStr.Trim();
+                                order.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
+
+                               // order.Customer.   //Улица , Город
+                            }
                         }
 
 
@@ -176,6 +176,10 @@ namespace DomesticTransport
                             deliveries.Add(delivery);
                         }
                     }
+
+                    //Комплектовать авто
+
+
                 }
 
             }
@@ -191,16 +195,15 @@ namespace DomesticTransport
         {
             /// ТТН
             Order order = new Order();
-            order.TransportationUnit = row.Cells[1, 4].Value;
-            string idCusomer = row.Cells[1, 5].Value;
-            if (string.IsNullOrWhiteSpace(idCusomer))
+            Debug.WriteLine(row.Row);
+          order.TransportationUnit = row.Cells[1, 4].Text ;
+          string idCusomer = row.Cells[1, 5].Text;
+          order.Id = row.Cells[1, 7].Text;
+            if (string.IsNullOrWhiteSpace(idCusomer) || string.IsNullOrWhiteSpace(order.Id))
             {
                 return null;
-            }
-            else
-            {
-                order.Customer = new Customer(idCusomer);
             }            
+                order.Customer = new Customer(idCusomer);                       
 
             string weight = row.Cells[1, 8].Text;
             order.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
@@ -208,7 +211,7 @@ namespace DomesticTransport
             string palletsCount = row.Cells[1, 9].Text;
             order.PalletsCount = int.TryParse(palletsCount, out int count) ? count : 0;
            
-            order.Route = row.Cells[1, 11].Value;
+            order.Route = row.Cells[1, 11].Text;
 
 
                 //order.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
@@ -218,23 +221,32 @@ namespace DomesticTransport
             return order;
         }
 
-        private Range GetOrderInfo(Worksheet sheet, string transportationUnit)
+        private List<string>  GetOrderInfo(Worksheet sheet, string transportationUnit)
         {
             Range findRange = sheet.Columns[1];
-            string search = "№ ТТН:" + new string('0', 18 - transportationUnit.Length);
+            //string search = "№ ТТН:" + new string('0', 18 - transportationUnit.Length) + transportationUnit;
+            string search = new string('0', 18 - transportationUnit.Length) + transportationUnit;
             Range fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
-            if (fcell == null) return null;
+          
+            if (fcell == null && fcell.Value.Trim().Contains("ТТН:")) return null;
+
             int rowStart = fcell.Row;
             int lastRow = sheet.Cells[sheet.Rows.Count, 1].End(XlDirection.xlUp).Row;
 
             int rowEnd = rowStart;
+            List<string> info = new List<string>();
             do
             {
-                fcell = findRange.Cells[++rowEnd, 1];
-                if (string.IsNullOrEmpty(fcell.Value)) break;
+                fcell = findRange.Cells[rowEnd++, 1];
+                string cellText = fcell.Value;
+                cellText.Trim();
+                cellText = cellText.Replace("\t","");
+                cellText = cellText.Replace(";;;", "");
+                if (string.IsNullOrEmpty(cellText.Replace(";", ""))) break;
+                info.Add(cellText);                
             }
             while (rowEnd <= lastRow);
-            return findRange[findRange.Cells[rowStart, 1], findRange.Cells[rowEnd, 1]];
+            return info; //findRange[findRange.Cells[rowStart, 1], findRange.Cells[rowEnd, 1]];
         }
 
 
