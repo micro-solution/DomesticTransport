@@ -43,7 +43,7 @@ namespace DomesticTransport
                 List<Delivery> deliveries = GetDeliveries(sap, orders);
 
                 if (deliveries != null)
-                {                    
+                {
                     foreach (Delivery delivery in deliveries)
                     {
                         PrintDelivery(delivery);
@@ -92,7 +92,7 @@ namespace DomesticTransport
                 rowInvoice.Range[1, ++column].Value = invoice?.Customer.Id ?? 0;
                 rowInvoice.Range[1, ++column].Value = "";
                 rowInvoice.Range[1, ++column].Value = invoice.Route;
-                rowInvoice.Range[1, ++column].Value = invoice.ItemsCount;
+                rowInvoice.Range[1, ++column].Value = invoice.PalletsCount;
                 rowInvoice.Range[1, ++column].Value = invoice.Weight;
                 rowInvoice.Range[1, ++column].Value = invoice.Cost;
 
@@ -118,7 +118,7 @@ namespace DomesticTransport
         /// <returns></returns>
         public List<Delivery> GetDeliveries(string sap, string orders)
         {
-            List<Delivery> deliveries = null;
+           List<Delivery> deliveries = null;
             Delivery delivery = null;
             Workbook sapBook = null;
             Workbook orderBook = null;
@@ -153,11 +153,11 @@ namespace DomesticTransport
                 foreach (Range row in range.Rows)
                 {
                     Order order = ReadSapRow(row);
-                    if (order != null )
+                    if (order != null)
                     {
-                        if (! string.IsNullOrWhiteSpace(order.TransportationUnit))
+                        if (!string.IsNullOrWhiteSpace(order.TransportationUnit))
                         {
-                            Range orderInfo =  GetOrderInfo(orderBook.Sheets[1], order.TransportationUnit );
+                            Range orderInfo = GetOrderInfo(orderBook.Sheets[1], order.TransportationUnit);
                         }
 
 
@@ -191,32 +191,41 @@ namespace DomesticTransport
         {
             /// ТТН
             Order order = new Order();
-
             order.TransportationUnit = row.Cells[1, 4].Value;
-            string idDocInvoice = row.Cells[1, 3].Value;
-
-
-
-            if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
-            order.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
             string idCusomer = row.Cells[1, 5].Value;
-            order.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
-            order.Route = row.Cells[1, 11].Value;
-            string itemsCount = row.Cells[1, 9].Text;
-            order.ItemsCount = int.TryParse(itemsCount, out int count) ? count : 0;
+            if (string.IsNullOrWhiteSpace(idCusomer))
+            {
+                return null;
+            }
+            else
+            {
+                order.Customer = new Customer(idCusomer);
+            }            
+
             string weight = row.Cells[1, 8].Text;
             order.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
+
+            string palletsCount = row.Cells[1, 9].Text;
+            order.PalletsCount = int.TryParse(palletsCount, out int count) ? count : 0;
+           
+            order.Route = row.Cells[1, 11].Value;
+
+
+                //order.Customer = string.IsNullOrWhiteSpace(idCusomer) ? null : new Customer(idCusomer);
+            //string idDocInvoice = row.Cells[1, 3].Value;
+          //  if (string.IsNullOrWhiteSpace(idDocInvoice)) return null;
+          //  order.Id = int.TryParse(idDocInvoice, out int id) ? id : 0;
             return order;
         }
 
-       private Range GetOrderInfo(Worksheet sh , string TU)
+        private Range GetOrderInfo(Worksheet sheet, string transportationUnit)
         {
-            Range findRange = sh.Columns[1];
-            string search = "№ ТТН:" + new string('0', 18 - TU.Length);
-            Range fcell = findRange.Find(What: search,  LookIn: XlFindLookIn.xlValues);
+            Range findRange = sheet.Columns[1];
+            string search = "№ ТТН:" + new string('0', 18 - transportationUnit.Length);
+            Range fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
             if (fcell == null) return null;
             int rowStart = fcell.Row;
-            int lastRow = sh.Cells[sh.Rows.Count,1].End(XlDirection.xlUp).Row;
+            int lastRow = sheet.Cells[sheet.Rows.Count, 1].End(XlDirection.xlUp).Row;
 
             int rowEnd = rowStart;
             do
@@ -225,8 +234,7 @@ namespace DomesticTransport
                 if (string.IsNullOrEmpty(fcell.Value)) break;
             }
             while (rowEnd <= lastRow);
-
-                return findRange[findRange.Cells[rowStart,1], findRange.Cells[rowEnd, 1]];
+            return findRange[findRange.Cells[rowStart, 1], findRange.Cells[rowEnd, 1]];
         }
 
 
@@ -239,7 +247,7 @@ namespace DomesticTransport
         /// <returns></returns>
         private int GetColumn(Worksheet sh, string header, int row = 0)
         {
-            Range findRange = row == 0 ? sh.Cells : sh.Rows[row];
+            Range findRange = row == 0 ? sh.UsedRange : sh.Rows[row];
             Range fcell = findRange.Find(What: header, LookIn: XlFindLookIn.xlValues);
             return fcell == null ? 0 : fcell.Column;
         }

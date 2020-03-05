@@ -19,7 +19,7 @@ namespace DomesticTransport.Model
 
 
         public Customer Customer { get;set;}
-        public int ItemsCount { get; set; }
+        public int PalletsCount { get; set; }
         public double Weight { get; set; }
 
         public string TransportationUnit { get; set; }
