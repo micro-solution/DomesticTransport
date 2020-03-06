@@ -120,10 +120,11 @@
       <DependentUpon>MessageCarrier.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
-    <Compile Include="FunctionsSheffler.cs" />
+    <Compile Include="FunctionsShefflerWorkBook.cs" />
     <Compile Include="Model\Carrier.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Delivery.cs" />
+    <Compile Include="Model\DeliveryPoint.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\ShippingCompany.cs" />
     <Compile Include="Model\Truck.cs" />

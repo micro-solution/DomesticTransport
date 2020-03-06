@@ -22,17 +22,17 @@ namespace DomesticTransport.Model
         public double Cost { get; set; }
         public string Route { get; set; }
 
-        public int Prioriy {
-            get{
-            if (_prioriy == 0 && Customer !=null)//!string.IsNullOrWhiteSpace(Route))
-                {
-                    using (FunctionsSheffler functions = new FunctionsSheffler())
-                    {
-                        _prioriy = functions.GetPriority(Customer.Id);
-                    }                     
-                }
-                return _prioriy; }          
-            }
+        //public int Prioriy {
+        //    get{
+        //    if (_prioriy == 0 && Customer !=null)//!string.IsNullOrWhiteSpace(Route))
+        //        {
+        //            using (ShefflerWorkBook functions = new ShefflerWorkBook())
+        //            {
+        //                _prioriy = functions.(Customer.Id);
+        //            }                     
+        //        }
+        //        return _prioriy; }          
+        //    }
         int _prioriy = 0;
     }
 }

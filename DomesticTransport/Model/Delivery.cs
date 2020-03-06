@@ -39,6 +39,5 @@ namespace DomesticTransport.Model
         }
         List<Order> _invoices;
 
-
     }
 }

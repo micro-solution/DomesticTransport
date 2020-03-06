@@ -217,25 +217,30 @@ namespace DomesticTransport
         /// <returns></returns>
         public List<Delivery> CompleteAuto(List<Order> orders)
         {
-            List<Delivery> deliveries = new List<Delivery>();            
-            List<string> routes = new List<string>();           
-            orders.GroupBy(r => r.Route).ToList().Distinct();
+            List<Delivery> deliveries = new List<Delivery>(); 
             
-            //Уникальные маршруты
-            routes = (from r in orders
-                      select r.Route).Distinct().ToList();            
-            foreach(string route in routes)
-            {
-                double summWeight = 0;
-                foreach(Order order in orders.OrderBy(x=> x.Prioriy).ToList())
-                {
 
-                }
+
+
+
+            //List<string> routes = new List<string>();           
+            //orders.GroupBy(r => r.Route).ToList().Distinct();
+            
+            ////Уникальные маршруты
+            //routes = (from r in orders
+            //          select r.Route).Distinct().ToList();            
+            //foreach(string route in routes)
+            //{
+            //    double summWeight = 0;
+                //foreach(Order order in orders.OrderBy(x=> x.Prioriy).ToList())
+                //{
+
+                //}
                 //orders.Sort(x=>x.)
                     //Where(o => o.Route == route).ToList().ForEach(x => summWeight += x.Weight);
                 
                     
-            }
+            
 
 
             //delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == order.Route) != null);
