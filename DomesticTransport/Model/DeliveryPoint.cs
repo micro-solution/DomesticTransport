@@ -13,8 +13,9 @@ namespace DomesticTransport.Model
     {
         public int Id { get; set; }
         public int PriorityRoute { get; set; }
-        public int Priority { get; set; }
+        public int PriorityPoint { get; set; }
         public string IdClient { get; set; }
+        public string City { get; set; }
 
     }
 }

@@ -17,6 +17,9 @@ namespace DomesticTransport.Model
         public int CostOnePoint { get; set; }
         public int CostSecondPoint { get; set; }
 
+        public Truck( )
+        {
 
+        }
     }
 }

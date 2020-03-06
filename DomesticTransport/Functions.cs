@@ -91,7 +91,7 @@ namespace DomesticTransport
         }
 
         private void PrintDelivery(Delivery delivery, Worksheet deliverySheet, ListObject CarrierTable, ListObject OrderTable)
-        {            
+        {
             if (CarrierTable == null || OrderTable == null)
             {
                 MessageBox.Show("Отсутствует таблица");
@@ -114,12 +114,12 @@ namespace DomesticTransport
             // rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
             // rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
             //  rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
-            rowCarrier.Range[1, 5].Value = delivery.Carrier?.Truck?.Tonnage ?? 0;
+            rowCarrier.Range[1, 5].Value = delivery.Truck?.Tonnage ?? 0;
             rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
 
             ListRow rowOrder;
 
-            foreach (Order order in delivery.Invoices)
+            foreach (Order order in delivery.Orders)
             {
                 // if (CarrierTable.ListRows.Count == 0) CarrierTable.ListRows.AddEx()
 
@@ -131,7 +131,7 @@ namespace DomesticTransport
                 else
                 {
                     OrderTable.ListRows.Add();
-                    rowOrder = OrderTable.ListRows[OrderTable.ListRows.Count - 1]; 
+                    rowOrder = OrderTable.ListRows[OrderTable.ListRows.Count - 1];
                 }
                 int column = 0;
                 rowOrder.Range[1, ++column].Value = rowCarrier.Index;
@@ -152,8 +152,8 @@ namespace DomesticTransport
         /// <param name="sap"></param>
         /// <returns></returns>
         public List<Delivery> GetDeliveries(string sap, string orders)
-        {           
-            List<Order> rourerOrders=new List<Order> ();
+        {
+            List<Order> rourerOrders = new List<Order>();
             Delivery delivery = null;
             Workbook sapBook = null;
             Workbook orderBook = null;
@@ -191,11 +191,11 @@ namespace DomesticTransport
                                 costStr = costStr.Trim();
                                 order.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
                                 string pallets = orderInfo.Find(x => x.Contains("грузовых мест:")) ?? "";
-                                pallets = string.Join("", pallets.Where(c => char.IsDigit(c)));               
-                                order.PalletsCount = int.TryParse(pallets, out int p ) ? p : 0;
+                                pallets = string.Join("", pallets.Where(c => char.IsDigit(c)));
+                                order.PalletsCount = int.TryParse(pallets, out int p) ? p : 0;
 
                                 string weightBrutto = orderInfo.Find(x => x.Contains("вес:")) ?? "";
-                               // weightBrutto = string.Join("", weightBrutto.Where(c => char.IsDigit(c) || ch));
+                                // weightBrutto = string.Join("", weightBrutto.Where(c => char.IsDigit(c) || ch));
                                 weightBrutto = Regex.Matches(weightBrutto, @"\s+\d+(\.\d+)?")[0].Value;
                                 order.WeightBrutto = double.TryParse(weightBrutto, out double wb) ? wb : 0;
 
@@ -205,9 +205,9 @@ namespace DomesticTransport
                         }
                         rourerOrders.Add(order);
                     }
-                } 
+                }
             }
-            return CompleteAuto(rourerOrders); 
+            return CompleteAuto(rourerOrders);
         }
 
         /// <summary>
@@ -217,30 +217,42 @@ namespace DomesticTransport
         /// <returns></returns>
         public List<Delivery> CompleteAuto(List<Order> orders)
         {
-            List<Delivery> deliveries = new List<Delivery>(); 
-            
+            List<Delivery> deliveries = new List<Delivery>();
+            List<Order> orderList = orders.OrderByDescending(x => x.WeightNetto).ToList();
+            ShefflerWorkBook functionsBook = new ShefflerWorkBook();
+            List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
+            for (int i = 0; i < pointMap.Count; i++)
+            {
+                DeliveryPoint point = pointMap[i];
+                    for (int j = 0; j < pointMap.Count; j++)
+                {
+                if (orderList[j].Customer.Id == point.IdClient)
+                    {
+                        
+                    }
 
+                }
 
-
+            }
 
             //List<string> routes = new List<string>();           
             //orders.GroupBy(r => r.Route).ToList().Distinct();
-            
+
             ////Уникальные маршруты
             //routes = (from r in orders
             //          select r.Route).Distinct().ToList();            
             //foreach(string route in routes)
             //{
             //    double summWeight = 0;
-                //foreach(Order order in orders.OrderBy(x=> x.Prioriy).ToList())
-                //{
+            //foreach(Order order in orders.OrderBy(x=> x.Prioriy).ToList())
+            //{
 
-                //}
-                //orders.Sort(x=>x.)
-                    //Where(o => o.Route == route).ToList().ForEach(x => summWeight += x.Weight);
-                
-                    
-            
+            //}
+            //orders.Sort(x=>x.)
+            //Where(o => o.Route == route).ToList().ForEach(x => summWeight += x.Weight);
+
+
+
 
 
             //delivery = deliveries?.Find(d => d.Invoices.Find(i => i.Route == order.Route) != null);
