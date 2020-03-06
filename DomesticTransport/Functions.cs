@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Config = DomesticTransport.Properties.Settings;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -139,7 +140,7 @@ namespace DomesticTransport
                 rowOrder.Range[1, ++column].Value = "";
                 rowOrder.Range[1, ++column].Value = order.Route;
                 rowOrder.Range[1, ++column].Value = order.PalletsCount;
-                rowOrder.Range[1, ++column].Value = order.Weight;
+                rowOrder.Range[1, ++column].Value = order.WeightNetto;
                 rowOrder.Range[1, ++column].Value = order.Cost;
 
             }
@@ -193,6 +194,12 @@ namespace DomesticTransport
                                 pallets = string.Join("", pallets.Where(c => char.IsDigit(c)));               
                                 order.PalletsCount = int.TryParse(pallets, out int p ) ? p : 0;
 
+                                string weightBrutto = orderInfo.Find(x => x.Contains("вес:")) ?? "";
+                               // weightBrutto = string.Join("", weightBrutto.Where(c => char.IsDigit(c) || ch));
+                                weightBrutto = Regex.Matches(weightBrutto, @"\s+\d+(\.\d+)?")[0].Value;
+                                order.WeightBrutto = double.TryParse(weightBrutto, out double wb) ? wb : 0;
+
+
                                 // order.Customer.   //Улица , Город
                             }
                         }
@@ -219,8 +226,15 @@ namespace DomesticTransport
                       select r.Route).Distinct().ToList();            
             foreach(string route in routes)
             {
+                double summWeight = 0;
+                foreach(Order order in orders.OrderBy(x=> x.Prioriy).ToList())
+                {
 
-
+                }
+                //orders.Sort(x=>x.)
+                    //Where(o => o.Route == route).ToList().ForEach(x => summWeight += x.Weight);
+                
+                    
             }
 
 
@@ -264,7 +278,7 @@ namespace DomesticTransport
                 return null;
             }
             string weight = row.Cells[1, GetColumn(row.Parent, "Вес брутто", 1)].Text;
-            order.Weight = double.TryParse(weight, out double wgt) ? wgt : 0;
+            order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
             order.Route = row.Cells[1, GetColumn(row.Parent, "Маршрут", 1)].Text;
             return order;
         }

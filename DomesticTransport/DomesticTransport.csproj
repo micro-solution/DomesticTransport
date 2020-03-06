@@ -120,6 +120,7 @@
       <DependentUpon>MessageCarrier.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
+    <Compile Include="FunctionsSheffler.cs" />
     <Compile Include="Model\Carrier.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Delivery.cs" />
