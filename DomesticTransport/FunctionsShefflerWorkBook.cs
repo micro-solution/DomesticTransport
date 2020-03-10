@@ -13,10 +13,10 @@ namespace DomesticTransport
 {
     class ShefflerWorkBook : IDisposable
     {
-        
 
 
-     public List<DeliveryPoint> RoutesTable
+
+        public List<DeliveryPoint> RoutesTable
         {
             get
             {
@@ -30,17 +30,17 @@ namespace DomesticTransport
                         foreach (ListRow row in TableRoutes.ListRows)
                         {
                             Debug.WriteLine(row.Range.Row.ToString());
-                            if (row.Range[1, 1].Value == null || 
-                                row.Range[1, 2].Value == null || 
-                                row.Range[1, 3].Value == null || 
-                                row.Range[1, 5].Value == null || 
-                                row.Range[1, 9].Value == null) continue;
+                            if (row.Range[1, 1].Value == null ||
+                               row.Range[1, 2].Value == null ||
+                                row.Range[1, 3].Value == null ||
+                              row.Range[1, 5].Value == null ||
+                               row.Range[1, 9].Value == null) continue;
                             DeliveryPoint route = new DeliveryPoint()
                             {
                                 Id = int.TryParse(row.Range[1, TableRoutes.ListColumns["Id route"].Index].Value.ToString(), out int id) ? id : 0,
                                 PriorityRoute = int.TryParse(row.Range[1, TableRoutes.ListColumns["Priority route"].Index].Value.ToString(), out int prioritRoute) ? prioritRoute : 0,
                                 PriorityPoint = int.TryParse(row.Range[1, TableRoutes.ListColumns["Priority point"].Index].Value.ToString(), out int prioritPoint) ? prioritPoint : 0,
-                                IdCustomer = row.Range[1, TableRoutes.ListColumns["Получатель материала"].Index].Value.ToString() ,
+                                IdCustomer = row.Range[1, TableRoutes.ListColumns["Получатель материала"].Index].Value.ToString(),
                                 City = row.Range[1, TableRoutes.ListColumns["City"].Index].Value.ToString()
                             };
                             _routes.Add(route);
@@ -51,13 +51,9 @@ namespace DomesticTransport
             }
         }
         List<DeliveryPoint> _routes;
-       
-       
 
-        void IDisposable.Dispose()
-        {
 
-        }
+
 
         internal Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery)
         {
@@ -66,20 +62,24 @@ namespace DomesticTransport
             return truck;
         }
 
-    private Worksheet GetSheet(string sheetName)
-    {
+        private Worksheet GetSheet(string sheetName)
+        {
             try
             {
-            Worksheet sh = Globals.ThisWorkbook.Sheets[sheetName];
-            return sh;
+                Worksheet sh = Globals.ThisWorkbook.Sheets[sheetName];
+                return sh;
             }
-            catch(Exception ex)
-            {                
+            catch (Exception ex)
+            {
                 throw new Exception($"Не удалось получить лист \"{sheetName}\"");
             }
-            
-    }
+
+        }
+        void IDisposable.Dispose()
+        {
+
+        }
 
     }
-    
+
 }

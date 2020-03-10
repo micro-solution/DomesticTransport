@@ -8,7 +8,8 @@ namespace DomesticTransport.Model
 {
     class Delivery
     {
-    public static int Number=0;
+    public static int Count=0;
+        public  int Number = 0;
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {
@@ -46,6 +47,18 @@ namespace DomesticTransport.Model
                 return sum;
             }
         }
+
+        public double CostProducts
+        {
+            get
+            {
+                double sum = 0;
+                Orders.ForEach(x => sum += x.Cost);
+                return sum;
+            }
+        }
+
+
         public List<Order> Orders
         {
             get
@@ -64,20 +77,43 @@ namespace DomesticTransport.Model
         }
         List<Order> _orders;
 
-        public Delivery AddOrder(Order order)
+
+        public static List<Delivery> Deliveries { get { 
+                if (_deliveries == null)
+                {
+                    _deliveries = new List<Delivery>();
+                }
+
+                return _deliveries; } 
+                }
+
+        private static List<Delivery> _deliveries;
+
+        public static void AddOrder(Order order)
         {
             Delivery delivery;
-            if (this.TotalWeight + order.WeightNetto > 20200)
+            if (Deliveries.Count > 0)
             {
-                delivery = new Delivery();
-                delivery.AddOrder(order);
+                delivery = Deliveries.Last();
             }
             else
             {
-                Orders.Add(order);
-                delivery = this;
+                delivery = new Delivery();
+                Deliveries.Add(delivery);
             }
-            return delivery;
+
+
+
+            if (delivery.TotalWeight + order.WeightNetto > 20200)
+            {
+                delivery = new Delivery();
+                Deliveries.Add(delivery); 
+            }
+            else
+            {
+               delivery.Orders.Add(order);                
+            }
+            
         }
 
         /// <summary>
@@ -110,12 +146,16 @@ namespace DomesticTransport.Model
 
         Delivery() 
         {
-            Number++;        
+            ++Count;        
         }
         ~Delivery()
         {
-            Number--;
+            --Count;
         }
 
+        internal static void AddOrder()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -108,14 +108,13 @@ namespace DomesticTransport
                 AddListRow(CarrierTable);
                 rowCarrier = CarrierTable.ListRows[CarrierTable.ListRows.Count - 1];
             }
-            rowCarrier.Range[1, 1].Value = rowCarrier.Index;
-
-            //  rowCarrier.Range[1, 1].Value = delivery.Carrier?.Id  ?? 0 ;
-            // rowCarrier.Range[1, 2].Value = delivery.Carrier?.Name ?? "";
-            // rowCarrier.Range[1, 3].Value = delivery.Carrier?.Truck?.Number ?? "";
-            //  rowCarrier.Range[1, 4].Value = delivery.Carrier?.Truck?.Mark ?? "";
-            rowCarrier.Range[1, 5].Value = delivery.Truck?.Tonnage ?? 0;
-            rowCarrier.Range[1, 6].Value = delivery.Carrier?.Name ?? "";
+            rowCarrier.Range[1, 1].Value = delivery.Number;                        
+            rowCarrier.Range[1, 2].Value = delivery.Truck?.ShippingCompany?.Name ?? "";            
+            rowCarrier.Range[1, 3].Value = delivery.Truck?.Mark ?? "";
+            rowCarrier.Range[1, 4].Value = delivery.Truck?.Tonnage ?? 0;
+            rowCarrier.Range[1, 5].Value = delivery.TotalWeight.ToString();
+            rowCarrier.Range[1, 5].Value = delivery.CostProducts.ToString();
+            rowCarrier.Range[1, 6].Value = delivery.CostDelivery.ToString();
 
             ListRow rowOrder;
 
@@ -220,22 +219,23 @@ namespace DomesticTransport
         /// <returns></returns>
         public List<Delivery> CompleteAuto(List<Order> orders)
         {
-            List<Delivery> deliveries = new List<Delivery>();
+            //List<Delivery> deliveries = new List<Delivery>();
             List<Order> orderList = orders.OrderByDescending(x => x.WeightNetto).ToList();
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
             List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
             for (int i = 0; i < pointMap.Count; i++)
-            {
-                DeliveryPoint point = pointMap[i];
-                    for (int j = 0; j < orderList.Count; j++)
+            {               
+                 for (int j = orderList.Count-1; j >= 0; j--)
                 {
-                if (orderList[j].Customer.Id == point.IdCustomer)
+                if (orderList[j].Customer.Id == pointMap[i].IdCustomer)
                     {
-                        
+                        Debug.WriteLine($"i={i} , j={j}   idCustomer {orderList[j].Customer.Id}");
+                        Delivery.AddOrder(orderList[j]);
+                        orderList.RemoveAt(j);
                     }
 
                 }
-
+            
             }
 
             //List<string> routes = new List<string>();           
@@ -270,7 +270,7 @@ namespace DomesticTransport
             //    delivery.Invoices.Add(order);
             //    if (deliveries == null) deliveries = new List<Delivery>();
             //    deliveries.Add(delivery);
-            return deliveries;
+            return Delivery.Deliveries;
         }
 
         /// <summary>
