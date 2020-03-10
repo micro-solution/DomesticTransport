@@ -33,8 +33,11 @@ namespace DomesticTransport.Model
         public double Cost { get; set; }
         public string Route { get; set; }
 
-        public DeliveryPoint DeliveryPoint { get; set; }
-
+        public DeliveryPoint DeliveryPoint 
+        {
+            get { return _deliveryPoint; } 
+            set { _deliveryPoint = value; } }
+        private DeliveryPoint _deliveryPoint;
         //public int Prioriy {
         //    get{
         //    if (_prioriy == 0 && Customer !=null)//!string.IsNullOrWhiteSpace(Route))

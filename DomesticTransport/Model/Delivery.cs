@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 namespace DomesticTransport.Model
 {
     class Delivery
-    {
-        public static int Count { get; private set; }      
-
-        public  int Number = 0;
+    {       
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {
@@ -77,41 +74,8 @@ namespace DomesticTransport.Model
             }
         }
         List<Order> _orders;
-
-
-        public static List<Delivery> Deliveries { get { 
-                if (_deliveries == null)
-                {
-                    _deliveries = new List<Delivery>();
-                }
-
-                return _deliveries; } 
-                }
-
-        private static List<Delivery> _deliveries;
-
-        public static void AddOrder(Order order)
-        {
-            Delivery delivery;
-            if (Deliveries.Count > 0)
-            {
-                delivery = Deliveries.Last();               
-            }
-            else
-            {
-                delivery = new Delivery();
-                Deliveries.Add(delivery);
-            }
-
-
-
-            if ((delivery.TotalWeight + order.WeightNetto) > 20200.0)
-            {                
-                Deliveries.Add(new Delivery()); 
-            }
-            Deliveries.Last().Orders.Add(order);                
-            
-        }
+                      
+       
 
         /// <summary>
         /// Точки доставки
@@ -140,20 +104,23 @@ namespace DomesticTransport.Model
             private set { _truck = value; }
         }
         Truck _truck;
+      
 
-       public Delivery() 
+        public Delivery(Order order)
         {
-            ++Count;
-            Number = Count;
-        }
-        ~Delivery()
-        {
-            --Count;
+            Orders.Add(order);
         }
 
         internal static void AddOrder()
         {
             throw new NotImplementedException();
+        }
+
+        internal bool CheckDeliveryWeght(Order order)
+        {
+            double sum = TotalWeight + order.WeightNetto;
+        return sum < 20200 ;
+        
         }
     }
 }
