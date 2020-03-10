@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DomesticTransport.Model
 {
-
     class Delivery
     {
+    public static int Number=0;
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {
@@ -107,6 +107,15 @@ namespace DomesticTransport.Model
             private set { _truck = value; }
         }
         Truck _truck;
+
+        Delivery() 
+        {
+            Number++;        
+        }
+        ~Delivery()
+        {
+            Number--;
+        }
 
     }
 }

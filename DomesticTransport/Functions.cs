@@ -194,9 +194,12 @@ namespace DomesticTransport
                                 pallets = string.Join("", pallets.Where(c => char.IsDigit(c)));
                                 order.PalletsCount = int.TryParse(pallets, out int p) ? p : 0;
 
-                                string weightBrutto = orderInfo.Find(x => x.Contains("вес:")) ?? "";
+                                string weightBrutto = orderInfo.Find(x => x.Contains("вес")) ?? "";
                                 // weightBrutto = string.Join("", weightBrutto.Where(c => char.IsDigit(c) || ch));
-                                weightBrutto = Regex.Matches(weightBrutto, @"\s+\d+(\.\d+)?")[0].Value;
+                                //weightBrutto = Regex.Matches(weightBrutto, @"\s+\d+(\.\d+)?")[0]?.Value;
+                                Regex regex = new Regex(@"\d+(\.\d+)?");
+                                weightBrutto = regex.Match(weightBrutto).Value;
+                                weightBrutto = weightBrutto.Replace(".", ",");
                                 order.WeightBrutto = double.TryParse(weightBrutto, out double wb) ? wb : 0;
 
 
@@ -224,9 +227,9 @@ namespace DomesticTransport
             for (int i = 0; i < pointMap.Count; i++)
             {
                 DeliveryPoint point = pointMap[i];
-                    for (int j = 0; j < pointMap.Count; j++)
+                    for (int j = 0; j < orderList.Count; j++)
                 {
-                if (orderList[j].Customer.Id == point.IdClient)
+                if (orderList[j].Customer.Id == point.IdCustomer)
                     {
                         
                     }
