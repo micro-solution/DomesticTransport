@@ -8,7 +8,8 @@ namespace DomesticTransport.Model
 {
     class Delivery
     {
-    public static int Count=0;
+        public static int Count { get; private set; }      
+
         public  int Number = 0;
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
@@ -94,7 +95,7 @@ namespace DomesticTransport.Model
             Delivery delivery;
             if (Deliveries.Count > 0)
             {
-                delivery = Deliveries.Last();
+                delivery = Deliveries.Last();               
             }
             else
             {
@@ -104,15 +105,11 @@ namespace DomesticTransport.Model
 
 
 
-            if (delivery.TotalWeight + order.WeightNetto > 20200)
-            {
-                delivery = new Delivery();
-                Deliveries.Add(delivery); 
+            if ((delivery.TotalWeight + order.WeightNetto) > 20200.0)
+            {                
+                Deliveries.Add(new Delivery()); 
             }
-            else
-            {
-               delivery.Orders.Add(order);                
-            }
+            Deliveries.Last().Orders.Add(order);                
             
         }
 
@@ -144,9 +141,10 @@ namespace DomesticTransport.Model
         }
         Truck _truck;
 
-        Delivery() 
+       public Delivery() 
         {
-            ++Count;        
+            ++Count;
+            Number = Count;
         }
         ~Delivery()
         {

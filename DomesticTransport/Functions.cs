@@ -49,7 +49,7 @@ namespace DomesticTransport
                 ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
                 ListObject invoiciesTable = deliverySheet.ListObjects["TableInvoicies"];
 
-                ClearListObj(carrierTable);
+                ClearListObj(carrierTable);               
                 if (invoiciesTable.DataBodyRange.Rows.Count > 0)
                 { invoiciesTable.DataBodyRange.Rows.Delete(); }
 
@@ -112,9 +112,10 @@ namespace DomesticTransport
             rowCarrier.Range[1, 2].Value = delivery.Truck?.ShippingCompany?.Name ?? "";            
             rowCarrier.Range[1, 3].Value = delivery.Truck?.Mark ?? "";
             rowCarrier.Range[1, 4].Value = delivery.Truck?.Tonnage ?? 0;
-            rowCarrier.Range[1, 5].Value = delivery.TotalWeight.ToString();
-            rowCarrier.Range[1, 5].Value = delivery.CostProducts.ToString();
-            rowCarrier.Range[1, 6].Value = delivery.CostDelivery.ToString();
+            Debug.WriteLine($"{delivery.TotalWeight} " + delivery.TotalWeight.ToString().Replace(".", ","));
+            rowCarrier.Range[1, 5].Value = delivery.TotalWeight;
+            rowCarrier.Range[1, 6].Value = delivery.CostProducts;
+            rowCarrier.Range[1, 7].Value = delivery.CostDelivery;
 
             ListRow rowOrder;
 
@@ -140,8 +141,7 @@ namespace DomesticTransport
                 rowOrder.Range[1, ++column].Value = order.Route;
                 rowOrder.Range[1, ++column].Value = order.PalletsCount;
                 rowOrder.Range[1, ++column].Value = order.WeightNetto;
-                rowOrder.Range[1, ++column].Value = order.Cost;
-
+                rowOrder.Range[1, ++column].Value = order.Cost.ToString();
             }
         }
 
@@ -189,16 +189,15 @@ namespace DomesticTransport
                                 costStr = costStr.Replace(".", "");
                                 costStr = costStr.Trim();
                                 order.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
+                              
                                 string pallets = orderInfo.Find(x => x.Contains("грузовых мест:")) ?? "";
                                 pallets = string.Join("", pallets.Where(c => char.IsDigit(c)));
                                 order.PalletsCount = int.TryParse(pallets, out int p) ? p : 0;
 
-                                string weightBrutto = orderInfo.Find(x => x.Contains("вес")) ?? "";
-                                // weightBrutto = string.Join("", weightBrutto.Where(c => char.IsDigit(c) || ch));
-                                //weightBrutto = Regex.Matches(weightBrutto, @"\s+\d+(\.\d+)?")[0]?.Value;
+                                string weightBrutto = orderInfo.Find(x => x.Contains("вес")) ?? "";                                
+                                weightBrutto = weightBrutto.Replace(".", "");
                                 Regex regex = new Regex(@"\d+(\.\d+)?");
                                 weightBrutto = regex.Match(weightBrutto).Value;
-                                weightBrutto = weightBrutto.Replace(".", ",");
                                 order.WeightBrutto = double.TryParse(weightBrutto, out double wb) ? wb : 0;
 
 
@@ -223,12 +222,26 @@ namespace DomesticTransport
             List<Order> orderList = orders.OrderByDescending(x => x.WeightNetto).ToList();
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
             List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
+
+
+            //do while orderList.Count > 0 
+
             for (int i = 0; i < pointMap.Count; i++)
             {               
                  for (int j = orderList.Count-1; j >= 0; j--)
                 {
-                if (orderList[j].Customer.Id == pointMap[i].IdCustomer)
+
+                    if (orderList[j].Customer.Id == pointMap[i].IdCustomer)
                     {
+                        // del.IdRoute !=   pointMap[i].IdRoute 
+                        // del  = new Delivery()
+                        // проверяем можем ли добавить товар в машину
+                        //del.listorder () 
+
+                        if (i>0 && pointMap[i].IdRoute != Delivery.Deliveries.Last().MapDelivery.Last().IdRoute)
+                        {
+                            Delivery.Deliveries.Add(new Delivery());
+                        }
                         Debug.WriteLine($"i={i} , j={j}   idCustomer {orderList[j].Customer.Id}");
                         Delivery.AddOrder(orderList[j]);
                         orderList.RemoveAt(j);
