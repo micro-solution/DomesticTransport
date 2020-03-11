@@ -221,7 +221,7 @@ namespace DomesticTransport
         public List<Delivery> CompleteAuto(List<Order> orders)
         {
             List<Delivery> deliveries = new List<Delivery>();
-            List<Order> orderList = orders.OrderByDescending(x => x.WeightNetto).ToList();
+            List<Order> orderList = orders.OrderBy(x => x.WeightNetto).ToList();
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
             List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
 
@@ -243,10 +243,17 @@ namespace DomesticTransport
                 }
                 if (emptyPoint)
                 {
-                    if (emptyDelivery == null) emptyDelivery = new Delivery(orderList[k]);
+                    if (emptyDelivery == null) {
+                        emptyDelivery = new Delivery(orderList[k]);                           
+                    }
+                    else
+                    {
+                        emptyDelivery.Orders.Add(orderList[k]);
+                    }
                     orderList.RemoveAt(k);
                 }
             }
+            emptyDelivery.Truck = new Truck() { Tonnage = 99 };
             deliveries.Add(emptyDelivery);
             #endregion 
 
@@ -294,10 +301,8 @@ namespace DomesticTransport
                             }
 
                         }
-                    }
-                    
-                  
-                    Debug.WriteLine($"pointNumber={pointNumber} , orderNumber={orderNumber}   idCustomer {orderList[orderNumber].Customer.Id}");
+                    }                                    
+                   
                   
                 }
                 

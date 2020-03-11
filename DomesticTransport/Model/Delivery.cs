@@ -97,11 +97,14 @@ namespace DomesticTransport.Model
         {
             get
             {
+                if (_truck == null){
+
                 ShefflerWorkBook workBook = new ShefflerWorkBook();
                 _truck = workBook.GetTruck(TotalWeight, MapDelivery);
+                }
                 return _truck;
             }
-            private set { _truck = value; }
+             set { _truck = value; }//private
         }
         Truck _truck;
       
