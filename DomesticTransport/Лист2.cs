@@ -2,6 +2,7 @@
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualStudio.Tools.Applications.Runtime;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
@@ -10,6 +11,9 @@ namespace DomesticTransport
 {
     public partial class Лист2
     {
+        
+
+
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
         }
@@ -26,11 +30,31 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(Лист2_Startup);
-            this.Shutdown += new System.EventHandler(Лист2_Shutdown);
+          
+            this.TableCarrier.SelectedIndexChanged += new System.EventHandler(this.TableCarrier_SelectedIndexChanged);
+            this.Startup += new System.EventHandler(this.Лист2_Startup);
+            this.Shutdown += new System.EventHandler(this.Лист2_Shutdown);
+
         }
+
 
         #endregion
 
+     
+
+        private void TableCarrier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+          //  Microsoft.Office.Tools.Excel.ListObject listCarrier = (Microsoft.Office.Tools.Excel.ListObject)sender;
+          // // Excel.ListObject listCarrier = (Excel.ListObject )sender;
+          ////  Excel.ListRow listRowCarrier = (Excel.ListRow)sender;
+          //  //Excel.ListObject listCarrier = listRowCarrier.Parent;
+          //  listCarrier.ListRows[1].Range.Select();
+          //  Worksheet worksheet = (Worksheet)listCarrier.Parent ;
+          //Excel.ListObject listOrders = worksheet.ListObjects["TableOrders"];
+          //  listOrders.ShowAutoFilter = false;
+
+            //listCarrier. ();
+            //listOrders.
+        }
     }
 }

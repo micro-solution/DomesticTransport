@@ -11,7 +11,19 @@ namespace DomesticTransport.Model
     {
         public string Id;
         public int PointNumber { get; set; }
-        public Customer Customer { get; set; }
+        public Customer Customer 
+        {
+            get 
+            {
+                if (_customer == null) _customer = new Customer();
+                return _customer;
+            }
+
+            set { _customer = value; }
+        }
+        private Customer _customer;
+
+
         public int PalletsCount { get; set; }
         public double WeightNetto { get; set; }
 

@@ -13,13 +13,15 @@
         }
         private string _id;
         public string AddresCity { get; set; }
+
+        public string Name { get; set; }
         public string AddresStreet { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
 
 
 
-        Customer() { }
+        public Customer() { }
      public   Customer(string id)
         {
             Id = id;

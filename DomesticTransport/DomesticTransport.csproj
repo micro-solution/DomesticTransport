@@ -219,6 +219,9 @@
     <EmbeddedResource Include="Forms\SapFiles.resx">
       <DependentUpon>SapFiles.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Лист2.resx">
+      <DependentUpon>Лист2.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="DomesticTransport.xlsx" />
     <None Include="DomesticTransport_TemporaryKey.pfx" />
@@ -296,8 +299,8 @@
           <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Отгрузка" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
           <HostItem Name="Лист2" Code="Лист2.cs" CanonicalName="Лист2" DisplayName="Delivery" Blueprint="Лист2.Designer.xml" GeneratedCode="Лист2.Designer.cs" />
           <HostItem Name="Лист3" Code="Лист3.cs" CanonicalName="Лист3" DisplayName="Routes" Blueprint="Лист3.Designer.xml" GeneratedCode="Лист3.Designer.cs" />
-          <HostItem Name="Лист4" Code="Лист4.cs" CanonicalName="Лист4" DisplayName="ZoneCustomer" Blueprint="Лист4.Designer.xml" GeneratedCode="Лист4.Designer.cs" />
-          <HostItem Name="Лист5" Code="Лист5.cs" CanonicalName="Лист5" DisplayName="Customers" Blueprint="Лист5.Designer.xml" GeneratedCode="Лист5.Designer.cs" />
+          <HostItem Name="Лист4" Code="Лист4.cs" CanonicalName="Лист4" CanActivate="false" DisplayName="ZoneCustomer" Blueprint="Лист4.Designer.xml" GeneratedCode="Лист4.Designer.cs" />
+          <HostItem Name="Лист5" Code="Лист5.cs" CanonicalName="Лист5" CanActivate="false" DisplayName="Customers" Blueprint="Лист5.Designer.xml" GeneratedCode="Лист5.Designer.cs" />
           <HostItem Name="Лист6" Code="Лист6.cs" CanonicalName="Лист6" DisplayName="Rate" Blueprint="Лист6.Designer.xml" GeneratedCode="Лист6.Designer.cs" />
           <HostItem Name="Лист7" Code="Лист7.cs" CanonicalName="Лист7" CanActivate="false" DisplayName="ShippingCompany" Blueprint="Лист7.Designer.xml" GeneratedCode="Лист7.Designer.cs" />
         </Host>
