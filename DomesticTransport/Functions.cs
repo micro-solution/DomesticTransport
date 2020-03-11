@@ -225,6 +225,31 @@ namespace DomesticTransport
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
             List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
 
+            #region Проверка если клиента (точки) нет в таблице маршрутов
+                Delivery emptyDelivery = null;
+                bool emptyPoint;
+            for (int k = orderList.Count-1; k >=0 ; k--)
+            {
+                emptyPoint = true;
+                foreach (DeliveryPoint point in pointMap)
+                {
+                    emptyPoint = true;
+                    if (orderList[k].Customer.Id == point.IdCustomer)
+                    {
+                        emptyPoint = false ;
+                        break;
+                    }
+                    
+                }
+                if (emptyPoint)
+                {
+                    if (emptyDelivery == null) emptyDelivery = new Delivery(orderList[k]);
+                    orderList.RemoveAt(k);
+                }
+            }
+            deliveries.Add(emptyDelivery);
+            #endregion 
+
             Delivery delivery = null;
             int pointNumber = 0;
             while (orderList.Count > 0)
@@ -239,19 +264,24 @@ namespace DomesticTransport
                     {
                         orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
                         delivery = new Delivery(orderList[orderNumber]);
+                        orderList.RemoveAt(orderNumber);
                     }
                     else
                     {
                         List<DeliveryPoint> points = delivery.MapDelivery;
                         DeliveryPoint point = points.First();
                         Debug.WriteLine($"pointDelivery={point.IdRoute} pointMap={pointMap[pointNumber].IdRoute}");
+                        //  новый маршрут в таблице
                         if (delivery.MapDelivery.First().IdRoute != pointMap[pointNumber].IdRoute)
                         {
+                            deliveries.Add(delivery);
                             orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
-                            delivery = new Delivery(orderList[orderNumber]);
+                            delivery = new Delivery(orderList[orderNumber]);                            
+                            orderList.RemoveAt(orderNumber);
                         }
                         else
                         {
+                            //По весу 
                             if (!delivery.CheckDeliveryWeght(orderList[orderNumber]))
                             {
                                 continue;
@@ -260,33 +290,23 @@ namespace DomesticTransport
                             {
                                 orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
                                 delivery.Orders.Add(orderList[orderNumber]);
+                                orderList.RemoveAt(orderNumber);
                             }
 
                         }
                     }
-
-                    deliveries.Add(delivery);
-
-
-
+                    
+                  
                     Debug.WriteLine($"pointNumber={pointNumber} , orderNumber={orderNumber}   idCustomer {orderList[orderNumber].Customer.Id}");
-                    orderList.RemoveAt(orderNumber);
+                  
                 }
-                if (orderList.Count == 0) break;
+                
 
                 Debug.WriteLine($"pointNumber = {pointNumber}");
                 pointNumber++;
-                if (pointNumber >= pointMap.Count)
-                {      pointNumber = 0;
-                //for(int k =0; k< orderList.Count; k++)
-                //{
-                //    if (orderList[k].Customer.Id 
-                //}
-
-                }
-
+                if (pointNumber >= pointMap.Count)  pointNumber = 0;                 
             }
-
+            if (delivery != null && delivery.Orders.Count > 0) deliveries.Add(delivery);
             return deliveries;
         }
 
