@@ -10,12 +10,24 @@ namespace DomesticTransport.Model
     {
         public string Number { get; set; }
         public string Mark { get; set; }
-        public int Tonnage { get; set; }
+        public double Tonnage { get; set; }
 
-        public int CostOnePoint { get; set; }
-        public int CostSecondPoint { get; set; }
-        public ShippingCompany ShippingCompany { get; set; }
+        public int CostFirstPoint { get; set; }
+        public int CostAddPoint { get; set; }
 
+        public int Cost { get; set; }
+
+        public ShippingCompany ShippingCompany 
+        { get {
+            if (_shippingCompany == null)
+                {
+                    _shippingCompany = new ShippingCompany();
+                }
+                return _shippingCompany;
+            }
+            set { } 
+        }
+        private ShippingCompany _shippingCompany;
         public Truck( )
         {
 

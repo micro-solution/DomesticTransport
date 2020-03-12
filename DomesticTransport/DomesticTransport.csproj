@@ -128,6 +128,7 @@
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\ShippingCompany.cs" />
     <Compile Include="Model\Truck.cs" />
+    <Compile Include="Model\TruckRate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonDelivery.cs">
       <SubType>Component</SubType>

@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 namespace DomesticTransport.Model
 {
     class Delivery
-    {       
+    {
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {
-            get { if (_carrier == null)
+            get
+            {
+                if (_carrier == null)
                 {
                     _carrier = new Carrier();
                 }
-                    return _carrier;
+                return _carrier;
             }
-          private set { _carrier = value; }
+            private set { _carrier = value; }
         }
         Carrier _carrier;
 
@@ -26,12 +28,17 @@ namespace DomesticTransport.Model
         {
             get
             {
-                int pointCount = Orders.Count;
-                double cost = Truck.CostOnePoint;
-
-                if (pointCount > 1)
+                double cost=0;
+                if (Truck != null)
                 {
-                    cost = Truck.CostOnePoint * (pointCount - 1);
+
+                    int pointCount = Orders.Count;
+                     cost = Truck.CostFirstPoint;
+
+                    if (pointCount > 1)
+                    {
+                        cost = Truck.CostFirstPoint * (pointCount - 1);
+                    }
                 }
                 return cost;
             }
@@ -67,15 +74,15 @@ namespace DomesticTransport.Model
                 }
                 return _orders;
             }
-         private set
+            private set
             {
 
                 _orders = value;
             }
         }
         List<Order> _orders;
-                      
-       
+
+
 
         /// <summary>
         /// Точки доставки
@@ -85,7 +92,7 @@ namespace DomesticTransport.Model
             get
             {
                 List<DeliveryPoint> dp = (from r in Orders
-                                          select r.DeliveryPoint                                         
+                                          select r.DeliveryPoint
                                           ).Distinct().ToList();
                 dp.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint);
                 return dp;
@@ -97,17 +104,18 @@ namespace DomesticTransport.Model
         {
             get
             {
-                if (_truck == null){
+                if (_truck == null)
+                {
 
-                ShefflerWorkBook workBook = new ShefflerWorkBook();
-                _truck = workBook.GetTruck(TotalWeight, MapDelivery);
+                    ShefflerWorkBook workBook = new ShefflerWorkBook();
+                    _truck = workBook.GetTruck(TotalWeight, MapDelivery);
                 }
                 return _truck;
             }
-             set { _truck = value; }//private
+            set { _truck = value; }//private
         }
         Truck _truck;
-      
+
 
         public Delivery(Order order)
         {
@@ -122,8 +130,8 @@ namespace DomesticTransport.Model
         internal bool CheckDeliveryWeght(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;
-        return sum < 20200 ;
-        
+            return sum < 20200;
+
         }
     }
 }

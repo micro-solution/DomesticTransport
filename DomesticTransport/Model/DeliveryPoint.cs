@@ -25,7 +25,9 @@ namespace DomesticTransport.Model
         }
         private string _idCustomer;
 
-        public string City { get; set; }
-
+        public string City 
+        {
+            get { return _city; } set { _city =  value.Trim(); } }
+        string _city;
     }
 }
