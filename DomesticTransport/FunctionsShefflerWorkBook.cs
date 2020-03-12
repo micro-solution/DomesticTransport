@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace DomesticTransport
 {
-    class ShefflerWorkBook : IDisposable
+    class ShefflerWorkBook 
     {
 
      private   List<TruckRate> RateList
@@ -68,28 +68,33 @@ namespace DomesticTransport
         {
             List<TruckRate> rates = RateList;
             Truck truck = null;
-           // foreach (TruckRate rate in rates)
-          //  {
+            List<TruckRate> ratesVariant = new List<TruckRate>();
+            foreach (TruckRate rateRow in rates)
+            {
 
-                //DeliveryPoint findPoint = ;
+                DeliveryPoint findPoint = mapDelivery.Find(m=>m.City ==rateRow.City) ;
 
-                //if (tonnage > 0 && tonnage > totalWeight && string.IsNullOrWhiteSpace(findPoint.City))
-                //{
-                //}
-           // }
-
-            //TruckRate rate = new TruckRate();
-            //    truck = new Truck()
-            //    { ShippingCompany =new ShippingCompany() { Name = rate.Company },
-            //       Tonnage = rate.Tonnage,
-
-              //  }
+                if (rateRow.Tonnage > 0 && rateRow.Tonnage > totalWeight && string.IsNullOrWhiteSpace(findPoint.City))
+                {
+                    ratesVariant.Add(rateRow);
+                }
+            }
+                        
+            if (ratesVariant.Count > 0)
+            {
+                ratesVariant = ratesVariant.OrderBy(r => r.TotalDeliveryPrise).ToList();
+                truck = new Truck(ratesVariant.First());           
+            }
             return truck;
         }
 
 
 
-
+        /// <summary>
+        /// Вернуть лист по имени
+        /// </summary>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>
         private Worksheet GetSheet(string sheetName)
         {
             try
@@ -103,17 +108,22 @@ namespace DomesticTransport
             }
 
         }
-        void IDisposable.Dispose()
-        {
 
-        }
-
+        /// <summary>
+        /// Получить таблицу цен перевозчиков
+        /// </summary>
+        /// <returns></returns>
         internal ListObject GetRateList()
         {
             Worksheet sheetRoute = GetSheet("Rate");
             return sheetRoute?.ListObjects["PriceDelivery"];
         }
 
+
+        /// <summary>
+        /// Получить вес список цен перевозчиков в формате списка         
+        /// </summary>
+        /// <returns></returns>
         internal List<TruckRate> GetTruckRateList()
         {
             List<TruckRate> ListRate = new List<TruckRate>();

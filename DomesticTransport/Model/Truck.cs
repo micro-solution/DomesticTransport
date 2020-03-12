@@ -28,9 +28,16 @@ namespace DomesticTransport.Model
             set { } 
         }
         private ShippingCompany _shippingCompany;
+   
+
         public Truck( )
         {
 
+        }
+
+        public Truck(TruckRate truckRate)
+        {
+          
         }
     }
 }

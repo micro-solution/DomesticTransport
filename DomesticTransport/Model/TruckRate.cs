@@ -16,5 +16,6 @@ namespace DomesticTransport.Model
         public int PriceAddPoint  { get; set; }
         public double Tonnage  { get; set; }
 
+        public int TotalDeliveryPrise { get; set; }
     }
 }
