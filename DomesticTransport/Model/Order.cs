@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DomesticTransport.Model
 {
-
+    /// <summary>
+    ///  Класс заказа 
+    /// </summary>
     class Order
     {
         public string Id;
@@ -39,28 +41,13 @@ namespace DomesticTransport.Model
                     _transportationUnit = new string('0', 18 - value.Length) + value;
                 }
             }
-
         }
         private string _transportationUnit;
         public double Cost { get; set; }
         public string Route { get; set; }
 
-        public DeliveryPoint DeliveryPoint 
-        {
-            get { return _deliveryPoint; } 
-            set { _deliveryPoint = value; } }
-        private DeliveryPoint _deliveryPoint;
-        //public int Prioriy {
-        //    get{
-        //    if (_prioriy == 0 && Customer !=null)//!string.IsNullOrWhiteSpace(Route))
-        //        {
-        //            using (ShefflerWorkBook functions = new ShefflerWorkBook())
-        //            {
-        //                _prioriy = functions.(Customer.Id);
-        //            }                     
-        //        }
-        //        return _prioriy; }          
-        //    }
-        int _prioriy = 0;
+        public DeliveryPoint DeliveryPoint { get; set; }
+            
+      
     }
 }

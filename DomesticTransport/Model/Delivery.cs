@@ -28,19 +28,7 @@ namespace DomesticTransport.Model
         {
             get
             {
-                double cost=0;
-                if (Truck != null)
-                {
-
-                    int pointCount = Orders.Count;
-                     cost = Truck.CostFirstPoint;
-
-                    if (pointCount > 1)
-                    {
-                        cost = Truck.CostFirstPoint * (pointCount - 1);
-                    }
-                }
-                return cost;
+                return  Truck?.Cost ?? 0;
             }
         }
         public double TotalWeight
@@ -122,11 +110,7 @@ namespace DomesticTransport.Model
             Orders.Add(order);
         }
 
-        internal static void AddOrder()
-        {
-            throw new NotImplementedException();
-        }
-
+       
         internal bool CheckDeliveryWeght(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;

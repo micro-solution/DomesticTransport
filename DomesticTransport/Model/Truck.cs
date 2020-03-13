@@ -25,7 +25,7 @@ namespace DomesticTransport.Model
                 }
                 return _shippingCompany;
             }
-            set { } 
+            set { _shippingCompany = value; } 
         }
         private ShippingCompany _shippingCompany;
    
@@ -37,7 +37,12 @@ namespace DomesticTransport.Model
 
         public Truck(TruckRate truckRate)
         {
-          
+            Tonnage = truckRate.Tonnage;
+            CostFirstPoint = truckRate.PriceFirstPoint;
+            CostAddPoint = truckRate.PriceAddPoint;
+            Cost = truckRate.TotalDeliveryCost;
+            string companyName =  truckRate.Company ;
+            ShippingCompany = new ShippingCompany() { Name = companyName } ;
         }
     }
 }

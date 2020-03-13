@@ -11,12 +11,14 @@ using System.Windows.Forms;
 
 namespace DomesticTransport
 {
-    class ShefflerWorkBook 
+    class ShefflerWorkBook
     {
 
-     private   List<TruckRate> RateList
+        private List<TruckRate> RateList
         {
-            get { if (_rateList == null)
+            get
+            {
+                if (_rateList == null)
                 {
                     _rateList = GetTruckRateList();
                 }
@@ -66,24 +68,42 @@ namespace DomesticTransport
 
         internal Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery)
         {
-            List<TruckRate> rates = RateList;
+            if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
+
+            List<TruckRate> rates = RateList; //Вся таблица
             Truck truck = null;
-            List<TruckRate> ratesVariant = new List<TruckRate>();
-            foreach (TruckRate rateRow in rates)
-            {
+            List<TruckRate> rateVariants = new List<TruckRate>();
+   
+            
+            rateVariants = rates.FindAll(r =>
+                                        r.City == mapDelivery[0].City &&
+                                        (r.Tonnage + r.Tonnage*0.1)*1000 > totalWeight                                         
+                                        ).ToList();
+                                                                        //  Выборка по Городу в первой точке                                                                              
+                                                                        // double MaxTottage = truckSelect.Tonnage + truckSelect.Tonnage * 0.1;    Допустимый перегруз       
 
-                DeliveryPoint findPoint = mapDelivery.Find(m=>m.City ==rateRow.City) ;
+            if (rateVariants.Count > 0)
+            {               
+                    for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
+                    {
 
-                if (rateRow.Tonnage > 0 && rateRow.Tonnage > totalWeight && string.IsNullOrWhiteSpace(findPoint.City))
-                {
-                    ratesVariant.Add(rateRow);
-                }
-            }
-                        
-            if (ratesVariant.Count > 0)
-            {
-                ratesVariant = ratesVariant.OrderBy(r => r.TotalDeliveryPrise).ToList();
-                truck = new Truck(ratesVariant.First());           
+                    TruckRate variantRate = rateVariants[rateIx];
+                    variantRate.TotalDeliveryCost = rateVariants[rateIx].PriceFirstPoint;
+                        for (int pointNumber = 1; pointNumber < mapDelivery.Count; pointNumber++)
+                        {
+                            TruckRate addPointRate =
+                                rates.Where(x => x.Company == variantRate.Company && 
+                                                    x.Tonnage == variantRate.Tonnage && 
+                                                    x.City == mapDelivery[pointNumber].City).First();
+                            if (addPointRate.PriceAddPoint>0)
+                            variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;   
+                        }
+                    rateVariants[rateIx] = variantRate;
+                    }
+
+
+                rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
+                truck = new Truck(rateVariants.First());
             }
             return truck;
         }
@@ -130,9 +150,9 @@ namespace DomesticTransport
             ListObject rateTable = GetRateList();
             foreach (ListRow row in rateTable.ListRows)
             {
-               double tonnage = row.Range[1, rateTable.ListColumns["tonnage, t"].Index].Value ?? 0;
-               //string valTonnage = row.Range[1, rate.ListColumns["tonnage, t"].Index].Value.ToString();             
-               //double tonnage = double.TryParse(valTonnage, out double t) ? t : 0;
+                double tonnage = row.Range[1, rateTable.ListColumns["tonnage, t"].Index].Value ?? 0;
+                //string valTonnage = row.Range[1, rate.ListColumns["tonnage, t"].Index].Value.ToString();             
+                //double tonnage = double.TryParse(valTonnage, out double t) ? t : 0;
 
                 string valCity = row.Range[1, rateTable.ListColumns["City"].Index].Text;
                 valCity = valCity.Trim();
@@ -147,18 +167,18 @@ namespace DomesticTransport
                     string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
                     int priceFirst = int.TryParse(strPrice, out int pf) ? pf : 0;
                     strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Text;
-                    int priceAdd =   int.TryParse(strPrice, out int pa) ? pa : 0;
+                    int priceAdd = int.TryParse(strPrice, out int pa) ? pa : 0;
                     TruckRate rate = new TruckRate()
                     {
                         City = valCity,
                         Company = valCompany,
                         PriceFirstPoint = priceFirst,
                         PriceAddPoint = priceAdd,
-                        PlaceShipment = row.Range[1, 1].Text ,
+                        PlaceShipment = row.Range[1, 1].Text,
                         PlaceDelivery = row.Range[1, 2].Text,
                         Tonnage = tonnage
 
-                    } ;
+                    };
 
                     ListRate.Add(rate);
                 }

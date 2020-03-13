@@ -44,13 +44,14 @@ namespace DomesticTransport
 
         private void TableCarrier_SelectedIndexChanged(object sender, EventArgs e)
         {
-          //  Microsoft.Office.Tools.Excel.ListObject listCarrier = (Microsoft.Office.Tools.Excel.ListObject)sender;
+         
+            //  Microsoft.Office.Tools.Excel.ListObject listCarrier = (Microsoft.Office.Tools.Excel.ListObject)sender;
           // // Excel.ListObject listCarrier = (Excel.ListObject )sender;
           ////  Excel.ListRow listRowCarrier = (Excel.ListRow)sender;
           //  //Excel.ListObject listCarrier = listRowCarrier.Parent;
           //  listCarrier.ListRows[1].Range.Select();
           //  Worksheet worksheet = (Worksheet)listCarrier.Parent ;
-          //Excel.ListObject listOrders = worksheet.ListObjects["TableOrders"];
+         // Excel.ListObject listOrders = worksheet.ListObjects["TableOrders"];
           //  listOrders.ShowAutoFilter = false;
 
             //listCarrier. ();
