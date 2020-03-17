@@ -128,8 +128,12 @@ namespace DomesticTransport
                 rowCarrier.Range[1, CarrierTable.ListColumns["Компания"].Index].Value = delivery.Truck?.ShippingCompany?.Name ?? "";
                 rowCarrier.Range[1, CarrierTable.ListColumns["Марка авто"].Index].Value = delivery.Truck?.Mark ?? "";
                 rowCarrier.Range[1, CarrierTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-                rowCarrier.Range[1, CarrierTable.ListColumns["Вес доставки"].Index].Value = delivery.TotalWeight;
-                rowCarrier.Range[1, CarrierTable.ListColumns["Стоимость товаров"].Index].Value = delivery.CostProducts;
+                //rowCarrier.Range[1, CarrierTable.ListColumns["Вес доставки"].Index].Value = delivery.TotalWeight;
+                rowCarrier.Range[1, CarrierTable.ListColumns["Вес доставки"].Index].FormulaR1C1 =
+                                                "=SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес нетто])";
+                //rowCarrier.Range[1, CarrierTable.ListColumns["Стоимость товаров"].Index].Value = delivery.CostProducts;
+                rowCarrier.Range[1, CarrierTable.ListColumns["Стоимость товаров"].Index].Value =
+                                            "=SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Стоимость товаров])";
                 rowCarrier.Range[1, CarrierTable.ListColumns["Стоимость доставки"].Index].Value = delivery.CostDelivery;
 
                 int columnMap=0;

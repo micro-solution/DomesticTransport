@@ -31,10 +31,11 @@ namespace DomesticTransport
         private void InternalStartup()
         {
             this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
-            this.TableCarrier.SelectedIndexChanged += new System.EventHandler(this.TableCarrier_SelectedIndexChanged);
+            this.TableOrders1.Change += new Microsoft.Office.Tools.Excel.ListObjectChangeHandler(this.TableOrders1_Change);
             this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
             this.Shutdown += new System.EventHandler(this.Лист2_Shutdown);
+            this.Change += new Microsoft.Office.Interop.Excel.DocEvents_ChangeEventHandler(this.Лист2_Change);
 
         }
 
@@ -43,25 +44,11 @@ namespace DomesticTransport
 
 
 
-        private void TableCarrier_SelectedIndexChanged(object sender, EventArgs e)
-        {
-         
-          ///ListObject listCarrier = (Microsoft.Office.Tools.Excel.ListObject)sender;
-          // // Excel.ListObject listCarrier = (Excel.ListObject )sender;
-          ////  Excel.ListRow listRowCarrier = (Excel.ListRow)sender;
-          //  //Excel.ListObject listCarrier = listRowCarrier.Parent;
-          //  listCarrier.ListRows[1].Range.Select();
-          //  Worksheet worksheet = (Worksheet)listCarrier.Parent ;
-         // Excel.ListObject listOrders = worksheet.ListObjects["TableOrders"];
-          //  listOrders.ShowAutoFilter = false;
 
-            //listCarrier. ();
-            //listOrders.
-        }
 
         private void TableCarrier_SelectionChange(Range Target)
         {
-            int row = Target.Row;
+            
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
             ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
@@ -78,9 +65,31 @@ namespace DomesticTransport
 
         private void Лист2_SelectionChange(Range Target)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"]; 
-            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
-            OrdersTable.Range.AutoFilter(Field: 1);
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
+            if (commonRng == null)
+            {                      
+                ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+                OrdersTable.Range.AutoFilter(Field: 1);
+            }
+        }
+
+        private void Лист2_Change(Range Target)
+        {
+
+        }
+
+        private void TableOrders1_Change(Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
+        {
+           //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+           // ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+
+           // if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Index)
+          //  {
+               // MessageBox.Show("dkj");
+                /// Пересчитать все доставки
+           // }
         }
     }
 }
