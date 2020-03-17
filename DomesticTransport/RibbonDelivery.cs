@@ -32,5 +32,11 @@ namespace DomesticTransport
             MessageCarrier messageCarrier = new MessageCarrier();
             messageCarrier.ShowDialog();
         }
+
+        private void btnAcept_Click(object sender, RibbonControlEventArgs e)
+        {
+            Functions functions = new Functions();
+            functions.AcceptDelivery();
+        }
     }
 }

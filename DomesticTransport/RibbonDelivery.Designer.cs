@@ -91,6 +91,7 @@
             this.btnAcept.Label = "Принять ";
             this.btnAcept.Name = "btnAcept";
             this.btnAcept.ShowImage = true;
+            this.btnAcept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
             // 
             // groupEdit
             // 
@@ -98,6 +99,7 @@
             this.groupEdit.Items.Add(this.btnChangePoint);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
+            this.groupEdit.Visible = false;
             // 
             // btnChangeSet
             // 
@@ -123,6 +125,7 @@
             this.group1.Items.Add(this.btnReadCarrierInvoice);
             this.group1.Label = "Сообщения";
             this.group1.Name = "group1";
+            this.group1.Visible = false;
             // 
             // btnSendShippingCompany
             // 
@@ -146,6 +149,7 @@
             this.settings.Items.Add(this.btnSetts);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
+            this.settings.Visible = false;
             // 
             // btnSetts
             // 
@@ -160,6 +164,7 @@
             this.about.Items.Add(this.btnAboutProgrramm);
             this.about.Label = "Справка";
             this.about.Name = "about";
+            this.about.Visible = false;
             // 
             // btnAboutProgrramm
             // 

@@ -11,7 +11,7 @@ namespace DomesticTransport
 {
     public partial class Лист2
     {
-        
+
 
 
         private void Лист2_Startup(object sender, System.EventArgs e)
@@ -48,17 +48,18 @@ namespace DomesticTransport
 
         private void TableCarrier_SelectionChange(Range Target)
         {
-            
+
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
             ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
 
-            OrdersTable.Range.AutoFilter(Field: 1) ;
+            OrdersTable.Range.AutoFilter(Field: 1);
             Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
-            if (commonRng !=null)
-            {                  
+
+            if (commonRng != null)
+            {
                 string numberDelivery = deliverySheet.Cells[Target.Row, carrierTable.ListColumns[1].Range.Column].Text;
-                 OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
+                OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
             }
 
         }
@@ -67,10 +68,12 @@ namespace DomesticTransport
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+
+            Range commonOrdrrRng = Globals.ThisWorkbook.Application.Intersect(Target, OrdersTable.Range);
             Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
-            if (commonRng == null)
-            {                      
-                ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+            if (commonRng == null && commonOrdrrRng == null)
+            {
                 OrdersTable.Range.AutoFilter(Field: 1);
             }
         }
@@ -82,14 +85,29 @@ namespace DomesticTransport
 
         private void TableOrders1_Change(Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
         {
-           //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-           // ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
 
-           // if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Index)
-          //  {
-               // MessageBox.Show("dkj");
-                /// Пересчитать все доставки
-           // }
+            if (Globals.ThisWorkbook.Application.ScreenUpdating && targetRange.Text !="")
+            {
+                if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
+                {
+                    if (int.TryParse(targetRange.Text, out int num))
+                    {
+                    int numberDelivery = num ;
+                        Functions functions = new Functions();
+                        functions.AcceptDelivery();
+                    }
+                    else
+                    {
+                       targetRange.Value = 0;
+                    }
+
+                    //numberDelivery 
+                    //MessageBox.Show("dkj " + targetRange.Value);
+                    // Пересчитать все доставки
+                }
+            }
         }
     }
 }

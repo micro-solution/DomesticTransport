@@ -92,7 +92,7 @@
             this.Controls.Add(this.LabelName);
             this.Controls.Add(this.progressbar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(680, 115);
             this.MinimizeBox = false;
