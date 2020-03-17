@@ -8,6 +8,8 @@ namespace DomesticTransport.Model
 {
     class Delivery
     {
+
+        public bool hasRoute { get; set; } = true;
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {

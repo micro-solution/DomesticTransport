@@ -134,9 +134,15 @@ namespace DomesticTransport
                     AddListRow(CarrierTable);
                     rowCarrier = CarrierTable.ListRows[CarrierTable.ListRows.Count - 1];
                 }
-                rowCarrier.Range[1, CarrierTable.ListColumns["№ Доставки"].Index].Value = i + 1;
+
+                int numberDelivery = 0;
+                if (delivery.hasRoute)
+                {
+                    numberDelivery = i + 1;
+                }
+                rowCarrier.Range[1, CarrierTable.ListColumns["№ Доставки"].Index].Value = numberDelivery;
                 rowCarrier.Range[1, CarrierTable.ListColumns["Компания"].Index].Value = delivery.Truck?.ShippingCompany?.Name ?? "";
-                rowCarrier.Range[1, CarrierTable.ListColumns["Марка авто"].Index].Value = delivery.Truck?.Mark ?? "";
+                rowCarrier.Range[1, CarrierTable.ListColumns["ID Route"].Index].Value = delivery.MapDelivery[0].IdRoute ;
                 rowCarrier.Range[1, CarrierTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck?.Tonnage ?? 0;
 
                 //rowCarrier.Range[1, CarrierTable.ListColumns["Вес доставки"].Index].Value = delivery.TotalWeight;
@@ -171,7 +177,9 @@ namespace DomesticTransport
                         OrderTable.ListRows.Add();
                         rowOrder = OrderTable.ListRows[OrderTable.ListRows.Count - 1];
                     }
-                    rowOrder.Range[1, OrderTable.ListColumns["№ Доставки"].Index].Value = rowCarrier.Index;
+                    rowOrder.Range[1, OrderTable.ListColumns["№ Доставки"].Index].Value = numberDelivery;
+                    rowOrder.Range[1, OrderTable.ListColumns["Порядок выгрузки"].Index].Value =order.PointNumber ;
+                    
                     rowOrder.Range[1, OrderTable.ListColumns["Накладная"].Index].Value = order.TransportationUnit;
                     rowOrder.Range[1, OrderTable.ListColumns["ID Получателя"].Index].Value = order.Customer?.Id ?? "";
                     rowOrder.Range[1, OrderTable.ListColumns["Адрес"].Index].Value = order.DeliveryPoint.City;
@@ -229,8 +237,7 @@ namespace DomesticTransport
             }
             if (emptyDelivery != null)
             {
-
-                emptyDelivery.Truck = new Truck() { Tonnage = 99 };
+                emptyDelivery.hasRoute = false;
                 deliveries.Add(emptyDelivery);
             }
             #endregion 
@@ -248,6 +255,7 @@ namespace DomesticTransport
                     if (delivery == null)
                     {
                         orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
+                        orderList[orderNumber].PointNumber = 1;
                         delivery = new Delivery(orderList[orderNumber]);
                         orderList.RemoveAt(orderNumber);
                     }
@@ -262,6 +270,8 @@ namespace DomesticTransport
                             deliveries.Add(delivery);
                             orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
                             delivery = new Delivery(orderList[orderNumber]);
+                            Order orderLastAdd = delivery.Orders.Last();
+                            orderLastAdd.PointNumber = delivery.MapDelivery.Count;
                             orderList.RemoveAt(orderNumber);
                         }
                         else
@@ -273,8 +283,11 @@ namespace DomesticTransport
                             }
                             else
                             {
+
                                 orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
                                 delivery.Orders.Add(orderList[orderNumber]);
+                                Order orderLastAdd = delivery.Orders.Last();
+                                orderLastAdd.PointNumber = delivery.MapDelivery.Count;
                                 orderList.RemoveAt(orderNumber);
                             }
 
@@ -506,7 +519,7 @@ namespace DomesticTransport
             foreach (ListRow row in OrdersTable.ListRows)
             {
                 Order order = new Order();
-                order.TransportationUnit = row.Range[1, OrdersTable.ListColumns["Накладная"].Index].Value; 
+                order.TransportationUnit = row.Range[1, OrdersTable.ListColumns["Накладная"].Index].Text; 
                 string customerId = row.Range[1, OrdersTable.ListColumns["ID Получателя"].Index].Value;
                 Customer customer = new Customer(customerId);
                 order.Customer = customer;
