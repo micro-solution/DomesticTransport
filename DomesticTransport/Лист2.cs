@@ -30,7 +30,7 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-          
+            this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
             this.TableCarrier.SelectedIndexChanged += new System.EventHandler(this.TableCarrier_SelectedIndexChanged);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
             this.Shutdown += new System.EventHandler(this.Лист2_Shutdown);
@@ -40,12 +40,12 @@ namespace DomesticTransport
 
         #endregion
 
-     
+
 
         private void TableCarrier_SelectedIndexChanged(object sender, EventArgs e)
         {
          
-            //  Microsoft.Office.Tools.Excel.ListObject listCarrier = (Microsoft.Office.Tools.Excel.ListObject)sender;
+          ///ListObject listCarrier = (Microsoft.Office.Tools.Excel.ListObject)sender;
           // // Excel.ListObject listCarrier = (Excel.ListObject )sender;
           ////  Excel.ListRow listRowCarrier = (Excel.ListRow)sender;
           //  //Excel.ListObject listCarrier = listRowCarrier.Parent;
@@ -56,6 +56,24 @@ namespace DomesticTransport
 
             //listCarrier. ();
             //listOrders.
+        }
+
+        private void TableCarrier_SelectionChange(Range Target)
+        {
+            int row = Target.Row;
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+
+            //OrdersTable.Range.AutoFilter() ;
+            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
+            if (commonRng !=null)
+            {
+                
+                string numberDelivery = deliverySheet.Cells[Target.Row, carrierTable.ListColumns[1].Index].Value;
+                 OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
+            }
+
         }
     }
 }

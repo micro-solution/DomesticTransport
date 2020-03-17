@@ -151,9 +151,9 @@ namespace DomesticTransport {
             // 
             this.TableCarrier.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
             // 
-            // TableInvoicies
+            // TableOrders1
             // 
-            this.TableInvoicies.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            this.TableOrders1.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
             // 
             // Лист2
             // 
