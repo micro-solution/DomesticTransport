@@ -32,6 +32,7 @@ namespace DomesticTransport
         {
             this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
             this.TableCarrier.SelectedIndexChanged += new System.EventHandler(this.TableCarrier_SelectedIndexChanged);
+            this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
             this.Shutdown += new System.EventHandler(this.Лист2_Shutdown);
 
@@ -65,15 +66,21 @@ namespace DomesticTransport
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
             ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
 
-            //OrdersTable.Range.AutoFilter() ;
+            OrdersTable.Range.AutoFilter(Field: 1) ;
             Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
             if (commonRng !=null)
-            {
-                
-                string numberDelivery = deliverySheet.Cells[Target.Row, carrierTable.ListColumns[1].Index].Value;
+            {                  
+                string numberDelivery = deliverySheet.Cells[Target.Row, carrierTable.ListColumns[1].Range.Column].Text;
                  OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
             }
 
+        }
+
+        private void Лист2_SelectionChange(Range Target)
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"]; 
+            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+            OrdersTable.Range.AutoFilter(Field: 1);
         }
     }
 }
