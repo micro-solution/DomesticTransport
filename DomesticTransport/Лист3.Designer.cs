@@ -19,7 +19,7 @@ namespace DomesticTransport {
         
         internal Microsoft.Office.Tools.Excel.ListObject TableRoutes;
         
-        internal Microsoft.Office.Tools.Excel.ListObject Таблица6;
+        internal Microsoft.Office.Tools.Excel.ListObject TableCity;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -119,7 +119,7 @@ namespace DomesticTransport {
         private void BeginInitialization() {
             this.BeginInit();
             this.TableRoutes.BeginInit();
-            this.Таблица6.BeginInit();
+            this.TableCity.BeginInit();
         }
         
         /// 
@@ -127,7 +127,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.Таблица6.EndInit();
+            this.TableCity.EndInit();
             this.TableRoutes.EndInit();
             this.EndInit();
         }
@@ -138,7 +138,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
             this.TableRoutes = Globals.Factory.CreateListObject(null, null, "Лист3:TableRoutes", "TableRoutes", this);
-            this.Таблица6 = Globals.Factory.CreateListObject(null, null, "Лист3:Таблица6", "Таблица6", this);
+            this.TableCity = Globals.Factory.CreateListObject(null, null, "Лист3:TableCity", "TableCity", this);
         }
         
         /// 
@@ -160,7 +160,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
-            this.Таблица6.Dispose();
+            this.TableCity.Dispose();
             this.TableRoutes.Dispose();
             base.OnShutdown();
         }

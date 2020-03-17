@@ -19,6 +19,10 @@ namespace DomesticTransport {
         
         internal Microsoft.Office.Tools.Excel.ListObject PriceDelivery;
         
+        internal Microsoft.Office.Tools.Excel.NamedRange weght;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange weghtCell;
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
         
@@ -117,6 +121,8 @@ namespace DomesticTransport {
         private void BeginInitialization() {
             this.BeginInit();
             this.PriceDelivery.BeginInit();
+            this.weght.BeginInit();
+            this.weghtCell.BeginInit();
         }
         
         /// 
@@ -124,6 +130,8 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
+            this.weghtCell.EndInit();
+            this.weght.EndInit();
             this.PriceDelivery.EndInit();
             this.EndInit();
         }
@@ -134,6 +142,8 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
             this.PriceDelivery = Globals.Factory.CreateListObject(null, null, "Лист6:PriceDelivery", "PriceDelivery", this);
+            this.weght = Globals.Factory.CreateNamedRange(null, null, "weght", "weght", this);
+            this.weghtCell = Globals.Factory.CreateNamedRange(null, null, "weghtCell", "weghtCell", this);
         }
         
         /// 
@@ -155,6 +165,8 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
+            this.weghtCell.Dispose();
+            this.weght.Dispose();
             this.PriceDelivery.Dispose();
             base.OnShutdown();
         }

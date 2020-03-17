@@ -178,7 +178,8 @@ namespace DomesticTransport
             List<Delivery> deliveries = new List<Delivery>();
             List<Order> orderList = orders.OrderBy(x => x.WeightNetto).ToList();
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
-            List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
+            List<DeliveryPoint> pointMap = functionsBook.RoutesTable.OrderBy(x => x.IdRoute).ThenBy(
+                                                    y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
 
             #region Проверка если клиента (точки) нет в таблице маршрутов
             Delivery emptyDelivery = null;
