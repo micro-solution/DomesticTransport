@@ -12,6 +12,8 @@ namespace DomesticTransport.Model
     class Order
     {
         public string Id;
+
+        public int NumberDelivery { get; set; } = 0;
         public int PointNumber { get; set; }
         public Customer Customer 
         {

@@ -58,6 +58,8 @@ namespace DomesticTransport
                         }
                     }
                 }
+                _routes = _routes.OrderBy(x => x.IdRoute).ThenBy(
+                                      y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
             }
         }

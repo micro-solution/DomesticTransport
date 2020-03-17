@@ -30,12 +30,12 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
+            this.TableCarrier.SelectionChange += new DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
             this.TableOrders1.Change += new Microsoft.Office.Tools.Excel.ListObjectChangeHandler(this.TableOrders1_Change);
-            this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
-            this.Startup += new System.EventHandler(this.Лист2_Startup);
-            this.Shutdown += new System.EventHandler(this.Лист2_Shutdown);
-            this.Change += new Microsoft.Office.Interop.Excel.DocEvents_ChangeEventHandler(this.Лист2_Change);
+            this.SelectionChange += new DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
+            this.Startup += new EventHandler(this.Лист2_Startup);
+            this.Shutdown += new EventHandler(this.Лист2_Shutdown);
+            this.Change += new DocEvents_ChangeEventHandler(this.Лист2_Change);
 
         }
 
@@ -96,7 +96,7 @@ namespace DomesticTransport
                     {
                     int numberDelivery = num ;
                         Functions functions = new Functions();
-                        functions.AcceptDelivery();
+                        functions.СhangeDelivery(numberDelivery, targetRange.Row);
                     }
                     else
                     {

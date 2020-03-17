@@ -30,7 +30,7 @@ namespace DomesticTransport.Model
         {
             get
             {
-                return  Truck?.Cost ?? 0;
+                return Truck?.Cost ?? 0;
             }
         }
         public double TotalWeight
@@ -64,7 +64,7 @@ namespace DomesticTransport.Model
                 }
                 return _orders;
             }
-            private set
+             set
             {
 
                 _orders = value;
@@ -106,7 +106,7 @@ namespace DomesticTransport.Model
         }
         Truck _truck;
 
-
+        public Delivery() { }
         public Delivery(Order order)
         {
             Orders.Add(order);
