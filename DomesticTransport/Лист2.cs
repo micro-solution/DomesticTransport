@@ -67,10 +67,13 @@ namespace DomesticTransport
         private void Лист2_SelectionChange(Range Target)
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
-            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+            ListObject carrierTable = deliverySheet?.ListObjects["TableCarrier"];
+            ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
+            if (carrierTable == null || OrdersTable == null) return;
 
             Range commonOrdrrRng = Globals.ThisWorkbook.Application.Intersect(Target, OrdersTable.Range);
+            if (carrierTable?.DataBodyRange == null) return;
+
             Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
             if (commonRng == null && commonOrdrrRng == null)
             {
@@ -85,28 +88,31 @@ namespace DomesticTransport
 
         private void TableOrders1_Change(Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            //ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
+            //if ( OrdersTable == null) return;
 
-            if (Globals.ThisWorkbook.Application.ScreenUpdating && targetRange.Text !="")
-            {
-                if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
-                {
-                    if (int.TryParse(targetRange.Text, out int num))
-                    {                    
-                        Functions functions = new Functions();
-                        functions.СhangeDelivery();
-                    }
-                    else
-                    {
-                       targetRange.Value = 0;
-                    }
+            //         //При заполнении программой выключено обновление экрана
+                     
+            //if (Globals.ThisWorkbook.Application.ScreenUpdating && targetRange.Text !="")
+            //{
+            //    if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
+            //    {
+            //        if (int.TryParse(targetRange.Text, out int num))
+            //        {                    
+            //            Functions functions = new Functions();
+            //            functions.СhangeDelivery();
+            //        }
+            //        else
+            //        {
+            //           targetRange.Value = 0;
+            //        }
 
                     //numberDelivery 
                     //MessageBox.Show("dkj " + targetRange.Value);
                     // Пересчитать все доставки
-                }
-            }
+                //}
+           /// }
         }
     }
 }

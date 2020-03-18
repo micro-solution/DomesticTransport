@@ -15,11 +15,7 @@ namespace DomesticTransport
             functions.SetDelivery();
         }
 
-        private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
-        {
-            ChangeDelivery chengeDelivery = new ChangeDelivery();
-            chengeDelivery.ShowDialog();
-        }
+   
 
         private void btnChangePoint_Click(object sender, RibbonControlEventArgs e)
         {
@@ -38,5 +34,30 @@ namespace DomesticTransport
             Functions functions = new Functions();
             functions.AcceptDelivery();
         }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            Functions functions = new Functions();
+            functions.AddAuto();
+
+        }
+
+        private void button2_Click(object sender, RibbonControlEventArgs e)
+        {
+            Functions functions = new Functions();
+            functions.DeleteAuto();
+        }
+
+        private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
+        {
+            //ChangeDelivery chengeDelivery = new ChangeDelivery();
+            // chengeDelivery.ShowDialog();
+            Functions functions = new Functions();
+            functions.СhangeDelivery();
+        }
+
+
+
+
     }
 }

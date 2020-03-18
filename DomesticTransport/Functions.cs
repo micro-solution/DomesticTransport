@@ -67,6 +67,7 @@ namespace DomesticTransport
         }
 
 
+   
 
         private void ClearListObj(ListObject listObject)
         {
@@ -92,6 +93,79 @@ namespace DomesticTransport
             }
             // worksheet.Rows[listObject.ListRows[listObject.ListRows.Count].Range.Row + 1].Insert();
             listObject.ListRows.Add();
+        }
+
+        /// <summary>
+        ///кнопка  Добавить строку авто
+        /// </summary>
+        internal void AddAuto()
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            
+            ListRow rowDelivery;
+            if (carrierTable.ListRows.Count == 0)
+            {
+                AddListRow(carrierTable);
+                rowDelivery = carrierTable.ListRows[1];//  }
+            }
+            else
+            {
+                AddListRow(carrierTable);
+                rowDelivery = carrierTable.ListRows[carrierTable.ListRows.Count - 1];
+            }
+            int number=0;
+            foreach(Range rng in  carrierTable.ListColumns["№ Доставки"].DataBodyRange)
+            {
+                if (int.TryParse(rng.Text, out int valueCell))
+                {
+                    if (number < valueCell) number = valueCell;
+                }
+            }
+
+            rowDelivery.Range[1, carrierTable.ListColumns["№ Доставки"].Index].Value = number+1 ;
+        }
+
+        /// <summary>
+        ///кнопка Добавить авто
+        /// </summary>
+        internal void DeleteAuto()
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
+            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject TotalTable = totalSheet.ListObjects["TableTotal"];
+
+            if (carrierTable == null || ordersTable == null) return;
+            Range Target = Globals.ThisWorkbook.Application.Selection;
+            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
+            int numberDelivery=0;
+            if (commonRng != null)
+            {
+                int row = commonRng.Row;
+                // commonRng = Globals.ThisWorkbook.Application.Intersect(
+                commonRng = carrierTable.ListColumns["№ Доставки"].Range.Columns[row, 1];
+                numberDelivery = int.TryParse(commonRng.Text, out int nmDelivery )? nmDelivery : 0;
+            }
+
+            foreach(ListRow listDeliveryRow in carrierTable.ListRows)
+            {
+                string str = listDeliveryRow.Range[1 , carrierTable.ListColumns["№ Доставки"].Index].value;
+                if( int.TryParse(str, out int number))
+                {
+                    if (number == numberDelivery) listDeliveryRow.Range.Rows.Delete();
+                }
+                
+            }
+            foreach (ListRow listDeliveryRow in ordersTable.ListRows)
+            {
+                string str = listDeliveryRow.Range[1, ordersTable.ListColumns["№ Доставки"].Index].value;
+                if (int.TryParse(str, out int number))
+                {
+                    if (number == numberDelivery) listDeliveryRow.Range.Rows.Delete();
+                }
+            }
         }
 
 
@@ -516,7 +590,9 @@ namespace DomesticTransport
                 }
             }
         }
-
+           /// <summary>
+           /// Изменить
+           /// </summary>
         internal void СhangeDelivery()
         {
             ExcelOptimizateOn();
@@ -527,7 +603,7 @@ namespace DomesticTransport
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
 
             List<Order> orders = GetOrdersFromTable(ordersTable);
-            List<Delivery> deliveries = ChangeDeliveres(orders);
+            List<Delivery> deliveries = EditDeliveres(orders);
             ClearListObj(carrierTable);
             PrintDelivery(deliveries, carrierTable);
 
@@ -635,7 +711,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="orders"></param>
         /// <returns></returns>
-        private List<Delivery> ChangeDeliveres(List<Order> orders)
+        private List<Delivery> EditDeliveres(List<Order> orders)
         {
             List<Delivery> deliveries = new List<Delivery>();
 
