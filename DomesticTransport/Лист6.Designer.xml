@@ -1,0 +1,5 @@
+﻿<hostitem:hostItem hostitem:baseType="Microsoft.Office.Tools.Excel.WorksheetBase" hostitem:namespace="DomesticTransport" hostitem:className="Лист6" hostitem:identifier="Лист6" hostitem:primaryCookie="Лист6" hostitem:factoryType="Microsoft.Office.Tools.Excel.Factory" hostitem:startupIndex="2" xmlns:hostitem="http://schemas.microsoft.com/2004/VisualStudio/Tools/Applications/HostItem.xsd">
+  <hostitem:hostControl hostitem:name="PriceDelivery" hostitem:identifier="PriceDelivery" hostitem:type="Microsoft.Office.Tools.Excel.ListObject" hostitem:primaryCookie="Лист6:PriceDelivery" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="weght" hostitem:identifier="weght" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="weght" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="weghtCell" hostitem:identifier="weghtCell" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="weghtCell" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+</hostitem:hostItem>

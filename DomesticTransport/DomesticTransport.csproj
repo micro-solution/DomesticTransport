@@ -15,6 +15,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
     <ProjectGuid>{63EFF963-1E2F-41A0-8AD8-0D23FB6B4087}</ProjectGuid>
+    <SolutionID>03e4c1fc-31a2-44d4-99de-0c269eaf8695</SolutionID>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
@@ -100,7 +101,53 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\ChangeRoute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangeRoute.Designer.cs">
+      <DependentUpon>ChangeRoute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ChangeDelivery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangeDelivery.Designer.cs">
+      <DependentUpon>ChangeDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MessageCarrier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MessageCarrier.Designer.cs">
+      <DependentUpon>MessageCarrier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgressBar.Designer.cs">
+      <DependentUpon>ProgressBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Functions.cs" />
+    <Compile Include="FunctionsShefflerWorkBook.cs" />
+    <Compile Include="Model\Carrier.cs" />
+    <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\Delivery.cs" />
+    <Compile Include="Model\DeliveryPoint.cs" />
+    <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\ShippingCompany.cs" />
+    <Compile Include="Model\Truck.cs" />
+    <Compile Include="Model\TruckRate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RibbonDelivery.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonDelivery.Designer.cs">
+      <DependentUpon>RibbonDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SapFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SapFiles.Designer.cs">
+      <DependentUpon>SapFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThisWorkbook.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
     </Compile>
@@ -113,6 +160,57 @@
     <Compile Include="Лист1.Designer.cs">
       <DependentUpon>Лист1.Designer.xml</DependentUpon>
     </Compile>
+    <Compile Include="Лист2.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист2.Designer.cs">
+      <DependentUpon>Лист2.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист3.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист3.Designer.cs">
+      <DependentUpon>Лист3.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист4.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист4.Designer.cs">
+      <DependentUpon>Лист4.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист5.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист5.Designer.cs">
+      <DependentUpon>Лист5.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист6.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист6.Designer.cs">
+      <DependentUpon>Лист6.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист7.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист7.Designer.cs">
+      <DependentUpon>Лист7.Designer.xml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\ChangeRoute.resx">
+      <DependentUpon>ChangeRoute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangeDelivery.ja.resx">
+      <DependentUpon>ChangeDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangeDelivery.resx">
+      <DependentUpon>ChangeDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangeDelivery.ru-RU.resx">
+      <DependentUpon>ChangeDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MessageCarrier.resx">
+      <DependentUpon>MessageCarrier.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -122,7 +220,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RibbonDelivery.resx">
+      <DependentUpon>RibbonDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SapFiles.resx">
+      <DependentUpon>SapFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Лист2.resx">
+      <DependentUpon>Лист2.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="DomesticTransport.xlsx" />
+    <None Include="DomesticTransport_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -143,19 +252,64 @@
       <DependentUpon>Лист1.cs</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист2.Designer.xml">
+      <DependentUpon>Лист2.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист3.Designer.xml">
+      <DependentUpon>Лист3.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист4.Designer.xml">
+      <DependentUpon>Лист4.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист5.Designer.xml">
+      <DependentUpon>Лист5.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист6.Designer.xml">
+      <DependentUpon>Лист6.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист7.Designer.xml">
+      <DependentUpon>Лист7.cs</DependentUpon>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>DomesticTransport_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>12BA858A1D05A4CF831ADC4366D0ED86D6881403</ManifestCertificateThumbprint>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="DomesticTransport.xlsx" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files\Microsoft Office\root\Office16\excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]DomesticTransport.xlsx&quot;" />
+        <ProjectProperties HostName="DomesticTransport.xlsx" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files (x86)\Microsoft Office\Office16\excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]DomesticTransport.xlsx&quot;" />
         <Host Name="Excel Document" Path=".\DomesticTransport.xlsx" GeneratedCodeNamespace="DomesticTransport">
           <HostItem Name="ThisWorkbook" Code="ThisWorkbook.cs" CanonicalName="ThisWorkbook" Blueprint="ThisWorkbook.Designer.xml" GeneratedCode="ThisWorkbook.Designer.cs" />
-          <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Лист1" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
+          <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Отгрузка" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
+          <HostItem Name="Лист2" Code="Лист2.cs" CanonicalName="Лист2" DisplayName="Delivery" Blueprint="Лист2.Designer.xml" GeneratedCode="Лист2.Designer.cs" />
+          <HostItem Name="Лист3" Code="Лист3.cs" CanonicalName="Лист3" DisplayName="Routes" Blueprint="Лист3.Designer.xml" GeneratedCode="Лист3.Designer.cs" />
+          <HostItem Name="Лист4" Code="Лист4.cs" CanonicalName="Лист4" CanActivate="false" DisplayName="ZoneCustomer" Blueprint="Лист4.Designer.xml" GeneratedCode="Лист4.Designer.cs" />
+          <HostItem Name="Лист5" Code="Лист5.cs" CanonicalName="Лист5" CanActivate="false" DisplayName="Customers" Blueprint="Лист5.Designer.xml" GeneratedCode="Лист5.Designer.cs" />
+          <HostItem Name="Лист6" Code="Лист6.cs" CanonicalName="Лист6" DisplayName="Rate" Blueprint="Лист6.Designer.xml" GeneratedCode="Лист6.Designer.cs" />
+          <HostItem Name="Лист7" Code="Лист7.cs" CanonicalName="Лист7" CanActivate="false" DisplayName="ShippingCompany" Blueprint="Лист7.Designer.xml" GeneratedCode="Лист7.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
