@@ -15,6 +15,7 @@ namespace DomesticTransport.Model
 
         public int NumberDelivery { get; set; } = 0;
         public int PointNumber { get; set; }
+        
         public Customer Customer 
         {
             get 
@@ -49,7 +50,20 @@ namespace DomesticTransport.Model
         public string Route { get; set; }
 
         public DeliveryPoint DeliveryPoint { get; set; }
-            
-      
+        //    get {
+        //        if (_deliveryPoint.IdRoute == 0) 
+        //        {
+        //           // _deliveryPoint = 
+
+        //        }
+        //        return _deliveryPoint;
+        //    } 
+        //    set {
+        //        _deliveryPoint = value;
+        //    } }
+
+        //DeliveryPoint _deliveryPoint;
+
+
     }
 }
