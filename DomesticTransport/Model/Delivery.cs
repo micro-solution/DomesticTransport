@@ -10,6 +10,8 @@ namespace DomesticTransport.Model
     {
 
         public bool hasRoute { get; set; } = true;
+        public int Number { get; set; } = 0;
+
         public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {

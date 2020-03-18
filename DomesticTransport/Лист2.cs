@@ -93,10 +93,9 @@ namespace DomesticTransport
                 if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
                 {
                     if (int.TryParse(targetRange.Text, out int num))
-                    {
-                    int numberDelivery = num ;
+                    {                    
                         Functions functions = new Functions();
-                        functions.СhangeDelivery(numberDelivery, targetRange.Row);
+                        functions.СhangeDelivery();
                     }
                     else
                     {
