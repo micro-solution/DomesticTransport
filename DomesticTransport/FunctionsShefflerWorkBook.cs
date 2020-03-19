@@ -261,11 +261,23 @@ namespace DomesticTransport
         {
             Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
             ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
-            foreach(ListRow row in totalTable)
+            Range currentRng=null;
+            foreach(ListRow row in totalTable.ListRows)
             {
              string dateTable =  row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value ;
-
+                if (dateTable == dateTable)
+                {
+                    if (currentRng==null)
+                    {
+                        currentRng = row.Range;
+                    }
+                    else
+                    {
+                        currentRng = Globals.ThisWorkbook.Application.Union(currentRng, row.Range);
+                    }                      
+                }
             }
+            return currentRng;
         }
        
     }

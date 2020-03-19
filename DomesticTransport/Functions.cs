@@ -80,28 +80,43 @@ namespace DomesticTransport
         {
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
            Range range = functionsBook.GetCurrentShippingRange();
+            Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
+            if ( range == null || totalTable==null) return;
             string file = SapFiles.SelectFile();
-            file
+            if (!File.Exists(file) ) return;
+            List<Order> orders = GetOrdersFromTotalTable(range);
 
+           orders =  GetOrdersInfo(file, orders);
+            foreach (Range row in range)
+            {
+                string idOrder = row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Text;                               
+                idOrder = new string('0', 10 - idOrder.Length) + idOrder;
 
-            row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
-            row.Range[1, totalTable.ListColumns["№ Авто"].Index].Value = delivery.Number;
-
-            row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
-                    delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
-
+                Order order = orders.Find(o => o.Id == idOrder);
             row.Range[1, totalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
-            row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Value = order.Id;
-            row.Range[1, totalTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
-            row.Range[1, totalTable.ListColumns["Направление"].Index].Value = order.Route;
-            row.Range[1, totalTable.ListColumns["Номер грузополучателя"].Index].Value = order.Customer.Id;
             row.Range[1, totalTable.ListColumns["Брутто вес"].Index].Value = order.WeightBrutto;
-            row.Range[1, totalTable.ListColumns["Нетто вес"].Index].Value = order.WeightNetto;
-
-            row.Range[1, totalTable.ListColumns["Грузополучатель"].Index].Value = $"{order.Customer.Name}";
-            //                   $"{order.Customer.Name}  {order.Customer.Name} {order.Customer.AddresStreet}";
             row.Range[1, totalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
             row.Range[1, totalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
+
+            }                           
+        }
+
+        private List<Order> GetOrdersFromTotalTable(Range range)
+        {
+            List<Order> orders = new List<Order>();
+            Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
+          
+          int  column = totalTable.ListColumns["Номер поставки"].Index;            
+
+            foreach (Range row in range.Rows)
+            {
+                Order order = new Order(); 
+              row.Range[1, column].Value = order.Id;
+            }
+
+            return orders;
         }
 
 
@@ -257,14 +272,6 @@ namespace DomesticTransport
                               
                 rowDelivery.Range[1, DeliveryTable.ListColumns["Стоимость доставки"].Index].Value = delivery.CostDelivery;
 
-                int columnMap = 0;
-                foreach (DeliveryPoint point in delivery.MapDelivery)
-                {
-                    ++columnMap;
-                    Range pointCell = rowDelivery.Range[1, DeliveryTable.ListColumns.Count].Offset[0, 2 + columnMap];
-                    pointCell.Value = $"{point.PriorityPoint}-{point.City} ";
-                    pointCell.Columns.AutoFit();
-                }
             }
             pb.Close();
         }
