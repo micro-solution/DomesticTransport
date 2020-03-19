@@ -111,7 +111,6 @@
             // 
             this.groupEdit.Items.Add(this.button1);
             this.groupEdit.Items.Add(this.button2);
-            this.groupEdit.Items.Add(this.button3);
             this.groupEdit.Items.Add(this.btnChangeSet);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
@@ -155,6 +154,7 @@
             // group1
             // 
             this.group1.Items.Add(this.btnChangePoint);
+            this.group1.Items.Add(this.button3);
             this.group1.Items.Add(this.btnSendShippingCompany);
             this.group1.Items.Add(this.btnReadCarrierInvoice);
             this.group1.Label = "Сообщения";
