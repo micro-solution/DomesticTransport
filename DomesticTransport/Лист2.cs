@@ -16,6 +16,9 @@ namespace DomesticTransport
 
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            deliverySheet.Cells[2, 3].Formula = "=TODAY()+1";
+            deliverySheet.Calculate();
         }
 
         private void Лист2_Shutdown(object sender, System.EventArgs e)

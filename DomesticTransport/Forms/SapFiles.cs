@@ -25,7 +25,7 @@ namespace DomesticTransport
         {
             get
             {
-                CheckPath(tbOrders.Text);
+               // CheckPath(tbOrders.Text);
                 return tbOrders.Text;
             }
         }
@@ -130,11 +130,11 @@ namespace DomesticTransport
                         {
                             tbExport.Text = file;
                         }
-                        if (file.Contains("orders"))
-                        {
-                            tbOrders.Text = file;
-                        }
-                        if (tbOrders.Text != "" && tbExport.Text != "") break;
+                        //if (file.Contains("orders"))
+                        //{
+                        //    tbOrders.Text = file;
+                        //}
+                        //if (tbOrders.Text != "" && tbExport.Text != "") break;
                     }
                 }
             }

@@ -27,6 +27,24 @@ namespace DomesticTransport
             }
         }
         private List<TruckRate> _rateList;
+
+        public string DateDelivery
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_dateDelivery))
+                {
+                Worksheet sheetDelidery = GetSheet("Delivery");
+                _dateDelivery = sheetDelidery?.Cells["DateDelivery"]?.Text;
+                DateTime date = DateTime.Parse(_dateDelivery);
+                _dateDelivery = date > DateTime.MinValue ? date.ToShortTimeString() : "";
+                }
+                return _dateDelivery;
+            }               
+        }
+        string _dateDelivery;
+       
+
         public List<DeliveryPoint> RoutesTable
         {
             get
@@ -63,6 +81,9 @@ namespace DomesticTransport
                 return _routes;
             }
         }
+
+        public object DataTime { get; private set; }
+
         List<DeliveryPoint> _routes;
 
 
@@ -75,33 +96,33 @@ namespace DomesticTransport
             List<TruckRate> rates = RateList; //Вся таблица
             Truck truck = null;
             List<TruckRate> rateVariants = new List<TruckRate>();
-   
-            
+
+
             rateVariants = rates.FindAll(r =>
                                         r.City == mapDelivery[0].City &&
-                                        (r.Tonnage + r.Tonnage*0.1)*1000 > totalWeight                                         
+                                        (r.Tonnage + r.Tonnage * 0.1) * 1000 > totalWeight
                                         ).ToList();
-                                                                        //  Выборка по Городу в первой точке                                                                              
-                                                                        // double MaxTottage = truckSelect.Tonnage + truckSelect.Tonnage * 0.1;    Допустимый перегруз       
+            //  Выборка по Городу в первой точке                                                                              
+            // double MaxTottage = truckSelect.Tonnage + truckSelect.Tonnage * 0.1;    Допустимый перегруз       
 
             if (rateVariants.Count > 0)
-            {               
-                    for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
-                    {
+            {
+                for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
+                {
 
                     TruckRate variantRate = rateVariants[rateIx];
                     variantRate.TotalDeliveryCost = rateVariants[rateIx].PriceFirstPoint;
-                        for (int pointNumber = 1; pointNumber < mapDelivery.Count; pointNumber++)
-                        {
-                            TruckRate addPointRate =
-                                rates.Where(x => x.Company == variantRate.Company && 
-                                                    x.Tonnage == variantRate.Tonnage && 
-                                                    x.City == mapDelivery[pointNumber].City).First();
-                            if (addPointRate.PriceAddPoint>0)
-                            variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;   
-                        }
-                    rateVariants[rateIx] = variantRate;
+                    for (int pointNumber = 1; pointNumber < mapDelivery.Count; pointNumber++)
+                    {
+                        TruckRate addPointRate =
+                            rates.Where(x => x.Company == variantRate.Company &&
+                                                x.Tonnage == variantRate.Tonnage &&
+                                                x.City == mapDelivery[pointNumber].City).First();
+                        if (addPointRate.PriceAddPoint > 0)
+                            variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;
                     }
+                    rateVariants[rateIx] = variantRate;
+                }
 
 
                 rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
@@ -189,6 +210,8 @@ namespace DomesticTransport
             return ListRate;
         }
 
-       
+
+
+
     }
 }
