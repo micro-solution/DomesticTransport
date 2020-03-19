@@ -35,15 +35,19 @@ namespace DomesticTransport
                 if (string.IsNullOrWhiteSpace(_dateDelivery))
                 {
                 Worksheet sheetDelidery = GetSheet("Delivery");
-                _dateDelivery = sheetDelidery?.Cells["DateDelivery"]?.Text;
+                    Range dateCell = sheetDelidery.Range["DateDelivery"];
+                    if (dateCell != null)
+                    {
+                    _dateDelivery =  dateCell.Text ;
+
                 DateTime date = DateTime.Parse(_dateDelivery);
-                _dateDelivery = date > DateTime.MinValue ? date.ToShortTimeString() : "";
+                _dateDelivery = date > DateTime.MinValue ? date.ToShortDateString() : "";
+                    }
                 }
                 return _dateDelivery;
             }               
         }
-        string _dateDelivery;
-       
+        string _dateDelivery;       
 
         public List<DeliveryPoint> RoutesTable
         {

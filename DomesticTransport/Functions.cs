@@ -236,14 +236,19 @@ namespace DomesticTransport
                 foreach (DeliveryPoint point in delivery.MapDelivery)
                 {
                     ++columnMap;
-                    rowDelivery.Range[1, DeliveryTable.ListColumns.Count].Offset[0, 2 + columnMap].Value
-                                    = $"{point.IdCustomer} - {point.City} ";
+                    Range pointCell = rowDelivery.Range[1, DeliveryTable.ListColumns.Count].Offset[0, 2 + columnMap];
+                    pointCell.Value = $"{point.PriorityPoint}-{point.City} ";
+                    pointCell.Columns.AutoFit();
                 }
             }
             pb.Close();
         }
 
-        //Вывод заказов
+        /// <summary>
+        /// Вывод заказов
+        /// </summary>
+        /// <param name="deliveries"></param>
+        /// <param name="OrderTable"></param>
         private void PrintOrders(List<Delivery> deliveries, ListObject OrderTable)
         {
             ProcessBar pb = ProcessBar.Init("Вывод данных", deliveries.Count, 1, "Печать заказов");
@@ -446,8 +451,6 @@ namespace DomesticTransport
             return rourerOrders;
         }
 
-
-
          /// <summary>
          /// Искать Стоимость посылки кол-во паллетов и ТТН
          /// </summary>
@@ -605,8 +608,9 @@ namespace DomesticTransport
 
                 foreach (Order order in delivery.Orders)
                 {
-                    string date = shefflerBook.GetDateDelivery();
-                    row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value = date ;
+                    string date = shefflerBook.DateDelivery;
+                    row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date ;
+                    row.Range[1, totalTable.ListColumns["№ Авто"].Index].Value = delivery.Number ;
 
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
