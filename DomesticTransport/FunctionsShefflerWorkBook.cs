@@ -84,11 +84,15 @@ namespace DomesticTransport
                                       y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
             }
+            set
+            {
+                _routes = value;
+            }
         }
+        List<DeliveryPoint> _routes;
 
         public object DataTime { get; private set; }
 
-        List<DeliveryPoint> _routes;
 
 
 
@@ -214,8 +218,55 @@ namespace DomesticTransport
             return ListRate;
         }
 
+        internal int CreateRoute(List<Order> ordersCurrentDelivery)
+        {
+            Worksheet sheetRoutes = GetSheet("Routes");
+            ListObject TableRoutes = sheetRoutes?.ListObjects["TableRoutes"];
+            List<DeliveryPoint> pointMap = RoutesTable;
 
+            DeliveryPoint LastPoint = RoutesTable.Last();
+            int idRoute = LastPoint.IdRoute + 1;
+            int priorityRoute = LastPoint.PriorityRoute + 1;
+            //Поиск подходящего максимального приоритета
+            foreach (Order  ord  in ordersCurrentDelivery)
+            {
+                string customerId = ord.Customer.Id;
+            List<int> routes = (from p in pointMap
+                                 where p.IdCustomer == customerId
+                                 select  p.PriorityRoute
+                                 ).Distinct().ToList();
+                int maxPriority= routes.Max();
+                priorityRoute = maxPriority > priorityRoute ? maxPriority : priorityRoute;
+            }
 
+            int point = 0;
 
+            foreach (Order order in ordersCurrentDelivery)
+            {
+                ListRow row = TableRoutes.ListRows[TableRoutes.ListRows.Count];
+                TableRoutes.ListRows.Add();
+                row.Range[1, TableRoutes.ListColumns["Id route"].Index].Value = idRoute;
+                row.Range[1, TableRoutes.ListColumns["Priority route"].Index].Value = priorityRoute;
+                row.Range[1, TableRoutes.ListColumns["Priority point"].Index].Value = ++point;
+                row.Range[1, TableRoutes.ListColumns["Получатель материала"].Index].Value = order.Customer.Id;
+                row.Range[1, TableRoutes.ListColumns["City"].Index].Value = order.DeliveryPoint.City ;
+                row.Range[1, TableRoutes.ListColumns["Маршрут"].Index].Value = order.Route;
+                row.Range[1, TableRoutes.ListColumns["Клиент"].Index].Value = order.Customer.Name ;
+            }
+            RoutesTable = null;
+            return idRoute;
+        }
+
+        public Range GetCurrentShippingRange()
+        {
+            Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
+            foreach(ListRow row in totalTable)
+            {
+             string dateTable =  row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value ;
+
+            }
+        }
+       
     }
 }

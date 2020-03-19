@@ -56,8 +56,10 @@ namespace DomesticTransport
             functions.СhangeDelivery();
         }
 
-
-
-
+        private void BtnLoadAllOrders_Click(object sender, RibbonControlEventArgs e)
+        {
+            Functions functions = new Functions();
+            functions.LoadAllOrders();
+        }
     }
 }

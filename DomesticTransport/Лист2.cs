@@ -12,19 +12,6 @@ namespace DomesticTransport
     public partial class Лист2
     {
 
-
-
-        private void Лист2_Startup(object sender, System.EventArgs e)
-        {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            deliverySheet.Cells[2, 3].Formula = "=TODAY()+1";
-            deliverySheet.Calculate();
-        }
-
-        private void Лист2_Shutdown(object sender, System.EventArgs e)
-        {
-        }
-
         #region Код, созданный конструктором VSTO
 
         /// <summary>
@@ -33,38 +20,18 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.TableCarrier.SelectionChange += new DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
-            this.TableOrders1.Change += new Microsoft.Office.Tools.Excel.ListObjectChangeHandler(this.TableOrders1_Change);
-            this.SelectionChange += new DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
-            this.Startup += new EventHandler(this.Лист2_Startup);
-            this.Shutdown += new EventHandler(this.Лист2_Shutdown);
-            this.Change += new DocEvents_ChangeEventHandler(this.Лист2_Change);
+            this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
+            this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
+            this.Startup += new System.EventHandler(this.Лист2_Startup);
 
         }
-
-
         #endregion
 
-
-
-
-
-        private void TableCarrier_SelectionChange(Range Target)
+        private void Лист2_Startup(object sender, System.EventArgs e)
         {
-
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
-            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
-
-            OrdersTable.Range.AutoFilter(Field: 1);
-            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
-
-            if (commonRng != null)
-            {
-                string numberDelivery = deliverySheet.Cells[Target.Row, carrierTable.ListColumns[1].Range.Column].Text;
-                OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
-            }
-
+            deliverySheet.Cells[2, 3].Formula = "=TODAY()+1";
+            deliverySheet.Calculate();
         }
 
         private void Лист2_SelectionChange(Range Target)
@@ -84,38 +51,60 @@ namespace DomesticTransport
             }
         }
 
-        private void Лист2_Change(Range Target)
-        {
+   
 
+
+        // Фильтр заказов по активной доставке
+   
+        private void TableCarrier_SelectionChange(Range Target)
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+            Range TargetCell = Globals.ThisWorkbook.Application.ActiveCell;
+            OrdersTable.Range.AutoFilter(Field: 1);
+            if (TargetCell == null) return;
+            try
+            {      
+                Range commonRng = Globals.ThisWorkbook.Application.Intersect(TargetCell, carrierTable.DataBodyRange);
+
+                if (commonRng != null)
+                {
+                    string numberDelivery = deliverySheet.Cells[TargetCell.Row, carrierTable.ListColumns[1].Range.Column].Text;
+                    OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
+                }
+            }
+            catch (Exception ex){ MessageBox.Show(ex.Message);
+            }
         }
 
-        private void TableOrders1_Change(Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
-        {
-            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            //ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
-            //if ( OrdersTable == null) return;
+        //private void TableOrders1_Change(Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
+        //{
+        //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+        //ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
+        //if ( OrdersTable == null) return;
 
-            //         //При заполнении программой выключено обновление экрана
-                     
-            //if (Globals.ThisWorkbook.Application.ScreenUpdating && targetRange.Text !="")
-            //{
-            //    if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
-            //    {
-            //        if (int.TryParse(targetRange.Text, out int num))
-            //        {                    
-            //            Functions functions = new Functions();
-            //            functions.СhangeDelivery();
-            //        }
-            //        else
-            //        {
-            //           targetRange.Value = 0;
-            //        }
+        //         //При заполнении программой выключено обновление экрана
 
-                    //numberDelivery 
-                    //MessageBox.Show("dkj " + targetRange.Value);
-                    // Пересчитать все доставки
-                //}
-           /// }
-        }
+        //if (Globals.ThisWorkbook.Application.ScreenUpdating && targetRange.Text !="")
+        //{
+        //    if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
+        //    {
+        //        if (int.TryParse(targetRange.Text, out int num))
+        //        {                    
+        //            Functions functions = new Functions();
+        //            functions.СhangeDelivery();
+        //        }
+        //        else
+        //        {
+        //           targetRange.Value = 0;
+        //        }
+
+        //numberDelivery 
+        //MessageBox.Show("dkj " + targetRange.Value);
+        // Пересчитать все доставки
+        //}
+        /// }
+        //}
     }
 }

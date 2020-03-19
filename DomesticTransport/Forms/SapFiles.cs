@@ -60,7 +60,7 @@ namespace DomesticTransport
         ///  Выбрать файл выгрузки SAP
         /// </summary>
         /// <returns></returns>
-        public string SelectFile()
+      static  public string SelectFile()
         {
             string sapUnload = "";
             string defaultPath = Config.Default.SapUnloadPath;

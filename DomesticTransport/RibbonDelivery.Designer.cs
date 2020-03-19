@@ -96,7 +96,7 @@
             this.BtnLoadAllOrders.Label = "Загрузить All Orders";
             this.BtnLoadAllOrders.Name = "BtnLoadAllOrders";
             this.BtnLoadAllOrders.ShowImage = true;
-            this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
+            this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadAllOrders_Click);
             // 
             // btnAcept
             // 

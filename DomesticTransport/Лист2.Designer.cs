@@ -160,6 +160,10 @@ namespace DomesticTransport {
             // 
             this.TableOrders1.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
             // 
+            // DateDelivery
+            // 
+            this.DateDelivery.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
             // Лист2
             // 
         }
