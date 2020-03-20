@@ -11,6 +11,10 @@ using System.Windows.Forms;
 
 namespace DomesticTransport
 {
+
+    /// <summary>
+    /// Действия с текущей книгой
+    /// </summary>
     class ShefflerWorkBook
     {
 

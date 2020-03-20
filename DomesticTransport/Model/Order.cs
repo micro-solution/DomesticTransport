@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DomesticTransport.Model
 {
     /// <summary>
-    ///  Класс заказа 
+    ///  Класс заказа . позиция перевозки
     /// </summary>
     class Order
     {

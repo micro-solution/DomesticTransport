@@ -14,6 +14,11 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DomesticTransport
 {
+
+
+    /// <summary>
+    /// Основной алгоритм 
+    /// </summary>
     class Functions
     {
         // private DomesticTransport.Properties.Settings 
