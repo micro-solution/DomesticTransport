@@ -336,8 +336,9 @@ namespace DomesticTransport
                     rowOrder.Range[1, OrderTable.ListColumns["ID Получателя"].Index].Value = order.Customer?.Id ?? "";
                     rowOrder.Range[1, OrderTable.ListColumns["Получатель"].Index].Value = order.Customer.Name;
                     rowOrder.Range[1, OrderTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
-                    rowOrder.Range[1, OrderTable.ListColumns["ID Маршрута"].Index].Value = order.DeliveryPoint.IdRoute;
+                    rowOrder.Range[1, OrderTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.IdRoute;
                     rowOrder.Range[1, OrderTable.ListColumns["Вес нетто"].Index].Value = order.WeightNetto;
+                    rowOrder.Range[1, OrderTable.ListColumns["Маршрут"].Index].Value = order.Route;
 
                 }
             }
@@ -719,18 +720,17 @@ namespace DomesticTransport
                 string strNum = row.Range[1, ordersTable.ListColumns["№ Доставки"].Index].Text;
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : 0;
                 if (deliveryNumber == 0) continue;
-                string deliveryId = row.Range[1, ordersTable.ListColumns["Доставка"].Index].Text;
-                deliveryId = new string('0', 10 - deliveryId.Length) + deliveryId;
+                string orderId = row.Range[1, ordersTable.ListColumns["Доставка"].Index].Text;
+                orderId = new string('0', 10 - orderId.Length) + orderId;
                 Delivery delivery = deliveries.Find(d => d.Number == deliveryNumber);
                 if (delivery == null) continue;
 
-                Order order = delivery.Orders.Find(r => r.Id == deliveryId);
+                Order order = delivery.Orders.Find(r => r.Id == orderId);
                 if (order != null)
                 {
                     row.Range[1, ordersTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
-                    row.Range[1, ordersTable.ListColumns["ID Маршрута"].Index].Value = order.DeliveryPoint.IdRoute;
+                    row.Range[1, ordersTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.IdRoute;
                     row.Range[1, ordersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
-
                 }
             }
 

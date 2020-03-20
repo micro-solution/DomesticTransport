@@ -20,7 +20,9 @@ namespace DomesticTransport.Model
             get { return _idCustomer; }
             set
             {
-                _idCustomer = new string('0', 10 - value.Length) + value;
+               
+                _idCustomer = value.Length < 10 ? new string('0', 10 - value.Length) + value : value ;                    
+                
             }
         }
         private string _idCustomer;

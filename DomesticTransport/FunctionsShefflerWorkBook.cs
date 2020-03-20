@@ -264,8 +264,9 @@ namespace DomesticTransport
                     row.Range[1, TableRoutes.ListColumns["Город"].Index].Value = findPoint.CityLongName;
                     row.Range[1, TableRoutes.ListColumns["Маршрут"].Index].Value = findPoint.Route;
                     row.Range[1, TableRoutes.ListColumns["Направление"].Index].Value = findPoint.RouteName;
-                    row.Range[1, TableRoutes.ListColumns["Клиент"].Index].Value = order.Customer.Name;
+                    row.Range[1, TableRoutes.ListColumns["Клиент"].Index].Value = findPoint.Customer;
                     row.Range[1, TableRoutes.ListColumns["Номер клиента"].Index].Value = findPoint.CustomerNumber;
+                    row.Range[1, TableRoutes.ListColumns["Add"].Index].Value = "Auto";
                 }
             }
             RoutesTable = null;
