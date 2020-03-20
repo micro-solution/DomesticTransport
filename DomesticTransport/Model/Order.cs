@@ -7,11 +7,23 @@ using System.Threading.Tasks;
 namespace DomesticTransport.Model
 {
     /// <summary>
-    ///  Класс заказа 
+    ///  Класс заказа . позиция перевозки
     /// </summary>
     class Order
     {
-        public string Id;
+        public string Id
+        {
+            get
+            {                         
+                return _id;
+            }
+
+            set {              
+                    _id = value.Length <10 ? new string('0', 10 - value.Length) + value : value ;                  
+            }
+        }
+        private string _id;
+        
 
         public int NumberDelivery { get; set; } = 0;
         public int PointNumber { get; set; }

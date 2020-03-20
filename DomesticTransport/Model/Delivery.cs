@@ -8,11 +8,20 @@ namespace DomesticTransport.Model
 {
     class Delivery
     {
-
+        /// <summary>
+        /// Найден маршрут доставки в таблице
+        /// </summary>
         public bool hasRoute { get; set; } = true;
+        /// <summary>
+        /// Номер Авто
+        /// </summary>
         public int Number { get; set; } = 0;
 
-        public DateTime DateCreate { get { return DateTime.Now; } }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {
             get
@@ -27,7 +36,9 @@ namespace DomesticTransport.Model
         }
         Carrier _carrier;
 
-
+        /// <summary>
+        /// Стоимость доставки
+        /// </summary>
         public double CostDelivery
         {
             get
@@ -35,6 +46,10 @@ namespace DomesticTransport.Model
                 return Truck?.Cost ?? 0;
             }
         }
+
+        /// <summary>
+        /// Общий вес
+        /// </summary>
         public double TotalWeight
         {
             get
@@ -44,7 +59,9 @@ namespace DomesticTransport.Model
                 return sum;
             }
         }
-
+        ///// <summary>
+        ///// Стоимость товаров
+        ///// </summary>
         public double CostProducts
         {
             get
@@ -66,7 +83,7 @@ namespace DomesticTransport.Model
                 }
                 return _orders;
             }
-             set
+            set
             {
 
                 _orders = value;
@@ -114,7 +131,11 @@ namespace DomesticTransport.Model
             Orders.Add(order);
         }
 
-       
+         /// <summary>
+         /// Проверка на превышение веса
+         /// </summary>
+         /// <param name="order"></param>
+         /// <returns></returns>
         internal bool CheckDeliveryWeght(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;
