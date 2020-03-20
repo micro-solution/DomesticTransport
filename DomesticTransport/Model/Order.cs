@@ -1,54 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DomesticTransport.Model
+﻿namespace DomesticTransport.Model
 {
     /// <summary>
-    ///  Класс заказа . позиция перевозки
+    ///  Класс заказа (позиция перевозки)
     /// </summary>
     class Order
     {
+        /// <summary>
+        /// Идентификатор заказа
+        /// </summary>
         public string Id
         {
             get
-            {                         
+            {
                 return _id;
             }
-
-            set {              
-                    _id = value.Length <10 ? new string('0', 10 - value.Length) + value : value ;                  
+            set
+            {
+                _id = value.Length < 10 ? new string('0', 10 - value.Length) + value : value;
             }
         }
         private string _id;
-        
 
-        public int NumberDelivery { get; set; } = 0;
+
+        public int DeliveryNumber { get; set; }
         public int PointNumber { get; set; }
-        
-        public Customer Customer 
+
+        public Customer Customer
         {
-            get 
+            get
             {
                 if (_customer == null) _customer = new Customer();
                 return _customer;
             }
-
-            set { _customer = value; }
+            set => _customer = value;
         }
         private Customer _customer;
 
 
         public int PalletsCount { get; set; }
         public double WeightNetto { get; set; }
-
         public double WeightBrutto { get; set; }
 
         public string TransportationUnit
         {
-            get { return _transportationUnit; }
+            get => _transportationUnit;
             set
             {
                 if (!string.IsNullOrWhiteSpace(value))
@@ -58,24 +53,9 @@ namespace DomesticTransport.Model
             }
         }
         private string _transportationUnit;
+
         public double Cost { get; set; }
         public string Route { get; set; }
-
         public DeliveryPoint DeliveryPoint { get; set; }
-        //    get {
-        //        if (_deliveryPoint.IdRoute == 0) 
-        //        {
-        //           // _deliveryPoint = 
-
-        //        }
-        //        return _deliveryPoint;
-        //    } 
-        //    set {
-        //        _deliveryPoint = value;
-        //    } }
-
-        //DeliveryPoint _deliveryPoint;
-
-
     }
 }

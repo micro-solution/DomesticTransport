@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using Config = DomesticTransport.Properties.Settings;
+﻿using DomesticTransport.Properties;
 
+using System;
+using System.IO;
 using System.Windows.Forms;
-using DomesticTransport.Properties;
+
+using Config = DomesticTransport.Properties.Settings;
 
 namespace DomesticTransport
 {
@@ -25,7 +22,6 @@ namespace DomesticTransport
         {
             get
             {
-               // CheckPath(tbOrders.Text);
                 return tbOrders.Text;
             }
         }
@@ -60,7 +56,7 @@ namespace DomesticTransport
         ///  Выбрать файл выгрузки SAP
         /// </summary>
         /// <returns></returns>
-      static  public string SelectFile()
+        static public string SelectFile()
         {
             string sapUnload = "";
             string defaultPath = Config.Default.SapUnloadPath;
@@ -122,19 +118,13 @@ namespace DomesticTransport
 
                     FileInfo fi = new FileInfo(file);
                     if (!fi.Name.Contains("~$") &&
-                        (fi.Extension.ToLower().Contains("xls") | 
+                        (fi.Extension.ToLower().Contains("xls") |
                          fi.Extension.ToLower().Contains("csv")))
                     {
-
                         if (fi.Name.Contains("Export"))
                         {
                             tbExport.Text = file;
                         }
-                        //if (file.Contains("orders"))
-                        //{
-                        //    tbOrders.Text = file;
-                        //}
-                        //if (tbOrders.Text != "" && tbExport.Text != "") break;
                     }
                 }
             }

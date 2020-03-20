@@ -6,22 +6,25 @@ using System.Threading.Tasks;
 
 namespace DomesticTransport.Model
 {
+    /// <summary>
+    /// Доставка товара
+    /// </summary>
     class Delivery
     {
         /// <summary>
         /// Найден маршрут доставки в таблице
         /// </summary>
-        public bool hasRoute { get; set; } = true;
+        public bool HasRoute { get; set; } = true;
+
         /// <summary>
-        /// Номер Авто
+        /// Номер доставки
         /// </summary>
         public int Number { get; set; } = 0;
 
 
         ///// <summary>
-        ///// 
+        ///// ??????
         ///// </summary>
-        //public DateTime DateCreate { get { return DateTime.Now; } }
         public Carrier Carrier
         {
             get
@@ -34,12 +37,12 @@ namespace DomesticTransport.Model
             }
             private set { _carrier = value; }
         }
-        Carrier _carrier;
+        private Carrier _carrier;
 
         /// <summary>
         /// Стоимость доставки
         /// </summary>
-        public double CostDelivery
+        public double Cost
         {
             get
             {
@@ -59,6 +62,7 @@ namespace DomesticTransport.Model
                 return sum;
             }
         }
+
         ///// <summary>
         ///// Стоимость товаров
         ///// </summary>
@@ -85,11 +89,11 @@ namespace DomesticTransport.Model
             }
             set
             {
-
                 _orders = value;
             }
         }
-        List<Order> _orders;
+
+        private List<Order> _orders;
 
 
 
@@ -115,7 +119,6 @@ namespace DomesticTransport.Model
             {
                 if (_truck == null)
                 {
-
                     ShefflerWorkBook workBook = new ShefflerWorkBook();
                     _truck = workBook.GetTruck(TotalWeight, MapDelivery);
                 }
@@ -123,7 +126,8 @@ namespace DomesticTransport.Model
             }
             set { _truck = value; }//private
         }
-        Truck _truck;
+
+        private Truck _truck;
 
         public Delivery() { }
         public Delivery(Order order)
@@ -136,11 +140,10 @@ namespace DomesticTransport.Model
          /// </summary>
          /// <param name="order"></param>
          /// <returns></returns>
-        internal bool CheckDeliveryWeght(Order order)
+        public bool CheckDeliveryWeght(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;
             return sum < 20200;
-
         }
     }
 }

@@ -74,7 +74,7 @@ namespace DomesticTransport
                                 row.Range[1, 9].Value == null) continue;
                             DeliveryPoint route = new DeliveryPoint()
                             {
-                                IdRoute = int.TryParse(row.Range[1, TableRoutes.ListColumns["Id route"].Index].Text, out int id) ? id : 0,
+                                Id = int.TryParse(row.Range[1, TableRoutes.ListColumns["Id route"].Index].Text, out int id) ? id : 0,
                                 PriorityRoute = int.TryParse(row.Range[1, TableRoutes.ListColumns["Priority route"].Index].Text.ToString(), out int prioritRoute) ? prioritRoute : 0,
                                 PriorityPoint = int.TryParse(row.Range[1, TableRoutes.ListColumns["Priority point"].Index].Text.ToString(), out int prioritPoint) ? prioritPoint : 0,
                                 IdCustomer = row.Range[1, TableRoutes.ListColumns["Получатель материала"].Index].Text,
@@ -90,7 +90,7 @@ namespace DomesticTransport
                         }
                     }
                 }
-                _routes = _routes.OrderBy(x => x.IdRoute).ThenBy(
+                _routes = _routes.OrderBy(x => x.Id).ThenBy(
                                       y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
             }
@@ -235,7 +235,7 @@ namespace DomesticTransport
             List<DeliveryPoint> pointMap = RoutesTable;
 
             DeliveryPoint LastPoint = RoutesTable.Last();
-            int idRoute = LastPoint.IdRoute + 1;
+            int idRoute = LastPoint.Id + 1;
             int priorityRoute = LastPoint.PriorityRoute + 1;
             //Поиск подходящего максимального приоритета
             foreach (Order ord in ordersCurrentDelivery)
