@@ -206,8 +206,8 @@ namespace DomesticTransport
                     });
                 }
                 List<Delivery> deliveries = CompleteAuto2(orders);
-                    Range totalRng = workBook.GetCurrentShippingRange();
-                if (deliveries != null && deliveries.Count > 0 && totalRng !=null)
+                Range totalRng = workBook.GetCurrentShippingRange();
+                if (deliveries != null && deliveries.Count > 0 && totalRng != null)
                 {
                     delivery = deliveries[0];
                     idRoute = delivery.MapDelivery[0].Id;
@@ -219,7 +219,7 @@ namespace DomesticTransport
                         Order findOrder = orders.Find(x => x.Id == idOrderTotal);
                         if (findOrder != null)
                         {
-                            row.Cells[0, totalTable.ListColumns["№ Авто"].Index].Value = number.ToString();
+                            row.Cells[0, totalTable.ListColumns["№ Доставки"].Index].Value = number.ToString();
                             row.Cells[0, totalTable.ListColumns["Порядок выгрузки"].Index].Value = findOrder.PointNumber;
                             row.Cells[0, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
 
@@ -248,7 +248,7 @@ namespace DomesticTransport
             if (delivery != null)
             {
                 rowDelivery.Range[1, deliveryTable.ListColumns["ID Route"].Index].Value = delivery.MapDelivery[0].Id;
-                rowDelivery.Range[1, deliveryTable.ListColumns["Компания"].Index].Value = delivery.Truck?.ShippingCompany?.Name ?? ""; 
+                rowDelivery.Range[1, deliveryTable.ListColumns["Компания"].Index].Value = delivery.Truck?.ShippingCompany?.Name ?? "";
                 rowDelivery.Range[1, deliveryTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                 rowDelivery.Range[1, deliveryTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck.Tonnage;
             }
@@ -296,36 +296,40 @@ namespace DomesticTransport
                 }
             }
             // foreach (ListRow listDeliveryRow in ordersTable.ListRows)
-            Range rng = workBook.GetCurrentShippingRange();
-            for (int j = ordersTable.ListRows.Count; j > 0; --j)
             {
-                ListRow listOrderRow = ordersTable.ListRows[j];
-                Range orderCell = listOrderRow.Range[1, ordersTable.ListColumns["№ Доставки"].Index];
-               string orderId = orderCell.Offset[0, 1].Text;
-                string strDeliveryNum = orderCell != null ? orderCell.Text : ""; 
-                if (int.TryParse(strDeliveryNum, out int DeliveryNum))
+                for (int j = ordersTable.ListRows.Count; j > 0; --j)
                 {
-                    if (DeliveryNum == numberDelivery)
+                    ListRow listOrderRow = ordersTable.ListRows[j];
+                    Range orderCell = listOrderRow.Range[1, ordersTable.ListColumns["№ Доставки"].Index];
+                    string strDeliveryNum = orderCell.Offset[0, 1].Text;
+                     strDeliveryNum = orderCell != null ? orderCell.Text : "";
+                    if (int.TryParse(strDeliveryNum, out int DeliveryNum))
                     {
-                        deliverySheet.Rows[listOrderRow.Range.Row].Delete();
+                        if (DeliveryNum == numberDelivery) 
+                            deliverySheet.Rows[listOrderRow.Range.Row].Delete(); 
 
-                        foreach (Range rowTotal in rng.Rows)
+                    }
+
+                }
+                Range rng = workBook.GetCurrentShippingRange();
+                if (rng == null) return;
+                for (int k = rng.Rows.Count; k  > 0; --k)
+                {
+                    string idDelivery = rng.Cells[k,
+                             TotalTable.ListColumns["№ Доставки"].Index].Text;
+                    if (int.TryParse(idDelivery, out int num))
+                    {
+                        if (num == numberDelivery)
                         {
-                            string idDelivery = totalSheet.Cells[rowTotal.Row,
-                                     TotalTable.ListColumns["Номер поставки"].Range.Column].Text;
-                            
-                            if (idDelivery == orderId)
-                            {
-                                rowTotal.Rows.Delete();
-                            }
+                            rng.Rows[k].Delete();
                         }
                     }
                 }
 
-
             }
 
-            
+
+
             //TODO УДАЛИТЬ из таблицы Total
         }
 
@@ -820,7 +824,7 @@ namespace DomesticTransport
                 {
                     string date = shefflerBook.DateDelivery;
                     row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
-                    row.Range[1, totalTable.ListColumns["№ Авто"].Index].Value = delivery.Number;
+                    row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
 
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
