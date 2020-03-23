@@ -76,7 +76,6 @@
             // 
             this.groupGeneral.Items.Add(this.btnStart);
             this.groupGeneral.Items.Add(this.BtnLoadAllOrders);
-            this.groupGeneral.Items.Add(this.btnAcept);
             this.groupGeneral.Label = "Список";
             this.groupGeneral.Name = "groupGeneral";
             // 
@@ -144,6 +143,7 @@
             // 
             // group1
             // 
+            this.group1.Items.Add(this.btnAcept);
             this.group1.Items.Add(this.btnChangePoint);
             this.group1.Items.Add(this.button3);
             this.group1.Items.Add(this.btnSendShippingCompany);

@@ -49,13 +49,10 @@ namespace DomesticTransport
             {
                 OrdersTable.Range.AutoFilter(Field: 1);
             }
-        }
-
-   
+        }     
 
 
-        // Фильтр заказов по активной доставке
-   
+        // Фильтр заказов по активной доставке   
         private void TableCarrier_SelectionChange(Range Target)
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];

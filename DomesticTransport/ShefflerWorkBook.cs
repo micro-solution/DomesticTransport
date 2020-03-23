@@ -18,7 +18,7 @@ namespace DomesticTransport
     class ShefflerWorkBook
     {
 
-        private List<TruckRate> RateList
+      private List<TruckRate> RateList
         {
             get
             {
@@ -26,7 +26,6 @@ namespace DomesticTransport
                 {
                     _rateList = GetTruckRateList();
                 }
-
                 return _rateList;
             }
         }
@@ -43,7 +42,6 @@ namespace DomesticTransport
                     if (dateCell != null)
                     {
                         _dateDelivery = dateCell.Text;
-
                         DateTime date = DateTime.Parse(_dateDelivery);
                         _dateDelivery = date > DateTime.MinValue ? date.ToShortDateString() : "";
                     }
@@ -289,7 +287,7 @@ namespace DomesticTransport
             int columnDeliveryId = totalTable.ListColumns["Дата доставки"].Index;
             foreach (ListRow row in totalTable.ListRows)
             {
-                string dateTable = row.Range[1, columnDeliveryId].Text;
+                string dateTable = row.Range[0, columnDeliveryId].Text;
                 if (dateTable == dateDelivery)
                 {
                     if (currentRng == null)
