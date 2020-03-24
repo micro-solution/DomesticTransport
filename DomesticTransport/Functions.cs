@@ -1112,8 +1112,7 @@ namespace DomesticTransport
             foreach(string file in files )
             {
                 Order order = GetFromFile(file);
-                if (order != null) orders.Add(order);
-            
+                if (order != null) orders.Add(order);             
             }
             List<Delivery> deliveries = CompleteAuto2(orders);
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
@@ -1127,7 +1126,24 @@ namespace DomesticTransport
 
             return ;
         }
-        public Order GetFromFile(string file)
+        public void PrintRow(ListObject table, Order order)
+        {
+            ListRow rowDelivery;
+            if (table.ListRows.Count == 0)
+            {
+                AddListRow(table);
+                rowDelivery = table.ListRows[1];//  }
+            }
+            else
+            {
+                AddListRow(table);
+                rowDelivery = table.ListRows[table.ListRows.Count - 1];
+            }
+
+        
+           // rowDelivery.Range[1, table.ListColumns["№ Доставки"].Index].Value = delivery.Number;
+        }
+            public Order GetFromFile(string file)
         {
             Order order = new Order();
             Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
