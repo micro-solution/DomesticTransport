@@ -37,23 +37,23 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonDelivery));
             this.ShefflerRibbon = this.Factory.CreateRibbonTab();
             this.groupGeneral = this.Factory.CreateRibbonGroup();
-            this.btnStart = this.Factory.CreateRibbonButton();
-            this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
             this.groupEdit = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.settings = this.Factory.CreateRibbonGroup();
+            this.about = this.Factory.CreateRibbonGroup();
+            this.btnStart = this.Factory.CreateRibbonButton();
+            this.btnReadForms = this.Factory.CreateRibbonButton();
+            this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button2 = this.Factory.CreateRibbonButton();
             this.btnChangeSet = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.btnAcept = this.Factory.CreateRibbonButton();
             this.btnChangePoint = this.Factory.CreateRibbonButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.btnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.btnReadCarrierInvoice = this.Factory.CreateRibbonButton();
-            this.settings = this.Factory.CreateRibbonGroup();
             this.btnSetts = this.Factory.CreateRibbonButton();
-            this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
-            this.btnReadForms = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -81,6 +81,38 @@
             this.groupGeneral.Label = "Список";
             this.groupGeneral.Name = "groupGeneral";
             // 
+            // groupEdit
+            // 
+            this.groupEdit.Items.Add(this.button1);
+            this.groupEdit.Items.Add(this.button2);
+            this.groupEdit.Items.Add(this.btnChangeSet);
+            this.groupEdit.Label = "Редактирование";
+            this.groupEdit.Name = "groupEdit";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.btnSendShippingCompany);
+            this.group1.Items.Add(this.btnReadCarrierInvoice);
+            this.group1.Label = "Сообщения";
+            this.group1.Name = "group1";
+            // 
+            // settings
+            // 
+            this.settings.Items.Add(this.btnChangePoint);
+            this.settings.Items.Add(this.btnAcept);
+            this.settings.Items.Add(this.button3);
+            this.settings.Items.Add(this.btnSetts);
+            this.settings.Label = "Настройки";
+            this.settings.Name = "settings";
+            this.settings.Visible = false;
+            // 
+            // about
+            // 
+            this.about.Items.Add(this.btnAboutProgrramm);
+            this.about.Label = "Справка";
+            this.about.Name = "about";
+            this.about.Visible = false;
+            // 
             // btnStart
             // 
             this.btnStart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -90,6 +122,15 @@
             this.btnStart.ShowImage = true;
             this.btnStart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStart_Click);
             // 
+            // btnReadForms
+            // 
+            this.btnReadForms.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnReadForms.Image = ((System.Drawing.Image)(resources.GetObject("btnReadForms.Image")));
+            this.btnReadForms.Label = "Загрузить заявки";
+            this.btnReadForms.Name = "btnReadForms";
+            this.btnReadForms.ShowImage = true;
+            this.btnReadForms.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadForms_Click);
+            // 
             // BtnLoadAllOrders
             // 
             this.BtnLoadAllOrders.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -98,14 +139,6 @@
             this.BtnLoadAllOrders.Name = "BtnLoadAllOrders";
             this.BtnLoadAllOrders.ShowImage = true;
             this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadAllOrders_Click);
-            // 
-            // groupEdit
-            // 
-            this.groupEdit.Items.Add(this.button1);
-            this.groupEdit.Items.Add(this.button2);
-            this.groupEdit.Items.Add(this.btnChangeSet);
-            this.groupEdit.Label = "Редактирование";
-            this.groupEdit.Name = "groupEdit";
             // 
             // button1
             // 
@@ -133,17 +166,6 @@
             this.btnChangeSet.Name = "btnChangeSet";
             this.btnChangeSet.ShowImage = true;
             this.btnChangeSet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangeSet_Click);
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.btnAcept);
-            this.group1.Items.Add(this.btnChangePoint);
-            this.group1.Items.Add(this.button3);
-            this.group1.Items.Add(this.btnSendShippingCompany);
-            this.group1.Items.Add(this.btnReadCarrierInvoice);
-            this.group1.Label = "Сообщения";
-            this.group1.Name = "group1";
-            this.group1.Visible = false;
             // 
             // btnAcept
             // 
@@ -188,13 +210,6 @@
             this.btnReadCarrierInvoice.Name = "btnReadCarrierInvoice";
             this.btnReadCarrierInvoice.ShowImage = true;
             // 
-            // settings
-            // 
-            this.settings.Items.Add(this.btnSetts);
-            this.settings.Label = "Настройки";
-            this.settings.Name = "settings";
-            this.settings.Visible = false;
-            // 
             // btnSetts
             // 
             this.btnSetts.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -203,28 +218,12 @@
             this.btnSetts.Name = "btnSetts";
             this.btnSetts.ShowImage = true;
             // 
-            // about
-            // 
-            this.about.Items.Add(this.btnAboutProgrramm);
-            this.about.Label = "Справка";
-            this.about.Name = "about";
-            this.about.Visible = false;
-            // 
             // btnAboutProgrramm
             // 
             this.btnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("btnAboutProgrramm.Image")));
             this.btnAboutProgrramm.Label = "О программе";
             this.btnAboutProgrramm.Name = "btnAboutProgrramm";
             this.btnAboutProgrramm.ShowImage = true;
-            // 
-            // btnReadForms
-            // 
-            this.btnReadForms.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnReadForms.Image = ((System.Drawing.Image)(resources.GetObject("btnReadForms.Image")));
-            this.btnReadForms.Label = "Загрузить заявки";
-            this.btnReadForms.Name = "btnReadForms";
-            this.btnReadForms.ShowImage = true;
-            this.btnReadForms.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadForms_Click);
             // 
             // RibbonDelivery
             // 

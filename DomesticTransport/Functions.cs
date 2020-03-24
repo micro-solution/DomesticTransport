@@ -1,8 +1,8 @@
 ﻿using DomesticTransport.Forms;
 using DomesticTransport.Model;
-
+using DomesticTransport.Properties;
 using Microsoft.Office.Interop.Excel;
-
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -1097,13 +1097,35 @@ namespace DomesticTransport
             }
             return 0;
         }
-        public List<Order> GetOrdersFromFiles()
+        public void GetOrdersFromFiles()
         {
-            string path = OpenFileDialog();
+            //string path = OpenFileDialog();
+            string path = "";
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = Settings.Default.SapUnloadPath; //Directory.GetCurrentDirectory() ;
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok)  { return; }             
+            path = dialog.FileName;
+            string[] files= Directory.GetFiles(path);
             List<Order> orders = new List<Order>();
-            Order order = GetFromFile(path);
-            if (order != null) orders.Add(order);
-            return orders;
+            
+            foreach(string file in files )
+            {
+                Order order = GetFromFile(file);
+                if (order != null) orders.Add(order);
+            
+            }
+            List<Delivery> deliveries = CompleteAuto2(orders);
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
+            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = totalSheet.ListObjects["TableTotal"];
+            PrintDelivery(deliveries, carrierTable);
+            PrintOrders( deliveries, ordersTable);
+            PrintShipping(totalTable, deliveries);
+
+            return ;
         }
         public Order GetFromFile(string file)
         {
@@ -1111,13 +1133,20 @@ namespace DomesticTransport
             Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
             Worksheet sh = wb.Sheets[1];
             Range rng = sh.UsedRange;
+            string str = FindValue("Заявка на перевозку", rng, 0, 0);
+            if (str == "") return null;
 
-            string str = FindValue("Грузополучатель", rng, 0, 1);
-            str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
-
+            str = FindValue("Номер грузополучателя", rng, 0, 1);
+           // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
             Regex regexId = new Regex(@"\d+");
             string idcustomer = regexId.Match(str).Value;
             order.Customer.Id = idcustomer;
+
+            str = FindValue("Грузополучатель", rng, 0, 1);
+            order.Customer.Name = str.Trim();
+
+            str = FindValue("Номер накладной", rng, 0, 1);
+            order.Id = str.Replace(", ", " / ");
 
             str = FindValue("Стоимость", rng, 0, 0);
             Regex regexCost = new Regex(@"(\d+\s?)+(\,\d+)?");
@@ -1125,14 +1154,15 @@ namespace DomesticTransport
             order.Cost = double.TryParse(str, out double ct) ? ct : 0;
 
             str = FindValue("брутто", rng, 0, 0);
+            str = regexCost.Match(str).Value;
             double weight = double.TryParse(str, out double wt) ? wt : 0;
             order.WeightNetto = weight;
 
             str = FindValue("грузовых", rng, 0, 0);
             str = regexId.Match(str).Value;
             int countPallets = int.TryParse(str, out int count) ? count : 0;
-            order.PalletsCount = countPallets;   
-
+            order.PalletsCount = countPallets;
+            wb.Close();
             return order;
         }
 
