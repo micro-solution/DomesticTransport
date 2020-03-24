@@ -14,14 +14,12 @@ namespace DomesticTransport
 
         private void btnChangePoint_Click(object sender, RibbonControlEventArgs e)
         {
-            ChangeRoute changeRoute = new ChangeRoute();
-            changeRoute.ShowDialog();
+           
         }
 
         private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
         {
-            MessageCarrier messageCarrier = new MessageCarrier();
-            messageCarrier.ShowDialog();
+           
         }
 
         private void btnAcept_Click(object sender, RibbonControlEventArgs e)

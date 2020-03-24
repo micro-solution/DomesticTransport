@@ -1,7 +1,9 @@
 ﻿
 using Microsoft.Office.Interop.Excel;
 using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +68,26 @@ namespace DomesticTransport
             mail.To = addres;
             mail.Subject = text;
             mail.Body = body;
+            //mail.
+        }
+        public void Receive()
+        {
+            try
+            {
+                Outlook.NameSpace _ns = OutlookApp.GetNamespace("MAPI");
+                Outlook.MAPIFolder inbox = _ns.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
+                _ns.SendAndReceive(true);
+                foreach (Outlook.MailItem item in inbox.Items)
+                {
+                    Debug.WriteLine("" + item.Subject + item.SenderName +
+                                item.HTMLBody + item.SentOn.ToLongDateString() +
+                                item.SentOn.ToLongTimeString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 }
