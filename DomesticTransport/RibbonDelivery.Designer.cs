@@ -39,12 +39,12 @@
             this.groupGeneral = this.Factory.CreateRibbonGroup();
             this.btnStart = this.Factory.CreateRibbonButton();
             this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
-            this.btnAcept = this.Factory.CreateRibbonButton();
             this.groupEdit = this.Factory.CreateRibbonGroup();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button2 = this.Factory.CreateRibbonButton();
             this.btnChangeSet = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.btnAcept = this.Factory.CreateRibbonButton();
             this.btnChangePoint = this.Factory.CreateRibbonButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.btnSendShippingCompany = this.Factory.CreateRibbonButton();
@@ -53,6 +53,7 @@
             this.btnSetts = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
+            this.btnReadForms = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -75,6 +76,7 @@
             // groupGeneral
             // 
             this.groupGeneral.Items.Add(this.btnStart);
+            this.groupGeneral.Items.Add(this.btnReadForms);
             this.groupGeneral.Items.Add(this.BtnLoadAllOrders);
             this.groupGeneral.Label = "Список";
             this.groupGeneral.Name = "groupGeneral";
@@ -96,15 +98,6 @@
             this.BtnLoadAllOrders.Name = "BtnLoadAllOrders";
             this.BtnLoadAllOrders.ShowImage = true;
             this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadAllOrders_Click);
-            // 
-            // btnAcept
-            // 
-            this.btnAcept.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnAcept.Image = ((System.Drawing.Image)(resources.GetObject("btnAcept.Image")));
-            this.btnAcept.Label = "Принять ";
-            this.btnAcept.Name = "btnAcept";
-            this.btnAcept.ShowImage = true;
-            this.btnAcept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
             // 
             // groupEdit
             // 
@@ -151,6 +144,15 @@
             this.group1.Label = "Сообщения";
             this.group1.Name = "group1";
             this.group1.Visible = false;
+            // 
+            // btnAcept
+            // 
+            this.btnAcept.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnAcept.Image = ((System.Drawing.Image)(resources.GetObject("btnAcept.Image")));
+            this.btnAcept.Label = "Принять ";
+            this.btnAcept.Name = "btnAcept";
+            this.btnAcept.ShowImage = true;
+            this.btnAcept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
             // 
             // btnChangePoint
             // 
@@ -215,6 +217,15 @@
             this.btnAboutProgrramm.Name = "btnAboutProgrramm";
             this.btnAboutProgrramm.ShowImage = true;
             // 
+            // btnReadForms
+            // 
+            this.btnReadForms.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnReadForms.Image = ((System.Drawing.Image)(resources.GetObject("btnReadForms.Image")));
+            this.btnReadForms.Label = "Загрузить заявки";
+            this.btnReadForms.Name = "btnReadForms";
+            this.btnReadForms.ShowImage = true;
+            this.btnReadForms.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadForms_Click);
+            // 
             // RibbonDelivery
             // 
             this.Name = "RibbonDelivery";
@@ -255,6 +266,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadAllOrders;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadForms;
     }
 
     partial class ThisRibbonCollection

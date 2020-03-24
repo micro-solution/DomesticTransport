@@ -56,5 +56,11 @@ namespace DomesticTransport
             Functions functions = new Functions();
             functions.LoadAllOrders();
         }
+
+        private void btnReadForms_Click(object sender, RibbonControlEventArgs e)
+        {
+            Functions functions = new Functions();
+            functions.GetOrdersFromFiles();
+        }
     }
 }
