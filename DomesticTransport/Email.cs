@@ -14,20 +14,20 @@ namespace DomesticTransport
 {
     class Email
     {
-           private  Outlook.Application OutlookApp
+        public Outlook.Application OutlookApp
+        {
+            get
             {
-                get
+                if (_outlookApp == null)
                 {
-                  if ( _outlookApp == null)
-                    {
-                        _outlookApp =  new Outlook.Application();
-                    }
-                 return _outlookApp ;
+                    _outlookApp = new Outlook.Application();
                 }
+                return _outlookApp;
             }
+        }
         private Outlook.Application _outlookApp;
-          
-        
+
+
         public void Init()
         {
             //Outlook.Inspectors inspectors;
@@ -35,8 +35,8 @@ namespace DomesticTransport
             //inspectors.NewInspector +=
             //new Microsoft.Office.Interop.Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
 
-                // Get the Application object
-             //   Outlook.Application application =new Outlook.Application();
+            // Get the Application object
+            //   Outlook.Application application =new Outlook.Application();
 
             // Get the Inspector object
             Outlook.Inspectors inspectors = OutlookApp.Inspectors;
@@ -61,14 +61,18 @@ namespace DomesticTransport
             }
         }
 
-        public void SendEmail(string addres , string text, string body)
+        public void Send_Email (string addres, string text, string body,
+                              string copyTo  )
         {
             Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(
                                     Outlook.OlItemType.olMailItem);
             mail.To = addres;
             mail.Subject = text;
             mail.Body = body;
-            //mail.
+            mail.BCC = "";
+            mail.CC = "";
+
+
         }
         public void Receive()
         {
@@ -88,6 +92,21 @@ namespace DomesticTransport
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        public void CreateMessage (string addres, string text, string body,
+                              string copyTo)
+        {
+            OutlookApp.Session.Logon();
+            Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
+         
+         
+            mail.To = addres;
+            mail.Subject = text;
+            mail.Body = body;
+            mail.BCC = "";
+            mail.CC = "";
+            
         }
     }
 }

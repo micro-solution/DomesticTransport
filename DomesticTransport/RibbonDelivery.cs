@@ -19,7 +19,9 @@ namespace DomesticTransport
 
         private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
         {
-           
+            Functions functions = new Functions();
+            functions.CreateMasseges();
+
         }
 
         private void btnAcept_Click(object sender, RibbonControlEventArgs e)

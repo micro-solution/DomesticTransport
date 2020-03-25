@@ -3,6 +3,7 @@ using DomesticTransport.Model;
 using DomesticTransport.Properties;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -75,6 +76,35 @@ namespace DomesticTransport
             deliverySheet.Columns.AutoFit();
 
             ExcelOptimizateOff();
+        }
+        /// <summary>
+        /// Подготовка сообщений перевозчикам
+        /// </summary>
+        internal void CreateMasseges()
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
+            Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
+            ShefflerWorkBook functionsBook = new ShefflerWorkBook();
+            Range range = totalTable.DataBodyRange;
+            if (range == null || totalTable == null) return;
+            Email messenger = new Email();
+                 for (int i =1; i < carTable.ListRows.Count; i++)
+            {
+                ListRow row = carTable.ListRows[i];
+                string Company = row.Range[1, carTable.ListColumns["Компания"].Index].Text;
+                string addres = "aevseev@micro-solution.ru";
+                string textMsg = "hello";
+                string body ="";
+                string copyTo = "";
+
+                messenger.CreateMessage(addres: addres, text:"",body:"",copyTo:"");
+                //messenger.
+            }
+
+
+
         }
 
         /// <summary>
@@ -1104,15 +1134,15 @@ namespace DomesticTransport
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.InitialDirectory = Settings.Default.SapUnloadPath; //Directory.GetCurrentDirectory() ;
             dialog.IsFolderPicker = true;
-            if (dialog.ShowDialog() != CommonFileDialogResult.Ok)  { return; }             
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok) { return; }
             path = dialog.FileName;
-            string[] files= Directory.GetFiles(path);
+            string[] files = Directory.GetFiles(path);
             List<Order> orders = new List<Order>();
-            
-            foreach(string file in files )
+
+            foreach (string file in files)
             {
                 Order order = GetFromFile(file);
-                if (order != null) orders.Add(order);             
+                if (order != null) orders.Add(order);
             }
             List<Delivery> deliveries = CompleteAuto2(orders);
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
@@ -1121,10 +1151,10 @@ namespace DomesticTransport
             Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
             ListObject totalTable = totalSheet.ListObjects["TableTotal"];
             PrintDelivery(deliveries, carrierTable);
-            PrintOrders( deliveries, ordersTable);
+            PrintOrders(deliveries, ordersTable);
             PrintShipping(totalTable, deliveries);
 
-            return ;
+            return;
         }
         public void PrintRow(ListObject table, Order order)
         {
@@ -1140,10 +1170,10 @@ namespace DomesticTransport
                 rowDelivery = table.ListRows[table.ListRows.Count - 1];
             }
 
-        
-           // rowDelivery.Range[1, table.ListColumns["№ Доставки"].Index].Value = delivery.Number;
+
+            // rowDelivery.Range[1, table.ListColumns["№ Доставки"].Index].Value = delivery.Number;
         }
-            public Order GetFromFile(string file)
+        public Order GetFromFile(string file)
         {
             Order order = new Order();
             Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
@@ -1153,7 +1183,7 @@ namespace DomesticTransport
             if (str == "") return null;
 
             str = FindValue("Номер грузополучателя", rng, 0, 1);
-           // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
+            // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
             Regex regexId = new Regex(@"\d+");
             string idcustomer = regexId.Match(str).Value;
             order.Customer.Id = idcustomer;
