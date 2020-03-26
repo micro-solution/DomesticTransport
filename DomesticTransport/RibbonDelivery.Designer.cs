@@ -78,14 +78,14 @@
             this.groupGeneral.Items.Add(this.btnStart);
             this.groupGeneral.Items.Add(this.btnReadForms);
             this.groupGeneral.Items.Add(this.BtnLoadAllOrders);
-            this.groupGeneral.Label = "Список";
+            this.groupGeneral.Label = "Загрузка заказов";
             this.groupGeneral.Name = "groupGeneral";
             // 
             // btnStart
             // 
             this.btnStart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnStart.Image = ((System.Drawing.Image)(resources.GetObject("btnStart.Image")));
-            this.btnStart.Label = "Формировать список доставок";
+            this.btnStart.Label = "Export from SAP";
             this.btnStart.Name = "btnStart";
             this.btnStart.ShowImage = true;
             this.btnStart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStart_Click);
@@ -94,7 +94,7 @@
             // 
             this.btnReadForms.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnReadForms.Image = ((System.Drawing.Image)(resources.GetObject("btnReadForms.Image")));
-            this.btnReadForms.Label = "Загрузить заявки";
+            this.btnReadForms.Label = "Order from CS";
             this.btnReadForms.Name = "btnReadForms";
             this.btnReadForms.ShowImage = true;
             this.btnReadForms.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadForms_Click);
