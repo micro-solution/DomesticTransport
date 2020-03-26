@@ -141,23 +141,28 @@ namespace DomesticTransport
             int ix = 0;
             int MaxCost = 0;
             string city = "";
-       
-                                                        /// подходящие варианты перевозчиков
+
+            /// подходящие варианты перевозчиков
 
             for (int i = 0; i < mapDelivery.Count; i++)
             {      //выбор дальней точки
                 DeliveryPoint point = mapDelivery[i];
 
-                int MaxCostPoint = (from rv in rateVariants
-                                    where rv.City == point.City &&
-                                            rv.Tonnage > tonnageNeed
-                                    select rv.PriceFirstPoint
-                            ).Max();
-                if (MaxCost < MaxCostPoint)
-                {
-                    MaxCost = MaxCostPoint;
-                    ix = i;
-                    city = point.City;
+                //  List < DeliveryPoint > variants  
+                int? MaxCostPoint = 0;
+                MaxCostPoint = (from rv in RateList
+                                where rv.City == point.City &&
+                                        rv.Tonnage > tonnageNeed
+                                select rv.PriceFirstPoint
+                            )?.Max();
+                if (MaxCostPoint != null)
+                { 
+                    if (MaxCost < MaxCostPoint)
+                    {
+                        MaxCost =(int) MaxCostPoint;
+                        ix = i;
+                        city = point.City;
+                    }
                 }
 
             }
@@ -176,7 +181,7 @@ namespace DomesticTransport
                     TruckRate variantRate = rateVariants[rateIx];
                     variantRate.TotalDeliveryCost = 0;
                     // считаем общую стоимость
-                    for (int pointNumber = 1; pointNumber < mapDelivery.Count; pointNumber++)
+                    for (int pointNumber = 0; pointNumber < mapDelivery.Count; pointNumber++)
                     {
                         if (mapDelivery[pointNumber].City == city && !hasFirstpoint)
                         {
