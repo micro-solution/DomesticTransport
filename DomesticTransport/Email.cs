@@ -94,8 +94,11 @@ namespace DomesticTransport
             }
         }
 
-        public void CreateMessage (string addres, string text, string body,
-                              string copyTo)
+        public void CreateMessage (string addres,
+                                   string text,                                    
+                                   string subject,
+                                   string body,
+                                   string copyTo)
         {
             OutlookApp.Session.Logon();
             Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
@@ -103,10 +106,11 @@ namespace DomesticTransport
          
             mail.To = addres;
             mail.Subject = text;
-            mail.Body = body;
+            mail.HTMLBody = body;
             mail.BCC = "";
-            mail.CC = "";
-            
+            mail.CC = copyTo;
+            mail.Subject = subject;
+            mail.Display();
         }
     }
 }

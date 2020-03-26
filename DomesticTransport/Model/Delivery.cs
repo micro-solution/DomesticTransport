@@ -143,7 +143,7 @@ namespace DomesticTransport.Model
         public bool CheckDeliveryWeght(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;
-            return sum < 20200;
+            return sum < 20100;
         }
     }
 }

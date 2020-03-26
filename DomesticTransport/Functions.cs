@@ -84,11 +84,11 @@ namespace DomesticTransport
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
-            Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
+            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = totalSheet.ListObjects["TableTotal"];
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
-            Range range = totalTable.DataBodyRange;
-            if (range == null || totalTable == null) return;
+            //Range range = functionsBook.;
+            if (carTable == null || totalTable == null) return;
             Email messenger = new Email();
                  for (int i =1; i < carTable.ListRows.Count; i++)
             {
@@ -99,7 +99,7 @@ namespace DomesticTransport
                 string body ="";
                 string copyTo = "";
 
-                messenger.CreateMessage(addres: addres, text:"",body:"",copyTo:"");
+                messenger.CreateMessage(addres: addres, text:"",subject: "" ,body:"",copyTo:"");
                 //messenger.
             }
 
