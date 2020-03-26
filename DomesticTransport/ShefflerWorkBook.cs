@@ -256,7 +256,7 @@ namespace DomesticTransport
                 Worksheet sh = Globals.ThisWorkbook.Sheets[sheetName];
                 return sh;
             }
-            catch (Exception ex)
+            catch
             {
                 throw new Exception($"Не удалось получить лист \"{sheetName}\"");
             }
@@ -338,7 +338,9 @@ namespace DomesticTransport
                                     where p.IdCustomer == customerId
                                     select p.PriorityRoute
                                      ).Distinct().ToList();
-                int maxPriority = routes.Max();
+                int maxPriority = 0;
+                if (routes.Count != 0) maxPriority = routes.Max();
+                
                 priorityRoute = maxPriority > priorityRoute ? maxPriority : priorityRoute;
             }
 

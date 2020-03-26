@@ -1,11 +1,7 @@
-﻿using System;
-using System.Data;
-using System.Drawing;
+﻿using Microsoft.Office.Interop.Excel;
+
+using System;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Excel;
-using Microsoft.VisualStudio.Tools.Applications.Runtime;
-using Excel = Microsoft.Office.Interop.Excel;
-using Office = Microsoft.Office.Core;
 
 namespace DomesticTransport
 {
@@ -49,8 +45,7 @@ namespace DomesticTransport
             {
                 OrdersTable.Range.AutoFilter(Field: 1);
             }
-        }     
-
+        }
 
         // Фильтр заказов по активной доставке   
         private void TableCarrier_SelectionChange(Range Target)
@@ -61,8 +56,9 @@ namespace DomesticTransport
             Range TargetCell = Globals.ThisWorkbook.Application.ActiveCell;
             OrdersTable.Range.AutoFilter(Field: 1);
             if (TargetCell == null) return;
+            if (carrierTable.DataBodyRange == null) return;
             try
-            {      
+            {
                 Range commonRng = Globals.ThisWorkbook.Application.Intersect(TargetCell, carrierTable.DataBodyRange);
 
                 if (commonRng != null)
@@ -71,37 +67,11 @@ namespace DomesticTransport
                     OrdersTable.Range.AutoFilter(Field: 1, Criteria1: numberDelivery);
                 }
             }
-            catch (Exception ex){ MessageBox.Show(ex.Message);
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        //private void TableOrders1_Change(Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
-        //{
-        //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-        //ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
-        //if ( OrdersTable == null) return;
-
-        //         //При заполнении программой выключено обновление экрана
-
-        //if (Globals.ThisWorkbook.Application.ScreenUpdating && targetRange.Text !="")
-        //{
-        //    if (targetRange.Column == OrdersTable.ListColumns["№ Доставки"].Range.Column)
-        //    {
-        //        if (int.TryParse(targetRange.Text, out int num))
-        //        {                    
-        //            Functions functions = new Functions();
-        //            functions.СhangeDelivery();
-        //        }
-        //        else
-        //        {
-        //           targetRange.Value = 0;
-        //        }
-
-        //numberDelivery 
-        //MessageBox.Show("dkj " + targetRange.Value);
-        // Пересчитать все доставки
-        //}
-        /// }
-        //}
     }
 }

@@ -214,11 +214,14 @@ namespace DomesticTransport
             ListObject deliveryTable = deliverySheet.ListObjects["TableCarrier"];
             int idRoute = 0;
             int number = 0;
-            foreach (Range rng in deliveryTable.ListColumns["№ Доставки"].DataBodyRange)
+            if (deliveryTable.ListColumns["№ Доставки"].DataBodyRange != null)
             {
-                if (int.TryParse(rng.Text, out int valueCell))
+                foreach (Range rng in deliveryTable.ListColumns["№ Доставки"].DataBodyRange)
                 {
-                    if (number < valueCell) number = valueCell;
+                    if (int.TryParse(rng.Text, out int valueCell))
+                    {
+                        if (number < valueCell) number = valueCell;
+                    }
                 }
             }
             number++;
@@ -319,7 +322,7 @@ namespace DomesticTransport
             Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, deliveryTable.DataBodyRange);
             if (commonRng == null) return;
 
-            DialogResult msg = MessageBox.Show("Удалить авто с заказами", "Удалить", MessageBoxButtons.YesNo);
+            DialogResult msg = MessageBox.Show("Удалить авто с заказами", "Удалить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.No == msg) return;
             ShefflerWorkBook workBook = new ShefflerWorkBook();
 
