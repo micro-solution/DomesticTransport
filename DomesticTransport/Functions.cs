@@ -707,7 +707,7 @@ namespace DomesticTransport
         private Order GetOrder(Range row)
         {
             Order order = new Order();
-            Debug.WriteLine(row.Row);
+            Debug.WriteLine("Загрузить заказ строка -"+ row.Row);
 
             order.Id = row.Cells[1, GetColumn(row.Parent, "Delivery", 1)].Text;
             if (string.IsNullOrWhiteSpace(order.Id)) return null;
