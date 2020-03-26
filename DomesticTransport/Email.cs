@@ -93,24 +93,36 @@ namespace DomesticTransport
                 Debug.WriteLine(ex.Message);
             }
         }
-
-        public void CreateMessage (string addres,
-                                   string text,                                    
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addres">Email</param>        
+        /// <param name="subject">Тема</param>
+        /// <param name="body">Сообщение</param>
+        /// <param name="copyTo">в копию</param>
+        public void CreateMessage (string addres,                                                                     
                                    string subject,
                                    string body,
                                    string copyTo)
         {
+            try
+            {
             OutlookApp.Session.Logon();
             Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
-         
-         
             mail.To = addres;
-            mail.Subject = text;
+            mail.Subject ="" ;
             mail.HTMLBody = body;
             mail.BCC = "";
-            mail.CC = copyTo;
-            mail.Subject = subject;
+            mail.CC = copyTo;        
+            mail.Subject = subject;    
             mail.Display();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }                                        
+         
         }
     }
 }

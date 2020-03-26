@@ -86,27 +86,44 @@ namespace DomesticTransport
             ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
             Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
             ListObject totalTable = totalSheet.ListObjects["TableTotal"];
+            
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Сообщения"];
+            ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
+
             ShefflerWorkBook functionsBook = new ShefflerWorkBook();
             //Range range = functionsBook.;
-            if (carTable == null || totalTable == null) return;
+            if (carTable == null || tableEmail == null ) return;
             Email messenger = new Email();
-                 for (int i =1; i < carTable.ListRows.Count; i++)
+                 for (int i =1; i <= carTable.ListRows.Count; i++)
             {
                 ListRow row = carTable.ListRows[i];
                 string Company = row.Range[1, carTable.ListColumns["Компания"].Index].Text;
-                string addres = "aevseev@micro-solution.ru";
-                string textMsg = "hello";
-                string body ="";
-                string copyTo = "";
 
-                messenger.CreateMessage(addres: addres, text:"",subject: "" ,body:"",copyTo:"");
-                //messenger.
+                Range findCell = tableEmail.ListColumns["Компания"]?.Range.Find(What: Company);
+
+                /// Найти Email
+                string addres = findCell ==null ? "" : findCell.Offset[0,1].Value;
+                string textMsg = messageSheet.Cells[3,2].Value;
+                string subject = messageSheet.Cells[1,2].Value;
+                string signature = messageSheet.Cells[4, 2].Value;
+                string copyTo = messageSheet.Cells[2, 2].Value;
+                string date = deliverySheet.Range["DateDelivery"].Text;
+
+                textMsg = textMsg.Replace("[date]", date);
+                string body =   textMsg +                                  
+                                signature;
+                messenger.CreateMessage(addres: addres,
+                                        subject: subject,
+                                        body:body,
+                                        copyTo: copyTo ); 
+               
             }
 
 
 
         }
 
+      
         /// <summary>
         /// Загрузка All Orders
         /// </summary>

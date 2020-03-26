@@ -112,37 +112,6 @@ namespace DomesticTransport
             List<TruckRate> rates = RateList; //Вся таблица
             Truck truck = null;
             List<TruckRate> rateVariants = new List<TruckRate>();
-
-
-            //rateVariants = rates.FindAll(r =>
-            //                            r.City == mapDelivery[0].City &&
-            //                            (r.Tonnage + 0.1) * 1000 > totalWeight
-            //                            ).ToList();
-
-            //  Выборка по Городу в первой точке                                                                              
-            // double MaxTottage = truckSelect.Tonnage + truckSelect.Tonnage * 0.1;    Допустимый перегруз       
-
-            //if (rateVariants.Count > 0)
-            //{
-            //    for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
-            //    {
-
-            //        TruckRate variantRate = rateVariants[rateIx];
-            //        variantRate.TotalDeliveryCost = rateVariants[rateIx].PriceFirstPoint;
-            //        for (int pointNumber = 1; pointNumber < mapDelivery.Count; pointNumber++)
-            //        {
-            //            TruckRate addPointRate =
-            //                rates.Where(x => x.Company == variantRate.Company &&
-            //                                    x.Tonnage == variantRate.Tonnage &&
-            //                                    x.City == mapDelivery[pointNumber].City).First();
-            //            if (addPointRate.PriceAddPoint > 0)
-            //                variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;
-            //        }
-            //        rateVariants[rateIx] = variantRate;
-            //    }
-
-
-            //    rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
             double tonnageNeed = totalWeight / 1000 - 0.1;      /// 100kg Допустимый перегруз
 
             if (mapDelivery.FindAll(m=>m.City !="MSK" && m.City != "MO").Count >0)
@@ -200,7 +169,7 @@ namespace DomesticTransport
 
             if (rateVariants.Count > 0)
             {
-                //По каждому варианту
+                //По каждому варианту фирмы с дальним городом
                 for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
                 {
                     bool hasFirstpoint = false;
@@ -216,6 +185,7 @@ namespace DomesticTransport
                         }
                         else
                         {
+                            //Ищем стоимость доп точки в другом городе для той же машины 
                         TruckRate addPointRate =
                             RateList.Where(x => x.Company == variantRate.Company &&
                                                 x.Tonnage == variantRate.Tonnage &&
