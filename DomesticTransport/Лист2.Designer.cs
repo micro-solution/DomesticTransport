@@ -21,6 +21,8 @@ namespace DomesticTransport {
         
         internal Microsoft.Office.Tools.Excel.ListObject TableOrders1;
         
+        internal Microsoft.Office.Tools.Excel.NamedRange DateDelivery;
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
         
@@ -120,6 +122,7 @@ namespace DomesticTransport {
             this.BeginInit();
             this.TableCarrier.BeginInit();
             this.TableOrders1.BeginInit();
+            this.DateDelivery.BeginInit();
         }
         
         /// 
@@ -127,6 +130,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
+            this.DateDelivery.EndInit();
             this.TableOrders1.EndInit();
             this.TableCarrier.EndInit();
             this.EndInit();
@@ -139,6 +143,7 @@ namespace DomesticTransport {
         private void InitializeControls() {
             this.TableCarrier = Globals.Factory.CreateListObject(null, null, "Лист2:TableCarrier", "TableCarrier", this);
             this.TableOrders1 = Globals.Factory.CreateListObject(null, null, "Лист2:TableOrders", "TableOrders1", this);
+            this.DateDelivery = Globals.Factory.CreateNamedRange(null, null, "DateDelivery", "DateDelivery", this);
         }
         
         /// 
@@ -154,6 +159,10 @@ namespace DomesticTransport {
             // TableOrders1
             // 
             this.TableOrders1.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // DateDelivery
+            // 
+            this.DateDelivery.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
             // 
             // Лист2
             // 
@@ -171,6 +180,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
+            this.DateDelivery.Dispose();
             this.TableOrders1.Dispose();
             this.TableCarrier.Dispose();
             base.OnShutdown();
