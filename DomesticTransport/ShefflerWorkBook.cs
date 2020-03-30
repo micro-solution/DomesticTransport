@@ -404,6 +404,23 @@ namespace DomesticTransport
             }
             return currentRng;
         }
-
+        #region Вспомогательные
+        /// <summary>
+        /// Ищет в диапазоне текст возвращает значение ячейки по указанному смещению
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="rng"></param>
+        /// <param name="offsetRow"></param>
+        /// <param name="offsetCol"></param>
+        /// <returns></returns>
+        public static string FindValue(string header, Range rng, int offsetRow = 0, int offsetCol = 0)
+        {
+            Range findCell = rng.Find(What: header, LookIn: XlFindLookIn.xlValues);
+            if (findCell == null) return "";
+            findCell = findCell.Offset[offsetRow, offsetCol];
+            string valueCell = findCell.Text;
+            return valueCell;
+        }
+        #endregion Вспомогательные
     }
 }

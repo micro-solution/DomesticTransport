@@ -1199,32 +1199,32 @@ namespace DomesticTransport
             Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
             Worksheet sh = wb.Sheets[1];
             Range rng = sh.UsedRange;
-            string str = FindValue("Заявка на перевозку", rng, 0, 0);
+            string str = ShefflerWorkBook.FindValue("Заявка на перевозку", rng, 0, 0);
             if (str == "") return null;
 
-            str = FindValue("Номер грузополучателя", rng, 0, 1);
+            str = ShefflerWorkBook.FindValue("Номер грузополучателя", rng, 0, 1);
             // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
             Regex regexId = new Regex(@"\d+");
             string idcustomer = regexId.Match(str).Value;
             order.Customer.Id = idcustomer;
 
-            str = FindValue("Грузополучатель", rng, 0, 1);
+            str = ShefflerWorkBook.FindValue("Грузополучатель", rng, 0, 1);
             order.Customer.Name = str.Trim();
 
-            str = FindValue("Номер накладной", rng, 0, 1);
+            str = ShefflerWorkBook.FindValue("Номер накладной", rng, 0, 1);
             order.Id = str.Replace(", ", " / ");
 
-            str = FindValue("Стоимость", rng, 0, 0);
+            str = ShefflerWorkBook.FindValue("Стоимость", rng, 0, 0);
             Regex regexCost = new Regex(@"(\d+\s?)+(\,\d+)?");
             str = regexCost.Match(str).Value;
             order.Cost = double.TryParse(str, out double ct) ? ct : 0;
 
-            str = FindValue("брутто", rng, 0, 0);
+            str = ShefflerWorkBook.FindValue("брутто", rng, 0, 0);
             str = regexCost.Match(str).Value;
             double weight = double.TryParse(str, out double wt) ? wt : 0;
             order.WeightNetto = weight;
 
-            str = FindValue("грузовых", rng, 0, 0);
+            str = ShefflerWorkBook.FindValue("грузовых", rng, 0, 0);
             str = regexId.Match(str).Value;
             int countPallets = int.TryParse(str, out int count) ? count : 0;
             order.PalletsCount = countPallets;
@@ -1233,22 +1233,7 @@ namespace DomesticTransport
         }
 
         #region Вспомогательные
-        /// <summary>
-        /// Ищет в диапазоне текст возвращает значение ячейки по указанному смещению
-        /// </summary>
-        /// <param name="header"></param>
-        /// <param name="rng"></param>
-        /// <param name="offsetRow"></param>
-        /// <param name="offsetCol"></param>
-        /// <returns></returns>
-        public string FindValue(string header, Range rng, int offsetRow = 0, int offsetCol = 0)
-        {
-            Range findCell = rng.Find(What: header, LookIn: XlFindLookIn.xlValues);
-            if (findCell == null) return "";
-            findCell = findCell.Offset[offsetRow, offsetCol];
-            string valueCell = findCell.Text;
-            return valueCell;
-        }
+
         /// <summary>
         /// Ищет в строке или на листе ячейку с заголовком и возвращает столбец
         /// </summary>
@@ -1287,7 +1272,7 @@ namespace DomesticTransport
             {
                 DefaultExt = "*.xls*",
                 CheckFileExists = true,
-                InitialDirectory = Properties.Settings.Default.SapUnloadPath,
+                InitialDirectory = Settings.Default.SapUnloadPath,
                 ValidateNames = true,
                 Multiselect = false,
                 Filter = "Excel|*.xls*"
