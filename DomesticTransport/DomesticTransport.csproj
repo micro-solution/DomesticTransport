@@ -186,11 +186,11 @@
     <Compile Include="Лист7.Designer.cs">
       <DependentUpon>Лист7.Designer.xml</DependentUpon>
     </Compile>
-    <Compile Include="Лист8.cs">
+    <Compile Include="Лист81.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
     </Compile>
-    <Compile Include="Лист8.Designer.cs">
-      <DependentUpon>Лист8.Designer.xml</DependentUpon>
+    <Compile Include="Лист81.Designer.cs">
+      <DependentUpon>Лист81.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="Лист9.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
@@ -298,8 +298,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Лист8.Designer.xml">
-      <DependentUpon>Лист8.cs</DependentUpon>
+    <None Include="Лист81.Designer.xml">
+      <DependentUpon>Лист81.cs</DependentUpon>
     </None>
   </ItemGroup>
   <PropertyGroup>
@@ -330,7 +330,7 @@
           <HostItem Name="Лист5" Code="Лист5.cs" CanonicalName="Лист5" CanActivate="false" DisplayName="Customers" Blueprint="Лист5.Designer.xml" GeneratedCode="Лист5.Designer.cs" />
           <HostItem Name="Лист6" Code="Лист6.cs" CanonicalName="Лист6" DisplayName="Rate" Blueprint="Лист6.Designer.xml" GeneratedCode="Лист6.Designer.cs" />
           <HostItem Name="Лист7" Code="Лист7.cs" CanonicalName="Лист7" CanActivate="false" DisplayName="ShippingCompany" Blueprint="Лист7.Designer.xml" GeneratedCode="Лист7.Designer.cs" />
-          <HostItem Name="Лист8" Code="Лист8.cs" CanonicalName="Лист8" DisplayName="Сообщения" Blueprint="Лист8.Designer.xml" GeneratedCode="Лист8.Designer.cs" />
+          <HostItem Name="Лист8" Code="Лист81.cs" CanonicalName="Лист8" DisplayName="Mail" Blueprint="Лист81.Designer.xml" GeneratedCode="Лист81.Designer.cs" />
           <HostItem Name="Лист9" Code="Лист9.cs" CanonicalName="Лист9" DisplayName="Rate Inetrnational" Blueprint="Лист9.Designer.xml" GeneratedCode="Лист9.Designer.cs" />
         </Host>
       </FlavorProperties>

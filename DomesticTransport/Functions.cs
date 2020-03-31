@@ -1104,6 +1104,8 @@ namespace DomesticTransport
             ListObject totalTable = totalSheet.ListObjects["TableTotal"];
             List<Delivery> deliveries = new List<Delivery>();
             Range total = new ShefflerWorkBook().GetCurrentShippingRange();
+            if (total == null) return null;
+            
               for (int i=0; i < total.Rows.Count;i++)
             {
 
@@ -1122,18 +1124,18 @@ namespace DomesticTransport
             ListObject totalTable = totalSheet.ListObjects["TableTotal"];                           
 
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
+            
             for (int i = 1; i <= carTable.ListRows.Count; i++)
             {
             string сompanyShipping = "";
                 ListRow row = carTable.ListRows[i];
-                сompanyShipping = row.Range[1, carTable.ListColumns["Компания"].Index].Text;
-                Delivery delivery = deliveries.Find(x => x.Truck.ShippingCompany.Name == сompanyShipping);
+                сompanyShipping= "QB"  ;//= row.Range[1, carTable.ListColumns["Компания"].Index].Text;
+               // Delivery delivery = deliveries.Find(x => x.Truck.ShippingCompany.Name == сompanyShipping);
                 //Todo метод getDelivery                
 
             //Прикрепленный файл
-            string attachment = GenerateFile(deliveries[0]);
-            //   Range findCell = tableEmail.ListColumns["Компания"]?.Range.Find(What: Company);
-                        
+            string attachment = @"D:\Лист Microsoft Excel.xlsx";  //GenerateFile(deliveries[0]);
+            //   Range findCell = tableEmail.ListColumns["Компания"]?.Range.Find(What: Company);                       
             
             /// Найти Email
             Email messenger = new Email();
@@ -1142,7 +1144,7 @@ namespace DomesticTransport
 
                 messenger.CreateMessage(сompany: сompanyShipping,
                                         date: date,
-                                        attachment: "") ;
+                                        attachment: attachment) ;
             }
 
         }

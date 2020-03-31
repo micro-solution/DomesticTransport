@@ -16,6 +16,7 @@ namespace DomesticTransport
 
         private void Лист7_Shutdown(object sender, System.EventArgs e)
         {
+
         }
 
         #region Код, созданный конструктором VSTO

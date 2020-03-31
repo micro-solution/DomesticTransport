@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Tools.Applications.Runtime;
@@ -9,9 +10,20 @@ using Office = Microsoft.Office.Core;
 namespace DomesticTransport
 {
     public partial class ThisWorkbook
-    {
+    {  
         private void ThisWorkbook_Startup(object sender, System.EventArgs e)
         {
+           // try
+           // {
+           // Excel.Worksheet MsgSheet = Globals.ThisWorkbook.Sheets["Email"];
+           // Excel.Shape btnSaveReestr = MsgSheet.Shapes.Item("btnSave");
+           //     Debug.WriteLine(btnSaveReestr.TextFrame2.TextRange.Text);
+           // }
+           //catch (Exception ex)
+           // {
+           //     Debug.WriteLine(ex.Message);
+           // }
+            //btnSaveReestr.
         }
 
         private void ThisWorkbook_Shutdown(object sender, System.EventArgs e)

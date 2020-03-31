@@ -17,9 +17,7 @@ namespace DomesticTransport {
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
     public sealed partial class Лист8 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
-        internal Microsoft.Office.Tools.Excel.ListObject TableEmail;
-        
-        internal Microsoft.Office.Tools.Excel.NamedRange MessageText;
+        internal Microsoft.Office.Tools.Excel.ListObject Таблица8;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -118,8 +116,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
-            this.TableEmail.BeginInit();
-            this.MessageText.BeginInit();
+            this.Таблица8.BeginInit();
         }
         
         /// 
@@ -127,8 +124,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.MessageText.EndInit();
-            this.TableEmail.EndInit();
+            this.Таблица8.EndInit();
             this.EndInit();
         }
         
@@ -137,8 +133,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.TableEmail = Globals.Factory.CreateListObject(null, null, "Лист8:TableEmail", "TableEmail", this);
-            this.MessageText = Globals.Factory.CreateNamedRange(null, null, "MessageText", "MessageText", this);
+            this.Таблица8 = Globals.Factory.CreateListObject(null, null, "Лист8:Таблица8", "Таблица8", this);
         }
         
         /// 
@@ -160,8 +155,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
-            this.MessageText.Dispose();
-            this.TableEmail.Dispose();
+            this.Таблица8.Dispose();
             base.OnShutdown();
         }
     }

@@ -38,43 +38,39 @@ namespace DomesticTransport
                                     string date,
                                    string attachment)
         {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Сообщения"];
-            ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
+           ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
             string addres = "";
             string stroka = "";
             foreach (Range row in tableEmail.DataBodyRange.Rows)
             {
-                addres = row.Text;
-                if (addres == сompany)
+                if (row.Cells[1, 2].Text == сompany)
                 {
-                    stroka = stroka == "" ? row.Value : $"{stroka}; {addres}";
-                }
-                //string addres = row == null ? "" : findCell.Offset[0,1].Value;
+                    addres = row.Cells[1,2].Text;
+                    stroka = stroka == "" ? addres : $"{stroka}; {addres}";
+                }                            
             }
 
-            string signature = GetHtmlBoby();
+
+            string signature = ReadReestrSignature(); 
             string textMsg = messageSheet.Cells[10, 2].Text;
             string subject = messageSheet.Cells[8, 2].Text;
             string copyTo = messageSheet.Cells[9, 2].Text;
             textMsg = textMsg.Replace("[date]", date);
-
-            string HtmlBody = "< html >< body >< div >" +
+            string HtmlBody =
                   textMsg +
                    "<br><br>" +
-               signature +
-               "</div></body></html>";
-
-                try
-            {
+               signature;            
+            try
+            {                                   
             OutlookApp.Session.Logon();
             Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
-            mail.To = addres;
-            mail.Subject ="" ;
+            mail.To = addres;             
             mail.HTMLBody = HtmlBody;
             mail.BCC = "";
             mail.CC = copyTo;        
             mail.Subject = subject;
-                mail.Attachments.Add( new Attachment(attachment));
+            mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
             mail.Display();
             }
             catch(Exception ex)
@@ -82,56 +78,56 @@ namespace DomesticTransport
                 MessageBox.Show(ex.Message);
                 return;
             }                                        
-        }
-         
+        }         
 
-        private string GetHtmlBoby()
-        {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Сообщения"];
-            //ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
-            Range range = messageSheet.Range["A1:B7"];
-            string text="";
-              for(int i = 1;i<=range.Rows.Count; i++)
-            {
-                text = range.Cells[i,2].Value;
-                text += "<br>" + text;
-            }
-
-            return text;
-        }
-
+       
         public static void WriteReestrSignature() 
         {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Сообщения"];
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             Range range = messageSheet.Range["A1:B7"];
 
             RegistryKey currentUserKey = Registry.CurrentUser;
-            RegistryKey SignatureKey = currentUserKey.CreateSubKey("Sheffler");          
-            SignatureKey.SetValue("Ответственное лицо", range.Cells[ 1, 2 ].Text);          
+            RegistryKey SignatureKey = currentUserKey.CreateSubKey("Sheffler");
+            string name = range.Cells[1, 2].Text;
+            //if (string.IsNullOrWhiteSpace(name))
+            //{
+            //    MessageBox.Show("Заполните информацию об отправителе.");
+            //}
+            SignatureKey.SetValue("Ответственное лицо", name);
             SignatureKey.SetValue("Компания", range.Cells[ 2, 2 ].Text);                  
             SignatureKey.SetValue("Адрес", range.Cells[ 3, 2 ].Text);    
             SignatureKey.SetValue("Город", range.Cells[ 4, 2 ].Text);           
             SignatureKey.SetValue("Тел", range.Cells[ 5, 2 ].Text);
             SignatureKey.SetValue("Моб", range.Cells[ 6, 2 ].Text);
-            SignatureKey.SetValue("Email", range.Cells[ 7, 2 ].Text);
-
+            SignatureKey.SetValue("Mail", range.Cells[ 7, 2 ].Text);
             SignatureKey.Close();
-
         }
+
         public static string ReadReestrSignature()
         {
             RegistryKey currentUserKey = Registry.CurrentUser;
+            
             RegistryKey SignatureKey = currentUserKey.OpenSubKey("Sheffler");
+            if (SignatureKey == null) 
+            {
+                WriteReestrSignature();
+                SignatureKey = currentUserKey.OpenSubKey("Sheffler");
+            }
 
+          string name = SignatureKey.GetValue("Ответственное лицо").ToString();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                WriteReestrSignature();
+                name = SignatureKey.GetValue("Ответственное лицо").ToString();                
+            }
             string signature =
-            "<br>" + SignatureKey.GetValue("Ответственное лицо").ToString()
+            "<br>" + name
             + "<br>" + SignatureKey.GetValue("Компания").ToString()
             + "<br>" + SignatureKey.GetValue("Адрес").ToString()
             + "<br>" + SignatureKey.GetValue("Город").ToString()
             + "<br>" + SignatureKey.GetValue("Тел").ToString()
-            + "<br>" + SignatureKey.GetValue("Тел").ToString()
-            + "<br>" + SignatureKey.GetValue("Моб").ToString();
-
+            + "<br>" + SignatureKey.GetValue("Моб").ToString()
+            + "<br>" + SignatureKey.GetValue("Mail").ToString();
 
             SignatureKey.Close();
             return signature;

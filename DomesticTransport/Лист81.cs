@@ -12,7 +12,6 @@ namespace DomesticTransport
     {
         private void Лист8_Startup(object sender, System.EventArgs e)
         {
-            
         }
 
         private void Лист8_Shutdown(object sender, System.EventArgs e)

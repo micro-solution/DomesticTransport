@@ -8,14 +8,13 @@ using Office = Microsoft.Office.Core;
 
 namespace DomesticTransport
 {
-    public partial class Лист8
+    public partial class Лист10
     {
-        private void Лист8_Startup(object sender, System.EventArgs e)
+        private void Лист10_Startup(object sender, System.EventArgs e)
         {
-            
         }
 
-        private void Лист8_Shutdown(object sender, System.EventArgs e)
+        private void Лист10_Shutdown(object sender, System.EventArgs e)
         {
         }
 
@@ -27,8 +26,8 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(Лист8_Startup);
-            this.Shutdown += new System.EventHandler(Лист8_Shutdown);
+            this.Startup += new System.EventHandler(Лист10_Startup);
+            this.Shutdown += new System.EventHandler(Лист10_Shutdown);
         }
 
         #endregion
