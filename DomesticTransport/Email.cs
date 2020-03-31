@@ -38,8 +38,8 @@ namespace DomesticTransport
                                    string copyTo)
         {
             string signature = GetHtmlBoby();
-                string HtmlBody =
-                 "< html >< body >< div >" +
+                
+                string HtmlBody = "< html >< body >< div >" +
                   body +
                    "<br><br>" +
                signature +
@@ -79,5 +79,7 @@ namespace DomesticTransport
 
             return text;
         }
+
+      
     }
 }
