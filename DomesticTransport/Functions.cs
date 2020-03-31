@@ -51,7 +51,7 @@ namespace DomesticTransport
                 orders = GetOrdersInfo(ordersPath, orders);  // Поиск свойств в файле All orders
             }
 
-            List<Delivery> deliveries = CompleteAuto2(orders);
+            List<Delivery> deliveries = CompleteAuto(orders);
 
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
@@ -77,105 +77,7 @@ namespace DomesticTransport
 
             ExcelOptimizateOff();
         }
-        /// <summary>
-        /// Подготовка сообщений перевозчикам
-        /// </summary>
-        internal void CreateMasseges()
-        {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
-            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            ListObject totalTable = totalSheet.ListObjects["TableTotal"];
-
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Сообщения"];
-            ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
-
-            ShefflerWorkBook functionsBook = new ShefflerWorkBook();
-            //Range range = functionsBook.;
-            if (carTable == null || tableEmail == null) return;
-            string Company = "";
-            List<Delivery> deliveries = new List<Delivery>();
-            for (int i = 1; i <= carTable.ListRows.Count; i++)
-            {
-             ListRow row = carTable.ListRows[i];
-            Company = row.Range[1, carTable.ListColumns["Компания"].Index].Text;
-                Delivery delivery = deliveries.Find(x => x.Truck.ShippingCompany.Name == Company);
-                    //Todo метод getDelivery
-                    //if (delivery   
-            }
-
-            //   Range findCell = tableEmail.ListColumns["Компания"]?.Range.Find(What: Company);
-            string addres = "";
-            string stroka = "";
-            foreach (Range row in tableEmail.DataBodyRange.Rows)
-            {
-                addres = row.Value;
-                if (addres == Company)
-                {
-                    stroka = stroka == "" ? row.Value : $"{stroka}; {addres}";
-                }
-                //string addres = row == null ? "" : findCell.Offset[0,1].Value;
-            }
-            /// Найти Email
-            Email messenger = new Email();
-            string textMsg = messageSheet.Cells[10, 2].Value;
-            string subject = messageSheet.Cells[8, 2].Value;
-            string copyTo = messageSheet.Cells[9, 2].Value;
-            string date = deliverySheet.Range["DateDelivery"].Text;
-            textMsg = textMsg.Replace("[date]", date);
-            string body = textMsg;
-            messenger.CreateMessage(addres: addres,
-                                    subject: subject,
-                                    body: body,
-                                    copyTo: copyTo);
-
-
-        }
-
-        private string GenerateFile(Delivery delivery)
-        {
-            string folder= GenerateFolder();
-            string filename=$"{folder}\\DeliveryOrder.xlsx";
-            Workbook workbook =new Workbook();
-            Worksheet sh = workbook.Sheets[1];
-            string[] headers = { "ID перевозчика",
-                "Перевозчик",  "Тип ТС, тонн" ,   "Водитель (ФИО)",  "Номер, марка",
-                "Телефон водителя",
-                "Город"            ,
-                "Направление"   ,
-                "Порядок выгрузки",    "Номер грузополучателя",
-                "Номер накладной", "Номер поставки",
-                "Грузополучатель",
-                "Брутто вес",
-                "Нетто вес",   "Кол-во паллет" ,  "Стоимость поставки" ,
-                "Стоимость доставки"
-                    };
-            for(int i = 0; i < headers.Length; i++)
-            {
-                sh.Cells[1, i].Valie = headers[i];                
-            }
-            foreach (Order order in delivery.Orders)
-            {
-
-            }
-            Range rng = sh.Range[sh.Cells[1,1], sh.Cells[1,headers.Length] ];
-            
-
-            sh.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, rng);
-            workbook.SaveAs(filename,XlFileFormat.xlExcel12);
-            return filename;
-        }
-        private string GenerateFolder()
-        {
-            string folder="";
-            folder = Directory.GetCurrentDirectory() +"\\ShippingOrders";
-
-            if(!Directory.Exists(folder) )
-            {
-             Directory.CreateDirectory(folder);
-            }
-            return folder;
-        }
+      
             /// <summary>
             /// Загрузка All Orders
             /// </summary>
@@ -307,7 +209,7 @@ namespace DomesticTransport
                         Customer = customer
                     });
                 }
-                List<Delivery> deliveries = CompleteAuto2(orders);
+                List<Delivery> deliveries = CompleteAuto(orders);
                 Range totalRng = workBook.GetCurrentShippingRange();
                 if (deliveries != null && deliveries.Count > 0 && totalRng != null)
                 {
@@ -527,128 +429,13 @@ namespace DomesticTransport
             pb.Close();
         }
 
+
         /// <summary>
         /// Распределить заказы по автомобилям
         /// </summary>
         /// <param name="orders"></param>
         /// <returns></returns>
         public List<Delivery> CompleteAuto(List<Order> orders)
-        {
-            List<Delivery> deliveries = new List<Delivery>();
-            List<Order> orderList = orders.OrderBy(x => x.WeightNetto).ToList();
-            ShefflerWorkBook functionsBook = new ShefflerWorkBook();
-            List<DeliveryPoint> pointMap = functionsBook.RoutesTable;
-
-            #region Проверка если клиента (точки) нет в таблице маршрутов
-            Delivery emptyDelivery = null;
-            bool emptyPoint;
-            for (int k = orderList.Count - 1; k >= 0; k--)
-            {
-                emptyPoint = true;
-                foreach (DeliveryPoint point in pointMap)
-                {
-                    emptyPoint = true;
-                    if (orderList[k].Customer.Id == point.IdCustomer)
-                    {
-                        emptyPoint = false;
-                        break;
-                    }
-
-                }
-                if (emptyPoint)
-                {
-                    if (emptyDelivery == null)
-                    {
-                        emptyDelivery = new Delivery(orderList[k]);
-                    }
-                    else
-                    {
-                        emptyDelivery.Orders.Add(orderList[k]);
-                    }
-                    orderList.RemoveAt(k);
-                }
-            }
-            if (emptyDelivery != null)
-            {
-                emptyDelivery.HasRoute = false;
-                deliveries.Add(emptyDelivery);
-            }
-            #endregion
-
-            Delivery delivery = null;
-            int pointNumber = 0;
-            while (orderList.Count > 0)
-            {
-
-                for (int orderNumber = orderList.Count - 1; orderNumber >= 0; orderNumber--)
-                {
-
-                    if (orderList[orderNumber].Customer.Id != pointMap[pointNumber].IdCustomer) continue;
-
-                    if (delivery == null)
-                    {
-                        orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
-                        orderList[orderNumber].PointNumber = 1;
-
-                        delivery = new Delivery(orderList[orderNumber]);
-                        delivery.Number = 1;
-                        orderList.RemoveAt(orderNumber);
-                    }
-                    else
-                    {
-                        List<DeliveryPoint> points = delivery.MapDelivery;
-                        DeliveryPoint point = points.First();
-                        Debug.WriteLine($"pointDelivery={point.Id} pointMap={pointMap[pointNumber].Id}");
-                        //  новый маршрут в таблице
-                        if (delivery.MapDelivery.First().Id != pointMap[pointNumber].Id)
-                        {
-                            deliveries.Add(delivery);
-                            orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
-                            delivery = new Delivery(orderList[orderNumber]);
-                            delivery.Number = deliveries.Count + 1;
-                            Order orderLastAdd = delivery.Orders.Last();
-                            orderLastAdd.PointNumber = delivery.MapDelivery.Count;
-                            orderList.RemoveAt(orderNumber);
-                        }
-                        else
-                        {
-                            //По весу 
-                            if (!delivery.CheckDeliveryWeght(orderList[orderNumber]))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                orderList[orderNumber].DeliveryPoint = pointMap[pointNumber];
-                                delivery.Orders.Add(orderList[orderNumber]);
-                                Order orderLastAdd = delivery.Orders.Last();
-                                orderLastAdd.PointNumber = delivery.MapDelivery.Count;
-                                orderList.RemoveAt(orderNumber);
-                            }
-                        }
-                    }
-                }
-
-                Debug.WriteLine($"pointNumber = {pointNumber}");
-                pointNumber++;
-                if (pointNumber >= pointMap.Count) pointNumber = 0;
-            }
-            if (delivery != null && delivery.Orders.Count > 0)
-            {
-                deliveries.Add(delivery);
-            }
-            return deliveries;
-        }
-
-
-
-
-        /// <summary>
-        /// Распределить заказы по автомобилям
-        /// </summary>
-        /// <param name="orders"></param>
-        /// <returns></returns>
-        public List<Delivery> CompleteAuto2(List<Order> orders)
         {
             List<Delivery> deliveries = new List<Delivery>();
             orders = orders.OrderBy(x => x.WeightNetto).ToList();
@@ -705,7 +492,6 @@ namespace DomesticTransport
             return deliveries;
         }
 
-
         #region  Сбор данных sap
 
         /// <summary>
@@ -741,7 +527,24 @@ namespace DomesticTransport
                 if (pb.Cancel) break;
                 pb.Action("Заказ " + (row.Row - range.Row + 1) + " из " + pb.Count);
                 Order order = GetOrder(row);
-                if (order != null) orders.Add(order);
+                if (order != null) 
+                {
+                    Order orderClient = orders.Find(x => x.Customer.Id == order.Customer.Id);
+                    if (orderClient != null && orderClient.WeightNetto + order.WeightNetto > 20100)
+                    {
+                        orderClient.Id = orderClient.Id + " \\ " + order.Id;
+                        orderClient.TransportationUnit = orderClient.TransportationUnit + 
+                                                        " \\ " + order.TransportationUnit;
+                        orderClient.PalletsCount += order.PalletsCount;
+                        orderClient.WeightNetto += order.WeightNetto;
+                        orderClient.WeightBrutto += order.WeightBrutto;
+                        orderClient.Cost += order.Cost;
+                    }
+                    else
+                    {
+                        orders.Add(order);
+                    }
+                }
             }
             pb.Close();
             sapBook.Close();
@@ -940,7 +743,7 @@ namespace DomesticTransport
                     row.Range[1, totalTable.ListColumns["Нетто вес"].Index].Value = order.WeightNetto;
 
                     row.Range[1, totalTable.ListColumns["Грузополучатель"].Index].Value = $"{order.Customer.Name}";
-                    //                   $"{order.Customer.Name}  {order.Customer.Name} {order.Customer.AddresStreet}";
+                    // $"{order.Customer.Name}  {order.Customer.Name} {order.Customer.AddresStreet}";
                     row.Range[1, totalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
                     row.Range[1, totalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
 
@@ -986,8 +789,8 @@ namespace DomesticTransport
                     row.Range[1, ordersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
                 }
             }
-
         }
+
 
 
         /// <summary>
@@ -1030,7 +833,9 @@ namespace DomesticTransport
             return orders;
         }
 
-
+         /// <summary>
+         /// 
+         /// </summary>
         public void AcceptDelivery()
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
@@ -1038,10 +843,8 @@ namespace DomesticTransport
             ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
             Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
             ListObject totalTable = totalSheet.ListObjects["TableTotal"];
-
             List<Delivery> deliveries = new List<Delivery>();
             List<Order> orders = GetOrdersFromTable(ordersTable);
-
 
             foreach (ListRow delveryRow in carrierTable.ListRows)
             {
@@ -1063,21 +866,18 @@ namespace DomesticTransport
 
                 foreach (Delivery delivery in deliveries)
                 {
-                    transportationUnit = new string('0', 18 - transportationUnit.Length) + transportationUnit;
+                    //transportationUnit = new string('0', 18 - transportationUnit.Length) + transportationUnit;
+                    
                     Order orderf = delivery.Orders.Find(x => x.TransportationUnit == transportationUnit);
                     if (orderf != null)
                     {
-
                         totalRow.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value = orderf.PointNumber;
+
                     }
                 }
             }
-
             totalSheet.Activate();
         }
-
-
-
 
         /// <summary>
         /// Прменять список доставок для списка заказов
@@ -1194,6 +994,10 @@ namespace DomesticTransport
             }
             return 0;
         }
+
+        /// <summary>
+        /// Загрузка заказов, формирование доставок вывод на лист
+        /// </summary>
         public void GetOrdersFromFiles()
         {
             //string path = OpenFileDialog();
@@ -1211,7 +1015,7 @@ namespace DomesticTransport
                 Order order = GetFromFile(file);
                 if (order != null) orders.Add(order);
             }
-            List<Delivery> deliveries = CompleteAuto2(orders);
+            List<Delivery> deliveries = CompleteAuto(orders);
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
             ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
@@ -1223,6 +1027,12 @@ namespace DomesticTransport
 
             return;
         }
+
+        /// <summary>
+        /// Вывод заказа в таблицу
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="order"></param>
         public void PrintRow(ListObject table, Order order)
         {
             ListRow rowDelivery;
@@ -1239,6 +1049,12 @@ namespace DomesticTransport
 
             // rowDelivery.Range[1, table.ListColumns["№ Доставки"].Index].Value = delivery.Number;
         }
+
+        /// <summary>
+        /// Получить инфо из выгруза  
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public Order GetFromFile(string file)
         {
             Order order = new Order();
@@ -1277,6 +1093,99 @@ namespace DomesticTransport
             wb.Close();
             return order;
         }
+        /// <summary>
+        /// Подготовка сообщений перевозчикам
+        /// </summary>
+        public void CreateMasseges()
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
+            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = totalSheet.ListObjects["TableTotal"];
+                        
+
+            List<Delivery> deliveries = new List<Delivery>();
+            for (int i = 1; i <= carTable.ListRows.Count; i++)
+            {
+            string сompanyShipping = "";
+                ListRow row = carTable.ListRows[i];
+                сompanyShipping = row.Range[1, carTable.ListColumns["Компания"].Index].Text;
+                Delivery delivery = deliveries.Find(x => x.Truck.ShippingCompany.Name == сompanyShipping);
+                //Todo метод getDelivery                
+
+            //Прикрепленный файл
+            string attachment = GenerateFile(deliveries[0]);
+            //   Range findCell = tableEmail.ListColumns["Компания"]?.Range.Find(What: Company);
+                        
+            
+            /// Найти Email
+            Email messenger = new Email();
+            
+            string date = deliverySheet.Range["DateDelivery"].Text;
+
+                messenger.CreateMessage(сompany: сompanyShipping,
+                                        date: date,
+                                        attachment: "") ;
+            }
+
+        }
+
+        /// <summary>
+        /// Создать файл 
+        /// </summary>
+        /// <param name="delivery"></param>
+        /// <returns></returns>
+        private string GenerateFile(Delivery delivery)
+        {
+            string folder = GenerateFolder();
+            string filename = $"{folder}\\DeliveryOrder.xlsx";
+            Workbook workbook = new Workbook();
+            Worksheet sh = workbook.Sheets[1];
+            string[] headers = { "ID перевозчика",
+                "Перевозчик",  "Тип ТС, тонн" ,
+                "Водитель (ФИО)",  "Номер, марка",
+                "Телефон водителя",
+                "Город"            ,
+                "Направление"   ,
+                "Порядок выгрузки",    "Номер грузополучателя",
+                "Номер накладной", "Номер поставки",
+                "Грузополучатель",
+                "Брутто вес",
+                "Нетто вес",   "Кол-во паллет" ,
+                "Стоимость поставки" ,
+                "Стоимость доставки"
+                    };
+            for (int i = 0; i < headers.Length; i++)
+            {
+                sh.Cells[1, i].Valie = headers[i];
+            }
+            foreach (Order order in delivery.Orders)
+            {
+
+            }
+            Range rng = sh.Range[sh.Cells[1, 1], sh.Cells[1, headers.Length]];
+
+
+            sh.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, rng);
+            workbook.SaveAs(filename, XlFileFormat.xlExcel12);
+            return filename;
+        }
+        /// <summary>
+        /// Создать папку для заявок прикрепления к письмам
+        /// </summary>
+        /// <returns></returns>
+        private string GenerateFolder()
+        {
+            string folder = "";
+            folder = Directory.GetCurrentDirectory() + "\\ShippingOrders";
+
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            return folder;
+        }
+
 
         #region Вспомогательные
 

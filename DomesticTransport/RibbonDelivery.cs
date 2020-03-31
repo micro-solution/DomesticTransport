@@ -21,7 +21,6 @@ namespace DomesticTransport
         {
             Functions functions = new Functions();
             functions.CreateMasseges();
-
         }
 
         private void btnAcept_Click(object sender, RibbonControlEventArgs e)

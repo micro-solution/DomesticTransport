@@ -223,7 +223,6 @@ namespace DomesticTransport
                                       r.Tonnage  > tonnageNeed
                                         ).ToList();
 
-
             if (rateVariants.Count > 0)
             {
                 for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
@@ -376,8 +375,6 @@ namespace DomesticTransport
             RoutesTable = null;
             return idRoute;
         }
-
-
 
 
         public Range GetCurrentShippingRange()

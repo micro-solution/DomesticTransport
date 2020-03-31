@@ -46,10 +46,14 @@
             get => _transportationUnit;
             set
             {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    _transportationUnit = new string('0', 18 - value.Length) + value;
-                }
+                //if (_transportationUnit.Length >18)
+                //{
+                    _transportationUnit = value;
+                //}
+                //else if (!string.IsNullOrWhiteSpace(value))
+                //{
+                //    _transportationUnit = new string('0', 18 - value.Length) + value;
+                //}
             }
         }
         private string _transportationUnit;
