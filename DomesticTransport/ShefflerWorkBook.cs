@@ -418,6 +418,25 @@ namespace DomesticTransport
             string valueCell = findCell.Text;
             return valueCell;
         }
+
+        /// <summary>
+        /// Оптимизация Excel
+        /// </summary>
+        public static void ExcelOptimizateOn()
+        {
+            Globals.ThisWorkbook.Application.ScreenUpdating = false;
+            Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationManual;
+        }
+
+        /// <summary>
+        /// Возврат Excel в исходное состояние
+        /// </summary>
+        public static void ExcelOptimizateOff()
+        {
+            Globals.ThisWorkbook.Application.ScreenUpdating = true;
+            Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
+        }
+
         #endregion Вспомогательные
     }
 }

@@ -13,13 +13,13 @@ namespace DomesticTransport {
     
     
     /// 
-    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(4)]
+    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(8)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
-    public sealed partial class Лист3 : Microsoft.Office.Tools.Excel.WorksheetBase {
+    public sealed partial class Лист8 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
-        internal Microsoft.Office.Tools.Excel.ListObject TableRoutes;
+        internal Microsoft.Office.Tools.Excel.ListObject TableEmail;
         
-        internal Microsoft.Office.Tools.Excel.ListObject TableCity;
+        internal Microsoft.Office.Tools.Excel.NamedRange MessageText;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -27,8 +27,8 @@ namespace DomesticTransport {
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Лист3(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
-                base(factory, serviceProvider, "Лист3", "Лист3") {
+        public Лист8(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
+                base(factory, serviceProvider, "Лист8", "Лист8") {
         }
         
         /// 
@@ -37,7 +37,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void Initialize() {
             base.Initialize();
-            Globals.Лист3 = this;
+            Globals.Лист8 = this;
             global::System.Windows.Forms.Application.EnableVisualStyles();
             this.InitializeCachedData();
             this.InitializeControls();
@@ -118,8 +118,8 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
-            this.TableRoutes.BeginInit();
-            this.TableCity.BeginInit();
+            this.TableEmail.BeginInit();
+            this.MessageText.BeginInit();
         }
         
         /// 
@@ -127,8 +127,8 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.TableCity.EndInit();
-            this.TableRoutes.EndInit();
+            this.MessageText.EndInit();
+            this.TableEmail.EndInit();
             this.EndInit();
         }
         
@@ -137,8 +137,8 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.TableRoutes = Globals.Factory.CreateListObject(null, null, "Лист3:TableRoutes", "TableRoutes", this);
-            this.TableCity = Globals.Factory.CreateListObject(null, null, "Лист3:TableCity", "TableCity", this);
+            this.TableEmail = Globals.Factory.CreateListObject(null, null, "Лист8:TableEmail", "TableEmail", this);
+            this.MessageText = Globals.Factory.CreateNamedRange(null, null, "MessageText", "MessageText", this);
         }
         
         /// 
@@ -160,23 +160,23 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
-            this.TableCity.Dispose();
-            this.TableRoutes.Dispose();
+            this.MessageText.Dispose();
+            this.TableEmail.Dispose();
             base.OnShutdown();
         }
     }
     
     internal sealed partial class Globals {
         
-        private static Лист3 _Лист3;
+        private static Лист8 _Лист8;
         
-        internal static Лист3 Лист3 {
+        internal static Лист8 Лист8 {
             get {
-                return _Лист3;
+                return _Лист8;
             }
             set {
-                if ((_Лист3 == null)) {
-                    _Лист3 = value;
+                if ((_Лист8 == null)) {
+                    _Лист8 = value;
                 }
                 else {
                     throw new System.NotSupportedException();

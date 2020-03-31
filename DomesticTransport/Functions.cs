@@ -43,7 +43,7 @@ namespace DomesticTransport
                 sapFiles.Close();
             }
 
-            ExcelOptimizateOn();
+           ShefflerWorkBook.ExcelOptimizateOn();
             List<Order> orders = GetOrdersFromSap(sapPath);
 
             if (ordersPath != "" && File.Exists(ordersPath))
@@ -75,11 +75,11 @@ namespace DomesticTransport
             }
             deliverySheet.Columns.AutoFit();
 
-            ExcelOptimizateOff();
+            ShefflerWorkBook.ExcelOptimizateOff();
         }
       
             /// <summary>
-            /// Загрузка All Orders
+            /// Загрузка All Orders 
             /// </summary>
             public void LoadAllOrders()
         {
@@ -758,7 +758,7 @@ namespace DomesticTransport
         /// </summary>
         public void СhangeDelivery()
         {
-            ExcelOptimizateOn();
+            ShefflerWorkBook.ExcelOptimizateOn();
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
 
             ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
@@ -770,7 +770,7 @@ namespace DomesticTransport
             PrintDelivery(deliveries, carrierTable);
             // EditPrintOrders()
 
-            ExcelOptimizateOff();
+            ShefflerWorkBook.ExcelOptimizateOff();
             foreach (ListRow row in ordersTable.ListRows)
             {
                 string strNum = row.Range[1, ordersTable.ListColumns["№ Доставки"].Index].Text;
@@ -1093,6 +1093,24 @@ namespace DomesticTransport
             wb.Close();
             return order;
         }
+
+
+        public List<Delivery> GetDeliveriesFromTotalSheet()
+        {
+
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
+            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+            ListObject totalTable = totalSheet.ListObjects["TableTotal"];
+            List<Delivery> deliveries = new List<Delivery>();
+            Range total = new ShefflerWorkBook().GetCurrentShippingRange();
+              for (int i=0; i < total.Rows.Count;i++)
+            {
+
+            }
+            return deliveries;
+        }
+
         /// <summary>
         /// Подготовка сообщений перевозчикам
         /// </summary>
@@ -1101,10 +1119,9 @@ namespace DomesticTransport
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
             Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            ListObject totalTable = totalSheet.ListObjects["TableTotal"];
-                        
+            ListObject totalTable = totalSheet.ListObjects["TableTotal"];                           
 
-            List<Delivery> deliveries = new List<Delivery>();
+            List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             for (int i = 1; i <= carTable.ListRows.Count; i++)
             {
             string сompanyShipping = "";
@@ -1202,39 +1219,7 @@ namespace DomesticTransport
             Range fcell = findRange.Find(What: header, LookIn: XlFindLookIn.xlValues);
             return fcell == null ? 0 : fcell.Column;
         }
-
-        /// <summary>
-        /// Оптимизация Excel
-        /// </summary>
-        public static void ExcelOptimizateOn()
-        {
-            Globals.ThisWorkbook.Application.ScreenUpdating = false;
-            Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationManual;
-        }
-
-        /// <summary>
-        /// Возврат Excel в исходное состояние
-        /// </summary>
-        public static void ExcelOptimizateOff()
-        {
-            Globals.ThisWorkbook.Application.ScreenUpdating = true;
-            Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
-        }
-
-        public string OpenFileDialog()
-        {
-            using (OpenFileDialog ofd = new OpenFileDialog()
-            {
-                DefaultExt = "*.xls*",
-                CheckFileExists = true,
-                InitialDirectory = Settings.Default.SapUnloadPath,
-                ValidateNames = true,
-                Multiselect = false,
-                Filter = "Excel|*.xls*"
-            })
-
-                return (ofd.ShowDialog() == DialogResult.OK) ? ofd.FileName : "";
-        }
+                   
     }
     #endregion Вспомогательные
 

@@ -19,14 +19,14 @@ namespace DomesticTransport
             this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
             this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
-
+           
         }
         #endregion
 
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-          
+            ShefflerWorkBook.ExcelOptimizateOff();
+           Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];          
             deliverySheet.Calculate();
         }
 
