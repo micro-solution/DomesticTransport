@@ -1188,7 +1188,7 @@ namespace DomesticTransport
             ListObject totalTable = totalSheet.ListObjects["TableTotal"];
 
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
-            if (deliveries.Count == null) return;
+            if (deliveries?.Count == 0) return;
             string[] shippingComp = (from d in deliveries
                                      select d.Truck.ShippingCompany.Name).ToArray();
 
