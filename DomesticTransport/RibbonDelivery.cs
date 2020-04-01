@@ -61,5 +61,16 @@ namespace DomesticTransport
             Functions functions = new Functions();
             functions.GetOrdersFromFiles();
         }
+
+        private void btnAccept_Click(object sender, RibbonControlEventArgs e)
+        {
+            Functions functions = new Functions();
+            functions.CopyDelivery();
+        }
+
+        private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)
+        {
+            Email.WriteReestrSignature();
+        }
     }
 }
