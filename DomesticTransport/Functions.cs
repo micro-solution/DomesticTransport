@@ -734,7 +734,7 @@ namespace DomesticTransport
 
                     row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
                     row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck.ShippingCompany.Name;
-                    row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck.Tonnage ;
+                    row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck.Tonnage;
                     row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
 
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
@@ -914,12 +914,12 @@ namespace DomesticTransport
             {
                 string idOrder = totalRow.Range[1,
                                  totalTable.ListColumns["Номер поставки"].Index].Text;
-                
+
                 foreach (Delivery delivery in deliveries)
                 {
                     //transportationUnit = new string('0', 18 - transportationUnit.Length) + transportationUnit;
 
-                    Order orderf = delivery.Orders.Find(x => x.Id == idOrder);
+                    Order orderf = delivery.Orders.Find(x => x.Id.Contains(idOrder));
                     if (orderf != null)
                     {
                         totalRow.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value = orderf.PointNumber;
@@ -1054,19 +1054,22 @@ namespace DomesticTransport
         {
             //string path = OpenFileDialog();
             string path = "";
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.InitialDirectory = Settings.Default.SapUnloadPath; //Directory.GetCurrentDirectory() ;
-            dialog.IsFolderPicker = true;
-            if (dialog.ShowDialog() != CommonFileDialogResult.Ok) { return; }
-            path = dialog.FileName;
-            string[] files = Directory.GetFiles(path);
+            //CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            //dialog.InitialDirectory = Settings.Default.SapUnloadPath; //Directory.GetCurrentDirectory() ;
+            //dialog.IsFolderPicker = true;
+            //if (dialog.ShowDialog() != CommonFileDialogResult.Ok) { return; }
+            //path = dialog.FileName;
+            //string[] files = Directory.GetFiles(path);
+
+
+            string file = SapFiles.SelectFile();
+            if (!File.Exists(file)) return;
+
             List<Order> orders = new List<Order>();
 
-            foreach (string file in files)
-            {
-                Order order = GetFromFile(file);
-                if (order != null) orders.Add(order);
-            }
+            Order order = GetFromFile(file);
+            if (order != null) orders.Add(order);
+
             List<Delivery> deliveries = CompleteAuto(orders);
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
@@ -1176,13 +1179,13 @@ namespace DomesticTransport
                     delivery.Truck = new Truck();
                     delivery.Truck.ShippingCompany = new ShippingCompany();
                     delivery.Truck.ShippingCompany.Name = total.Cells[i, totalTable.ListColumns["Перевозчик"].Index].Text;
-                    string tonn =  total.Cells[i, totalTable.ListColumns["Тип ТС, тонн"].Index].Text;
-                    delivery.Truck.Tonnage = double.TryParse(tonn, out double ton) ? ton : 0; 
+                    string tonn = total.Cells[i, totalTable.ListColumns["Тип ТС, тонн"].Index].Text;
+                    delivery.Truck.Tonnage = double.TryParse(tonn, out double ton) ? ton : 0;
 
                     deliveries.Add(delivery);
                 }
 
-                string ID = total.Cells[i, totalTable.ListColumns["Номер поставки"].Index].Text;            
+                string ID = total.Cells[i, totalTable.ListColumns["Номер поставки"].Index].Text;
 
                 if (ID != "")
                 {
@@ -1216,12 +1219,12 @@ namespace DomesticTransport
 
                     order.Route = total.Cells[i, totalTable.ListColumns["Направление"].Index].Text;
 
-                    
-                    
+
+
                     delivery.Orders.Add(order);
                 }
-             
-               
+
+
             }
             return deliveries;
         }
@@ -1295,7 +1298,7 @@ namespace DomesticTransport
         {
             if (deliveries.Count == 0) return "";
 
-            string folder = GenerateFolder();         
+            string folder = GenerateFolder();
             string filename = $"{folder}\\Delivery" +
                         deliveries[0].Truck.ShippingCompany.Name +
                        "(" + DateTime.Today.ToShortDateString() + ").xlsx";
@@ -1370,7 +1373,7 @@ namespace DomesticTransport
         private string GenerateFolder()
         {
             string folder = "";
-            folder =Globals.ThisWorkbook.Path + "\\ShippingOrders";
+            folder = Globals.ThisWorkbook.Path + "\\ShippingOrders";
 
             if (!Directory.Exists(folder))
             {

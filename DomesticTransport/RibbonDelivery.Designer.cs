@@ -104,7 +104,6 @@
             this.settings.Items.Add(this.btnSaveSignature);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
-            this.settings.Visible = false;
             // 
             // about
             // 
@@ -174,6 +173,7 @@
             // btnAccept
             // 
             this.btnAccept.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnAccept.Image = ((System.Drawing.Image)(resources.GetObject("btnAccept.Image")));
             this.btnAccept.Label = "Перенести в отгрузки";
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.ShowImage = true;
@@ -239,8 +239,10 @@
             // 
             // btnSaveSignature
             // 
+            this.btnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveSignature.Image")));
             this.btnSaveSignature.Label = "Сохранить подпись";
             this.btnSaveSignature.Name = "btnSaveSignature";
+            this.btnSaveSignature.ShowImage = true;
             this.btnSaveSignature.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveSignature_Click);
             // 
             // RibbonDelivery
