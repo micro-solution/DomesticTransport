@@ -62,10 +62,15 @@ namespace DomesticTransport
             functions.GetOrdersFromFiles();
         }
 
-        private void button4_Click(object sender, RibbonControlEventArgs e)
+        private void btnAccept_Click(object sender, RibbonControlEventArgs e)
         {
-            Signature signature = new Signature();
-            signature.ShowDialog();
+            Functions functions = new Functions();
+            functions.CopyDelivery();
+        }
+
+        private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)
+        {
+            Email.WriteReestrSignature();
         }
     }
 }
