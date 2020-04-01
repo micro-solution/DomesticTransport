@@ -223,7 +223,6 @@ namespace DomesticTransport
                                       r.Tonnage  > tonnageNeed
                                         ).ToList();
 
-
             if (rateVariants.Count > 0)
             {
                 for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
@@ -378,8 +377,6 @@ namespace DomesticTransport
         }
 
 
-
-
         public Range GetCurrentShippingRange()
         {
             Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
@@ -404,6 +401,42 @@ namespace DomesticTransport
             }
             return currentRng;
         }
+        #region Вспомогательные
+        /// <summary>
+        /// Ищет в диапазоне текст возвращает значение ячейки по указанному смещению
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="rng"></param>
+        /// <param name="offsetRow"></param>
+        /// <param name="offsetCol"></param>
+        /// <returns></returns>
+        public static string FindValue(string header, Range rng, int offsetRow = 0, int offsetCol = 0)
+        {
+            Range findCell = rng.Find(What: header, LookIn: XlFindLookIn.xlValues);
+            if (findCell == null) return "";
+            findCell = findCell.Offset[offsetRow, offsetCol];
+            string valueCell = findCell.Text;
+            return valueCell;
+        }
 
+        /// <summary>
+        /// Оптимизация Excel
+        /// </summary>
+        public static void ExcelOptimizateOn()
+        {
+            Globals.ThisWorkbook.Application.ScreenUpdating = false;
+            Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationManual;
+        }
+
+        /// <summary>
+        /// Возврат Excel в исходное состояние
+        /// </summary>
+        public static void ExcelOptimizateOff()
+        {
+            Globals.ThisWorkbook.Application.ScreenUpdating = true;
+            Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
+        }
+
+        #endregion Вспомогательные
     }
 }

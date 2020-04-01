@@ -12,15 +12,38 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <OfficeApplication>Excel</OfficeApplication>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
     <ProjectGuid>{63EFF963-1E2F-41A0-8AD8-0D23FB6B4087}</ProjectGuid>
     <SolutionID>03e4c1fc-31a2-44d4-99de-0c269eaf8695</SolutionID>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishUrl>опубликовать\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>ru</TargetCulture>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <ProductName>DomesticTransport</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>DomesticTransport</FriendlyName>
+    <OfficeApplicationDescription />
   </PropertyGroup>
   <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Среда выполнения Microsoft Visual Studio 2010 Tools for Office %28x86 и x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -115,6 +138,12 @@
     <Compile Include="Forms\ProgressBar.Designer.cs">
       <DependentUpon>ProgressBar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Signature.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Signature.Designer.cs">
+      <DependentUpon>Signature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="ShefflerWorkBook.cs" />
     <Compile Include="Model\Carrier.cs" />
@@ -149,6 +178,12 @@
     </Compile>
     <Compile Include="Лист1.Designer.cs">
       <DependentUpon>Лист1.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист101.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист101.Designer.cs">
+      <DependentUpon>Лист101.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="Лист2.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
@@ -186,6 +221,21 @@
     <Compile Include="Лист7.Designer.cs">
       <DependentUpon>Лист7.Designer.xml</DependentUpon>
     </Compile>
+    <Compile Include="Лист81.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист81.Designer.cs">
+      <DependentUpon>Лист81.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Лист9.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист9.Designer.cs">
+      <DependentUpon>Лист9.Designer.xml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\Signature.resx">
+      <DependentUpon>Signature.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -194,6 +244,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="RibbonDelivery.resx">
       <DependentUpon>RibbonDelivery.cs</DependentUpon>
@@ -204,9 +255,14 @@
     <EmbeddedResource Include="Лист2.resx">
       <DependentUpon>Лист2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Лист81.resx">
+      <DependentUpon>Лист81.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="DomesticTransport.xlsx" />
-    <None Include="DomesticTransport_TemporaryKey.pfx" />
+    <None Include="DomesticTransport_TemporaryKey.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -278,6 +334,24 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист9.Designer.xml">
+      <DependentUpon>Лист9.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист81.Designer.xml">
+      <DependentUpon>Лист81.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Лист101.Designer.xml">
+      <DependentUpon>Лист101.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons8-truck-96 %283%29.ico" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -291,6 +365,9 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>7E72940E2624AEBA4E4F29E90D2B5C3886842131</ManifestCertificateThumbprint>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icons8-truck-96 %283%29.ico</ApplicationIcon>
+  </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
   <ProjectExtensions>
@@ -300,12 +377,15 @@
         <Host Name="Excel Document" Path=".\DomesticTransport.xlsx" GeneratedCodeNamespace="DomesticTransport">
           <HostItem Name="ThisWorkbook" Code="ThisWorkbook.cs" CanonicalName="ThisWorkbook" Blueprint="ThisWorkbook.Designer.xml" GeneratedCode="ThisWorkbook.Designer.cs" />
           <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Отгрузка" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
+          <HostItem Name="Лист10" Code="Лист101.cs" CanonicalName="Лист10" DisplayName="Лист1" Blueprint="Лист101.Designer.xml" GeneratedCode="Лист101.Designer.cs" />
           <HostItem Name="Лист2" Code="Лист2.cs" CanonicalName="Лист2" DisplayName="Delivery" Blueprint="Лист2.Designer.xml" GeneratedCode="Лист2.Designer.cs" />
           <HostItem Name="Лист3" Code="Лист3.cs" CanonicalName="Лист3" DisplayName="Routes" Blueprint="Лист3.Designer.xml" GeneratedCode="Лист3.Designer.cs" />
           <HostItem Name="Лист4" Code="Лист4.cs" CanonicalName="Лист4" CanActivate="false" DisplayName="ZoneCustomer" Blueprint="Лист4.Designer.xml" GeneratedCode="Лист4.Designer.cs" />
           <HostItem Name="Лист5" Code="Лист5.cs" CanonicalName="Лист5" CanActivate="false" DisplayName="Customers" Blueprint="Лист5.Designer.xml" GeneratedCode="Лист5.Designer.cs" />
           <HostItem Name="Лист6" Code="Лист6.cs" CanonicalName="Лист6" DisplayName="Rate" Blueprint="Лист6.Designer.xml" GeneratedCode="Лист6.Designer.cs" />
           <HostItem Name="Лист7" Code="Лист7.cs" CanonicalName="Лист7" CanActivate="false" DisplayName="ShippingCompany" Blueprint="Лист7.Designer.xml" GeneratedCode="Лист7.Designer.cs" />
+          <HostItem Name="Лист8" Code="Лист81.cs" CanonicalName="Лист8" DisplayName="Mail" Blueprint="Лист81.Designer.xml" GeneratedCode="Лист81.Designer.cs" />
+          <HostItem Name="Лист9" Code="Лист9.cs" CanonicalName="Лист9" DisplayName="Rate Inetrnational" Blueprint="Лист9.Designer.xml" GeneratedCode="Лист9.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
