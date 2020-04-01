@@ -13,11 +13,9 @@ namespace DomesticTransport {
     
     
     /// 
-    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(10)]
+    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(9)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
-    public sealed partial class Лист7 : Microsoft.Office.Tools.Excel.WorksheetBase {
-        
-        internal Microsoft.Office.Tools.Excel.ListObject Таблица4;
+    public sealed partial class Лист10 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -25,8 +23,8 @@ namespace DomesticTransport {
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Лист7(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
-                base(factory, serviceProvider, "Лист7", "Лист7") {
+        public Лист10(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
+                base(factory, serviceProvider, "Лист10", "Лист10") {
         }
         
         /// 
@@ -35,7 +33,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void Initialize() {
             base.Initialize();
-            Globals.Лист7 = this;
+            Globals.Лист10 = this;
             global::System.Windows.Forms.Application.EnableVisualStyles();
             this.InitializeCachedData();
             this.InitializeControls();
@@ -116,7 +114,6 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
-            this.Таблица4.BeginInit();
         }
         
         /// 
@@ -124,7 +121,6 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.Таблица4.EndInit();
             this.EndInit();
         }
         
@@ -133,7 +129,6 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.Таблица4 = Globals.Factory.CreateListObject(null, null, "Лист7:Таблица4", "Таблица4", this);
         }
         
         /// 
@@ -149,28 +144,19 @@ namespace DomesticTransport {
         private bool NeedsFill(string MemberName) {
             return this.DataHost.NeedsFill(this, MemberName);
         }
-        
-        /// 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        protected override void OnShutdown() {
-            this.Таблица4.Dispose();
-            base.OnShutdown();
-        }
     }
     
     internal sealed partial class Globals {
         
-        private static Лист7 _Лист7;
+        private static Лист10 _Лист10;
         
-        internal static Лист7 Лист7 {
+        internal static Лист10 Лист10 {
             get {
-                return _Лист7;
+                return _Лист10;
             }
             set {
-                if ((_Лист7 == null)) {
-                    _Лист7 = value;
+                if ((_Лист10 == null)) {
+                    _Лист10 = value;
                 }
                 else {
                     throw new System.NotSupportedException();

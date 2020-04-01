@@ -26,11 +26,20 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(Лист8_Startup);
-            this.Shutdown += new System.EventHandler(Лист8_Shutdown);
+            this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист8_SelectionChange);
+            this.Startup += new System.EventHandler(this.Лист8_Startup);
+            this.Shutdown += new System.EventHandler(this.Лист8_Shutdown);
+
         }
 
         #endregion
 
+        private void Лист8_SelectionChange(Excel.Range Target)
+        {
+            if (Target.Row ==1 && Target.Column == 3 )
+            {
+                Email.WriteReestrSignature();
+            }
+        }
     }
 }

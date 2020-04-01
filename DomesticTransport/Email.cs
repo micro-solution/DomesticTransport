@@ -51,7 +51,6 @@ namespace DomesticTransport
                 }                            
             }
 
-
             string signature = ReadReestrSignature(); 
             string textMsg = messageSheet.Cells[10, 2].Text;
             string subject = messageSheet.Cells[8, 2].Text;
