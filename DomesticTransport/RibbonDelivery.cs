@@ -61,5 +61,11 @@ namespace DomesticTransport
             Functions functions = new Functions();
             functions.GetOrdersFromFiles();
         }
+
+        private void button4_Click(object sender, RibbonControlEventArgs e)
+        {
+            Signature signature = new Signature();
+            signature.ShowDialog();
+        }
     }
 }

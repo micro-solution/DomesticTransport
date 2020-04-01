@@ -54,6 +54,7 @@
             this.btnSetts = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
+            this.button4 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -169,13 +170,13 @@
             // 
             // settings
             // 
+            this.settings.Items.Add(this.button4);
             this.settings.Items.Add(this.btnChangePoint);
             this.settings.Items.Add(this.btnAcept);
             this.settings.Items.Add(this.button3);
             this.settings.Items.Add(this.btnSetts);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
-            this.settings.Visible = false;
             // 
             // btnChangePoint
             // 
@@ -184,6 +185,7 @@
             this.btnChangePoint.Label = "Изменить маршрут";
             this.btnChangePoint.Name = "btnChangePoint";
             this.btnChangePoint.ShowImage = true;
+            this.btnChangePoint.Visible = false;
             this.btnChangePoint.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangePoint_Click);
             // 
             // btnAcept
@@ -193,6 +195,7 @@
             this.btnAcept.Label = "Принять ";
             this.btnAcept.Name = "btnAcept";
             this.btnAcept.ShowImage = true;
+            this.btnAcept.Visible = false;
             this.btnAcept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
             // 
             // button3
@@ -202,6 +205,7 @@
             this.button3.Label = "Изменить доставки";
             this.button3.Name = "button3";
             this.button3.ShowImage = true;
+            this.button3.Visible = false;
             // 
             // btnSetts
             // 
@@ -210,6 +214,7 @@
             this.btnSetts.Label = "Настройки";
             this.btnSetts.Name = "btnSetts";
             this.btnSetts.ShowImage = true;
+            this.btnSetts.Visible = false;
             // 
             // about
             // 
@@ -224,6 +229,15 @@
             this.btnAboutProgrramm.Label = "О программе";
             this.btnAboutProgrramm.Name = "btnAboutProgrramm";
             this.btnAboutProgrramm.ShowImage = true;
+            // 
+            // button4
+            // 
+            this.button4.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
+            this.button4.Label = "Подпись";
+            this.button4.Name = "button4";
+            this.button4.ShowImage = true;
+            this.button4.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button4_Click);
             // 
             // RibbonDelivery
             // 
@@ -266,6 +280,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadAllOrders;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadForms;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button4;
     }
 
     partial class ThisRibbonCollection
