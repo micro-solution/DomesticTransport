@@ -460,8 +460,8 @@ namespace DomesticTransport
                         Delivery delivery = null;
                         foreach (Delivery iDelivery in deliveries)
                         {
-                            if (iDelivery.Orders[0].DeliveryPoint.Id != point.Id) continue;
-                            if (iDelivery.CheckDeliveryWeght(orders[iOrder]   ))
+                            if (iDelivery.Orders[0].DeliveryPoint.Id != point.Id | iDelivery.Orders.Count>=3) continue;
+                            if (iDelivery.CheckDeliveryWeght(orders[iOrder]    ))
                             {
                                 delivery = iDelivery;
                                 break;
@@ -1266,7 +1266,8 @@ namespace DomesticTransport
                 foreach (Order order in delivery.Orders)
                 {
                     row++;
-                    list.ListRows[row].Range[1, 16].Value = order.DeliveryNumber;
+                    string nm = order.DeliveryNumber.ToString();
+                   list.Range[row, 16].Value =nm ;
                 }
             }
 
