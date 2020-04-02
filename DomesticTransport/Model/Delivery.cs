@@ -46,10 +46,13 @@ namespace DomesticTransport.Model
         {
             get
             {
-                return Truck?.Cost ?? 0;
+                double val = Truck?.Cost ?? 0;
+                val = val == 0 ? _cost : val ; 
+                return val;
             }
+            set { _cost = value; }
         }
-
+        private double _cost=0;
         /// <summary>
         /// Общий вес
         /// </summary>

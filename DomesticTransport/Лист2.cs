@@ -1,6 +1,9 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using DomesticTransport.Forms;
+using DomesticTransport.Model;
+using Microsoft.Office.Interop.Excel;
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -16,10 +19,11 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
+            this.TableCarrier.BeforeDoubleClick += new Microsoft.Office.Interop.Excel.DocEvents_BeforeDoubleClickEventHandler(this.TableCarrier_BeforeDoubleClick);
             this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
             this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
-           
+
         }
         #endregion
 
@@ -73,5 +77,24 @@ namespace DomesticTransport
             }
         }
 
+        private void TableCarrier_BeforeDoubleClick(Range Target, ref bool Cancel)
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
+
+            if (Target.Column == carrierTable.ListColumns["Компания"].Range.Column &&
+                Target.Row > carrierTable.HeaderRowRange.Row &&
+                Target.Text != "") 
+            {
+                ProviderEditor providerFrm = new ProviderEditor();
+                string wt = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["Вес доставки"].Range.Column].Text;
+                List<Order> orders = new Functions().GetOrdersFromTable(ordersTable);
+                providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
+                providerFrm.ShowDialog();
+
+            }
+                    
+        }
     }
 }

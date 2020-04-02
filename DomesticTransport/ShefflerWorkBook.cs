@@ -437,6 +437,31 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
         }
 
+        public static string GetProviderId(string providerName)
+        {
+            Worksheet sh = Globals.ThisWorkbook.Sheets["Rate"];
+            ListObject table = sh?.ListObjects["ProviderTable"];
+            if (table == null) return "table not found";
+            int colName = table.ListColumns["Company"].Index;
+            int colId = table.ListColumns["Id"].Index;
+            int colCounter = table.ListColumns["Счетчик"].Index;
+           string id = "";
+            foreach  (Range row in table.DataBodyRange.Rows)
+            {
+                if (row.Cells[1, colName].Text == providerName)
+                {
+                    string ix = row.Cells[1, colId].Text;
+                    int counter = int.TryParse(row.Cells[1, colCounter].Text, out int count) ? count : 0;
+                    row.Cells[1, colCounter].Value = ++counter;
+                    string Counter = counter.ToString();
+                    Counter = new string('0', 6 - Counter.Length) + Counter;
+                    id = ix + Counter;
+                    break;
+                }
+            }
+           return id;   
+        }
+
         #endregion Вспомогательные
     }
 }

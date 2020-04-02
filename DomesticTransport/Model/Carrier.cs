@@ -7,7 +7,7 @@
         public string Phone { get; set; }
 
 
-        ShippingCompany ShippingCompany { get; set; }
+        Provider ShippingCompany { get; set; }
 
 
     }

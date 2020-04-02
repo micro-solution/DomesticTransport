@@ -24,19 +24,19 @@
         /// </summary>
         public int Cost { get; set; }
 
-        public ShippingCompany ShippingCompany
+        public Provider ShippingCompany
         {
             get
             {
                 if (_shippingCompany == null)
                 {
-                    _shippingCompany = new ShippingCompany();
+                    _shippingCompany = new Provider();
                 }
                 return _shippingCompany;
             }
             set { _shippingCompany = value; }
         }
-        private ShippingCompany _shippingCompany;
+        private Provider _shippingCompany;
 
 
         public Truck() { }
@@ -48,7 +48,7 @@
             CostAddPoint = truckRate.PriceAddPoint;
             Cost = truckRate.TotalDeliveryCost;
             string companyName = truckRate.Company;
-            ShippingCompany = new ShippingCompany() { Name = companyName };
+            ShippingCompany = new Provider() { Name = companyName };
         }
     }
 }
