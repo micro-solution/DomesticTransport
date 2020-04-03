@@ -30,7 +30,7 @@ namespace DomesticTransport
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
             ShefflerWorkBook.ExcelOptimizateOff();
-           Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];          
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
             deliverySheet.Calculate();
         }
 
@@ -85,16 +85,30 @@ namespace DomesticTransport
 
             if (Target.Column == carrierTable.ListColumns["Компания"].Range.Column &&
                 Target.Row > carrierTable.HeaderRowRange.Row &&
-                Target.Text != "") 
+                Target.Text != "")
             {
                 ProviderEditor providerFrm = new ProviderEditor();
                 string wt = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["Вес доставки"].Range.Column].Text;
-                List<Order> orders = new Functions().GetOrdersFromTable(ordersTable);
-                providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
-                providerFrm.ShowDialog();
+                Functions functions = new Functions();
+                List<Order> orders = functions.GetOrdersFromTable(ordersTable);
+                Delivery delivery = new Delivery();
+                string numStr = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["№ Доставки"].Range.Column].Text;
+                int number = int.TryParse(numStr, out int n) ? n : 0;
+                if (number == 0) return;
+                delivery.Orders = orders.FindAll(o => o.DeliveryNumber == number);
+
+                if (orders.Count == 0) {return;  }
+                    providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
+                    providerFrm.ProviderName = Target.Text;
+                    providerFrm.MapDpelivery = delivery.MapDelivery;
+                    providerFrm.ShowDialog();
+                if (providerFrm.DialogResult == DialogResult.OK)
+                {
+                    Target.Value = providerFrm.ProviderName;
+                }
 
             }
-                    
+
         }
     }
 }

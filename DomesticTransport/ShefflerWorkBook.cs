@@ -105,7 +105,7 @@ namespace DomesticTransport
 
 
 
-        internal Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery)
+        public Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery , string provider ="")
         {
             if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
 
@@ -124,7 +124,15 @@ namespace DomesticTransport
             }
             if (rateVariants.Count >0)
             { 
+                if (provider == "")
+                {
                 truck = new Truck(rateVariants.First());
+                }
+                else
+                {
+                    TruckRate providerRate = rateVariants.Find(x => x.Company == provider);
+                    truck = providerRate.Company == "" ? truck : new Truck(providerRate);
+                }
             }
             return truck;
         }
@@ -149,6 +157,9 @@ namespace DomesticTransport
                 DeliveryPoint point = mapDelivery[i];
 
                 //  List < DeliveryPoint > variants  
+                try
+                {
+
                 int? MaxCostPoint = 0;
                 MaxCostPoint = (from rv in RateList
                                 where rv.City == point.City &&
@@ -163,6 +174,12 @@ namespace DomesticTransport
                         ix = i;
                         city = point.City;
                     }
+                }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"") ;
+                    throw new Exception("Не удалось найти точку.");
                 }
 
             }
@@ -459,6 +476,7 @@ namespace DomesticTransport
                     break;
                 }
             }
+            
            return id;   
         }
 
