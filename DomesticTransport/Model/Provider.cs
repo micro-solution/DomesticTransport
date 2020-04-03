@@ -1,6 +1,6 @@
 ﻿namespace DomesticTransport.Model
 {
-    class Provider
+   public class Provider
     {
         public Provider() { }
         public int Id { get; set; }

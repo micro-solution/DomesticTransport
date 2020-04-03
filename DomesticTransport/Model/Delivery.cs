@@ -9,7 +9,7 @@ namespace DomesticTransport.Model
     /// <summary>
     /// Доставка товара
     /// </summary>
-    class Delivery
+  public  class Delivery
     {
         /// <summary>
         /// Найден маршрут доставки в таблице

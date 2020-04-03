@@ -100,11 +100,12 @@ namespace DomesticTransport
                 if (orders.Count == 0) {return;  }
                     providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
                     providerFrm.ProviderName = Target.Text;
-                    providerFrm.MapDpelivery = delivery.MapDelivery;
+                    providerFrm.DeliveryTarget = delivery;                   
                     providerFrm.ShowDialog();
                 if (providerFrm.DialogResult == DialogResult.OK)
                 {
                     Target.Value = providerFrm.ProviderName;
+                    Target.Offset[0, 4].Value = providerFrm.CostDelivery;
                 }
 
             }

@@ -1,6 +1,6 @@
 ﻿namespace DomesticTransport.Model
 {
-    class Carrier
+   public class Carrier
     {
         public string Id { get; set; }
         public string Name { get; set; }
