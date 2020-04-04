@@ -151,6 +151,7 @@
       <DependentUpon>Signature.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
+    <Compile Include="ListTable.cs" />
     <Compile Include="ShefflerWorkBook.cs" />
     <Compile Include="Model\Carrier.cs" />
     <Compile Include="Model\Customer.cs" />

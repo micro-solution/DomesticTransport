@@ -82,7 +82,6 @@ namespace DomesticTransport
                                 CustomerNumber = row.Range[1, TableRoutes.ListColumns["Номер клиента"].Index].Text,
                                 Route = row.Range[1, TableRoutes.ListColumns["Маршрут"].Index].Text,
                                 RouteName = row.Range[1, TableRoutes.ListColumns["Направление"].Index].Text
-
                             };
                             _routes.Add(route);
                         }
@@ -97,36 +96,62 @@ namespace DomesticTransport
                 _routes = value;
             }
         }
+
+
+
         List<DeliveryPoint> _routes;
 
         public object DataTime { get; private set; }
 
 
-
-
-
-        public Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery , string provider ="")
+        public Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery, string provider = "")
         {
             if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
 
-            List<TruckRate> rates = RateList; //Вся таблица
+
             Truck truck = null;
             List<TruckRate> rateVariants = new List<TruckRate>();
             double tonnageNeed = totalWeight / 1000 - 0.1;      /// 100kg Допустимый перегруз
 
-            if (mapDelivery.FindAll(m=>m.City !="MSK" && m.City != "MO").Count >0)
+            try
             {
-            rateVariants = GetCostRegionsRoutes(tonnageNeed, mapDelivery);
+                if (mapDelivery.FindAll(m => m.City != "MSK" && m.City != "MO").Count > 0)
+                {
+                    bool isInternational = false;
+                    foreach(DeliveryPoint point in mapDelivery)
+                    {
+                        if (point.City == "")
+                        {
+                            isInternational = true;
+                            break;
+                        }
+                    }
+                        rateVariants = isInternational ?
+                       GetTruckRateInternational(tonnageNeed, mapDelivery)   : 
+                        GetTruckRate(tonnageNeed, mapDelivery);
+
+                }
+                else
+                {
+                    rateVariants = GetCostMskRoutes(tonnageNeed, mapDelivery);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                rateVariants = GetCostMskRoutes(tonnageNeed, mapDelivery);
+                truck = new Truck() { 
+                Cost = 0   ,
+                Tonnage = 0    
+                };
+                truck.ShippingCompany.Name = "";
+                return truck;
             }
-            if (rateVariants.Count >0)
-            { 
+          //  List<TruckRate> rates = RateList; //Вся таблица
+
+            if (rateVariants.Count > 0)
+            {
                 if (provider == "")
                 {
-                truck = new Truck(rateVariants.First());
+                    truck = new Truck(rateVariants.First());
                 }
                 else
                 {
@@ -142,7 +167,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="rateVariants"></param>
         /// <returns></returns>
-        private List<TruckRate> GetCostRegionsRoutes(double tonnageNeed,
+        private List<TruckRate> GetTruckRate(double tonnageNeed,
                  List<DeliveryPoint> mapDelivery)
         {
             List<TruckRate> rateVariants = new List<TruckRate>();
@@ -160,25 +185,26 @@ namespace DomesticTransport
                 try
                 {
 
-                int? MaxCostPoint = 0;
-                MaxCostPoint = (from rv in RateList
-                                where rv.City == point.City &&
-                                        rv.Tonnage > tonnageNeed
-                                select rv.PriceFirstPoint
-                            )?.Max();
-                if (MaxCostPoint != null)
-                { 
-                    if (MaxCost < MaxCostPoint)
+                    int? MaxCostPoint = 0;
+                    MaxCostPoint = (from rv in RateList
+                                    where rv.City == point.City &&
+                                            rv.Tonnage > tonnageNeed
+                                    select rv.PriceFirstPoint
+                                )?.Max();
+                    if (MaxCostPoint != null)
                     {
-                        MaxCost =(int) MaxCostPoint;
-                        ix = i;
-                        city = point.City;
+                        if (MaxCost < MaxCostPoint)
+                        {
+                            MaxCost = (int)MaxCostPoint;
+                            ix = i;
+                            city = point.City;
+                        }
                     }
                 }
-                }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBox.Show($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"") ;
+                    Debug.WriteLine($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
+                    // MessageBox.Show($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
                     throw new Exception("Не удалось найти точку.");
                 }
 
@@ -208,11 +234,11 @@ namespace DomesticTransport
                         else
                         {
                             //Ищем стоимость доп точки в другом городе для той же машины 
-                        TruckRate addPointRate =
-                            RateList.Where(x => x.Company == variantRate.Company &&
-                                                x.Tonnage == variantRate.Tonnage &&
-                                                x.City == mapDelivery[pointNumber].City).First();
-                        variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;                            
+                            TruckRate addPointRate =
+                                RateList.Where(x => x.Company == variantRate.Company &&
+                                                    x.Tonnage == variantRate.Tonnage &&
+                                                    x.City == mapDelivery[pointNumber].City).First();
+                            variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;
                         }
                     }
                     rateVariants[rateIx] = variantRate;
@@ -221,8 +247,21 @@ namespace DomesticTransport
 
                 rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
             }
-            return rateVariants;                
+            return rateVariants;
         }
+
+        public List<TruckRate> GetTruckRateInternational(double totalWeight, List<DeliveryPoint> mapDelivery)
+        {
+            List<TruckRate> rateVariants = new List<TruckRate>();
+            rateVariants = GetTruckRateInternational();            
+            rateVariants = rateVariants.FindAll(x => x.City == mapDelivery[0].City &&
+                                                x.Tonnage >=totalWeight);
+               rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
+            return rateVariants;
+        }
+
+
+
 
         /// <summary>
         /// По МСК и МО
@@ -237,7 +276,7 @@ namespace DomesticTransport
             List<TruckRate> rateVariants = new List<TruckRate>();
             rateVariants = RateList.FindAll(r =>
                                         r.City == mapDelivery[0].City &&
-                                      r.Tonnage  > tonnageNeed
+                                      r.Tonnage > tonnageNeed
                                         ).ToList();
 
             if (rateVariants.Count > 0)
@@ -293,13 +332,13 @@ namespace DomesticTransport
             Worksheet sheetRoute = GetSheet("Rate");
             return sheetRoute?.ListObjects["PriceDelivery"];
         }
-
+      
 
         /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
         /// </summary>
         /// <returns></returns>
-        internal List<TruckRate> GetTruckRateList()
+        private List<TruckRate> GetTruckRateList()
         {
             List<TruckRate> ListRate = new List<TruckRate>();
             ListObject rateTable = GetRateList();
@@ -342,6 +381,46 @@ namespace DomesticTransport
             return ListRate;
         }
 
+        internal List<TruckRate> GetTruckRateInternational()
+        {
+            List<TruckRate> ListRate = new List<TruckRate>();
+            Worksheet sheetRoute = GetSheet("Rate Inetrnational");                   
+            ListObject rateTable = sheetRoute.ListObjects["TableRateInternational"];
+            foreach (ListRow row in rateTable.ListRows)
+            {                       
+                string valTonnage = row.Range[1, rateTable.ListColumns["tonnage, t"].Index].Text;
+                double tonnage = double.TryParse(valTonnage, out double t) ? t : 0;
+
+                string valCity = row.Range[1, rateTable.ListColumns["City"].Index].Text;
+                valCity = valCity.Trim();
+
+                string valCompany = row.Range[1, rateTable.ListColumns["Company"].Index].Text;
+                valCompany = valCompany.Trim();
+
+                if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
+                {
+                    string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
+                    int price = int.TryParse(strPrice, out int pf) ? pf : 0;
+                    
+                    TruckRate rate = new TruckRate()
+                    {
+                        City = valCity,
+                        Company = valCompany,
+                        PriceFirstPoint = price,                       
+                        PlaceShipment = row.Range[1, 1].Text,                       
+                        Tonnage = tonnage
+
+                    };
+
+                    ListRate.Add(rate);
+                }
+            }
+
+            return ListRate;
+        }
+
+
+
         internal int CreateRoute(List<Order> ordersCurrentDelivery)
         {
             Worksheet sheetRoutes = GetSheet("Routes");
@@ -361,7 +440,7 @@ namespace DomesticTransport
                                      ).Distinct().ToList();
                 int maxPriority = 0;
                 if (routes.Count != 0) maxPriority = routes.Max();
-                
+
                 priorityRoute = maxPriority > priorityRoute ? maxPriority : priorityRoute;
             }
 
@@ -462,8 +541,8 @@ namespace DomesticTransport
             int colName = table.ListColumns["Company"].Index;
             int colId = table.ListColumns["Id"].Index;
             int colCounter = table.ListColumns["Счетчик"].Index;
-           string id = "";
-            foreach  (Range row in table.DataBodyRange.Rows)
+            string id = "";
+            foreach (Range row in table.DataBodyRange.Rows)
             {
                 if (row.Cells[1, colName].Text == providerName)
                 {
@@ -476,8 +555,8 @@ namespace DomesticTransport
                     break;
                 }
             }
-            
-           return id;   
+
+            return id;
         }
 
         #endregion Вспомогательные
