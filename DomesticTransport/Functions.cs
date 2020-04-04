@@ -352,8 +352,9 @@ namespace DomesticTransport
                 if (pb.Cancel) break;
                 pb.Action($"Доставка {i + 1} из {pb.Count}");
 
-                Delivery delivery = deliveries[i];
 
+                Delivery delivery = deliveries[i];
+                // if (delivery.Truck == null) continue;
                 ListRow rowDelivery;
                 if (DeliveryTable.ListRows.Count == 0)
                 {
@@ -366,7 +367,7 @@ namespace DomesticTransport
                     rowDelivery = DeliveryTable.ListRows[DeliveryTable.ListRows.Count - 1];
                 }
                 rowDelivery.Range[1, DeliveryTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
-                if (delivery.Truck.ShippingCompany.Name !="") //delivery?.MapDelivery.Find(m => m.RouteName == "") != null)
+                if (!string.IsNullOrWhiteSpace(delivery.Truck?.ShippingCompany?.Name)) //delivery?.MapDelivery.Find(m => m.RouteName == "") != null)
                 {
                     rowDelivery.Range[1, DeliveryTable.ListColumns["Компания"].Index].Value =
                                                                         delivery.Truck?.ShippingCompany?.Name ?? "";
@@ -462,18 +463,29 @@ namespace DomesticTransport
                     // Ищем товар, который можно отправить указанным маршрутом                    
                     for (int iOrder = orders.Count - 1; iOrder >= 0; iOrder--)
                     {
-                        if (orders[iOrder].Customer.Id != point.IdCustomer) continue;
+                        if (! orders[iOrder].Customer.Id.Contains(point.IdCustomer)) continue;
                         findDelivery = true;
                         orders[iOrder].DeliveryPoint = point;
                         // Пытаемся добавить к имеющимся машинам
                         Delivery delivery = null;
                         foreach (Delivery iDelivery in deliveries)
                         {
+                            string city = iDelivery.Orders[0].DeliveryPoint.City;
+                            city = city.Trim();
                             if (iDelivery.Orders[0].DeliveryPoint.Id != point.Id) continue;
-                            if ((iDelivery.Orders[0].DeliveryPoint.City == "MSK" ||
-                                iDelivery.Orders[0].DeliveryPoint.City == "MO") && iDelivery.MapDelivery.Count > 3) { continue; }
+                            if ((city.Contains("MSK") ||
+                                city.Contains("MO")) && iDelivery.MapDelivery.Count > 3) { continue; }
 
-                            if (iDelivery.CheckDeliveryWeght(orders[iOrder]))
+                            if ((city.Contains("Yerevan") ||
+                                city.Contains("Nur-Sultan")) )
+                            {
+                               if (iDelivery.TotalWeight + orders[iOrder].WeightNetto <= 3300)
+                                {
+                                delivery = iDelivery;
+                                break;
+                                }
+                            }
+                            else if (iDelivery.CheckDeliveryWeght(orders[iOrder]))
                             {
                                 delivery = iDelivery;
                                 break;
@@ -740,8 +752,8 @@ namespace DomesticTransport
                     string date = shefflerBook.DateDelivery;
 
                     row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
-                    row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck.ShippingCompany.Name;
-                    row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck.Tonnage;
+                    row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ShippingCompany?.Name;
+                    row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                     row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
 
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
@@ -751,11 +763,10 @@ namespace DomesticTransport
                     row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Value = order.Id;
                     row.Range[1, totalTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
                     row.Range[1, totalTable.ListColumns["Направление"].Index].Value = order.Route;
-                    row.Range[1, totalTable.ListColumns["Номер грузополучателя"].Index].Value = order.Customer.Id;
+                    row.Range[1, totalTable.ListColumns["Номер грузополучателя"].Index].Value = order.Customer?.Id ?? "";
                     row.Range[1, totalTable.ListColumns["Брутто вес"].Index].Value = order.WeightBrutto;
                     row.Range[1, totalTable.ListColumns["Нетто вес"].Index].Value = order.WeightNetto;
-                    row.Range[1, totalTable.ListColumns["Грузополучатель"].Index].Value = $"{order.Customer.Name}";
-                    // $"{order.Customer.Name}  {order.Customer.Name} {order.Customer.AddresStreet}";
+                    row.Range[1, totalTable.ListColumns["Грузополучатель"].Index].Value = $"{order.Customer?.Name ?? ""}";
                     row.Range[1, totalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
                     row.Range[1, totalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
 

@@ -96,10 +96,23 @@ namespace DomesticTransport
                 _routes = value;
             }
         }
-
-
-
         List<DeliveryPoint> _routes;
+
+
+        public List<TruckRate> RateInternationalList
+        {
+            get
+            {
+                if (_RateInternationalList == null)
+                {
+                    _RateInternationalList = GetTruckRateInternational();
+                }
+                return _RateInternationalList;
+            }
+        }
+        private List<TruckRate> _RateInternationalList;
+
+
 
         public object DataTime { get; private set; }
 
@@ -118,18 +131,22 @@ namespace DomesticTransport
                 if (mapDelivery.FindAll(m => m.City != "MSK" && m.City != "MO").Count > 0)
                 {
                     bool isInternational = false;
-                    foreach(DeliveryPoint point in mapDelivery)
-                    {
-                        if (point.City == "")
+                  
+                    
+                    string[] cities = (from r in RateInternationalList
+                                       select r.City).Distinct().ToArray();  //Nur-Sultan / Erevan
+                                            
+                    foreach (string city in cities)
+                    {                   
+                        if ( mapDelivery[0].City.Contains(city))
                         {
                             isInternational = true;
                             break;
                         }
                     }
-                        rateVariants = isInternational ?
-                       GetTruckRateInternational(tonnageNeed, mapDelivery)   : 
-                        GetTruckRate(tonnageNeed, mapDelivery);
-
+                       rateVariants = isInternational ?
+                           GetTruckRateInternational(totalWeight, mapDelivery)   : 
+                           GetTruckRate(tonnageNeed, mapDelivery);
                 }
                 else
                 {
@@ -251,12 +268,11 @@ namespace DomesticTransport
         }
 
         public List<TruckRate> GetTruckRateInternational(double totalWeight, List<DeliveryPoint> mapDelivery)
-        {
-            List<TruckRate> rateVariants = new List<TruckRate>();
-            rateVariants = GetTruckRateInternational();            
-            rateVariants = rateVariants.FindAll(x => x.City == mapDelivery[0].City &&
-                                                x.Tonnage >=totalWeight);
-               rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
+        {              
+            double tonnageNeed = totalWeight / 1000;
+            List<TruckRate> rateVariants = RateInternationalList.FindAll(x =>mapDelivery[0].City.Contains(x.City) &&
+                                                x.Tonnage >=tonnageNeed); 
+            rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
             return rateVariants;
         }
 
@@ -343,8 +359,7 @@ namespace DomesticTransport
             List<TruckRate> ListRate = new List<TruckRate>();
             ListObject rateTable = GetRateList();
             foreach (ListRow row in rateTable.ListRows)
-            {
-                // double tonnage = row.Range[1, rateTable.ListColumns["tonnage, t"].Index].Value ?? 0;
+            {                                                                                    
                 string valTonnage = row.Range[1, rateTable.ListColumns["tonnage, t"].Index].Text;
                 double tonnage = double.TryParse(valTonnage, out double t) ? t : 0;
 
@@ -407,6 +422,7 @@ namespace DomesticTransport
                         City = valCity,
                         Company = valCompany,
                         PriceFirstPoint = price,                       
+                        TotalDeliveryCost = price,                       
                         PlaceShipment = row.Range[1, 1].Text,                       
                         Tonnage = tonnage
 
