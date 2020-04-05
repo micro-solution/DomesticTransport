@@ -202,7 +202,6 @@
             this.about.Items.Add(this.btnChangePoint);
             this.about.Label = "Справка";
             this.about.Name = "about";
-            this.about.Visible = false;
             // 
             // btnAboutProgrramm
             // 
@@ -210,6 +209,7 @@
             this.btnAboutProgrramm.Label = "О программе";
             this.btnAboutProgrramm.Name = "btnAboutProgrramm";
             this.btnAboutProgrramm.ShowImage = true;
+            this.btnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAboutProgrramm_Click);
             // 
             // btnSetts
             // 

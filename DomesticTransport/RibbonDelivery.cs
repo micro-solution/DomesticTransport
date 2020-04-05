@@ -72,5 +72,12 @@ namespace DomesticTransport
         {
             Email.WriteReestrSignature();
         }
+
+        private void btnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
+        {
+            OutlookFoldersSelect foldersSelect = new OutlookFoldersSelect();
+            foldersSelect.ShowDialog();
+            
+        }
     }
 }

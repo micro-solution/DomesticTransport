@@ -132,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email.cs" />
+    <Compile Include="Forms\OutlookFoldersSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OutlookFoldersSelect.Designer.cs">
+      <DependentUpon>OutlookFoldersSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="ListTable.cs" />
+    <Compile Include="ScanMail.cs" />
     <Compile Include="ShefflerWorkBook.cs" />
     <Compile Include="Model\Carrier.cs" />
     <Compile Include="Model\Customer.cs" />
@@ -234,6 +241,9 @@
     <Compile Include="Лист9.Designer.cs">
       <DependentUpon>Лист9.Designer.xml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\OutlookFoldersSelect.resx">
+      <DependentUpon>OutlookFoldersSelect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProviderEditor.resx">
       <DependentUpon>ProviderEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -362,7 +372,7 @@
     <ManifestKeyFile>DomesticTransport_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2C452C6BDCA163ECB18BF258B175AC50809FCFBF</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7E72940E2624AEBA4E4F29E90D2B5C3886842131</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icons8-truck-96 %283%29.ico</ApplicationIcon>
@@ -372,7 +382,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="DomesticTransport.xlsx" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files (x86)\Microsoft Office\Office16\excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]DomesticTransport.xlsx&quot;" />
+        <ProjectProperties HostName="DomesticTransport.xlsx" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files\Microsoft Office\root\Office16\excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]DomesticTransport.xlsx&quot;" />
         <Host Name="Excel Document" Path=".\DomesticTransport.xlsx" GeneratedCodeNamespace="DomesticTransport">
           <HostItem Name="ThisWorkbook" Code="ThisWorkbook.cs" CanonicalName="ThisWorkbook" Blueprint="ThisWorkbook.Designer.xml" GeneratedCode="ThisWorkbook.Designer.cs" />
           <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Отгрузка" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
