@@ -72,5 +72,22 @@ namespace DomesticTransport
         {
             Email.WriteReestrSignature();
         }
+
+        private void btnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
+        {
+            About about = new About();
+            about.ShowDialog();
+        }
+
+        /// <summary>
+        /// Выбор папки для сканирования писем от провайдеров
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSelectFoldersOutlook_Click(object sender, RibbonControlEventArgs e)
+        {
+            OutlookFoldersSelect foldersSelect = new OutlookFoldersSelect();
+            foldersSelect.ShowDialog();
+        }
     }
 }
