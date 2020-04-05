@@ -30,14 +30,12 @@ namespace DomesticTransport.Forms
 
         private void Provider_Load(object sender, EventArgs e)
         {
-            Worksheet sh = Globals.ThisWorkbook.Sheets["Rate"];
-            ListObject providerTable = sh.ListObjects["ProviderTable"];
+                       
             ShefflerWB shefflerWorkBook = new ShefflerWB();
              List<DeliveryPoint> mapDpelivery = DeliveryTarget?.MapDelivery;
-
             int iProviler = 0;
             tbWeight.Text = Weight.ToString();
-            foreach (Range row in providerTable.DataBodyRange.Rows)
+            foreach (Range row in ShefflerWB.ProviderTable.DataBodyRange.Rows)
             {
                 string name = row.Cells[1,1].Text;
                 lvProvider.Items.Add( name );

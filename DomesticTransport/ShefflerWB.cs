@@ -17,7 +17,7 @@ namespace DomesticTransport
     /// </summary>
     class ShefflerWB
     {
-        public Worksheet DeliverySheet {
+        public static Worksheet DeliverySheet {
             get {
                 if (_deliverySheet == null)
                 {
@@ -26,8 +26,8 @@ namespace DomesticTransport
                 return _deliverySheet;
             }
         }
-        private Worksheet _deliverySheet ;
-        public Worksheet TotalSheet
+        private static Worksheet _deliverySheet ;
+        public static Worksheet TotalSheet
         {
             get
             {
@@ -38,10 +38,35 @@ namespace DomesticTransport
                 return _totalSheet;
             }
         }
-        private Worksheet _totalSheet;
-    
+        private static Worksheet _totalSheet;
 
-        public ListObject OrdersTable
+        public static Worksheet RateSheet
+        {
+            get
+            {
+                if (_rateSheet == null)
+                {
+                    _rateSheet = Globals.ThisWorkbook.Sheets["Rate"];
+                }
+                return _rateSheet;
+            }
+        }
+        private static Worksheet _rateSheet;
+
+        public static Worksheet RoutesSheet
+        {
+            get
+            {
+                if (_routesSheet == null)
+                {
+                    _routesSheet = Globals.ThisWorkbook.Sheets["Routes"];
+                }
+                return _routesSheet;
+            }
+        }
+        private static Worksheet _routesSheet;
+
+        public static ListObject OrdersTable
         {
             get
             {
@@ -52,8 +77,8 @@ namespace DomesticTransport
                 return _ordersTable;
             }
         }
-        private ListObject _ordersTable;
-        public ListObject DeliveryTable
+        private static ListObject _ordersTable;
+        public static ListObject DeliveryTable
         {
             get
             {
@@ -64,7 +89,7 @@ namespace DomesticTransport
                 return _deliveryTable;
             }
         }
-        private ListObject _deliveryTable;
+        private static ListObject _deliveryTable;
 
         public static ListObject TotalTable
         {
@@ -79,12 +104,45 @@ namespace DomesticTransport
         }
         private static ListObject _totalTable;
 
+        public static ListObject RateTable
+        {
+            get
+            {
+                if (_rateTable == null)
+                {
+                    _rateTable = TotalSheet.ListObjects["Rate"];
+                }
+                return _rateTable;
+            }
+        }
+        private static ListObject _rateTable;
 
+        public static ListObject RoutesTable
+        {
+            get
+            {
+                if (_routesTable == null)
+                {
+                    _routesTable = RoutesSheet.ListObjects["TableRoutes"];
+                }
+                return _routesTable;
+            }
+        }
+        private static ListObject _routesTable;
+        public static ListObject ProviderTable
+        {
+            get
+            {
+                if (_providerTable == null)
+                {
+                    _providerTable = RateSheet.ListObjects["ProviderTable"];
+                }
+                return _providerTable;
+            }
+        }
+        private static ListObject _providerTable;
 
-         
-
-
-
+        
 
         /// <summary>
         /// Прайс
@@ -110,9 +168,8 @@ namespace DomesticTransport
             get
             {
                 if (string.IsNullOrWhiteSpace(_dateDelivery))
-                {
-                    Worksheet sheetDelidery = GetSheet("Delivery");
-                    Range dateCell = sheetDelidery.Range["DateDelivery"];
+                {                       
+                    Range dateCell = DeliverySheet.Range["DateDelivery"];
                     if (dateCell != null)
                     {
                         _dateDelivery = dateCell.Text;
@@ -129,18 +186,14 @@ namespace DomesticTransport
        /// <summary>
        /// Получить таблицу Маршрутов 
        /// </summary>
-        public List<DeliveryPoint> RoutesTable
+        public List<DeliveryPoint> RoutesList
         {
             get
             {
                 if (_routes == null)
                 {
-                    _routes = new List<DeliveryPoint>();
-                    Worksheet sheetRoute = GetSheet("Routes");
-                    ListObject TableRoutes = sheetRoute?.ListObjects["TableRoutes"];
-                    if (TableRoutes != null)
-                    {
-                        foreach (ListRow row in TableRoutes.ListRows)
+                    _routes = new List<DeliveryPoint>();                    
+                        foreach (ListRow row in RoutesTable.ListRows)
                         {
                             Debug.WriteLine(row.Range.Row.ToString());
                             if (row.Range[1, 1].Value == null ||
@@ -150,20 +203,20 @@ namespace DomesticTransport
                                 row.Range[1, 9].Value == null) continue;
                             DeliveryPoint route = new DeliveryPoint()
                             {
-                                Id = int.TryParse(row.Range[1, TableRoutes.ListColumns["Id route"].Index].Text, out int id) ? id : 0,
-                                PriorityRoute = int.TryParse(row.Range[1, TableRoutes.ListColumns["Priority route"].Index].Text.ToString(), out int prioritRoute) ? prioritRoute : 0,
-                                PriorityPoint = int.TryParse(row.Range[1, TableRoutes.ListColumns["Priority point"].Index].Text.ToString(), out int prioritPoint) ? prioritPoint : 0,
-                                IdCustomer = row.Range[1, TableRoutes.ListColumns["Получатель материала"].Index].Text,
-                                City = row.Range[1, TableRoutes.ListColumns["City"].Index].Text,
-                                CityLongName = row.Range[1, TableRoutes.ListColumns["Город"].Index].Text,
-                                Customer = row.Range[1, TableRoutes.ListColumns["Клиент"].Index].Text,
-                                CustomerNumber = row.Range[1, TableRoutes.ListColumns["Номер клиента"].Index].Text,
-                                Route = row.Range[1, TableRoutes.ListColumns["Маршрут"].Index].Text,
-                                RouteName = row.Range[1, TableRoutes.ListColumns["Направление"].Index].Text
+                                Id = int.TryParse(row.Range[1, RoutesTable.ListColumns["Id route"].Index].Text, out int id) ? id : 0,
+                                PriorityRoute = int.TryParse(row.Range[1, RoutesTable.ListColumns["Priority route"].Index].Text.ToString(), out int prioritRoute) ? prioritRoute : 0,
+                                PriorityPoint = int.TryParse(row.Range[1, RoutesTable.ListColumns["Priority point"].Index].Text.ToString(), out int prioritPoint) ? prioritPoint : 0,
+                                IdCustomer = row.Range[1, RoutesTable.ListColumns["Получатель материала"].Index].Text,
+                                City = row.Range[1, RoutesTable.ListColumns["City"].Index].Text,
+                                CityLongName = row.Range[1, RoutesTable.ListColumns["Город"].Index].Text,
+                                Customer = row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Text,
+                                CustomerNumber = row.Range[1, RoutesTable.ListColumns["Номер клиента"].Index].Text,
+                                Route = row.Range[1, RoutesTable.ListColumns["Маршрут"].Index].Text,
+                                RouteName = row.Range[1, RoutesTable.ListColumns["Направление"].Index].Text
                             };
                             _routes.Add(route);
                         }
-                    }
+                    
                 }
                 _routes = _routes.OrderBy(x => x.Id).ThenBy(
                                       y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
@@ -304,8 +357,7 @@ namespace DomesticTransport
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
-                    // MessageBox.Show($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
+                    Debug.WriteLine($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");                  
                     throw new Exception("Не удалось найти точку.");
                 }
             }
@@ -358,9 +410,6 @@ namespace DomesticTransport
             rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
             return rateVariants;
         }
-
-
-
 
         /// <summary>
         /// По МСК и МО
@@ -421,16 +470,7 @@ namespace DomesticTransport
             }
         }
 
-        /// <summary>
-        /// Получить таблицу цен перевозчиков
-        /// </summary>
-        /// <returns></returns>
-        internal ListObject GetRateList()
-        {
-            Worksheet sheetRoute = GetSheet("Rate");
-            return sheetRoute?.ListObjects["PriceDelivery"];
-        }
-      
+     
 
         /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
@@ -439,25 +479,25 @@ namespace DomesticTransport
         private List<TruckRate> GetTruckRateList()
         {
             List<TruckRate> ListRate = new List<TruckRate>();
-            ListObject rateTable = GetRateList();
-            foreach (ListRow row in rateTable.ListRows)
+            
+            foreach (ListRow row in RateTable.ListRows)
             {                                                                                    
-                string valTonnage = row.Range[1, rateTable.ListColumns["tonnage, t"].Index].Text;
+                string valTonnage = row.Range[1, RateTable.ListColumns["tonnage, t"].Index].Text;
                 double tonnage = double.TryParse(valTonnage, out double t) ? t : 0;
 
-                string valCity = row.Range[1, rateTable.ListColumns["City"].Index].Text;
+                string valCity = row.Range[1, RateTable.ListColumns["City"].Index].Text;
                 valCity = valCity.Trim();
 
-                string valCompany = row.Range[1, rateTable.ListColumns["Company"].Index].Text;
+                string valCompany = row.Range[1, RateTable.ListColumns["Company"].Index].Text;
                 valCompany = valCompany.Trim();
 
 
                 if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
                 {
 
-                    string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
+                    string strPrice = row.Range[1, RateTable.ListColumns["vehicle"].Index].Text;
                     int priceFirst = int.TryParse(strPrice, out int pf) ? pf : 0;
-                    strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Text;
+                    strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Text;
                     int priceAdd = int.TryParse(strPrice, out int pa) ? pa : 0;
                     TruckRate rate = new TruckRate()
                     {
@@ -522,11 +562,11 @@ namespace DomesticTransport
 
         internal int CreateRoute(List<Order> ordersCurrentDelivery)
         {
-            Worksheet sheetRoutes = GetSheet("Routes");
-            ListObject TableRoutes = sheetRoutes?.ListObjects["TableRoutes"];
-            List<DeliveryPoint> pointMap = RoutesTable;
+            //Worksheet sheetRoutes = GetSheet("Routes");
+            //ListObject TableRoutes = sheetRoutes?.ListObjects["TableRoutes"];
+            List<DeliveryPoint> pointMap = RoutesList;
 
-            DeliveryPoint LastPoint = RoutesTable.Last();
+            DeliveryPoint LastPoint = RoutesList.Last();
             int idRoute = LastPoint.Id + 1;
             int priorityRoute = LastPoint.PriorityRoute + 1;
             //Поиск подходящего максимального приоритета
@@ -547,39 +587,37 @@ namespace DomesticTransport
 
             foreach (Order order in ordersCurrentDelivery)
             {
-                ListRow row = TableRoutes.ListRows[TableRoutes.ListRows.Count];
-                TableRoutes.ListRows.Add();
-                row.Range[1, TableRoutes.ListColumns["Id route"].Index].Value = idRoute;
-                row.Range[1, TableRoutes.ListColumns["Priority route"].Index].Value = priorityRoute;
-                row.Range[1, TableRoutes.ListColumns["Priority point"].Index].Value = ++point;
-                row.Range[1, TableRoutes.ListColumns["Получатель материала"].Index].Value = order.Customer.Id;
-                row.Range[1, TableRoutes.ListColumns["City"].Index].Value = order.DeliveryPoint.City;
+                ListRow row = RoutesTable.ListRows[RoutesTable.ListRows.Count];
+                RoutesTable.ListRows.Add();
+                row.Range[1, RoutesTable.ListColumns["Id route"].Index].Value = idRoute;
+                row.Range[1, RoutesTable.ListColumns["Priority route"].Index].Value = priorityRoute;
+                row.Range[1, RoutesTable.ListColumns["Priority point"].Index].Value = ++point;
+                row.Range[1, RoutesTable.ListColumns["Получатель материала"].Index].Value = order.Customer.Id;
+                row.Range[1, RoutesTable.ListColumns["City"].Index].Value = order.DeliveryPoint.City;
 
                 //поиск этого же Получателя в другой строке
                 DeliveryPoint findPoint = pointMap.Find(x => x.IdCustomer == order.Customer.Id && x.CityLongName != "");
                 if (!string.IsNullOrWhiteSpace(findPoint.CustomerNumber))
                 {
-                    row.Range[1, TableRoutes.ListColumns["Город"].Index].Value = findPoint.CityLongName;
-                    row.Range[1, TableRoutes.ListColumns["Маршрут"].Index].Value = findPoint.Route;
-                    row.Range[1, TableRoutes.ListColumns["Направление"].Index].Value = findPoint.RouteName;
-                    row.Range[1, TableRoutes.ListColumns["Клиент"].Index].Value = findPoint.Customer;
-                    row.Range[1, TableRoutes.ListColumns["Номер клиента"].Index].Value = findPoint.CustomerNumber;
-                    row.Range[1, TableRoutes.ListColumns["Add"].Index].Value = "Auto";
+                    row.Range[1, RoutesTable.ListColumns["Город"].Index].Value = findPoint.CityLongName;
+                    row.Range[1, RoutesTable.ListColumns["Маршрут"].Index].Value = findPoint.Route;
+                    row.Range[1, RoutesTable.ListColumns["Направление"].Index].Value = findPoint.RouteName;
+                    row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = findPoint.Customer;
+                    row.Range[1, RoutesTable.ListColumns["Номер клиента"].Index].Value = findPoint.CustomerNumber;
+                    row.Range[1, RoutesTable.ListColumns["Add"].Index].Value = "Auto";
                 }
             }
-            RoutesTable = null;
+            RoutesList = null;
             return idRoute;
         }
 
 
         public Range GetCurrentShippingRange()
-        {
-            Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
+        {   
             Range currentRng = null;
             string dateDelivery = DateDelivery;
-            int columnDeliveryId = totalTable.ListColumns["Дата доставки"].Index;
-            foreach (ListRow row in totalTable.ListRows)
+            int columnDeliveryId = TotalTable.ListColumns["Дата доставки"].Index;
+            foreach (ListRow row in TotalTable.ListRows)
             {
                 string dateTable = row.Range[0, columnDeliveryId].Text;
                 if (dateTable == dateDelivery)
@@ -634,14 +672,11 @@ namespace DomesticTransport
 
         public static string GetProviderId(string providerName)
         {
-            Worksheet sh = Globals.ThisWorkbook.Sheets["Rate"];
-            ListObject table = sh?.ListObjects["ProviderTable"];
-            if (table == null) return "table not found";
-            int colName = table.ListColumns["Company"].Index;
-            int colId = table.ListColumns["Id"].Index;
-            int colCounter = table.ListColumns["Счетчик"].Index;
+            int colName = ProviderTable.ListColumns["Company"].Index;
+            int colId = ProviderTable.ListColumns["Id"].Index;
+            int colCounter = ProviderTable.ListColumns["Счетчик"].Index;
             string id = "";
-            foreach (Range row in table.DataBodyRange.Rows)
+            foreach (Range row in ProviderTable.DataBodyRange.Rows)
             {
                 if (row.Cells[1, colName].Text == providerName)
                 {
