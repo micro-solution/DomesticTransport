@@ -50,6 +50,7 @@
             this.btnReadCarrierInvoice = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnSaveSignature = this.Factory.CreateRibbonButton();
+            this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
@@ -182,16 +183,29 @@
             // settings
             // 
             this.settings.Items.Add(this.btnSaveSignature);
+            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
             // 
             // btnSaveSignature
             // 
+            this.btnSaveSignature.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveSignature.Image")));
             this.btnSaveSignature.Label = "Сохранить подпись";
             this.btnSaveSignature.Name = "btnSaveSignature";
             this.btnSaveSignature.ShowImage = true;
             this.btnSaveSignature.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveSignature_Click);
+            // 
+            // ButtonSelectFoldersOutlook
+            // 
+            this.ButtonSelectFoldersOutlook.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonSelectFoldersOutlook.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSelectFoldersOutlook.Image")));
+            this.ButtonSelectFoldersOutlook.Label = "Папки с письмами";
+            this.ButtonSelectFoldersOutlook.Name = "ButtonSelectFoldersOutlook";
+            this.ButtonSelectFoldersOutlook.ShowImage = true;
+            this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма от провайдеров с информацией о " +
+    "водителях";
+            this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
             // about
             // 
@@ -288,6 +302,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadForms;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAccept;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveSignature;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSelectFoldersOutlook;
     }
 
     partial class ThisRibbonCollection
