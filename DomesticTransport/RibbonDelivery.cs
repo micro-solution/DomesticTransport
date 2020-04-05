@@ -65,7 +65,7 @@ namespace DomesticTransport
         private void btnAccept_Click(object sender, RibbonControlEventArgs e)
         {
             Functions functions = new Functions();
-            functions.CopyDelivery();
+            functions.CopyDeliveryToTotal();
         }
 
         private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)

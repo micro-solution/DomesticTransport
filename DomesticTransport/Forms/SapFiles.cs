@@ -68,7 +68,7 @@ namespace DomesticTransport
                 InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,
                 ValidateNames = true,
                 Multiselect = false,
-                Filter = "Excel|*.xls*"
+                Filter = "Excel|*.xls*|CSV|*.csv |All files (*.*)|*.*"
             })
             {
                 if (ofd.ShowDialog() == DialogResult.OK)

@@ -77,9 +77,8 @@ namespace DomesticTransport.Model
                 Orders.ForEach(x => sum += x.Cost);
                 return sum;
             }
-        }
-
-
+        }       
+    
         public List<Order> Orders
         {
             get
@@ -127,7 +126,7 @@ namespace DomesticTransport.Model
                 }
                 return _truck;
             }
-            set { _truck = value; }//private
+            set { _truck = value; }
         }
 
         private Truck _truck;
