@@ -132,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email.cs" />
+    <Compile Include="Forms\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OutlookFoldersSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,6 +247,9 @@
     <Compile Include="Лист9.Designer.cs">
       <DependentUpon>Лист9.Designer.xml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OutlookFoldersSelect.resx">
       <DependentUpon>OutlookFoldersSelect.cs</DependentUpon>
     </EmbeddedResource>

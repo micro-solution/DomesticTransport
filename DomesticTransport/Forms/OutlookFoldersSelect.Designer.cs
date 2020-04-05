@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OutlookFoldersSelect));
             this.TreeViewFolders = new System.Windows.Forms.TreeView();
             this.label1 = new System.Windows.Forms.Label();
             this.ButtonOk = new System.Windows.Forms.Button();
@@ -89,8 +90,9 @@
             this.Controls.Add(this.ButtonOk);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TreeViewFolders);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OutlookFoldersSelect";
-            this.Text = "OutlookFoldersSelect";
+            this.Text = "Выбор папок Outlook";
             this.ResumeLayout(false);
             this.PerformLayout();
 

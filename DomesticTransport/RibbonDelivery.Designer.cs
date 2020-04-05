@@ -219,8 +219,9 @@
             // 
             // btnAboutProgrramm
             // 
+            this.btnAboutProgrramm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("btnAboutProgrramm.Image")));
-            this.btnAboutProgrramm.Label = "О программе";
+            this.btnAboutProgrramm.Label = "О программе";
             this.btnAboutProgrramm.Name = "btnAboutProgrramm";
             this.btnAboutProgrramm.ShowImage = true;
             this.btnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAboutProgrramm_Click);
@@ -232,6 +233,7 @@
             this.btnSetts.Label = "Настройки";
             this.btnSetts.Name = "btnSetts";
             this.btnSetts.ShowImage = true;
+            this.btnSetts.Visible = false;
             // 
             // button3
             // 
@@ -240,6 +242,7 @@
             this.button3.Label = "Изменить доставки";
             this.button3.Name = "button3";
             this.button3.ShowImage = true;
+            this.button3.Visible = false;
             // 
             // btnAcept
             // 
@@ -248,6 +251,7 @@
             this.btnAcept.Label = "Принять ";
             this.btnAcept.Name = "btnAcept";
             this.btnAcept.ShowImage = true;
+            this.btnAcept.Visible = false;
             this.btnAcept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
             // 
             // btnChangePoint
@@ -257,6 +261,7 @@
             this.btnChangePoint.Label = "Изменить маршрут";
             this.btnChangePoint.Name = "btnChangePoint";
             this.btnChangePoint.ShowImage = true;
+            this.btnChangePoint.Visible = false;
             this.btnChangePoint.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangePoint_Click);
             // 
             // RibbonDelivery

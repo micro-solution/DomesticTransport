@@ -75,8 +75,8 @@ namespace DomesticTransport
 
         private void btnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
         {
-            
-            
+            About about = new About();
+            about.ShowDialog();
         }
 
         /// <summary>
