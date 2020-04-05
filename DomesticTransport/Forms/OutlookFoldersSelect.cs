@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 
 namespace DomesticTransport.Forms
 {
+    /// <summary>
+    /// Форма выбора папок для сканирования
+    /// </summary>
     public partial class OutlookFoldersSelect : Form
     {
         private Outlook.Application OutlookApp
@@ -23,7 +26,7 @@ namespace DomesticTransport.Forms
         }
         private Outlook.Application outlookApp;
 
-        private List<string> SelectedFolder = new List<string>();
+        private readonly List<string> SelectedFolder = new List<string>();
         public OutlookFoldersSelect()
         {
             InitializeComponent();
@@ -68,7 +71,6 @@ namespace DomesticTransport.Forms
             }
         }
 
-        
         /// <summary>
         /// Получает список корневых папок
         /// </summary>
@@ -84,6 +86,11 @@ namespace DomesticTransport.Forms
             return folders;
         }
 
+        /// <summary>
+        /// Сохранение настроек
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonOk_Click(object sender, System.EventArgs e)
         {
             SelectedFolder.Clear();
@@ -91,7 +98,7 @@ namespace DomesticTransport.Forms
             {
                 CheckNodesRecursive(node);
             }
-            
+
             if (SelectedFolder.Count > 0)
             {
                 Properties.Settings.Default.OutlookFolders = String.Join(";", SelectedFolder.ToArray());
@@ -103,9 +110,12 @@ namespace DomesticTransport.Forms
 
             Properties.Settings.Default.Save();
             Close();
-
         }
 
+        /// <summary>
+        /// Рекурсивная проверка выбранных элементов (папок)
+        /// </summary>
+        /// <param name="parentNode"></param>
         private void CheckNodesRecursive(TreeNode parentNode)
         {
             foreach (TreeNode subNode in parentNode.Nodes)
@@ -118,6 +128,11 @@ namespace DomesticTransport.Forms
             }
         }
 
+        /// <summary>
+        /// Кнопка отмены
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonCancel_Click(object sender, System.EventArgs e)
         {
             Close();

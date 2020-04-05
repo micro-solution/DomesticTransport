@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProcessBar));
             this.progressbar = new System.Windows.Forms.ProgressBar();
             this.LabelName = new System.Windows.Forms.Label();
             this.ButtonCancel = new System.Windows.Forms.Button();
@@ -39,7 +38,7 @@
             // 
             // progressbar
             // 
-            this.progressbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.progressbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressbar.Location = new System.Drawing.Point(4, 46);
             this.progressbar.Name = "progressbar";
@@ -50,7 +49,7 @@
             // 
             // LabelName
             // 
-            this.LabelName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.LabelName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LabelName.Location = new System.Drawing.Point(4, 6);
             this.LabelName.Name = "LabelName";
@@ -92,7 +91,6 @@
             this.Controls.Add(this.LabelName);
             this.Controls.Add(this.progressbar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(680, 115);
             this.MinimizeBox = false;
@@ -100,13 +98,14 @@
             this.Name = "ProcessBar";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Процесс";
             this.TopMost = true;
             this.UseWaitCursor = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProcessBar_FormClosing);
             this.Load += new System.EventHandler(this.ProcessBar_Load);
             this.ResumeLayout(false);
+
         }
 
         #endregion
