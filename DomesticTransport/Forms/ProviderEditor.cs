@@ -17,9 +17,7 @@ namespace DomesticTransport.Forms
         public double Weight { get; set; }
         public string ProviderName { get; set; }
         public double CostDelivery { get; set; }
-
-        public Delivery DeliveryTarget{ get; set; }
-        
+        public Delivery DeliveryTarget{ get; set; }         
 
 
         public ProviderEditor()

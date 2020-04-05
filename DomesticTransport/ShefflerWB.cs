@@ -110,7 +110,7 @@ namespace DomesticTransport
             {
                 if (_rateTable == null)
                 {
-                    _rateTable = TotalSheet.ListObjects["Rate"];
+                    _rateTable = RateSheet.ListObjects["PriceDelivery"];
                 }
                 return _rateTable;
             }

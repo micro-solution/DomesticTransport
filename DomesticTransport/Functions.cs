@@ -51,15 +51,7 @@ namespace DomesticTransport
             {
                 orders = GetOrdersInfo(ordersPath, orders);  // Поиск свойств в файле All orders
             }
-
             List<Delivery> deliveries = CompleteAuto(orders);
-
-            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            //ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
-            //ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
-            //Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            //ListObject TotalTable = TotalSheet.ListObjects["TableTotal"];
-
             ClearListObj( ShefflerWB.DeliveryTable);
             if (ShefflerWB.OrdersTable.DataBodyRange.Rows.Count > 0)
             {
@@ -85,10 +77,7 @@ namespace DomesticTransport
         /// </summary>
         public void LoadAllOrders()
         {
-            ShefflerWB functionsBook = new ShefflerWB();
-            //Worksheet TotalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            //ListObject totalTable = TotalSheet.ListObjects["TableTotal"];
-
+            ShefflerWB functionsBook = new ShefflerWB();              
 
             Range range = ShefflerWB.TotalTable.DataBodyRange;
             if (range == null || ShefflerWB.TotalTable == null) return;
@@ -259,17 +248,11 @@ namespace DomesticTransport
         ///кнопка Добавить авто
         /// </summary>
         public void DeleteAuto()
-        {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject deliveryTable = deliverySheet.ListObjects["TableCarrier"];
-            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
-            Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            ListObject TotalTable = totalSheet.ListObjects["TableTotal"];
-
-            if (deliveryTable == null || ordersTable == null) return;
+        { 
+            if (ShefflerWB.DeliveryTable == null || ShefflerWB.OrdersTable == null) return;
             Range Target = Globals.ThisWorkbook.Application.Selection;
 
-            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, deliveryTable.DataBodyRange);
+            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, ShefflerWB.DeliveryTable.DataBodyRange);
             if (commonRng == null) return;
 
             DialogResult msg = MessageBox.Show("Удалить авто с заказами", "Удалить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -278,34 +261,34 @@ namespace DomesticTransport
 
             int numberDelivery = 0;
             int row = commonRng.Row;
-            int column = deliveryTable.ListColumns["№ Доставки"].Range.Column;
+            int column = ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Range.Column;
             // commonRng = Globals.ThisWorkbook.Application.Intersect(
-            commonRng = deliverySheet.Cells[row, column];
+            commonRng = ShefflerWB.DeliverySheet.Cells[row, column];
             numberDelivery = int.TryParse(commonRng.Text, out int nmDelivery) ? nmDelivery : 0;
 
             //foreach (ListRow listDeliveryRow in deliveryTable.ListRows)
-            for (int i = deliveryTable.ListRows.Count; i > 0; --i)
+            for (int i = ShefflerWB.DeliveryTable.ListRows.Count; i > 0; --i)
             {
-                ListRow listDeliveryRow = deliveryTable.ListRows[i];
-                Range deliveryCell = listDeliveryRow.Range[1, deliveryTable.ListColumns["№ Доставки"].Index];
+                ListRow listDeliveryRow = ShefflerWB.DeliveryTable.ListRows[i];
+                Range deliveryCell = listDeliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index];
                 string str = deliveryCell != null ? deliveryCell.Text : "";
                 if (int.TryParse(str, out int number))
                 {
                     if (number == numberDelivery)
-                        deliverySheet.Rows[listDeliveryRow.Range.Row].Delete();
+                        ShefflerWB.DeliverySheet.Rows[listDeliveryRow.Range.Row].Delete();
                 }
             }
 
-            for (int j = ordersTable.ListRows.Count; j > 0; --j)
+            for (int j = ShefflerWB.OrdersTable.ListRows.Count; j > 0; --j)
             {
-                ListRow listOrderRow = ordersTable.ListRows[j];
-                Range orderCell = listOrderRow.Range[1, ordersTable.ListColumns["№ Доставки"].Index];
+                ListRow listOrderRow = ShefflerWB.OrdersTable.ListRows[j];
+                Range orderCell = listOrderRow.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index];
                 string strDeliveryNum = orderCell.Offset[0, 1].Text;
                 strDeliveryNum = orderCell != null ? orderCell.Text : "";
                 if (int.TryParse(strDeliveryNum, out int DeliveryNum))
                 {
                     if (DeliveryNum == numberDelivery)
-                        deliverySheet.Rows[listOrderRow.Range.Row].Delete();
+                        ShefflerWB.DeliverySheet.Rows[listOrderRow.Range.Row].Delete();
 
                 }
 
@@ -315,19 +298,17 @@ namespace DomesticTransport
             for (int k = rng.Rows.Count; k > 0; k--)
             {
                 string idDelivery = rng.Rows[k].Cells[0,
-                         TotalTable.ListColumns["№ Доставки"].Index].Text;
+                         ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Text;
                 if (int.TryParse(idDelivery, out int num))
                 {
                     if (num == numberDelivery)
                     {
-                        totalSheet.Rows[rng.Rows[k].Row - 1].Delete();
+                        ShefflerWB.TotalSheet.Rows[rng.Rows[k].Row - 1].Delete();
                     }
                 }
             }
 
-        }
-
-        //TODO УДАЛИТЬ из таблицы Total
+        }        
 
         /// <summary>
         /// Запись доставок в таблицы  лист Delivery
@@ -347,8 +328,7 @@ namespace DomesticTransport
                 pb.Action($"Доставка {i + 1} из {pb.Count}");
 
 
-                Delivery delivery = deliveries[i];
-                // if (delivery.Truck == null) continue;
+                Delivery delivery = deliveries[i];               
                 ListRow rowDelivery;
                 if (DeliveryTable.ListRows.Count == 0)
                 {
@@ -1079,28 +1059,7 @@ namespace DomesticTransport
             return;
         }
 
-        /// <summary>
-        /// Вывод заказа в таблицу
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="order"></param>
-        public void PrintRow(ListObject table, Order order)
-        {
-            ListRow rowDelivery;
-            if (table.ListRows.Count == 0)
-            {
-                AddListRow(table);
-                rowDelivery = table.ListRows[1];
-            }
-            else
-            {
-                AddListRow(table);
-                rowDelivery = table.ListRows[table.ListRows.Count - 1];
-            }
-
-            // rowDelivery.Range[1, table.ListColumns["№ Доставки"].Index].Value = delivery.Number;
-        }
-
+ 
         /// <summary>
         /// Получить инфо из выгруза  
         /// </summary>
@@ -1145,18 +1104,7 @@ namespace DomesticTransport
             return order;
         }
 
-        private string GetVal(ListObject table, int row, string header)
-        {
-            int col = table.ListColumns[header].Index;
-            string value = table.ListRows[row].Range[1, col].Text;
-            return value;
-        }
-        private string GetVal(ListObject table, Range rng, int row, string header)
-        {
-            int col = table.ListColumns[header].Index;
-            string value = table.Range[row, col].Text;
-            return value;
-        }
+     
 
         /// <summary>
         /// Собрать доставки из актуального диапазона таблицы Отгрузка
@@ -1164,11 +1112,6 @@ namespace DomesticTransport
         /// <returns></returns>
         public List<Delivery> GetDeliveriesFromTotalSheet()
         {
-
-            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            //ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
-            //Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            //ListObject totalTable = totalSheet.ListObjects["TableTotal"];
             List<Delivery> deliveries = new List<Delivery>();
             Range total = new ShefflerWB().GetCurrentShippingRange();
             ShefflerWB functionsBook = new ShefflerWB();
@@ -1244,10 +1187,6 @@ namespace DomesticTransport
         /// </summary>
         public void CreateMasseges()
         {
-            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            //ListObject carTable = deliverySheet.ListObjects["TableCarrier"];
-            //Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-            //ListObject totalTable = totalSheet.ListObjects["TableTotal"];
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             if (deliveries?.Count == 0) return;
@@ -1260,8 +1199,8 @@ namespace DomesticTransport
             for (int i = 0; i < shippingComp.Length; i++)
             {
                 string сompanyShipping = shippingComp[i];
-
-                List<Delivery> deliverShipping = deliveries.FindAll(x =>
+                if (сompanyShipping == "") continue;
+                    List<Delivery> deliverShipping = deliveries.FindAll(x =>
                                    x.Truck.ShippingCompany.Name == сompanyShipping).ToList();
                 string date =ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
                 string subject = messageSheet.Cells[8, 2].Text;
@@ -1278,6 +1217,10 @@ namespace DomesticTransport
                                         subject: subject);
             }
         }
+
+
+
+        #region Вспомогательные  
 
         /// <summary>
         /// Создать файл отгрузки для провайдера
@@ -1406,7 +1349,7 @@ namespace DomesticTransport
         }
 
 
-        #region Вспомогательные
+ 
 
         /// <summary>
         /// Ищет в строке или на листе ячейку с заголовком и возвращает столбец
