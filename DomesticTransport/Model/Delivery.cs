@@ -122,7 +122,7 @@ namespace DomesticTransport.Model
             {
                 if (_truck == null)
                 {
-                    ShefflerWorkBook workBook = new ShefflerWorkBook();                     
+                    ShefflerWB workBook = new ShefflerWB();                     
                     _truck = workBook.GetTruck(TotalWeight, MapDelivery);
                 }
                 return _truck;

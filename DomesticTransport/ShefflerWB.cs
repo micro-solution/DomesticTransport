@@ -15,9 +15,80 @@ namespace DomesticTransport
     /// <summary>
     /// Действия с текущей книгой
     /// </summary>
-    class ShefflerWorkBook
+    class ShefflerWB
     {
+        public Worksheet DeliverySheet {
+            get {
+                if (_deliverySheet == null)
+                {
+                    _deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+                }
+                return _deliverySheet;
+            }
+        }
+        private Worksheet _deliverySheet ;
+        public Worksheet TotalSheet
+        {
+            get
+            {
+                if (_totalSheet == null)
+                {
+                    _totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
+                }
+                return _totalSheet;
+            }
+        }
+        private Worksheet _totalSheet;
+    
 
+        public ListObject OrdersTable
+        {
+            get
+            {
+                if (_ordersTable == null)
+                {
+                    _ordersTable = DeliverySheet.ListObjects["TableOrders"];
+                }
+                return _ordersTable;
+            }
+        }
+        private ListObject _ordersTable;
+        public ListObject DeliveryTable
+        {
+            get
+            {
+                if (_deliveryTable == null)
+                {
+                    _deliveryTable = DeliverySheet.ListObjects["TableCarrier"];
+                }
+                return _deliveryTable;
+            }
+        }
+        private ListObject _deliveryTable;
+
+        public static ListObject TotalTable
+        {
+            get
+            {
+                if (_totalTable == null)
+                {
+                    _totalTable = TotalSheet.ListObjects["TableTotal"];
+                }
+                return _totalTable;
+            }
+        }
+        private static ListObject _totalTable;
+
+
+
+         
+
+
+
+
+        /// <summary>
+        /// Прайс
+        /// </summary>
         private List<TruckRate> RateList
         {
             get
@@ -31,6 +102,9 @@ namespace DomesticTransport
         }
         private List<TruckRate> _rateList;
 
+     /// <summary>
+     /// Дата Доставки
+     /// </summary>
         public string DateDelivery
         {
             get
@@ -51,6 +125,10 @@ namespace DomesticTransport
         }
         string _dateDelivery;
 
+
+       /// <summary>
+       /// Получить таблицу Маршрутов 
+       /// </summary>
         public List<DeliveryPoint> RoutesTable
         {
             get
@@ -116,7 +194,13 @@ namespace DomesticTransport
 
         public object DataTime { get; private set; }
 
-
+         /// <summary>
+         /// Выбрать авто 
+         /// </summary>
+         /// <param name="totalWeight"></param>
+         /// <param name="mapDelivery"></param>
+         /// <param name="provider"></param>
+         /// <returns></returns>
         public Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery, string provider = "")
         {
             if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
@@ -224,7 +308,6 @@ namespace DomesticTransport
                     // MessageBox.Show($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
                     throw new Exception("Не удалось найти точку.");
                 }
-
             }
 
             rateVariants = RateList.FindAll(r =>
@@ -336,7 +419,6 @@ namespace DomesticTransport
             {
                 throw new Exception($"Не удалось получить лист \"{sheetName}\"");
             }
-
         }
 
         /// <summary>
@@ -386,7 +468,6 @@ namespace DomesticTransport
                         PlaceShipment = row.Range[1, 1].Text,
                         PlaceDelivery = row.Range[1, 2].Text,
                         Tonnage = tonnage
-
                     };
 
                     ListRate.Add(rate);
@@ -395,7 +476,10 @@ namespace DomesticTransport
 
             return ListRate;
         }
-
+           /// <summary>
+           /// Получить таблицу международных 
+           /// </summary>
+           /// <returns></returns>
         internal List<TruckRate> GetTruckRateInternational()
         {
             List<TruckRate> ListRate = new List<TruckRate>();
@@ -431,7 +515,6 @@ namespace DomesticTransport
                     ListRate.Add(rate);
                 }
             }
-
             return ListRate;
         }
 

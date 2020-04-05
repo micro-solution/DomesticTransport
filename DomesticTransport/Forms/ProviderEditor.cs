@@ -32,7 +32,7 @@ namespace DomesticTransport.Forms
         {
             Worksheet sh = Globals.ThisWorkbook.Sheets["Rate"];
             ListObject providerTable = sh.ListObjects["ProviderTable"];
-            ShefflerWorkBook shefflerWorkBook = new ShefflerWorkBook();
+            ShefflerWB shefflerWorkBook = new ShefflerWB();
              List<DeliveryPoint> mapDpelivery = DeliveryTarget?.MapDelivery;
 
             int iProviler = 0;
