@@ -805,29 +805,29 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Изменить
+        /// Пересчитать маршруты
         /// </summary>
         public void СhangeDelivery()
         {
             ShefflerWB.ExcelOptimizateOn();
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
 
-            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
-            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            //ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
+            ListObject carrierTable = ShefflerWB.DeliveryTable; //deliverySheet.ListObjects["TableCarrier"];
 
-            List<Order> orders = GetOrdersFromTable(ordersTable);
+            List<Order> orders = GetOrdersFromTable(ShefflerWB.OrdersTable);
             List<Delivery> deliveries = EditDeliveres(orders);
+            ShefflerWB.ExcelOptimizateOn();
             ClearListObj(carrierTable);
             PrintDelivery(deliveries, carrierTable);
             // EditPrintOrders()
 
-            ShefflerWB.ExcelOptimizateOff();
-            foreach (ListRow row in ordersTable.ListRows)
+            foreach (ListRow row in ShefflerWB.OrdersTable.ListRows)
             {
-                string strNum = row.Range[1, ordersTable.ListColumns["№ Доставки"].Index].Text;
+                string strNum = row.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : 0;
                 if (deliveryNumber == 0) continue;
-                string orderId = row.Range[1, ordersTable.ListColumns["Доставка"].Index].Text;
+                string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
                 orderId = new string('0', 10 - orderId.Length) + orderId;
                 Delivery delivery = deliveries.Find(d => d.Number == deliveryNumber);
                 if (delivery == null) continue;
@@ -835,11 +835,15 @@ namespace DomesticTransport
                 Order order = delivery.Orders.Find(r => r.Id == orderId);
                 if (order != null)
                 {
-                    row.Range[1, ordersTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
-                    row.Range[1, ordersTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.Id;
-                    row.Range[1, ordersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
+                    row.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
+                    row.Range[1, ShefflerWB.OrdersTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.Id;
+                    row.Range[1, ShefflerWB.OrdersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
                 }
+
             }
+
+            CopyDeliveryToTotal();
+            ShefflerWB.ExcelOptimizateOff();
         }
 
         /// <summary>

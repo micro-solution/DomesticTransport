@@ -45,8 +45,7 @@ namespace DomesticTransport
 
         private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
         {
-            //ChangeDelivery chengeDelivery = new ChangeDelivery();
-            // chengeDelivery.ShowDialog();
+           
             Functions functions = new Functions();
             functions.СhangeDelivery();
         }
