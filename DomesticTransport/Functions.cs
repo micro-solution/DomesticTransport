@@ -839,7 +839,6 @@ namespace DomesticTransport
                     row.Range[1, ShefflerWB.OrdersTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.Id;
                     row.Range[1, ShefflerWB.OrdersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
                 }
-
             }
 
             CopyDeliveryToTotal();
