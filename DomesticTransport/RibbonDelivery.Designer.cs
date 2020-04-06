@@ -69,7 +69,7 @@
             this.ShefflerRibbon.Groups.Add(this.group1);
             this.ShefflerRibbon.Groups.Add(this.settings);
             this.ShefflerRibbon.Groups.Add(this.about);
-            this.ShefflerRibbon.Label = "Шеффлер";
+            this.ShefflerRibbon.Label = "Schaeffler";
             this.ShefflerRibbon.Name = "ShefflerRibbon";
             this.ShefflerRibbon.Position = this.Factory.RibbonPosition.BeforeOfficeId("TabHome");
             // 

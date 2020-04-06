@@ -86,10 +86,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.ButtonCancel;
             this.ClientSize = new System.Drawing.Size(597, 450);
+            this.Controls.Add(this.TreeViewFolders);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.ButtonOk);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.TreeViewFolders);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OutlookFoldersSelect";
             this.Text = "Выбор папок Outlook";

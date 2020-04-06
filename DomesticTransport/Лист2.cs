@@ -1,5 +1,6 @@
 ﻿using DomesticTransport.Forms;
 using DomesticTransport.Model;
+
 using Microsoft.Office.Interop.Excel;
 
 using System;
@@ -87,6 +88,7 @@ namespace DomesticTransport
                 Target.Row > carrierTable.HeaderRowRange.Row &&
                 Target.Text != "")
             {
+                Cancel = true;
                 ProviderEditor providerFrm = new ProviderEditor();
                 string wt = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["Вес доставки"].Range.Column].Text;
                 Functions functions = new Functions();
@@ -97,11 +99,11 @@ namespace DomesticTransport
                 if (number == 0) return;
                 delivery.Orders = orders.FindAll(o => o.DeliveryNumber == number);
 
-                if (orders.Count == 0) {return;  }
-                    providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
-                    providerFrm.ProviderName = Target.Text;
-                    providerFrm.DeliveryTarget = delivery;                   
-                    providerFrm.ShowDialog();
+                if (orders.Count == 0) { return; }
+                providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
+                providerFrm.ProviderName = Target.Text;
+                providerFrm.DeliveryTarget = delivery;
+                providerFrm.ShowDialog();
                 if (providerFrm.DialogResult == DialogResult.OK)
                 {
                     Target.Value = providerFrm.ProviderName;
