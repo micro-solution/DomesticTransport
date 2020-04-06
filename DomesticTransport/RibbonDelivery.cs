@@ -1,6 +1,7 @@
 ﻿using DomesticTransport.Forms;
 
 using Microsoft.Office.Tools.Ribbon;
+using System.Windows.Forms;
 
 namespace DomesticTransport
 {
@@ -95,6 +96,22 @@ namespace DomesticTransport
         {
             new ScanMail().GetMessage();
 
+        }
+
+        /// <summary>
+        /// Сканирование писем
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnReadCarrierInvoice_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (Properties.Settings.Default.OutlookFolders == "")
+            {
+                MessageBox.Show("Задайте папки для сканирования почты", "Необходима настройка программы", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            ScanMail scanMail = new ScanMail();
+            scanMail.SaveAttachments();
         }
     }
 }
