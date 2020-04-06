@@ -1,10 +1,12 @@
 ﻿
 using Microsoft.Office.Interop.Excel;
+using Microsoft.Win32;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,94 +29,47 @@ namespace DomesticTransport
         }
         private Outlook.Application _outlookApp;
 
-
-        public void Init()
-        {
-            //Outlook.Inspectors inspectors;
-            //inspectors = new Application.Inspectors ;
-            //inspectors.NewInspector +=
-            //new Microsoft.Office.Interop.Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
-
-            // Get the Application object
-            //   Outlook.Application application =new Outlook.Application();
-
-            // Get the Inspector object
-            Outlook.Inspectors inspectors = OutlookApp.Inspectors;
-
-            // Get the active Inspector object
-            Outlook.Inspector activeInspector = OutlookApp.ActiveInspector();
-            if (activeInspector != null)
-            {
-                // Get the title of the active item when the Outlook start.
-                MessageBox.Show("Active inspector: " + activeInspector.Caption);
-            }
-
-            // Get the Explorer objects
-            Outlook.Explorers explorers = OutlookApp.Explorers;
-
-            // Get the active Explorer object
-            Outlook.Explorer activeExplorer = OutlookApp.ActiveExplorer();
-            if (activeExplorer != null)
-            {
-                // Get the title of the active folder when the Outlook start.
-                MessageBox.Show("Active explorer: " + activeExplorer.Caption);
-            }
-        }
-
-        public void Send_Email (string addres, string text, string body,
-                              string copyTo  )
-        {
-            Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(
-                                    Outlook.OlItemType.olMailItem);
-            mail.To = addres;
-            mail.Subject = text;
-            mail.Body = body;
-            mail.BCC = "";
-            mail.CC = "";
-
-
-        }
-        public void Receive()
-        {
-            try
-            {
-                Outlook.NameSpace _ns = OutlookApp.GetNamespace("MAPI");
-                Outlook.MAPIFolder inbox = _ns.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
-                _ns.SendAndReceive(true);
-                foreach (Outlook.MailItem item in inbox.Items)
-                {
-                    Debug.WriteLine("" + item.Subject + item.SenderName +
-                                item.HTMLBody + item.SentOn.ToLongDateString() +
-                                item.SentOn.ToLongTimeString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
+         ///
         /// <param name="addres">Email</param>        
         /// <param name="subject">Тема</param>
         /// <param name="body">Сообщение</param>
         /// <param name="copyTo">в копию</param>
-        public void CreateMessage (string addres,                                                                     
-                                   string subject,
-                                   string body,
-                                   string copyTo)
+         public void CreateMessage (string сompany,
+                                    string date,
+                                   string attachment,
+                                   string subject)
         {
-            try
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
+           ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
+            string addres = "";
+            string stroka = "";
+            
+            foreach (Range row in tableEmail.DataBodyRange.Rows)
             {
+                if (row.Cells[1, 1].Text == сompany)
+                {
+                 stroka = row.Cells[1 , 2].Text;
+                 addres = stroka == "" ? addres : $"{stroka}; {addres}";
+                }                            
+            }
+            string signature = ReadReestrSignature(); 
+            string textMsg = messageSheet.Cells[10, 2].Text;             
+            string copyTo = messageSheet.Cells[9, 2].Text;
+            textMsg = textMsg.Replace("[date]", date);
+            string HtmlBody =
+                  textMsg +
+                   "<br><br>" +
+               signature;            
+            try
+            {                                   
             OutlookApp.Session.Logon();
             Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
-            mail.To = addres;
-            mail.Subject ="" ;
-            mail.HTMLBody = body;
+            mail.To = addres;             
+            mail.HTMLBody = HtmlBody;
             mail.BCC = "";
             mail.CC = copyTo;        
-            mail.Subject = subject;    
+            mail.Subject = subject;
+            mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
             mail.Display();
             }
             catch(Exception ex)
@@ -122,7 +77,54 @@ namespace DomesticTransport
                 MessageBox.Show(ex.Message);
                 return;
             }                                        
-         
+        }         
+       
+        public static void WriteReestrSignature() 
+        {
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
+            Range range = messageSheet.Range["A1:B7"];
+
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            RegistryKey SignatureKey = currentUserKey.CreateSubKey("Sheffler");
+            string name = range.Cells[1, 2].Text;           
+            SignatureKey.SetValue("Ответственное лицо", name);
+            SignatureKey.SetValue("Компания", range.Cells[ 2, 2 ].Text);                  
+            SignatureKey.SetValue("Адрес", range.Cells[ 3, 2 ].Text);    
+            SignatureKey.SetValue("Город", range.Cells[ 4, 2 ].Text);           
+            SignatureKey.SetValue("Тел", range.Cells[ 5, 2 ].Text);
+            SignatureKey.SetValue("Моб", range.Cells[ 6, 2 ].Text);
+            SignatureKey.SetValue("Mail", range.Cells[ 7, 2 ].Text);
+            SignatureKey.Close();
+        }
+
+        public static string ReadReestrSignature()
+        {
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            
+            RegistryKey SignatureKey = currentUserKey.OpenSubKey("Sheffler");
+            if (SignatureKey == null) 
+            {
+                WriteReestrSignature();
+                SignatureKey = currentUserKey.OpenSubKey("Sheffler");
+            }
+
+          string name = SignatureKey.GetValue("Ответственное лицо").ToString();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                WriteReestrSignature();
+                name = SignatureKey.GetValue("Ответственное лицо").ToString();                
+            }
+            string signature =
+            "<br>" + name
+            + "<br>" + SignatureKey.GetValue("Компания").ToString()
+            + "<br>" + SignatureKey.GetValue("Адрес").ToString()
+            + "<br>" + SignatureKey.GetValue("Город").ToString()
+            + "<br>" + SignatureKey.GetValue("Тел").ToString()
+            + "<br>" + SignatureKey.GetValue("Моб").ToString()
+            + "<br>" + SignatureKey.GetValue("Mail").ToString();
+
+            SignatureKey.Close();
+            return signature;
         }
     }
 }

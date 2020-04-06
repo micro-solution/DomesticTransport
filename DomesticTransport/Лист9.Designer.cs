@@ -13,13 +13,11 @@ namespace DomesticTransport {
     
     
     /// 
-    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(4)]
+    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(3)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
-    public sealed partial class Лист3 : Microsoft.Office.Tools.Excel.WorksheetBase {
+    public sealed partial class Лист9 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
-        internal Microsoft.Office.Tools.Excel.ListObject TableRoutes;
-        
-        internal Microsoft.Office.Tools.Excel.ListObject TableCity;
+        internal Microsoft.Office.Tools.Excel.ListObject TableRateInternational;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -27,8 +25,8 @@ namespace DomesticTransport {
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Лист3(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
-                base(factory, serviceProvider, "Лист3", "Лист3") {
+        public Лист9(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
+                base(factory, serviceProvider, "Лист9", "Лист9") {
         }
         
         /// 
@@ -37,7 +35,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void Initialize() {
             base.Initialize();
-            Globals.Лист3 = this;
+            Globals.Лист9 = this;
             global::System.Windows.Forms.Application.EnableVisualStyles();
             this.InitializeCachedData();
             this.InitializeControls();
@@ -118,8 +116,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
-            this.TableRoutes.BeginInit();
-            this.TableCity.BeginInit();
+            this.TableRateInternational.BeginInit();
         }
         
         /// 
@@ -127,8 +124,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.TableCity.EndInit();
-            this.TableRoutes.EndInit();
+            this.TableRateInternational.EndInit();
             this.EndInit();
         }
         
@@ -137,8 +133,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.TableRoutes = Globals.Factory.CreateListObject(null, null, "Лист3:TableRoutes", "TableRoutes", this);
-            this.TableCity = Globals.Factory.CreateListObject(null, null, "Лист3:TableCity", "TableCity", this);
+            this.TableRateInternational = Globals.Factory.CreateListObject(null, null, "Лист9:TableRateInternational", "TableRateInternational", this);
         }
         
         /// 
@@ -160,23 +155,22 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
-            this.TableCity.Dispose();
-            this.TableRoutes.Dispose();
+            this.TableRateInternational.Dispose();
             base.OnShutdown();
         }
     }
     
     internal sealed partial class Globals {
         
-        private static Лист3 _Лист3;
+        private static Лист9 _Лист9;
         
-        internal static Лист3 Лист3 {
+        internal static Лист9 Лист9 {
             get {
-                return _Лист3;
+                return _Лист9;
             }
             set {
-                if ((_Лист3 == null)) {
-                    _Лист3 = value;
+                if ((_Лист9 == null)) {
+                    _Лист9 = value;
                 }
                 else {
                     throw new System.NotSupportedException();

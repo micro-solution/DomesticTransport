@@ -1,13 +1,12 @@
 ﻿namespace DomesticTransport.Model
 {
-    class Carrier
+   public class Carrier
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
-
-
-        ShippingCompany ShippingCompany { get; set; }
+        public string CarNumber { get; set; }
+        Provider ShippingCompany { get; set; }
 
 
     }

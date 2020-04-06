@@ -1,6 +1,9 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using DomesticTransport.Forms;
+using DomesticTransport.Model;
+using Microsoft.Office.Interop.Excel;
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -16,6 +19,7 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
+            this.TableCarrier.BeforeDoubleClick += new Microsoft.Office.Interop.Excel.DocEvents_BeforeDoubleClickEventHandler(this.TableCarrier_BeforeDoubleClick);
             this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
             this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
@@ -25,8 +29,8 @@ namespace DomesticTransport
 
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
+            ShefflerWB.ExcelOptimizateOff();
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            deliverySheet.Cells[2, 3].Formula = "=TODAY()+1";
             deliverySheet.Calculate();
         }
 
@@ -73,5 +77,39 @@ namespace DomesticTransport
             }
         }
 
+        private void TableCarrier_BeforeDoubleClick(Range Target, ref bool Cancel)
+        {
+            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
+
+            if (Target.Column == carrierTable.ListColumns["Компания"].Range.Column &&
+                Target.Row > carrierTable.HeaderRowRange.Row &&
+                Target.Text != "")
+            {
+                ProviderEditor providerFrm = new ProviderEditor();
+                string wt = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["Вес доставки"].Range.Column].Text;
+                Functions functions = new Functions();
+                List<Order> orders = functions.GetOrdersFromTable(ordersTable);
+                Delivery delivery = new Delivery();
+                string numStr = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["№ Доставки"].Range.Column].Text;
+                int number = int.TryParse(numStr, out int n) ? n : 0;
+                if (number == 0) return;
+                delivery.Orders = orders.FindAll(o => o.DeliveryNumber == number);
+
+                if (orders.Count == 0) {return;  }
+                    providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
+                    providerFrm.ProviderName = Target.Text;
+                    providerFrm.DeliveryTarget = delivery;                   
+                    providerFrm.ShowDialog();
+                if (providerFrm.DialogResult == DialogResult.OK)
+                {
+                    Target.Value = providerFrm.ProviderName;
+                    Target.Offset[0, 4].Value = providerFrm.CostDelivery;
+                }
+
+            }
+
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace DomesticTransport.Model
     /// <summary>
     /// Доставка товара
     /// </summary>
-    class Delivery
+  public  class Delivery
     {
         /// <summary>
         /// Найден маршрут доставки в таблице
@@ -46,10 +46,13 @@ namespace DomesticTransport.Model
         {
             get
             {
-                return Truck?.Cost ?? 0;
+                double val = Truck?.Cost ?? 0;
+                val = val == 0 ? _cost : val ; 
+                return val;
             }
+            set { _cost = value; }
         }
-
+        private double _cost=0;
         /// <summary>
         /// Общий вес
         /// </summary>
@@ -74,9 +77,8 @@ namespace DomesticTransport.Model
                 Orders.ForEach(x => sum += x.Cost);
                 return sum;
             }
-        }
-
-
+        }       
+    
         public List<Order> Orders
         {
             get
@@ -119,12 +121,12 @@ namespace DomesticTransport.Model
             {
                 if (_truck == null)
                 {
-                    ShefflerWorkBook workBook = new ShefflerWorkBook();
+                    ShefflerWB workBook = new ShefflerWB();                     
                     _truck = workBook.GetTruck(TotalWeight, MapDelivery);
                 }
                 return _truck;
             }
-            set { _truck = value; }//private
+            set { _truck = value; }
         }
 
         private Truck _truck;

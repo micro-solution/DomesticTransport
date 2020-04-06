@@ -8,15 +8,15 @@ using Office = Microsoft.Office.Core;
 
 namespace DomesticTransport
 {
-    public partial class Лист7
+    public partial class Лист8
     {
-        private void Лист7_Startup(object sender, System.EventArgs e)
+        private void Лист8_Startup(object sender, System.EventArgs e)
         {
+            
         }
 
-        private void Лист7_Shutdown(object sender, System.EventArgs e)
+        private void Лист8_Shutdown(object sender, System.EventArgs e)
         {
-
         }
 
         #region Код, созданный конструктором VSTO
@@ -27,8 +27,8 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(Лист7_Startup);
-            this.Shutdown += new System.EventHandler(Лист7_Shutdown);
+            this.Startup += new System.EventHandler(Лист8_Startup);
+            this.Shutdown += new System.EventHandler(Лист8_Shutdown);
         }
 
         #endregion

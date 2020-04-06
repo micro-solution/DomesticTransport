@@ -68,7 +68,7 @@ namespace DomesticTransport
                 InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,
                 ValidateNames = true,
                 Multiselect = false,
-                Filter = "Excel|*.xls*"
+                Filter = "Excel|*.xls*|CSV|*.csv |All files (*.*)|*.*"
             })
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
@@ -85,6 +85,11 @@ namespace DomesticTransport
             return sapUnload;
         }
 
+        /// <summary>
+        /// Проверить существование файла
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private bool CheckPath(string path)
         {
             if (!File.Exists(path))
@@ -107,6 +112,11 @@ namespace DomesticTransport
             this.Close();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SapFiles_Load(object sender, EventArgs e)
         {
             string path = Settings.Default.SapUnloadPath;
@@ -115,7 +125,6 @@ namespace DomesticTransport
                 string[] files = Directory.GetFiles(path);
                 foreach (string file in files)
                 {
-
                     FileInfo fi = new FileInfo(file);
                     if (!fi.Name.Contains("~$") &&
                         (fi.Extension.ToLower().Contains("xls") |
@@ -124,7 +133,7 @@ namespace DomesticTransport
                         if (fi.Name.Contains("Export"))
                         {
                             tbExport.Text = file;
-                        }
+                        } 
                     }
                 }
             }
