@@ -23,6 +23,8 @@ namespace DomesticTransport {
         
         internal Microsoft.Office.Tools.Excel.NamedRange weghtCell;
         
+        internal Microsoft.Office.Tools.Excel.ListObject ProviderTable;
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
         
@@ -123,6 +125,7 @@ namespace DomesticTransport {
             this.PriceDelivery.BeginInit();
             this.weght.BeginInit();
             this.weghtCell.BeginInit();
+            this.ProviderTable.BeginInit();
         }
         
         /// 
@@ -130,6 +133,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
+            this.ProviderTable.EndInit();
             this.weghtCell.EndInit();
             this.weght.EndInit();
             this.PriceDelivery.EndInit();
@@ -144,6 +148,7 @@ namespace DomesticTransport {
             this.PriceDelivery = Globals.Factory.CreateListObject(null, null, "Лист6:PriceDelivery", "PriceDelivery", this);
             this.weght = Globals.Factory.CreateNamedRange(null, null, "weght", "weght", this);
             this.weghtCell = Globals.Factory.CreateNamedRange(null, null, "weghtCell", "weghtCell", this);
+            this.ProviderTable = Globals.Factory.CreateListObject(null, null, "Лист6:ProviderTable", "ProviderTable", this);
         }
         
         /// 
@@ -165,6 +170,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
+            this.ProviderTable.Dispose();
             this.weghtCell.Dispose();
             this.weght.Dispose();
             this.PriceDelivery.Dispose();

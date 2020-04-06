@@ -14,6 +14,7 @@
     <OfficeApplication>Excel</OfficeApplication>
     <ProjectGuid>{63EFF963-1E2F-41A0-8AD8-0D23FB6B4087}</ProjectGuid>
     <SolutionID>03e4c1fc-31a2-44d4-99de-0c269eaf8695</SolutionID>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>опубликовать\</PublishUrl>
     <InstallUrl />
@@ -23,7 +24,6 @@
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
     <ProductName>DomesticTransport</ProductName>
     <PublisherName />
     <SupportUrl />
@@ -132,11 +132,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email.cs" />
+    <Compile Include="Forms\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OutlookFoldersSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OutlookFoldersSelect.Designer.cs">
+      <DependentUpon>OutlookFoldersSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ProgressBar.Designer.cs">
       <DependentUpon>ProgressBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProviderEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProviderEditor.Designer.cs">
+      <DependentUpon>ProviderEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Signature.cs">
       <SubType>Form</SubType>
@@ -145,13 +163,15 @@
       <DependentUpon>Signature.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
-    <Compile Include="ShefflerWorkBook.cs" />
+    <Compile Include="ListTable.cs" />
+    <Compile Include="ScanMail.cs" />
+    <Compile Include="ShefflerWB.cs" />
     <Compile Include="Model\Carrier.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Delivery.cs" />
     <Compile Include="Model\DeliveryPoint.cs" />
     <Compile Include="Model\Order.cs" />
-    <Compile Include="Model\ShippingCompany.cs" />
+    <Compile Include="Model\Provider.cs" />
     <Compile Include="Model\Truck.cs" />
     <Compile Include="Model\TruckRate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -178,12 +198,6 @@
     </Compile>
     <Compile Include="Лист1.Designer.cs">
       <DependentUpon>Лист1.Designer.xml</DependentUpon>
-    </Compile>
-    <Compile Include="Лист101.cs">
-      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
-    </Compile>
-    <Compile Include="Лист101.Designer.cs">
-      <DependentUpon>Лист101.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="Лист2.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
@@ -233,6 +247,19 @@
     <Compile Include="Лист9.Designer.cs">
       <DependentUpon>Лист9.Designer.xml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OutlookFoldersSelect.resx">
+      <DependentUpon>OutlookFoldersSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProgressBar.resx">
+      <DependentUpon>ProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProviderEditor.resx">
+      <DependentUpon>ProviderEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Signature.resx">
       <DependentUpon>Signature.cs</DependentUpon>
     </EmbeddedResource>
@@ -248,6 +275,7 @@
     </Compile>
     <EmbeddedResource Include="RibbonDelivery.resx">
       <DependentUpon>RibbonDelivery.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SapFiles.resx">
       <DependentUpon>SapFiles.cs</DependentUpon>
@@ -345,11 +373,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Лист101.Designer.xml">
-      <DependentUpon>Лист101.cs</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="icons8-truck-96 %283%29.ico" />
   </ItemGroup>
   <PropertyGroup>
@@ -377,7 +400,6 @@
         <Host Name="Excel Document" Path=".\DomesticTransport.xlsx" GeneratedCodeNamespace="DomesticTransport">
           <HostItem Name="ThisWorkbook" Code="ThisWorkbook.cs" CanonicalName="ThisWorkbook" Blueprint="ThisWorkbook.Designer.xml" GeneratedCode="ThisWorkbook.Designer.cs" />
           <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Отгрузка" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
-          <HostItem Name="Лист10" Code="Лист101.cs" CanonicalName="Лист10" DisplayName="Лист1" Blueprint="Лист101.Designer.xml" GeneratedCode="Лист101.Designer.cs" />
           <HostItem Name="Лист2" Code="Лист2.cs" CanonicalName="Лист2" DisplayName="Delivery" Blueprint="Лист2.Designer.xml" GeneratedCode="Лист2.Designer.cs" />
           <HostItem Name="Лист3" Code="Лист3.cs" CanonicalName="Лист3" DisplayName="Routes" Blueprint="Лист3.Designer.xml" GeneratedCode="Лист3.Designer.cs" />
           <HostItem Name="Лист4" Code="Лист4.cs" CanonicalName="Лист4" CanActivate="false" DisplayName="ZoneCustomer" Blueprint="Лист4.Designer.xml" GeneratedCode="Лист4.Designer.cs" />

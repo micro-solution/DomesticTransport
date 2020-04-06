@@ -2,4 +2,5 @@
   <hostitem:hostControl hostitem:name="PriceDelivery" hostitem:identifier="PriceDelivery" hostitem:type="Microsoft.Office.Tools.Excel.ListObject" hostitem:primaryCookie="Лист6:PriceDelivery" hostitem:extenderCookie="" hostitem:modifier="Internal" />
   <hostitem:hostControl hostitem:name="weght" hostitem:identifier="weght" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="weght" hostitem:extenderCookie="" hostitem:modifier="Internal" />
   <hostitem:hostControl hostitem:name="weghtCell" hostitem:identifier="weghtCell" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="weghtCell" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="ProviderTable" hostitem:identifier="ProviderTable" hostitem:type="Microsoft.Office.Tools.Excel.ListObject" hostitem:primaryCookie="Лист6:ProviderTable" hostitem:extenderCookie="" hostitem:modifier="Internal" />
 </hostitem:hostItem>

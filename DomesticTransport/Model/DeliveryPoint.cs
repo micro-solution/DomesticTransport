@@ -3,7 +3,7 @@
     /// <summary>
     /// Строка таблицы Routes (Точка Доставки или Получатель)
     /// </summary>
-    struct DeliveryPoint
+  public  struct DeliveryPoint
     {
         public int Id { get; set; }
         public int PriorityRoute { get; set; }

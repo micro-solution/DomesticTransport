@@ -3,7 +3,7 @@
     /// <summary>
     ///  Класс заказа (позиция перевозки)
     /// </summary>
-    class Order
+   public class Order
     {
         /// <summary>
         /// Идентификатор заказа

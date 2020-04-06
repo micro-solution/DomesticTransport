@@ -58,5 +58,17 @@ namespace DomesticTransport.Properties {
                 this["Signature"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OutlookFolders {
+            get {
+                return ((string)(this["OutlookFolders"]));
+            }
+            set {
+                this["OutlookFolders"] = value;
+            }
+        }
     }
 }

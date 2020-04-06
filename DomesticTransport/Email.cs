@@ -36,24 +36,24 @@ namespace DomesticTransport
         /// <param name="copyTo">в копию</param>
          public void CreateMessage (string сompany,
                                     string date,
-                                   string attachment)
+                                   string attachment,
+                                   string subject)
         {
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
            ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
             string addres = "";
             string stroka = "";
+            
             foreach (Range row in tableEmail.DataBodyRange.Rows)
             {
-                if (row.Cells[1, 2].Text == сompany)
+                if (row.Cells[1, 1].Text == сompany)
                 {
-                    addres = row.Cells[1,2].Text;
-                    stroka = stroka == "" ? addres : $"{stroka}; {addres}";
+                 stroka = row.Cells[1 , 2].Text;
+                 addres = stroka == "" ? addres : $"{stroka}; {addres}";
                 }                            
             }
-
             string signature = ReadReestrSignature(); 
-            string textMsg = messageSheet.Cells[10, 2].Text;
-            string subject = messageSheet.Cells[8, 2].Text;
+            string textMsg = messageSheet.Cells[10, 2].Text;             
             string copyTo = messageSheet.Cells[9, 2].Text;
             textMsg = textMsg.Replace("[date]", date);
             string HtmlBody =
@@ -78,7 +78,6 @@ namespace DomesticTransport
                 return;
             }                                        
         }         
-
        
         public static void WriteReestrSignature() 
         {
@@ -87,11 +86,7 @@ namespace DomesticTransport
 
             RegistryKey currentUserKey = Registry.CurrentUser;
             RegistryKey SignatureKey = currentUserKey.CreateSubKey("Sheffler");
-            string name = range.Cells[1, 2].Text;
-            //if (string.IsNullOrWhiteSpace(name))
-            //{
-            //    MessageBox.Show("Заполните информацию об отправителе.");
-            //}
+            string name = range.Cells[1, 2].Text;           
             SignatureKey.SetValue("Ответственное лицо", name);
             SignatureKey.SetValue("Компания", range.Cells[ 2, 2 ].Text);                  
             SignatureKey.SetValue("Адрес", range.Cells[ 3, 2 ].Text);    
