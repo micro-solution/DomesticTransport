@@ -54,9 +54,6 @@
             this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
-            this.button3 = this.Factory.CreateRibbonButton();
-            this.btnAcept = this.Factory.CreateRibbonButton();
-            this.btnChangePoint = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -179,6 +176,7 @@
             this.btnReadCarrierInvoice.Label = "Сканировать ответ";
             this.btnReadCarrierInvoice.Name = "btnReadCarrierInvoice";
             this.btnReadCarrierInvoice.ShowImage = true;
+            this.btnReadCarrierInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadCarrierInvoice_Click);
             // 
             // settings
             // 
@@ -211,9 +209,6 @@
             // 
             this.about.Items.Add(this.btnAboutProgrramm);
             this.about.Items.Add(this.btnSetts);
-            this.about.Items.Add(this.button3);
-            this.about.Items.Add(this.btnAcept);
-            this.about.Items.Add(this.btnChangePoint);
             this.about.Label = "Справка";
             this.about.Name = "about";
             // 
@@ -234,35 +229,6 @@
             this.btnSetts.Name = "btnSetts";
             this.btnSetts.ShowImage = true;
             this.btnSetts.Visible = false;
-            // 
-            // button3
-            // 
-            this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Label = "Изменить доставки";
-            this.button3.Name = "button3";
-            this.button3.ShowImage = true;
-            this.button3.Visible = false;
-            // 
-            // btnAcept
-            // 
-            this.btnAcept.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnAcept.Image = ((System.Drawing.Image)(resources.GetObject("btnAcept.Image")));
-            this.btnAcept.Label = "Принять ";
-            this.btnAcept.Name = "btnAcept";
-            this.btnAcept.ShowImage = true;
-            this.btnAcept.Visible = false;
-            this.btnAcept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAcept_Click);
-            // 
-            // btnChangePoint
-            // 
-            this.btnChangePoint.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnChangePoint.Image = ((System.Drawing.Image)(resources.GetObject("btnChangePoint.Image")));
-            this.btnChangePoint.Label = "Изменить маршрут";
-            this.btnChangePoint.Name = "btnChangePoint";
-            this.btnChangePoint.ShowImage = true;
-            this.btnChangePoint.Visible = false;
-            this.btnChangePoint.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangePoint_Click);
             // 
             // RibbonDelivery
             // 
@@ -289,8 +255,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupGeneral;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStart;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupEdit;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangePoint;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAcept;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangeSet;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ShefflerRibbon;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
@@ -303,7 +267,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadAllOrders;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadForms;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAccept;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveSignature;

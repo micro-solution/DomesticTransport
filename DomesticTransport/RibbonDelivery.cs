@@ -87,7 +87,14 @@ namespace DomesticTransport
         private void ButtonSelectFoldersOutlook_Click(object sender, RibbonControlEventArgs e)
         {
             OutlookFoldersSelect foldersSelect = new OutlookFoldersSelect();
-            foldersSelect.ShowDialog();
+            foldersSelect.ShowDialog();               
+            
+        }
+
+        private void btnReadCarrierInvoice_Click(object sender, RibbonControlEventArgs e)
+        {
+            new ScanMail().GetMessage();
+
         }
     }
 }

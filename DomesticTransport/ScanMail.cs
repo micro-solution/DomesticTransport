@@ -39,5 +39,11 @@ namespace DomesticTransport
                 }
             }
         }
+
+        public void GetMessage()
+        {
+            
+        }
+
     }
 }
