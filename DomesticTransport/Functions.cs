@@ -119,6 +119,57 @@ namespace DomesticTransport
             return orders;
         }
 
+        public void ReadMessageFile(string file)
+        {
+          Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
+            Worksheet sh = wb.Sheets[1];
+            ShefflerWB.ExcelOptimizateOn();
+            try
+            {
+                ListObject list = sh.ListObjects["Таблица1"];
+                foreach (ListRow row in list.ListRows)
+                {
+                    string idProvider = row.Range[1, list.ListColumns["ID перевозчика"].Index].Text;
+                    if (string.IsNullOrWhiteSpace(idProvider)) continue;
+                    string NameProvider = row.Range[1, list.ListColumns["Водитель (ФИО)"].Index].Text;
+                    string NumberProvider = row.Range[1, list.ListColumns["Номер, марка"].Index].Text;
+                    string PhoneProvider = row.Range[1, list.ListColumns["Телефон водителя"].Index].Text;
+                    Carrier carrier = new Carrier() { Id = idProvider, 
+                                                        Name = NameProvider,
+                                                        Phone = PhoneProvider, 
+                                                        CarNumber = NumberProvider }; 
+                    WriteProviderInfo(carrier); 
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Globals.ThisWorkbook.Application.DisplayAlerts = false;
+                wb.Close();
+                Globals.ThisWorkbook.Application.DisplayAlerts = true;
+                ShefflerWB.ExcelOptimizateOff();
+            }
+
+        }
+
+        private void WriteProviderInfo(Carrier carrier)
+        {
+            foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
+            {
+                string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
+                if (id == carrier.Id)
+                {
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Value = carrier.Name;
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Телефон водителя"].Index].Value = carrier.Phone;
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Номер,марка"].Index].Value = carrier.CarNumber;
+                }
+            }
+        }
+
         /// <summary>
         /// очистка таблицы удалением строк листа
         /// </summary>

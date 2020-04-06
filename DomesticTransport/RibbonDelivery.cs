@@ -92,26 +92,21 @@ namespace DomesticTransport
             
         }
 
-        private void btnReadCarrierInvoice_Click(object sender, RibbonControlEventArgs e)
-        {
-            new ScanMail().GetMessage();
-
-        }
-
-        /// <summary>
+            /// <summary>
         /// Сканирование писем
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnReadCarrierInvoice_Click(object sender, RibbonControlEventArgs e)
+        /// <param name="e"></param>   
+        private void btnReadCarrierInvoice_Click_1(object sender, RibbonControlEventArgs e)
         {
-            if (Properties.Settings.Default.OutlookFolders == "")
+          if (Properties.Settings.Default.OutlookFolders == "")
             {
                 MessageBox.Show("Задайте папки для сканирования почты", "Необходима настройка программы", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             ScanMail scanMail = new ScanMail();
             scanMail.SaveAttachments();
+            scanMail.GetMessage();
         }
     }
 }

@@ -5,7 +5,7 @@
     /// </summary>
    public class Truck
     {
-        public string Number { get; set; }
+   
         public string Mark { get; set; }
         public double Tonnage { get; set; }
 

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-
+using System.Windows.Forms;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace DomesticTransport
@@ -118,7 +119,21 @@ namespace DomesticTransport
 
         public void GetMessage()
         {
-            
+
+            string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+            //string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + ShefflerWB.DateDelivery + '\\';
+            if (!System.IO.Directory.Exists(path))
+            {
+                MessageBox.Show("Папка "+path+" отсутствует");
+                return;
+            }
+            string[] files = Directory.GetFiles(path);
+            foreach(string file in files)
+            {
+              if (!file.Contains(".xls") ) { continue; }
+                new Functions().ReadMessageFile(file);
+            }
+
         }
 
     }
