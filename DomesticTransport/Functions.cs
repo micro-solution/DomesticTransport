@@ -817,7 +817,10 @@ namespace DomesticTransport
                 order.PointNumber = int.TryParse(strNum, out int pointnum) ? pointnum : 0;
 
                 string customerId = row.Range[1, ordersTable.ListColumns["ID Получателя"].Index].Text;
+                string customerName = row.Range[1, ordersTable.ListColumns["Получатель"].Index].Text;
                 Customer customer = new Customer(customerId);
+                customer.Name = customerName;
+                order.Customer = customer;
                 DeliveryPoint point = new DeliveryPoint()
                 {
                     City = city,
@@ -825,7 +828,6 @@ namespace DomesticTransport
                 };
                 order.DeliveryPoint = point;
                 order.Route = row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Text;
-                order.Customer = customer;
                 string weight = row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Text;
                 order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
                 orders.Add(order);
@@ -905,6 +907,8 @@ namespace DomesticTransport
                         ShefflerWB.TotalTable.ListRows.Add();
                         totalRow = ShefflerWB.TotalTable.ListRows[ShefflerWB.TotalTable.ListRows.Count - 1];
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].value = order.Id;
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
+                       totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Value = order.Customer.Name;
                     }
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Value = order.DeliveryNumber;
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
@@ -919,9 +923,7 @@ namespace DomesticTransport
                     {
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Value = order.Route;
-
-                        // row.Range[1, totalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
-                        // row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Value = order.Id;
+               
                     }
 
                 }
@@ -950,6 +952,7 @@ namespace DomesticTransport
                 string strNumber = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Text;
                 if (!string.IsNullOrWhiteSpace(strNumber))
                 {
+
                     int deliveryNumber = int.TryParse(strNumber, out int num) ? num : 0;
                     Delivery delivery = new Delivery();
                     delivery.Orders = orders.FindAll(x => x.DeliveryNumber == deliveryNumber).ToList();
@@ -962,6 +965,7 @@ namespace DomesticTransport
 
                     string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Text;
                     delivery.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
+
                     // costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость поставки"].Index].Text;
                     //delivery.CostProducts = double.TryParse(costStr, out double costOr) ? costOr : 0;
 
@@ -1099,12 +1103,53 @@ namespace DomesticTransport
             string file = SapFiles.SelectFile();
             if (!File.Exists(file)) return;
 
-            List<Order> orders = new List<Order>();
+          //  List<Order> orders = new List<Order>();
 
             Order order = GetFromFile(file);
-            if (order != null) orders.Add(order);
+            if (order == null) return;
 
-            List<Delivery> deliveries = CompleteAuto(orders);
+                //orders.Add(order);
+            //   Delivery delivery = new Delivery();
+            //  delivery.Orders.Add(order);                
+            // List<Delivery> deliveries = new List<Delivery>();
+            // deliveries.Add(delivery);
+            ListRow rowOrder=null;
+            if ( ShefflerWB.OrdersTable.ListRows.Count == 0)
+            {
+                ShefflerWB.OrdersTable.ListRows.Add();
+                rowOrder = ShefflerWB.OrdersTable.ListRows[1];
+            }
+            else
+            {
+                ShefflerWB.OrdersTable.ListRows.Add();
+                rowOrder = ShefflerWB.OrdersTable.ListRows[ShefflerWB.OrdersTable.ListRows.Count - 1];
+            }
+            PrintOrder(rowOrder, order, 0);
+            ShefflerWB sheffler = new ShefflerWB();
+            if (!(string.IsNullOrWhiteSpace(order?.Customer?.Id)) && sheffler.CheckCustomerId(order.Customer.Id))
+            {
+                if (MessageBox.Show("Добвить маршрут?", 
+                                    "Маршрут с клиетном не найден!",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Warning)
+                    == DialogResult.Yes)
+                {
+                    ShefflerWB.RoutesTable.ListRows.Add();
+                    ListRow RouteRow = ShefflerWB.RoutesTable.ListRows[ShefflerWB.RoutesTable.ListRows.Count - 1];
+                    sheffler.RoutesList = null;  // Чтобы свойство обновилось;
+                    RouteRow.Range[1, ShefflerWB.RoutesTable.ListColumns["Получатель материала"].Index].Value = order.Customer.Id;
+                    try
+                    {
+
+                    ShefflerWB.RoutesSheet.Activate();
+                    RouteRow.Range.Select();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
             return;
         }
 
@@ -1120,36 +1165,42 @@ namespace DomesticTransport
             Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
             Worksheet sh = wb.Sheets[1];
             Range rng = sh.UsedRange;
-            string str = ShefflerWB.FindValue("Заявка на перевозку", rng, 0, 0);
-            if (str == "") return null;
+            string strTitle = ShefflerWB.FindValue("Заявка на перевозку", rng, 0, 0);
+            if (strTitle == "") return null;
 
-            str = ShefflerWB.FindValue("Номер грузополучателя", rng, 0, 1);
+            string strCustomerId = ShefflerWB.FindValue("Номер грузополучателя", rng, 0, 1);
             // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
             Regex regexId = new Regex(@"\d+");
-            string idcustomer = regexId.Match(str).Value;
-            order.Customer.Id = idcustomer;
+            strCustomerId = regexId.Match(strCustomerId).Value;
+            order.Customer.Id = strCustomerId;
 
-            str = ShefflerWB.FindValue("Грузополучатель", rng, 0, 1);
-            order.Customer.Name = str.Trim();
+            string  strName = ShefflerWB.FindValue("Грузополучатель", rng, 0, 1);
+            order.Customer.Name = strName.Trim();
 
-            str = ShefflerWB.FindValue("Номер накладной", rng, 0, 1);
-            order.Id = str.Replace(", ", " / ");
+            string strTU = ShefflerWB.FindValue("Номер накладной", rng, 0, 1);
+            order.TransportationUnit = strTU.Replace(",", "/");
 
-            str = ShefflerWB.FindValue("Стоимость", rng, 0, 0);
+            string  strCost = ShefflerWB.FindValue("Стоимость", rng, 0, 0);
             Regex regexCost = new Regex(@"(\d+\s?)+(\,\d+)?");
-            str = regexCost.Match(str).Value;
-            order.Cost = double.TryParse(str, out double ct) ? ct : 0;
+            strCost = regexCost.Match(strCost).Value;
+            order.Cost = double.TryParse(strCost, out double ct) ? ct : 0;
 
-            str = ShefflerWB.FindValue("брутто", rng, 0, 0);
-            str = regexCost.Match(str).Value;
-            double weight = double.TryParse(str, out double wt) ? wt : 0;
+            string strWeightBrutto = ShefflerWB.FindValue("брутто", rng, 0, 0);
+            strWeightBrutto = regexCost.Match(strWeightBrutto).Value;
+            double weight = double.TryParse(strWeightBrutto, out double wt) ? wt : 0;
             order.WeightNetto = weight;
 
-            str = ShefflerWB.FindValue("грузовых", rng, 0, 0);
-            str = regexId.Match(str).Value;
-            int countPallets = int.TryParse(str, out int count) ? count : 0;
+            string strPalletsCount = ShefflerWB.FindValue("грузовых мест", rng, 0, 0);
+            strPalletsCount = regexId.Match(strPalletsCount).Value;
+            int countPallets = int.TryParse(strPalletsCount, out int count) ? count : 0;
             order.PalletsCount = countPallets;
+
+            string strID = ShefflerWB.FindValue("Номер поставки", rng, 0, 1);
+            order.Id = strID;
+
+            Globals.ThisWorkbook.Application.DisplayAlerts = false;
             wb.Close();
+            Globals.ThisWorkbook.Application.DisplayAlerts = true;
             return order;
         }
 

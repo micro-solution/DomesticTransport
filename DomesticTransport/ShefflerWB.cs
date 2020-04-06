@@ -701,6 +701,12 @@ namespace DomesticTransport
             return id;
         }
 
+        internal bool CheckCustomerId(string id)
+        {
+            DeliveryPoint dp = RoutesList.Find(x => x.IdCustomer.Contains(id));
+           return string.IsNullOrWhiteSpace(dp.IdCustomer) ;  
+        }
+
         #endregion Вспомогательные
     }
 }
