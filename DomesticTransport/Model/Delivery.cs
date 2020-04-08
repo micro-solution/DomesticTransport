@@ -94,25 +94,19 @@ namespace DomesticTransport.Model
                 _orders = value;
             }
         }
-
         private List<Order> _orders;
-
-
 
         /// <summary>
         /// Точки доставки
         /// </summary>
         public List<DeliveryPoint> MapDelivery
-        {
-            get
-            {
+        {  get{
                 List<DeliveryPoint> dp = (from r in Orders
                                           select r.DeliveryPoint
                                           ).Distinct().ToList();
                 dp.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint);
                 return dp;
-            }
-        }
+         }}
 
 
         public Truck Truck
@@ -123,18 +117,21 @@ namespace DomesticTransport.Model
                 {
                     ShefflerWB workBook = new ShefflerWB();                     
                     _truck = workBook.GetTruck(TotalWeight, MapDelivery);
+                    if (! string.IsNullOrWhiteSpace(MapDelivery.Find(
+                                    x => x.RouteName.Contains("Сборный груз")).IdCustomer))
+                    {                           
+                        Truck.ProviderCompany.Name = "Деловые линии";
+                    }                    
                 }
                 return _truck;
             }
             set { _truck = value; }
         }
-
         private Truck _truck;
 
         public Delivery() { }
         public Delivery(Order order)
-        {
-            Orders.Add(order);
+        { Orders.Add(order);
         }
 
          /// <summary>
@@ -142,10 +139,15 @@ namespace DomesticTransport.Model
          /// </summary>
          /// <param name="order"></param>
          /// <returns></returns>
-        public bool CheckDeliveryWeght(Order order)
+        public bool CheckDeliveryWeight(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;
-            return sum < 20100;
+            return sum <= 20100;
+        }
+        public bool CheckDeliveryWeightLTL(Order order)
+        {
+            double sum = TotalWeight + order.WeightNetto;
+            return sum <= 20000;
         }
     }
 }

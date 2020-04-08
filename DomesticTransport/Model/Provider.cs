@@ -7,10 +7,10 @@
         public string Name {
             get
             {
-                if (string.IsNullOrWhiteSpace(_name))
-                {
-                    _name = "Деловые линии";
-                }                       
+                //if (string.IsNullOrWhiteSpace(_name))
+                //{
+                //    _name = "Деловые линии";
+                //}                       
                 return _name;
             }
             set

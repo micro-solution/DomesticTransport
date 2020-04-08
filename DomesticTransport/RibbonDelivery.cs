@@ -13,10 +13,7 @@ namespace DomesticTransport
             functions.SetDelivery();
         }
 
-        private void btnChangePoint_Click(object sender, RibbonControlEventArgs e)
-        {
-           
-        }
+
 
         private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
         {
