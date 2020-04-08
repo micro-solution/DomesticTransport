@@ -149,7 +149,7 @@ namespace DomesticTransport
         /// <summary>
         /// Прайс
         /// </summary>
-        private List<TruckRate> RateList
+         private static List<TruckRate> RateList
         {
             get
             {
@@ -160,7 +160,7 @@ namespace DomesticTransport
                 return _rateList;
             }
         }
-        private List<TruckRate> _rateList;
+        private static List<TruckRate> _rateList;
 
         /// <summary>
         /// Дата Доставки
@@ -193,7 +193,7 @@ namespace DomesticTransport
         /// <summary>
         /// Получить таблицу Маршрутов 
         /// </summary>
-        public List<DeliveryPoint> RoutesList
+        public static List<DeliveryPoint> RoutesList
         {
             get
             {
@@ -234,21 +234,22 @@ namespace DomesticTransport
                 _routes = value;
             }
         }
-        List<DeliveryPoint> _routes;
+        static List<DeliveryPoint> _routes;
 
 
-        public List<TruckRate> RateInternationalList
+        public  List<TruckRate> RateInternationalList
         {
             get
             {
                 if (_RateInternationalList == null)
                 {
-                    _RateInternationalList = GetTruckRateInternational();
+                    
+                    _RateInternationalList = new ShefflerWB().GetTruckRateInternational();
                 }
                 return _RateInternationalList;
             }
         }
-        private List<TruckRate> _RateInternationalList;
+        private static List<TruckRate> _RateInternationalList;
 
         public string[] CityList
         {
@@ -264,20 +265,21 @@ namespace DomesticTransport
             }
         }
         private string[] _cityList;
-        public string[] InternationalCityList
+        public static string[] InternationalCityList
         {
             get
             {
                 if (_internationalCityList == null)
                 {
-                    _internationalCityList = (from LR in RateInternationalList
+                    List<TruckRate> rates = new ShefflerWB().RateInternationalList;
+                    _internationalCityList = (from LR in rates
                                               select LR.City
                                  ).Distinct().ToArray();
                 }
                 return _internationalCityList;
             }
         }
-        private string[] _internationalCityList;
+        private static string[] _internationalCityList;
 
         /// <summary>
         /// Выбрать авто 
@@ -303,8 +305,8 @@ namespace DomesticTransport
                 else
                 {
                     bool isInternational = false;
-                    ShefflerWB sheffler = new ShefflerWB();
-                    foreach (string city in sheffler.InternationalCityList) // Nur - Sultan //Yerevan
+                   
+                    foreach (string city in InternationalCityList) // Nur - Sultan //Yerevan
                     {
                         string pointCity = mapDelivery[0].City ?? "";
                         if (pointCity.Contains(city))
@@ -348,12 +350,12 @@ namespace DomesticTransport
 
         private bool CheckPoints(List<DeliveryPoint> mapDelivery)
         {
-            bool chk = true;
+            bool chk = mapDelivery.Count >0 ;           
+
             foreach (DeliveryPoint point in mapDelivery)
-            {
-                if (string.IsNullOrEmpty(RoutesList.Find(x => x.IdCustomer == point.IdCustomer).IdCustomer))
-                {// throw new Exception("В таблице маршрутов отсутствует Клиент");
-                    chk = false; }
+            {                                    
+                 chk =RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count>0;
+                if (!chk) { break; }
             }
             return chk;
         }
@@ -518,7 +520,7 @@ namespace DomesticTransport
         /// Получить вес список цен перевозчиков в формате списка         
         /// </summary>
         /// <returns></returns>
-        private List<TruckRate> GetTruckRateList()
+         private static List<TruckRate> GetTruckRateList()
         {
             List<TruckRate> ListRate = new List<TruckRate>();
             foreach (ListRow row in RateTable.ListRows)
