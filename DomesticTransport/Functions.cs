@@ -434,8 +434,8 @@ namespace DomesticTransport
         {
             List<Delivery> deliveries = new List<Delivery>();
             orders = orders.OrderBy(x => x.WeightNetto).ToList();
-            ShefflerWB sheffler = new ShefflerWB();
-            List<DeliveryPoint> points = sheffler.RoutesList;
+            
+            List<DeliveryPoint> points = ShefflerWB.RoutesList;
             Delivery deliveryNoRoute = new Delivery();
             deliveryNoRoute.HasRoute = false;
 
@@ -462,7 +462,7 @@ namespace DomesticTransport
                             if ((city.Contains("MSK") ||
                                 city.Contains("MO")) && iDelivery.MapDelivery.Count == 3) { continue; }
 
-                            if (sheffler.InternationalCityList.Any(x => x == city) &&
+                            if (ShefflerWB.InternationalCityList.Any(x => x == city) &&
                                      orders[iOrder].DeliveryPoint.City == city) //Nur - Sultan //Yerevan
                             {
                                 if (iDelivery.CheckDeliveryWeightLTL(orders[iOrder]))
@@ -721,7 +721,7 @@ namespace DomesticTransport
             }
             else
             {
-                int rowIx = totalTable.ListRows.Count;
+                int rowIx = totalTable.ListRows.Count - 1;
                 row = totalTable.ListRows[rowIx];
             }
 
@@ -754,8 +754,7 @@ namespace DomesticTransport
                     row = totalTable.ListRows[totalTable.ListRows.Count - 1];
                 }
             }
-            if (row.Index > 1 && row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Text == "") row.Delete();
-
+            // if (row.Index > 1 && row.Range[0, totalTable.ListColumns["Номер поставки"].Index].Text == "") row.Delete();
         }
 
         /// <summary>
@@ -825,15 +824,14 @@ namespace DomesticTransport
                 order.PointNumber = int.TryParse(strNum, out int pointnum) ? pointnum : 0;
 
                 string customerId = row.Range[1, ordersTable.ListColumns["ID Получателя"].Index].Text;
+                customerId = customerId.Length < 10 ? new string('0', 10 - customerId.Length) + customerId : customerId;
                 string customerName = row.Range[1, ordersTable.ListColumns["Получатель"].Index].Text;
                 Customer customer = new Customer(customerId);
                 customer.Name = customerName;
                 order.Customer = customer;
-                DeliveryPoint point = new DeliveryPoint()
-                {
-                    City = city,
-                    Customer = customerId
-                };
+              
+                            
+               DeliveryPoint point = ShefflerWB.RoutesList.Find(r => r.IdCustomer == customerId);
                 order.DeliveryPoint = point;
                 order.Route = row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Text;
                 string weight = row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Text;
@@ -1024,14 +1022,14 @@ namespace DomesticTransport
         {
             ShefflerWB functionsBook = new ShefflerWB();
             Delivery delivery = new Delivery();
-            int idRoute = FindRoute(ordersCurrentDelivery, functionsBook);
+            int idRoute = FindRoute(ordersCurrentDelivery);
             if (idRoute == 0)
             {
                 // Добавить маршрут 
                 idRoute = functionsBook.CreateRoute(ordersCurrentDelivery);
-                functionsBook = new ShefflerWB();
+               
             }
-            List<DeliveryPoint> pointMap = functionsBook.RoutesList;
+            List<DeliveryPoint> pointMap = ShefflerWB.RoutesList;
 
             foreach (Order order in ordersCurrentDelivery)
             {
@@ -1061,10 +1059,10 @@ namespace DomesticTransport
         /// <param name="orders"></param>
         /// <param name="functionsBook"></param>
         /// <returns></returns>
-        private int FindRoute(List<Order> orders, ShefflerWB functionsBook)
+        private int FindRoute(List<Order> orders)
         {
             //Таблица routes
-            List<DeliveryPoint> pointMap = functionsBook.RoutesList;
+            List<DeliveryPoint> pointMap = ShefflerWB.RoutesList;
             //список id маршрутов
             List<int> uRoutes = (from p in pointMap
                                  select p.Id).Distinct().ToList();
@@ -1124,7 +1122,7 @@ namespace DomesticTransport
                 {
                     ShefflerWB.RoutesTable.ListRows.Add();
                     ListRow RouteRow = ShefflerWB.RoutesTable.ListRows[ShefflerWB.RoutesTable.ListRows.Count - 1];
-                    sheffler.RoutesList = null;  // Чтобы свойство обновилось;
+                    ShefflerWB.RoutesList = null;  // Чтобы свойство обновилось;
                     RouteRow.Range[1, ShefflerWB.RoutesTable.ListColumns["Получатель материала"].Index].Value = order.Customer.Id;
                     try
                     {
@@ -1196,8 +1194,8 @@ namespace DomesticTransport
         {
             List<Delivery> deliveries = new List<Delivery>();
             Range total = new ShefflerWB().GetCurrentShippingRange();
-            ShefflerWB functionsBook = new ShefflerWB();
-            List<DeliveryPoint> points = functionsBook.RoutesList;
+            
+            List<DeliveryPoint> points = ShefflerWB.RoutesList;
 
             if (total == null) return deliveries;
 
@@ -1405,7 +1403,7 @@ namespace DomesticTransport
                     Order order = delivery.Orders[i];
                     if (ixDelivery % 2 == 0)
                     {
-                        rowColor.Interior.Color = System.Drawing.Color.FromArgb(228, 234, 245);     
+                        rowColor.Interior.Color = System.Drawing.Color.FromArgb(228, 234, 245);
                     }
                     else
                     {
@@ -1427,7 +1425,7 @@ namespace DomesticTransport
                     sh.Cells[row, 16].Value = order.PalletsCount;
                     sh.Cells[row, 17].Value = order.Cost;
                     row++;
-                }                                  
+                }
             }
             Range rng = sh.Range[sh.Cells[1, 1], sh.Cells[row - 1, headers.Length]];
             ListObject list =

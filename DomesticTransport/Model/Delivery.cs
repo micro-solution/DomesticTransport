@@ -46,13 +46,19 @@ namespace DomesticTransport.Model
         {
             get
             {
-                double val = Truck?.Cost ?? 0;
-                val = val == 0 ? _cost : val ; 
-                return val;
+                if ( Truck?.ProviderCompany?.Name=="Деловые линии" || Truck == null)
+                {
+                    _cost = 0 ;
+                }
+                else
+                {
+                 _cost= Truck?.Cost ?? 0;
+                }            
+                return _cost;
             }
             set { _cost = value; }
         }
-        private double _cost=0;
+        private double _cost;
         /// <summary>
         /// Общий вес
         /// </summary>
