@@ -733,13 +733,13 @@ namespace DomesticTransport
                 row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
                 row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                 row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-                row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
 
                 foreach (Order order in delivery.Orders)
                 {
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
 
+                row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
                     row.Range[1, totalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
                     row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Value = order.Id;
                     row.Range[1, totalTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
