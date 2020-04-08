@@ -189,6 +189,30 @@ namespace DomesticTransport
         }
         static string _dateDelivery;
 
+        internal Range GetRowDeliveryTotal(int number)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Range GetRowOrderTotal(string idOrder)
+        {
+            Range range = null;
+            foreach (ListRow row in TotalTable.ListRows)
+            {
+              string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
+                if ((!string.IsNullOrWhiteSpace(cell)) &&  idOrder.Contains(cell))
+                {
+                    range = row.Range;
+                    break;
+                }
+            }
+            return range;
+        }
+
+
+
+
+
 
         /// <summary>
         /// Получить таблицу Маршрутов 

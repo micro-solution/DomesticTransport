@@ -21,11 +21,7 @@ namespace DomesticTransport
             functions.CreateMasseges();
         }
 
-        private void btnAcept_Click(object sender, RibbonControlEventArgs e)
-        {
-            Functions functions = new Functions();
-            functions.AcceptDelivery();
-        }
+
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
@@ -62,7 +58,7 @@ namespace DomesticTransport
         private void btnAccept_Click(object sender, RibbonControlEventArgs e)
         {
             Functions functions = new Functions();
-            functions.CopyDeliveryToTotal();
+            functions.UpdateTotal();
         }
 
         private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)
