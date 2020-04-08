@@ -358,6 +358,8 @@ namespace DomesticTransport
 
                 if (delivery?.MapDelivery.Count > 0)
                 {
+                    rowDelivery.Range[1, DeliveryTable.ListColumns["Маршрут"].Index].Value =
+                                                            delivery.MapDelivery[0].Route;
                     rowDelivery.Range[1, DeliveryTable.ListColumns["ID Route"].Index].Value =
                                                                         delivery?.MapDelivery[0].Id;
                 }
@@ -432,47 +434,42 @@ namespace DomesticTransport
         {
             List<Delivery> deliveries = new List<Delivery>();
             orders = orders.OrderBy(x => x.WeightNetto).ToList();
-            ShefflerWB functionsBook = new ShefflerWB();
-            List<DeliveryPoint> points = functionsBook.RoutesList;
+            ShefflerWB sheffler = new ShefflerWB();
+            List<DeliveryPoint> points = sheffler.RoutesList;
             Delivery deliveryNoRoute = new Delivery();
             deliveryNoRoute.HasRoute = false;
 
             while (orders.Count > 0)
             {
-                bool findDelivery = false;
+                bool hasDelivery = false;
                 // Проходим по возможным маршрутам
                 foreach (DeliveryPoint point in points)
                 {
                     // Ищем товар, который можно отправить указанным маршрутом                    
                     for (int iOrder = orders.Count - 1; iOrder >= 0; iOrder--)
                     {
-                        if (!orders[iOrder].Customer.Id.Contains(point.IdCustomer)) continue;
-                        findDelivery = true;
+                        if (orders[iOrder].Customer.Id != point.IdCustomer) continue;
+                        hasDelivery = true;
                         orders[iOrder].DeliveryPoint = point;
                         // Пытаемся добавить к имеющимся машинам
                         Delivery delivery = null;
                         foreach (Delivery iDelivery in deliveries)
                         {
-                            string city = iDelivery.Orders[0].DeliveryPoint.City;
-                            city = city.Trim();
-                            if (iDelivery.Orders[0].DeliveryPoint.Id != point.Id) continue;
+                            string city = iDelivery.MapDelivery[0].City;                            
+                            // У машины другой маршрут
+                            if (iDelivery.Orders[0].DeliveryPoint.Id != point.Id) continue; 
+                             // Для мск допустимо 3 точки 
                             if ((city.Contains("MSK") ||
-                                city.Contains("MO")) && iDelivery.MapDelivery.Count > 3) { continue; }
+                                city.Contains("MO")) && iDelivery.MapDelivery.Count == 3) { continue; }
 
-                            if ((city.Contains("Yerevan") ||
-                                city.Contains("Nur-Sultan")))
+                            if (sheffler.InternationalCityList.Any(x=>x == city) &&
+                                     orders[iOrder].DeliveryPoint.City==city) //Nur - Sultan //Yerevan
                             {
-                                if (iDelivery.TotalWeight + orders[iOrder].WeightNetto <= 3300)
-                                {
-                                    delivery = iDelivery;
-                                    break;
-                                }
+                                if (iDelivery.CheckDeliveryWeightLTL(orders[iOrder]))
+                                { delivery = iDelivery;   break; }
                             }
-                            else if (iDelivery.CheckDeliveryWeght(orders[iOrder]))
-                            {
-                                delivery = iDelivery;
-                                break;
-                            }
+                            else if (iDelivery.CheckDeliveryWeight(orders[iOrder]))
+                            { delivery = iDelivery; break; }
                         }
                         if (delivery == null)
                         {
@@ -483,17 +480,17 @@ namespace DomesticTransport
                         Order orderCurrentCustomer = delivery.Orders.Find(x => x.Customer.Id == orders[iOrder].Customer.Id);
                         //Порядок выгруза / Если уже есть груз для заказчика 
                         int number = orderCurrentCustomer == null ?
-                              delivery.Orders.Count + 1
+                              delivery.MapDelivery.Count + 1
                             : orderCurrentCustomer.PointNumber;
                         orders[iOrder].PointNumber = number;
                         delivery.Orders.Add(orders[iOrder]);
                         delivery.Number = deliveries.Count;
                         orders.RemoveAt(iOrder);
                     }
-                    if (findDelivery) break;
+                    if (hasDelivery) break;
                 }
                 // не нашли маршрут
-                if (!findDelivery)
+                if (!hasDelivery)
                 {
                     deliveryNoRoute.Orders.Add(orders[0]);
                     deliveryNoRoute.Number = deliveries.Count;
@@ -725,23 +722,21 @@ namespace DomesticTransport
             }
             else
             {
-                int rowIx = totalTable.ListRows.Count - 1;
+                int rowIx = totalTable.ListRows.Count  ;
                 row = totalTable.ListRows[rowIx];
             }
 
             foreach (Delivery delivery in deliveries)
             {
                 row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
-
-                foreach (Order order in delivery.Orders)
-                {
                     string date = ShefflerWB.DateDelivery;
-
                     row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
                     row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                     row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                     row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
 
+                foreach (Order order in delivery.Orders)
+                {
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
 
@@ -900,8 +895,9 @@ namespace DomesticTransport
 
             foreach (Delivery delivery in deliveries)
             {
-                foreach (Order order in delivery.Orders)
+                for (int ixOrder = 0; ixOrder < delivery.Orders.Count; ixOrder++)
                 {
+                    Order order = delivery.Orders[ixOrder];
                     ListRow totalRow = null;
                     for (int i = 1; i <= ShefflerWB.TotalTable.ListRows.Count; i++)
                     {
@@ -926,18 +922,20 @@ namespace DomesticTransport
                     }
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Value = order.DeliveryNumber;
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
+                    totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Value = order.Route;
+                     if (ixOrder == 0)
+                    {
+
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Дата доставки"].Index].Value = ShefflerWB.DateDelivery;
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value =
                                                                             delivery.Truck?.ProviderCompany?.Name ?? "";
                     totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-                    totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
-
                     if (delivery?.MapDelivery.Count > 0)
                     {
-                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
-                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Value = order.Route;
-               
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;               
+                    }
                     }
 
                 }

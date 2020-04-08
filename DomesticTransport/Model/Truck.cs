@@ -23,7 +23,13 @@
         /// ???
         /// </summary>
         public int Cost { get; set; }
-
+        //{ 
+        //   get { 
+        //        _cost = 
+        //    }
+        //    set { }
+        //}
+        //int _cost;
         public Provider ProviderCompany
         {
             get

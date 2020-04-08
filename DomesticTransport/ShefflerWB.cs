@@ -270,7 +270,7 @@ namespace DomesticTransport
             {
                 if (_internationalCityList == null)
                 {
-                    _internationalCityList = (from LR in RateList
+                    _internationalCityList = (from LR in RateInternationalList
                                               select LR.City
                                  ).Distinct().ToArray();
                 }
@@ -313,7 +313,7 @@ namespace DomesticTransport
                             break;
                         }
                     }
-                    rateVariants = isInternational ?
+                   rateVariants = isInternational ?
                    // Для  LTL маршрутов расчет суммы за 100 кг веса + add.point
                    rateVariants = GetTruckRateInternational(totalWeight, mapDelivery) :
                    rateVariants = GetTruckRate(tonnageNeed, mapDelivery);
@@ -352,9 +352,8 @@ namespace DomesticTransport
             foreach (DeliveryPoint point in mapDelivery)
             {
                 if (string.IsNullOrEmpty(RoutesList.Find(x => x.IdCustomer == point.IdCustomer).IdCustomer))
-                {
-                    throw new Exception("В таблице маршрутов отсутствует Клиент id: " + point.IdCustomer);
-                }
+                {// throw new Exception("В таблице маршрутов отсутствует Клиент");
+                    chk = false; }
             }
             return chk;
         }
@@ -450,17 +449,28 @@ namespace DomesticTransport
         public List<TruckRate> GetTruckRateInternational(double totalWeight, List<DeliveryPoint> mapDelivery)
         {
             int centner = (int)Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
-
+            List<TruckRate> rateVariants = new List<TruckRate>();
             double tonnageNeed = centner / 10;   //тонн 
 
-            List<TruckRate> rateVariants = RateInternationalList.FindAll(
-                                x => mapDelivery[0].City.Contains(x.City) &&
-                                x.Tonnage == tonnageNeed);
+            for (int j=0; j< RateInternationalList.Count; j++)
+            {
+                TruckRate rate = RateInternationalList[j];
+                if (mapDelivery[0].City.Contains(rate.City) && rate.Tonnage == tonnageNeed)
+                {
+                    rateVariants.Add(rate);
+                }
+            }
+              //rateVariants = RateInternationalList.FindAll(
+              //                  x => mapDelivery[0].City.Contains(x.City) &&
+              //                  x.Tonnage == tonnageNeed);
+           
             for (int i = 0; i < rateVariants.Count; i++)
             {
                 TruckRate rate = rateVariants[i];
-                int addpointCost = (mapDelivery.Count - 1) * rate.PriceAddPoint;
-                rate.TotalDeliveryCost = (int)Math.Ceiling(rate.PriceFirstPoint * totalWeight / 100 + addpointCost);
+                int addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
+                rate.TotalDeliveryCost =
+                    (int)Math.Ceiling(rateVariants[i].PriceFirstPoint * totalWeight / 100 + addpointCost);
+                rateVariants[i] = rate;
             }
             rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
             return rateVariants;
@@ -573,7 +583,7 @@ namespace DomesticTransport
                     string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
                     int price = int.TryParse(strPrice, out int pf) ? pf : 0;
 
-                    strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Text;
+                    strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Text;
                     int priceAdd = int.TryParse(strPrice, out int pa) ? pa : 0;
 
                     TruckRate rate = new TruckRate()
