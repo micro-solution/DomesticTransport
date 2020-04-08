@@ -64,7 +64,7 @@ namespace DomesticTransport
             {
                 PrintDelivery(deliveries, ShefflerWB.DeliveryTable);
                 PrintOrders(deliveries, ShefflerWB.OrdersTable);
-                PrintShipping(ShefflerWB.TotalTable, deliveries);
+                PrintTotal(ShefflerWB.TotalTable, deliveries);
             }
             ShefflerWB.DeliverySheet.Columns.AutoFit();
             ShefflerWB.ExcelOptimizateOff();
@@ -698,7 +698,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="totalTable"></param>
         /// <param name="deliveries"></param>
-        private void PrintShipping(ListObject totalTable, List<Delivery> deliveries)
+        private void PrintTotal(ListObject totalTable, List<Delivery> deliveries)
         {
             if (deliveries.Count < 1) return;
             ShefflerWB shefflerBook = new ShefflerWB();
@@ -794,6 +794,7 @@ namespace DomesticTransport
                 }
             }
 
+
             CopyDeliveryToTotal();
             ShefflerWB.ExcelOptimizateOff();
         }
@@ -806,9 +807,7 @@ namespace DomesticTransport
         public List<Order> GetOrdersFromTable(ListObject ordersTable)
         {
             List<Order> orders = new List<Order>();
-            //  List<int> deliveryNumbers = new List<int>();
-
-
+           
             foreach (ListRow row in ordersTable.ListRows)
             {
                 Order order = new Order();
@@ -828,8 +827,7 @@ namespace DomesticTransport
                 string customerName = row.Range[1, ordersTable.ListColumns["Получатель"].Index].Text;
                 Customer customer = new Customer(customerId);
                 customer.Name = customerName;
-                order.Customer = customer;
-              
+                order.Customer = customer;                 
                             
                DeliveryPoint point = ShefflerWB.RoutesList.Find(r => r.IdCustomer == customerId);
                 order.DeliveryPoint = point;
@@ -962,9 +960,9 @@ namespace DomesticTransport
                     string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Text;
                     delivery.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
 
-                    // costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость поставки"].Index].Text;
-                    //delivery.CostProducts = double.TryParse(costStr, out double costOr) ? costOr : 0;
 
+                    //costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость поставки"].Index].Text;
+                    //delivery.CostProducts = double.TryParse(costStr, out double costOr) ? costOr : 0;
                     deliveries.Add(delivery);
                     //Компания
                     //Деловые линии

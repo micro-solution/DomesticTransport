@@ -452,7 +452,7 @@ namespace DomesticTransport
         {
             int centner = (int)Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
             List<TruckRate> rateVariants = new List<TruckRate>();
-            double tonnageNeed = centner / 10;   //тонн 
+            double tonnageNeed =(double) centner/10 ;   //тонн 
 
             for (int j=0; j< RateInternationalList.Count; j++)
             {
