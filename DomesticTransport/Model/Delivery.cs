@@ -70,7 +70,7 @@ namespace DomesticTransport.Model
             get
             {
                 double sum = 0;
-                Orders.ForEach(x => sum += x.WeightNetto);
+                Orders.ForEach(x => sum += x.WeightBrutto == 0 ? x.WeightNetto : x.WeightBrutto);
                 return sum;
             }
         }
