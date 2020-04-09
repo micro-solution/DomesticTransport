@@ -182,10 +182,20 @@ namespace DomesticTransport
                 }
             }
             number++;
-
+            Range selection;
+            Range orfderRng;
             // Выделенный диапазон
-            Range selection = Globals.ThisWorkbook.Application.Selection;
-            Range orfderRng = Globals.ThisWorkbook.Application.Intersect(selection, ShefflerWB.OrdersTable.DataBodyRange);
+            try
+            {
+             selection = Globals.ThisWorkbook.Application.Selection;
+             orfderRng = Globals.ThisWorkbook.Application.Intersect(selection, ShefflerWB.OrdersTable.DataBodyRange);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
             Delivery delivery = null;
             if (orfderRng != null)
             {
@@ -231,6 +241,11 @@ namespace DomesticTransport
                     foreach (Range orderLine in orfderRng.Rows)
                     {
                         ShefflerWB.DeliverySheet.Cells[orderLine.Row, 4].Value = delivery.MapDelivery[0].Id;   //ID Route
+                        string IDdelivery = ShefflerWB.DeliverySheet.Cells[orderLine.Row, 4].Text;
+                        Order orderFnd = deliveries[0].Orders.Find(x => x.Id.Contains(IDdelivery));
+                        if ( orderFnd!=null){
+                            ShefflerWB.DeliverySheet.Cells[orderLine.Row, 5].Value = orderFnd.DeliveryPoint;
+                        }
                     }
                 }
 
