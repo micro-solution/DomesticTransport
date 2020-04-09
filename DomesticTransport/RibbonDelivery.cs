@@ -10,7 +10,7 @@ namespace DomesticTransport
         private void btnStart_Click(object sender, RibbonControlEventArgs e)
         {
             Functions functions = new Functions();
-            functions.SetDelivery();
+            functions.ExportFromSAP();
         }
 
 
@@ -52,7 +52,7 @@ namespace DomesticTransport
         private void btnReadForms_Click(object sender, RibbonControlEventArgs e)
         {
             Functions functions = new Functions();
-            functions.GetOrdersFromFiles();
+            functions.ExportFromCS();
         }
 
         private void btnAccept_Click(object sender, RibbonControlEventArgs e)

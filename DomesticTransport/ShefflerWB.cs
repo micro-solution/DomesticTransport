@@ -189,11 +189,6 @@ namespace DomesticTransport
         }
         static string _dateDelivery;
 
-        internal Range GetRowDeliveryTotal(int number)
-        {
-            throw new NotImplementedException();
-        }
-
         internal Range GetRowOrderTotal(string idOrder)
         {
             Range range = null;
@@ -345,7 +340,7 @@ namespace DomesticTransport
                    rateVariants = GetTruckRate(tonnageNeed, mapDelivery);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 truck = new Truck()
                 {
@@ -422,7 +417,7 @@ namespace DomesticTransport
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     Debug.WriteLine($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
                     throw new Exception("Не удалось найти точку.");
