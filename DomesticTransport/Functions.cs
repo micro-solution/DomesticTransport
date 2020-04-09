@@ -142,12 +142,8 @@ namespace DomesticTransport
         private void ClearListObj(ListObject listObject)
         {
             Globals.ThisWorkbook.Application.DisplayAlerts = false;
-            Worksheet worksheet = listObject.Parent;
-            for (int i = listObject.ListRows.Count; i > 0; i--)
-            {
-                ListRow listRow = listObject.ListRows[i];
-                worksheet.Rows[listRow.Range.Row].Delete();
-            }
+            if (listObject.DataBodyRange == null) return;
+            listObject.DataBodyRange.EntireRow.Delete();
             Globals.ThisWorkbook.Application.DisplayAlerts = true;
         }
         private void AddListRow(ListObject listObject)
