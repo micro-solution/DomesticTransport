@@ -45,6 +45,7 @@
             this.TreeViewFolders.Name = "TreeViewFolders";
             this.TreeViewFolders.Size = new System.Drawing.Size(576, 384);
             this.TreeViewFolders.TabIndex = 0;
+            this.TreeViewFolders.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeViewFolders_BeforeSelect);
             // 
             // label1
             // 

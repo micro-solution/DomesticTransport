@@ -38,7 +38,8 @@ namespace DomesticTransport.Forms
                 string name = row.Cells[1,1].Text;
                 lvProvider.Items.Add( name );
                 Truck truck = shefflerWorkBook.GetTruck(Weight, mapDpelivery, name);
-                lvProvider.Items[iProviler].SubItems.Add(truck.Cost.ToString());
+                string cost = truck == null ? "0" : truck.Cost.ToString();
+                lvProvider.Items[iProviler].SubItems.Add(cost);
                 iProviler++;
             }
             if (mapDpelivery != null && mapDpelivery.Count>0)

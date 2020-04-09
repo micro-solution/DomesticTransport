@@ -23,8 +23,14 @@
         /// ???
         /// </summary>
         public int Cost { get; set; }
-
-        public Provider ShippingCompany
+        //{ 
+        //   get { 
+        //        _cost = 
+        //    }
+        //    set { }
+        //}
+        //int _cost;
+        public Provider ProviderCompany
         {
             get
             {
@@ -48,7 +54,7 @@
             CostAddPoint = truckRate.PriceAddPoint;
             Cost = truckRate.TotalDeliveryCost;
             string companyName = truckRate.Company;
-            ShippingCompany = new Provider() { Name = companyName };
+            ProviderCompany = new Provider() { Name = companyName };
         }
     }
 }

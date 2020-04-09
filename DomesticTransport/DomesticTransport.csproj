@@ -163,7 +163,6 @@
       <DependentUpon>Signature.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
-    <Compile Include="ListTable.cs" />
     <Compile Include="ScanMail.cs" />
     <Compile Include="ShefflerWB.cs" />
     <Compile Include="Model\Carrier.cs" />
