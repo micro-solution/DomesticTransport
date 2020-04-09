@@ -684,7 +684,7 @@ namespace DomesticTransport
             foreach (ListRow row in TotalTable.ListRows)
             {
                 string dateTable = row.Range[0, columnDeliveryId].Text;
-                if (dateTable == dateDelivery)
+                if (dateTable == dateDelivery || string.IsNullOrEmpty(dateTable))
                 {
                     if (currentRng == null)
                     {

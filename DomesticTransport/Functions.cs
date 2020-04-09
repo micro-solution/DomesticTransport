@@ -52,13 +52,9 @@ namespace DomesticTransport
                 orders = GetOrdersInfo(ordersPath, orders);  // Поиск свойств в файле All orders
             }
             List<Delivery> deliveries = CompleteAuto(orders);
+
             ClearListObj(ShefflerWB.DeliveryTable);
-            if (ShefflerWB.OrdersTable.DataBodyRange.Rows.Count > 0)
-            {
-                Globals.ThisWorkbook.Application.DisplayAlerts = false;
-                ShefflerWB.OrdersTable.DataBodyRange.Rows.Delete();
-                Globals.ThisWorkbook.Application.DisplayAlerts = true;
-            }
+            ClearListObj(ShefflerWB.OrdersTable);
 
             if (deliveries != null && deliveries.Count > 0)
             {
@@ -717,31 +713,17 @@ namespace DomesticTransport
         {
             if (deliveries.Count < 1) return;
             ShefflerWB shefflerBook = new ShefflerWB();
-            ListRow row;
+            
             Range CurrentDateRng = shefflerBook.GetCurrentShippingRange();
 
-            if (CurrentDateRng != null)
-            {
-                Worksheet totalSheet = Globals.ThisWorkbook.Sheets["Отгрузка"];
-                for (int k = CurrentDateRng.Rows.Count; k > 0; k--)
-                {
-                    totalSheet.Rows[CurrentDateRng.Rows[k].Row].Delete();
-                }
-            }
-
-            if (totalTable.ListRows.Count == 0)
-            {
-                totalTable.ListRows.Add();
-                row = totalTable.ListRows[1];
-            }
-            else
-            {
-                int rowIx = totalTable.ListRows.Count - 1;
-                row = totalTable.ListRows[rowIx];
-            }
+            if (CurrentDateRng != null) CurrentDateRng.EntireRow.Delete();
 
             foreach (Delivery delivery in deliveries)
             {
+                totalTable.ListRows.Add();
+                bool mainRow = true;
+                ListRow row = totalTable.ListRows[totalTable.ListRows.Count-1];
+
                 row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                 string date = ShefflerWB.DateDelivery;
                 row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
@@ -749,6 +731,11 @@ namespace DomesticTransport
 
                 foreach (Order order in delivery.Orders)
                 {
+                    if (!mainRow)
+                    {
+                        totalTable.ListRows.Add();
+                        row = totalTable.ListRows[totalTable.ListRows.Count - 1];
+                    }
                     row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
@@ -765,11 +752,10 @@ namespace DomesticTransport
                     row.Range[1, totalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
                     row.Range[1, totalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
 
-                    totalTable.ListRows.Add();
-                    row = totalTable.ListRows[totalTable.ListRows.Count - 1];
+                    mainRow = false;
                 }
+
             }
-            // if (row.Index > 1 && row.Range[0, totalTable.ListColumns["Номер поставки"].Index].Text == "") row.Delete();
         }
 
         /// <summary>
