@@ -338,7 +338,7 @@ namespace DomesticTransport
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : 0;
                 if (deliveryNumber == 0) continue;
                 string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
-                orderId = new string('0', 10 - orderId.Length) + orderId;
+                orderId = orderId.Length < 10 ?  new string('0', 10 - orderId.Length) + orderId : orderId ;
                 Delivery delivery = deliveries.Find(d => d.Number == deliveryNumber);
                 if (delivery == null) continue;
 
@@ -450,7 +450,6 @@ namespace DomesticTransport
                 Globals.ThisWorkbook.Application.DisplayAlerts = true;
                 ShefflerWB.ExcelOptimizateOff();
             }
-
         }
 
 
@@ -511,7 +510,7 @@ namespace DomesticTransport
                 string idOrder = row.Cells[1, column].Text;
                 if (string.IsNullOrWhiteSpace(idOrder)) continue;
                 Order order = new Order();
-                idOrder = new string('0', 10 - idOrder.Length) + idOrder;
+                idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder ;
                 order.Id = idOrder;
                 orders.Add(order);
             }
@@ -708,7 +707,7 @@ namespace DomesticTransport
         {
             Range findRange = sheet.Columns[1];
 
-            string search = new string('0', 10 - delivery.Length) + delivery;
+            string search = delivery.Length < 10 ?  new string('0', 10 - delivery.Length) + delivery : delivery ;
             Range fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
             if (fcell == null) return null;
 

@@ -743,7 +743,7 @@ namespace DomesticTransport
                     int counter = int.TryParse(row.Cells[1, colCounter].Text, out int count) ? count : 0;
                     row.Cells[1, colCounter].Value = ++counter;
                     string Counter = counter.ToString();
-                    Counter = new string('0', 6 - Counter.Length) + Counter;
+                    Counter = Counter.Length < 6 ? new string('0', 6 - Counter.Length) + Counter : Counter ;
                     id = ix + Counter;
                     break;
                 }
