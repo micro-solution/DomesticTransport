@@ -189,6 +189,30 @@ namespace DomesticTransport
         }
         static string _dateDelivery;
 
+        internal Range GetRowDeliveryTotal(int number)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Range GetRowOrderTotal(string idOrder)
+        {
+            Range range = null;
+            foreach (ListRow row in TotalTable.ListRows)
+            {
+              string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
+                if ((!string.IsNullOrWhiteSpace(cell)) &&  idOrder.Contains(cell))
+                {
+                    range = row.Range;
+                    break;
+                }
+            }
+            return range;
+        }
+
+
+
+
+
 
         /// <summary>
         /// Получить таблицу Маршрутов 
@@ -452,7 +476,7 @@ namespace DomesticTransport
         {
             int centner = (int)Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
             List<TruckRate> rateVariants = new List<TruckRate>();
-            double tonnageNeed = centner / 10;   //тонн 
+            double tonnageNeed =(double) centner/10 ;   //тонн 
 
             for (int j=0; j< RateInternationalList.Count; j++)
             {

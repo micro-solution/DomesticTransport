@@ -9,7 +9,7 @@ namespace DomesticTransport.Model
     /// <summary>
     /// Доставка товара
     /// </summary>
-  public  class Delivery
+    public class Delivery
     {
         /// <summary>
         /// Найден маршрут доставки в таблице
@@ -46,14 +46,17 @@ namespace DomesticTransport.Model
         {
             get
             {
-                if ( Truck?.ProviderCompany?.Name=="Деловые линии" || Truck == null)
+                if (_cost == 0)
                 {
-                    _cost = 0 ;
+                    if (Truck?.ProviderCompany?.Name == "Деловые линии" || Truck == null)
+                    {
+                        _cost = 0;
+                    }
+                    else
+                    {
+                        _cost = Truck?.Cost ?? 0;
+                    }
                 }
-                else
-                {
-                 _cost= Truck?.Cost ?? 0;
-                }            
                 return _cost;
             }
             set { _cost = value; }
@@ -83,8 +86,8 @@ namespace DomesticTransport.Model
                 Orders.ForEach(x => sum += x.Cost);
                 return sum;
             }
-        }       
-    
+        }
+
         public List<Order> Orders
         {
             get
@@ -106,13 +109,16 @@ namespace DomesticTransport.Model
         /// Точки доставки
         /// </summary>
         public List<DeliveryPoint> MapDelivery
-        {  get{
+        {
+            get
+            {
                 List<DeliveryPoint> dp = (from r in Orders
                                           select r.DeliveryPoint
                                           ).Distinct().ToList();
                 dp.OrderBy(x => x.PriorityRoute).ThenBy(y => y.PriorityPoint);
                 return dp;
-         }}
+            }
+        }
 
 
         public Truck Truck
@@ -121,13 +127,13 @@ namespace DomesticTransport.Model
             {
                 if (_truck == null)
                 {
-                    ShefflerWB workBook = new ShefflerWB();                     
+                    ShefflerWB workBook = new ShefflerWB();
                     _truck = workBook.GetTruck(TotalWeight, MapDelivery);
-                    if (! string.IsNullOrWhiteSpace(MapDelivery.Find(
+                    if (!string.IsNullOrWhiteSpace(MapDelivery.Find(
                                     x => x.RouteName.Contains("Сборный груз")).IdCustomer))
-                    {                           
+                    {
                         Truck.ProviderCompany.Name = "Деловые линии";
-                    }                    
+                    }
                 }
                 return _truck;
             }
@@ -137,14 +143,15 @@ namespace DomesticTransport.Model
 
         public Delivery() { }
         public Delivery(Order order)
-        { Orders.Add(order);
+        {
+            Orders.Add(order);
         }
 
-         /// <summary>
-         /// Проверка на превышение веса
-         /// </summary>
-         /// <param name="order"></param>
-         /// <returns></returns>
+        /// <summary>
+        /// Проверка на превышение веса
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         public bool CheckDeliveryWeight(Order order)
         {
             double sum = TotalWeight + order.WeightNetto;

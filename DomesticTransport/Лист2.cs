@@ -108,6 +108,17 @@ namespace DomesticTransport
                 {
                     Target.Value = providerFrm.ProviderName;
                     Target.Offset[0, 4].Value = providerFrm.CostDelivery;
+                    //На лист отгрузки 
+                    string idOrder = delivery.Orders[0].Id;
+                    Range row=null;
+                    row = new ShefflerWB().GetRowOrderTotal(idOrder);
+                      if (row != null)
+                    {
+                    row.Cells[0, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
+                    row.Cells[0, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
+                    }
+
+                   
                 }
 
             }
