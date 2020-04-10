@@ -481,10 +481,7 @@ namespace DomesticTransport
                     rateVariants.Add(rate);
                 }
             }
-              //rateVariants = RateInternationalList.FindAll(
-              //                  x => mapDelivery[0].City.Contains(x.City) &&
-              //                  x.Tonnage == tonnageNeed);
-           
+                     
             for (int i = 0; i < rateVariants.Count; i++)
             {
                 TruckRate rate = rateVariants[i];
@@ -669,7 +666,6 @@ namespace DomesticTransport
             RoutesList = null;
             return idRoute;
         }
-
 
         public Range GetCurrentShippingRange()
         {
