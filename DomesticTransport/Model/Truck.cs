@@ -1,4 +1,6 @@
-﻿namespace DomesticTransport.Model
+﻿using System;
+
+namespace DomesticTransport.Model
 {
     /// <summary>
     /// Класс автомобиля перевозчика
@@ -12,25 +14,25 @@
         /// <summary>
         /// Стоимость доставки в первую точку
         /// </summary>
-        public int CostFirstPoint { get; set; }
+        public double CostFirstPoint { get; set; }
 
         /// <summary>
         /// Стоимость дополнительной точки
         /// </summary>
-        public int CostAddPoint { get; set; }
+        public double CostAddPoint { get; set; }
 
         /// <summary>
         /// ???
         /// </summary>
-        public int Cost { get; set; }
-        //{ 
-        //   get { 
-        //        _cost = 
-        //    }
-        //    set { }
-        //}
-        //int _cost;
-        public Provider ProviderCompany
+        public double Cost
+        { 
+           get {
+                return _cost;
+            }
+    set { _cost = Math.Ceiling(value); }
+        }
+        double _cost;
+public Provider ProviderCompany
         {
             get
             {
