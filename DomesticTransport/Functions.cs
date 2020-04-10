@@ -1109,12 +1109,13 @@ namespace DomesticTransport
             Range totalData = ShefflerWB.TotalTable.Range;
             Range col1 = totalData.Columns[ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index];
             Range col2 = totalData.Columns[ShefflerWB.TotalTable.ListColumns["Дата доставки"].Index];
+            Range col3 = totalData.Columns[ShefflerWB.TotalTable.ListColumns["Порядок выгрузки"].Index];
             totalData.Sort(col1, 
                 XlSortOrder.xlAscending,
                col2,
                 Type.Missing,
-                XlSortOrder.xlAscending,               
-                Type.Missing,
+                XlSortOrder.xlAscending,
+               col3,
                 XlSortOrder.xlAscending, 
                 XlYesNoGuess.xlYes, 
                 Type.Missing,
