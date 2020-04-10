@@ -541,9 +541,8 @@ namespace DomesticTransport
             if (strTitle == "") return null;
 
             string strCustomerId = ShefflerWB.FindValue("Номер грузополучателя", rng, 0, 1);
-            // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();
-            Regex regexId = new Regex(@"\d+");
-            strCustomerId = regexId.Match(strCustomerId).Value;
+            // str = str.Remove(0, str.IndexOf("ИНН") + 3).Trim();             
+           // strCustomerId = regexId.Match(strCustomerId).Value;
             order.Customer.Id = strCustomerId;
 
             string strName = ShefflerWB.FindValue("Грузополучатель", rng, 0, 1);
@@ -563,6 +562,7 @@ namespace DomesticTransport
             order.WeightNetto = weight;
 
             string strPalletsCount = ShefflerWB.FindValue("грузовых мест", rng, 0, 0);
+            Regex regexId = new Regex(@"\d+");
             strPalletsCount = regexId.Match(strPalletsCount).Value;
             int countPallets = int.TryParse(strPalletsCount, out int count) ? count : 0;
             order.PalletsCount = countPallets;
@@ -1309,6 +1309,11 @@ namespace DomesticTransport
                     catch (Exception ex)
                     { Debug.WriteLine(ex.Message); }
                 }
+                else
+                {
+                    throw new Exception("Выход без добавления клиента");
+                }
+
             }
         }     
 
