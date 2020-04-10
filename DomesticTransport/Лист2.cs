@@ -30,9 +30,9 @@ namespace DomesticTransport
 
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
-            ShefflerWB.ExcelOptimizateOff();
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            deliverySheet.Calculate();
+            //ShefflerWB.ExcelOptimizateOff();
+            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+            //deliverySheet.Calculate();
         }
 
         private void Лист2_SelectionChange(Range Target)

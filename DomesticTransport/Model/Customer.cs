@@ -14,7 +14,7 @@
 
             set
             {
-                _id = new string('0', 10 - value.Length) + value;
+                _id = value.Length < 10 ? new string('0', 10 - value.Length) + value : value ;
             }
         }
         private string _id;
