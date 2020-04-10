@@ -389,7 +389,7 @@ namespace DomesticTransport
         {
             List<TruckRate> rateVariants = new List<TruckRate>();
             int ix = 0;
-            int MaxCost = 0;
+            double MaxCost = 0;
             string city = "";
 
             /// подходящие варианты перевозчиков
@@ -401,17 +401,17 @@ namespace DomesticTransport
                 //  List < DeliveryPoint > variants  
                 try
                 {
-                    int? MaxCostPoint = 0;
+                    double? MaxCostPoint = 0;
                     MaxCostPoint = (from rv in RateList
                                     where rv.City == point.City &&
-                                            rv.Tonnage > tonnageNeed
+                                            rv.Tonnage >= tonnageNeed
                                     select rv.PriceFirstPoint
                                 )?.Max();
                     if (MaxCostPoint != null)
                     {
                         if (MaxCost < MaxCostPoint)
                         {
-                            MaxCost = (int)MaxCostPoint;
+                            MaxCost = (double)MaxCostPoint;
                             ix = i;
                             city = point.City;
                         }
@@ -425,7 +425,7 @@ namespace DomesticTransport
             }
             rateVariants = RateList.FindAll(r =>
                                         r.City == mapDelivery[ix].City &&
-                                        r.Tonnage > tonnageNeed
+                                        r.Tonnage >= tonnageNeed
                                         ).ToList();
 
             if (rateVariants.Count > 0)
@@ -481,14 +481,11 @@ namespace DomesticTransport
                     rateVariants.Add(rate);
                 }
             }
-              //rateVariants = RateInternationalList.FindAll(
-              //                  x => mapDelivery[0].City.Contains(x.City) &&
-              //                  x.Tonnage == tonnageNeed);
-           
+                     
             for (int i = 0; i < rateVariants.Count; i++)
             {
                 TruckRate rate = rateVariants[i];
-                int addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
+                double addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
                 rate.TotalDeliveryCost =
                     (int)Math.Ceiling(rateVariants[i].PriceFirstPoint * totalWeight / 100 + addpointCost);
                 rateVariants[i] = rate;
@@ -510,7 +507,7 @@ namespace DomesticTransport
             List<TruckRate> rateVariants = new List<TruckRate>();
             rateVariants = RateList.FindAll(r =>
                                         r.City == mapDelivery[0].City &&
-                                      r.Tonnage > tonnageNeed
+                                      r.Tonnage >= tonnageNeed
                                         ).ToList();
 
             if (rateVariants.Count > 0)
@@ -558,9 +555,9 @@ namespace DomesticTransport
                 {
 
                     string strPrice = row.Range[1, RateTable.ListColumns["vehicle"].Index].Text;
-                    int priceFirst = int.TryParse(strPrice, out int pf) ? pf : 0;
+                    double priceFirst = double.TryParse(strPrice, out double pf) ? pf : 0;
                     strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Text;
-                    int priceAdd = int.TryParse(strPrice, out int pa) ? pa : 0;
+                    double priceAdd = double.TryParse(strPrice, out double pa) ? pa : 0;
                     TruckRate rate = new TruckRate()
                     {
                         City = valCity,
@@ -602,10 +599,10 @@ namespace DomesticTransport
                 if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
                 {
                     string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
-                    int price = int.TryParse(strPrice, out int pf) ? pf : 0;
+                    double price = double.TryParse(strPrice, out double pf) ? pf : 0;
 
                     strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Text;
-                    int priceAdd = int.TryParse(strPrice, out int pa) ? pa : 0;
+                    double priceAdd = double.TryParse(strPrice, out double pa) ? pa : 0;
 
                     TruckRate rate = new TruckRate()
                     {
@@ -670,7 +667,6 @@ namespace DomesticTransport
             return idRoute;
         }
 
-
         public Range GetCurrentShippingRange()
         {
             Range currentRng = null;
@@ -708,6 +704,7 @@ namespace DomesticTransport
             if (findCell == null) return "";
             findCell = findCell.Offset[offsetRow, offsetCol];
             string valueCell = findCell.Text;
+            valueCell = valueCell.Trim();
             return valueCell;
         }
 
