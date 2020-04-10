@@ -704,6 +704,7 @@ namespace DomesticTransport
             if (findCell == null) return "";
             findCell = findCell.Offset[offsetRow, offsetCol];
             string valueCell = findCell.Text;
+            valueCell = valueCell.Trim();
             return valueCell;
         }
 
