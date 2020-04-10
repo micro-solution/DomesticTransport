@@ -101,12 +101,12 @@ namespace DomesticTransport.Forms
             Timer.Stop();
             Cancel = true;
             _exist = false;
-            // Functions.ExcelOptimizateOff();
+           
         }
 
         private void ProcessBar_Load(object sender, EventArgs e)
         {
-            // Functions.ExcelOptimizateOn();
+           
         }
 
     }
