@@ -331,7 +331,7 @@ namespace DomesticTransport
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : 0;
                 if (deliveryNumber == 0) continue;
                 string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
-                orderId = orderId.Length < 10 ?  new string('0', 10 - orderId.Length) + orderId : orderId ;
+                orderId = new string('0', 10 - orderId.Length) + orderId;
                 Delivery delivery = deliveries.Find(d => d.Number == deliveryNumber);
                 if (delivery == null) continue;
 
@@ -473,7 +473,7 @@ namespace DomesticTransport
                 DeliveryPoint point = ShefflerWB.RoutesList.Find(r => r.IdCustomer == customerId);
                 order.DeliveryPoint = point;
                 order.Route = row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Text;
-                string weight = row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Text;
+                string weight = row.Range[1, ordersTable.ListColumns["Вес"].Index].Text;
                 order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
                 order = GetOrdersInfoFromTotal(order);
                 orders.Add(order);
@@ -814,7 +814,7 @@ namespace DomesticTransport
                 }
                 rowDelivery.Range[1, DeliveryTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                 rowDelivery.Range[1, DeliveryTable.ListColumns["Вес доставки"].Index].FormulaR1C1 =
-                                                "=SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес нетто])";
+                                                "=SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес])";
             }
             pb.Close();
         }
@@ -877,7 +877,7 @@ namespace DomesticTransport
             row.Range[1, ordersTable.ListColumns["Получатель"].Index].Value = order.Customer.Name;
             row.Range[1, ordersTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
             row.Range[1, ordersTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.Id;
-            row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Value = order.WeightNetto;
+            row.Range[1, ordersTable.ListColumns["Вес"].Index].Value = order.WeightBrutto == 0 ? order.WeightNetto : order.WeightBrutto;
             row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Value = order.Route;
         }
 
@@ -951,13 +951,14 @@ namespace DomesticTransport
             Worksheet worksheet = listObject.Parent;
             if (listObject.ListRows.Count > 0)
             {
-                worksheet.Rows[listObject.ListRows[listObject.ListRows.Count].Range.Row + 1].Insert();
+               // worksheet.Rows[listObject.ListRows[listObject.ListRows.Count].Range.Row + 1].Insert();
+                worksheet.Rows[listObject.DataBodyRange.Row + listObject.DataBodyRange.Rows.Count - 1].Insert();
             }
             else
             {
-                worksheet.Rows[listObject.HeaderRowRange.Row + 2].Insert();
+                worksheet.Rows[listObject.HeaderRowRange.Row + 1].Insert();
             }
-            listObject.ListRows.Add();
+            //listObject.ListRows.Add();
         }
 
         /// <summary>

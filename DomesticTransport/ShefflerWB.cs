@@ -314,7 +314,7 @@ namespace DomesticTransport
 
             Truck truck = null;
             List<TruckRate> rateVariants = new List<TruckRate>();
-            double tonnageNeed = totalWeight / 1000 - 0.1;  /// 100kg Допустимый перегруз
+            double tonnageNeed = totalWeight / 1000 - 0.05;  /// 50kg Допустимый перегруз
             try
             {
                 if (mapDelivery.FindAll(m => m.City == "MSK" || m.City == "MO").Count > 0)
