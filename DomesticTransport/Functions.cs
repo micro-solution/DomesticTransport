@@ -475,13 +475,13 @@ namespace DomesticTransport
                 order.Route = row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Text;
                 string weight = row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Text;
                 order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
-                order = GetOrdersInfoFromTotalTable(order);
+                order = GetOrdersInfoFromTotal(order);
                 orders.Add(order);
             }
             return orders;
         }
 
-        private Order GetOrdersInfoFromTotalTable(Order order)
+        private Order GetOrdersInfoFromTotal(Order order)
         {
             int column = ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index;
             foreach (ListRow row in  ShefflerWB.TotalTable.ListRows)
