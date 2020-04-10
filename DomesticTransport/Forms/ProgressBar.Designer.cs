@@ -103,7 +103,6 @@
             this.TopMost = true;
             this.UseWaitCursor = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProcessBar_FormClosing);
-            this.Load += new System.EventHandler(this.ProcessBar_Load);
             this.ResumeLayout(false);
 
         }

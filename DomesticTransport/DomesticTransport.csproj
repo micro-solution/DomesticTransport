@@ -156,12 +156,6 @@
     <Compile Include="Forms\ProviderEditor.Designer.cs">
       <DependentUpon>ProviderEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Signature.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Signature.Designer.cs">
-      <DependentUpon>Signature.cs</DependentUpon>
-    </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="ScanMail.cs" />
     <Compile Include="ShefflerWB.cs" />
@@ -258,9 +252,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProviderEditor.resx">
       <DependentUpon>ProviderEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Signature.resx">
-      <DependentUpon>Signature.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -46,19 +46,19 @@ namespace DomesticTransport.Forms
                 {
                     TreeNode folderNode = new TreeNode { Text = folder.Name };
                     int num = TreeViewFolders.Nodes.Add(folderNode);
-                    // FillTreeNode(folderNode, folder);
+
                     foreach (string path in SelectedFolder)
                     {
                         if (path == TreeViewFolders.Nodes[num].FullPath) folderNode.Checked = true;
                     }
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
-     
+
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace DomesticTransport.Forms
         /// <param name="folder"></param>
         private void FillTreeNode(TreeNode folderNode, Outlook.MAPIFolder folder)
         {
-            try 
-            { 
+            try
+            {
                 foreach (Outlook.MAPIFolder subfolder in folder.Folders)
                 {
                     TreeNode subfolderNode = new TreeNode { Text = subfolder.Name };
@@ -78,7 +78,6 @@ namespace DomesticTransport.Forms
                     {
                         if (path == folderNode.Nodes[num].FullPath) folderNode.Nodes[num].Checked = true;
                     }
-                    //FillTreeNode(subfolderNode, subfolder);
                 }
             }
             catch (Exception ex)
@@ -154,11 +153,15 @@ namespace DomesticTransport.Forms
             Close();
         }
 
+        /// <summary>
+        /// Действие перед выбором папки - сканирование подпапок
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TreeViewFolders_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
             FillTreeNode(e.Node, GetFolder(e.Node.FullPath));
         }
-
 
         /// <summary>
         /// Получение папки по пути к ней
@@ -175,22 +178,15 @@ namespace DomesticTransport.Forms
                 {
                     folderPath = folderPath.Remove(0, 2);
                 }
-                String[] folders =
-                    folderPath.Split(backslash.ToCharArray());
-                folder =
-                    OutlookApp.Application.Session.Folders[folders[0]]
-                    as Outlook.Folder;
+                String[] folders = folderPath.Split(backslash.ToCharArray());
+                folder = OutlookApp.Application.Session.Folders[folders[0]] as Outlook.Folder;
                 if (folder != null)
                 {
                     for (int i = 1; i <= folders.GetUpperBound(0); i++)
                     {
                         Outlook.Folders subFolders = folder.Folders;
-                        folder = subFolders[folders[i]]
-                            as Outlook.Folder;
-                        if (folder == null)
-                        {
-                            return null;
-                        }
+                        folder = subFolders[folders[i]] as Outlook.Folder;
+                        if (folder == null) return null;
                     }
                 }
                 return folder;
@@ -200,7 +196,6 @@ namespace DomesticTransport.Forms
                 MessageBox.Show(ex.Message);
                 return null;
             }
-        
         }
     }
 }
