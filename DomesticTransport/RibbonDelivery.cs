@@ -1,6 +1,7 @@
 ﻿using DomesticTransport.Forms;
 
 using Microsoft.Office.Tools.Ribbon;
+using System;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -9,67 +10,176 @@ namespace DomesticTransport
     {
         private void btnStart_Click(object sender, RibbonControlEventArgs e)
         {
-            Functions functions = new Functions();
-            functions.ExportFromSAP();
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();                    
+                new Functions().ExportFromSAP();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
 
 
         private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
-        {
-            Functions functions = new Functions();
-            functions.CreateMasseges();
+        {                 
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();                
+                new Functions().CreateMasseges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
 
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
-        {
-            Functions functions = new Functions();
-            functions.AddAuto();
-
+        {                   
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().AddAuto();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void button2_Click(object sender, RibbonControlEventArgs e)
-        {
-            Functions functions = new Functions();
-            functions.DeleteAuto();
+        {                
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().DeleteAuto();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
         {
-           
-            Functions functions = new Functions();
-            functions.СhangeDelivery();
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().СhangeDelivery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void BtnLoadAllOrders_Click(object sender, RibbonControlEventArgs e)
-        {
-            Functions functions = new Functions();
-            functions.LoadAllOrders();
+        {                     
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().LoadAllOrders();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void btnReadForms_Click(object sender, RibbonControlEventArgs e)
-        {
-            Functions functions = new Functions();
-            functions.ExportFromCS();
+        {              
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().ExportFromCS();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void btnAccept_Click(object sender, RibbonControlEventArgs e)
         {
-            Functions functions = new Functions();
-            functions.UpdateTotal();
+             try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().UpdateTotal();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)
-        {
-            Email.WriteReestrSignature();
+        {                     
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                Email.WriteReestrSignature();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         private void btnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
-        {
-            About about = new About();
-            about.ShowDialog();
+        {            
+           try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new About().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
         /// <summary>
@@ -78,27 +188,50 @@ namespace DomesticTransport
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ButtonSelectFoldersOutlook_Click(object sender, RibbonControlEventArgs e)
-        {
-            OutlookFoldersSelect foldersSelect = new OutlookFoldersSelect();
-            foldersSelect.ShowDialog();               
-            
+        {   try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new OutlookFoldersSelect().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
-            /// <summary>
+        /// <summary>
         /// Сканирование писем
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>   
         private void btnReadCarrierInvoice_Click_1(object sender, RibbonControlEventArgs e)
         {
-          if (Properties.Settings.Default.OutlookFolders == "")
+           
+            try
             {
-                MessageBox.Show("Задайте папки для сканирования почты", "Необходима настройка программы", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                ShefflerWB.ExcelOptimizateOn();
+                if (Properties.Settings.Default.OutlookFolders == "")
+                {
+                    MessageBox.Show("Задайте папки для сканирования почты", "Необходима настройка программы", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                ScanMail scanMail = new ScanMail();
+                scanMail.SaveAttachments();
+                scanMail.GetMessage();
             }
-            ScanMail scanMail = new ScanMail();
-            scanMail.SaveAttachments();
-            scanMail.GetMessage();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+
         }
     }
 }
