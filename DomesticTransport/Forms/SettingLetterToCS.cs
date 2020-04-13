@@ -34,6 +34,11 @@ namespace DomesticTransport.Forms
         /// <param name="e"></param>
         private void ButtonOk_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.SettingCSLetterTo = textBoxTo.Text;
+            Properties.Settings.Default.SettingCSLetterCopy = textBoxCopy.Text;
+            Properties.Settings.Default.SettingCSLetterSubject = textBoxSubject.Text;
+            Properties.Settings.Default.SettingCSLetterMessage = textBoxMessage.Text;
+
             Properties.Settings.Default.Save();
             Close();
         }
