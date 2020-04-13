@@ -245,6 +245,8 @@ namespace DomesticTransport
             }
         }
 
+     
+
         /// <summary>
         ///кнопка Добавить авто
         /// </summary>
@@ -314,12 +316,11 @@ namespace DomesticTransport
         /// Пересчитать маршруты
         /// </summary>
         public void СhangeDelivery()
-        {
-            ListObject carrierTable = ShefflerWB.DeliveryTable;
+        {                   
             List<Order> orders = GetOrdersFromTable();
             List<Delivery> deliveries = EditDeliveres(orders);
 
-            ClearListObj(carrierTable);
+            ClearListObj(ShefflerWB.DeliveryTable);
             PrintDelivery(deliveries);
 
             foreach (ListRow row in ShefflerWB.OrdersTable.ListRows)
@@ -1159,6 +1160,15 @@ namespace DomesticTransport
             return deliveries;
         }
 
+        public void SaveRoute()
+        {
+            List<Order> orders = GetOrdersFromTable();
+            List<Delivery> deliveries = GetDeliveriesFromTable(orders);
+            deliveries.ForEach(a => a.SaveRoute());
+        }
+
+
+
         /// <summary>
         /// Прменять список доставок для списка заказов
         /// </summary>
@@ -1194,7 +1204,35 @@ namespace DomesticTransport
             #endregion
             return deliveries;
         }
+        private List<Delivery> GetDeliveriesFromTable(List<Order> orders)
+        {
 
+            List<Delivery> deliveries = new List<Delivery>();
+            List<int> deliveryNumbers = (from o in orders
+                                         select o.DeliveryNumber).Distinct().ToList();
+            // По каждой доставке создать список заказов 
+            for (int i = 0; i < deliveryNumbers.Count; i++)
+            {
+                int deliveryNumber = deliveryNumbers[i];
+                if (deliveryNumber > 0)
+                {
+                    List<Order> orderList = orders.FindAll(
+                                o => o.DeliveryNumber == deliveryNumber).ToList().OrderBy(
+                                                                x => x.PointNumber).ToList();
+
+                    if (orderList.Count > 0)
+                    {
+                        Delivery delivery = new Delivery();
+
+                        orderList.ForEach(x => x.DeliveryNumber = i);
+                        delivery.Number = i;
+                        deliveries.Add(delivery);                                           
+
+                    }
+                }
+            }
+            return deliveries;
+        }
         /// <summary>
         /// Изменить доставку
         /// </summary>

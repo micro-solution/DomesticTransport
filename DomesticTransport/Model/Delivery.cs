@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DomesticTransport.Model
@@ -143,6 +144,11 @@ namespace DomesticTransport.Model
         {
             double sum = TotalWeight + order.WeightNetto;
             return sum <= 20000;
+        }
+
+        public void SaveRoute()
+        {
+            
         }
     }
 }

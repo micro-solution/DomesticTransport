@@ -234,5 +234,22 @@ namespace DomesticTransport
             }
 
         }
+
+        private void btnSaveRoute_Click(object sender, RibbonControlEventArgs e)
+        {             
+                  try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().SaveRoute();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
     }
 }
