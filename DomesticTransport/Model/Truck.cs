@@ -55,7 +55,7 @@ namespace DomesticTransport.Model
         public static Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery, string provider = "")
         {
             if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
-            if (!ShefflerWB.CheckPoints(mapDelivery)) return null;  //Нет клиента
+            if (!Delivery.CheckPoints(mapDelivery)) return null;  //Нет клиента
 
             Truck truck = null;
             List<TruckRate> rateVariants = new List<TruckRate>();

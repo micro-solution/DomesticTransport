@@ -148,7 +148,42 @@ namespace DomesticTransport.Model
 
         public void SaveRoute()
         {
-            
+            if (!CheckPoints(MapDelivery))
+            { return; }
+
+
+
+        }
+
+        /// <summary>
+        /// Проверить наличие маршрута
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> true если все точки есть в таблице</returns>
+        public static bool CheckCustomerRoute(string id)
+        {
+            DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer.Contains(id));
+            return string.IsNullOrWhiteSpace(dp.IdCustomer);
+        }
+
+
+        /// <summary>
+        ///  Проверить  все ли клиенты есть в таблице
+        /// </summary>
+        /// <param name="mapDelivery"></param>
+        /// <returns></returns>
+        public static bool CheckPoints(List<DeliveryPoint> mapDelivery)
+        {
+            bool chk = mapDelivery.Count > 0;
+            foreach (DeliveryPoint point in mapDelivery)
+            {
+                chk = ShefflerWB.RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count > 0;
+                if (!chk) 
+                {
+                    break; 
+                }
+            }
+            return chk;
         }
     }
 }

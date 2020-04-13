@@ -72,9 +72,8 @@ namespace DomesticTransport.Model
                     }
                 }
                 catch
-                {
-                    Debug.WriteLine($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
-                    throw new Exception("Не удалось найти точку.");
+                {                   
+                    throw new Exception("Не удалось найти точку.  Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
                 }
             }
             rateVariants = ShefflerWB.RateList.FindAll(r =>

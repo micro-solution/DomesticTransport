@@ -285,17 +285,7 @@ namespace DomesticTransport
 
 
 
-        // Проверить  все ли маршруты есть в таблице
-        public static bool CheckPoints(List<DeliveryPoint> mapDelivery)
-        {
-            bool chk = mapDelivery.Count > 0;
-            foreach (DeliveryPoint point in mapDelivery)
-            {
-                chk = RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count > 0;
-                if (!chk) { break; }
-            }
-            return chk;
-        }
+      
 
 
 
@@ -525,17 +515,7 @@ namespace DomesticTransport
             return id;
         }
 
-        /// <summary>
-        /// Проверить наличие маршрута
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        internal bool CheckCustomerRoute(string id)
-        {
-            DeliveryPoint dp = RoutesList.Find(x => x.IdCustomer.Contains(id));
-            return string.IsNullOrWhiteSpace(dp.IdCustomer);
-        }
-
+      
         #endregion Вспомогательные
     }
 }
