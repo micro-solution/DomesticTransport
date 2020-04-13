@@ -530,7 +530,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        internal bool CheckCustomerId(string id)
+        internal bool CheckCustomerRoute(string id)
         {
             DeliveryPoint dp = RoutesList.Find(x => x.IdCustomer.Contains(id));
             return string.IsNullOrWhiteSpace(dp.IdCustomer);

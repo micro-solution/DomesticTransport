@@ -125,6 +125,7 @@ namespace DomesticTransport.Model
         {
             List<TruckRate> rateVariants = new List<TruckRate>();
             int centner = (int)Math.Round(totalWeight / 100); //центнеры огругление до близжайшего целого
+            if (centner < 1) centner = 1;
             double tonnageNeed = (double)centner / 10;   //тонн 
 
             for (int j = 0; j < ShefflerWB.RateInternationalList.Count; j++)
@@ -142,7 +143,7 @@ namespace DomesticTransport.Model
                 TruckRate rate = rateVariants[i];
                 double addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
                 rate.TotalDeliveryCost =
-                    (int)System.Math.Ceiling(rateVariants[i].PriceFirstPoint * totalWeight / 100 + addpointCost);
+                    (int)Math.Ceiling(rateVariants[i].PriceFirstPoint * totalWeight / 100 + addpointCost);
                 rateVariants[i] = rate;
             }
             rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
