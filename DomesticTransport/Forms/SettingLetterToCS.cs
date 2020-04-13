@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
@@ -15,6 +8,11 @@ namespace DomesticTransport.Forms
         public SettingLetterToCS()
         {
             InitializeComponent();
+
+            textBoxTo.Text = Properties.Settings.Default.SettingCSLetterTo;
+            textBoxCopy.Text = Properties.Settings.Default.SettingCSLetterCopy;
+            textBoxSubject.Text = Properties.Settings.Default.SettingCSLetterSubject;
+            textBoxMessage.Text = Properties.Settings.Default.SettingCSLetterMessage;
         }
 
         /// <summary>

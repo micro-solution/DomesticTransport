@@ -2,7 +2,6 @@
 using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -388,6 +387,36 @@ namespace DomesticTransport
                                           subject: subject);
             }
             pb.Close();
+        }
+
+        /// <summary>
+        /// Отправка письма в кастом сервис
+        /// </summary>
+        public void CreateLetterToCS()
+        {
+            string path = Globals.ThisWorkbook.Path + "\\MailToCS\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
+
+            ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
+            Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
+
+            string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
+            string to = Properties.Settings.Default.SettingCSLetterTo;
+            string copy = Properties.Settings.Default.SettingCSLetterCopy;
+            string subject = Properties.Settings.Default.SettingCSLetterSubject;
+            subject = subject.Replace("[date]", date);
+
+            string message = Properties.Settings.Default.SettingCSLetterMessage;
+            message = message.Replace("[date]", date);
+
+            Email email = new Email();
+            email.CreateMail(to, copy, subject, message, attachment);
         }
 
         /// <summary>

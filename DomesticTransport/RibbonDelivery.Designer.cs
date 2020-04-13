@@ -52,10 +52,10 @@
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnSaveSignature = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
+            this.buttonSettingLetterCS = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
-            this.buttonSettingLetterCS = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -218,6 +218,15 @@
     "водителях";
             this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
+            // buttonSettingLetterCS
+            // 
+            this.buttonSettingLetterCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonSettingLetterCS.Image = ((System.Drawing.Image)(resources.GetObject("buttonSettingLetterCS.Image")));
+            this.buttonSettingLetterCS.Label = "Письмо CS";
+            this.buttonSettingLetterCS.Name = "buttonSettingLetterCS";
+            this.buttonSettingLetterCS.ShowImage = true;
+            this.buttonSettingLetterCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
+            // 
             // about
             // 
             this.about.Items.Add(this.btnAboutProgrramm);
@@ -242,15 +251,6 @@
             this.btnSetts.Name = "btnSetts";
             this.btnSetts.ShowImage = true;
             this.btnSetts.Visible = false;
-            // 
-            // buttonSettingLetterCS
-            // 
-            this.buttonSettingLetterCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonSettingLetterCS.Image = ((System.Drawing.Image)(resources.GetObject("buttonSettingLetterCS.Image")));
-            this.buttonSettingLetterCS.Label = "Письмо CS";
-            this.buttonSettingLetterCS.Name = "buttonSettingLetterCS";
-            this.buttonSettingLetterCS.ShowImage = true;
-            this.buttonSettingLetterCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
             // 
             // RibbonDelivery
             // 
