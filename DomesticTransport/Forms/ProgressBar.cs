@@ -10,16 +10,14 @@ namespace DomesticTransport.Forms
         public bool Cancel { get; set; } = false;
         public string Title
         {
-            get
-            {
-                return title;
-            }
+            get => title;
             set
             {
                 title = value;
                 Text = title;
             }
         }
+
         /// <summary>
         /// Проверка открыт ли уже экземпляр прогресс бара
         /// </summary>
@@ -65,7 +63,6 @@ namespace DomesticTransport.Forms
             return pb;
         }
 
-
         /// <summary>
         /// Выполнение итерации процесса
         /// </summary>
@@ -92,7 +89,6 @@ namespace DomesticTransport.Forms
 
         public void Btn_cancel_Click(object sender, EventArgs e)
         {
-
             Close();
         }
 
@@ -101,13 +97,6 @@ namespace DomesticTransport.Forms
             Timer.Stop();
             Cancel = true;
             _exist = false;
-           
         }
-
-        private void ProcessBar_Load(object sender, EventArgs e)
-        {
-           
-        }
-
     }
 }

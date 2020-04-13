@@ -72,6 +72,37 @@ namespace DomesticTransport
             }
         }
 
+        /// <summary>
+        /// Создание сообщения
+        /// </summary>
+        /// <param name="to">кому</param>
+        /// <param name="copy">копия</param>
+        /// <param name="subject">тема</param>
+        /// <param name="message">сообщение</param>
+        /// <param name="attachment">вложение</param>
+        public void CreateMail(string to, string copy, string subject, string message, string attachment)
+        {
+            string signature = ReadReestrSignature();
+            string HtmlBody = message + "<br><br>" + signature;
+            try
+            {
+                OutlookApp.Session.Logon();
+                Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
+                mail.To = to;
+                mail.HTMLBody = HtmlBody;
+                mail.BCC = "";
+                mail.CC = copy;
+                mail.Subject = subject;
+                mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
+                mail.Display();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+        }
+
         public static void WriteReestrSignature()
         {
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];

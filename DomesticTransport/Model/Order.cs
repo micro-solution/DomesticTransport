@@ -3,26 +3,22 @@
     /// <summary>
     ///  Класс заказа (позиция перевозки)
     /// </summary>
-   public class Order
+    public class Order
     {
         /// <summary>
-        /// Идентификатор заказа
+        /// Id заказа (поле Номер доставки, Delivery)
         /// </summary>
         public string Id
         {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value.Length < 10 ? new string('0', 10 - value.Length) + value : value;
-            }
+            get => _id;
+            set => _id = value.Length < 10 ? new string('0', 10 - value.Length) + value : value;
         }
         private string _id;
 
-
+        // Прорядковый номер доставки
         public int DeliveryNumber { get; set; }
+
+        ///Порядковый номер точки выгрузки
         public int PointNumber { get; set; }
 
         public Customer Customer
@@ -44,8 +40,7 @@
         public string TransportationUnit
         {
             get => _transportationUnit;
-            set
-            { _transportationUnit = value; }
+            set => _transportationUnit = value;
         }
         private string _transportationUnit;
 

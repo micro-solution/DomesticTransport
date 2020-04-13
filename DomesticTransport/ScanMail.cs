@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace DomesticTransport
@@ -35,8 +36,9 @@ namespace DomesticTransport
         /// <summary>
         /// Сохранение вложений в выбранных папках, полученные текущей датой
         /// </summary>
-        public void SaveAttachments()
+        public int SaveAttachments()
         {
+            int count = 0;
             OutlookApp.Session.Logon();
             foreach (string folderName in FolderNames)
             {
@@ -63,19 +65,21 @@ namespace DomesticTransport
                     if (mail.ReceivedTime.Date != DateTime.Today) continue;
 
                     string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
-                    if (!System.IO.Directory.Exists(path))
+                    if (!Directory.Exists(path))
                     {
-                        System.IO.Directory.CreateDirectory(path);
+                        Directory.CreateDirectory(path);
                     }
 
                     foreach (Outlook.Attachment attach in mail.Attachments)
                     {
                         if (!attach.FileName.Contains("xls")) continue;
                         attach.SaveAsFile(path + attach.FileName);
+                        count++;
                     }
                 }
                 pb.Close();
             }
+            return count;
         }
 
 
@@ -117,20 +121,21 @@ namespace DomesticTransport
             catch { return null; }
         }
 
-        public void GetMessage()
+        /// <summary>
+        /// Получение данных из писем провайдеров
+        /// </summary>
+        public void GetDataFromProviderFiles()
         {
-
             string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
-            //string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + ShefflerWB.DateDelivery + '\\';
-            if (!System.IO.Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
-                MessageBox.Show("Папка "+path+" отсутствует");
+                MessageBox.Show("Папка " + path + " отсутствует");
                 return;
             }
             string[] files = Directory.GetFiles(path);
-            foreach(string file in files)
+            foreach (string file in files)
             {
-              if (!file.Contains(".xls") ) { continue; }
+                if (!file.Contains(".xls")) { continue; }
                 new Functions().ReadMessageFile(file);
             }
         }

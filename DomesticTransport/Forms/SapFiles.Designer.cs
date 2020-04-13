@@ -57,7 +57,7 @@
             button2.Size = new System.Drawing.Size(32, 27);
             button2.TabIndex = 3;
             button2.UseVisualStyleBackColor = true;
-            button2.Click += new System.EventHandler(this.button2_Click);
+            button2.Click += new System.EventHandler(this.SelectExport_Click);
             // 
             // button1
             // 
@@ -71,7 +71,7 @@
             button1.Size = new System.Drawing.Size(32, 27);
             button1.TabIndex = 3;
             button1.UseVisualStyleBackColor = true;
-            button1.Click += new System.EventHandler(this.button1_Click);
+            button1.Click += new System.EventHandler(this.SelectAllOrders_Click);
             // 
             // tbOrders
             // 
@@ -98,7 +98,7 @@
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Cancel.Location = new System.Drawing.Point(597, 134);
+            this.Cancel.Location = new System.Drawing.Point(610, 134);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(86, 23);
             this.Cancel.TabIndex = 1;
@@ -132,7 +132,7 @@
             this.Accept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Accept.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Accept.Location = new System.Drawing.Point(500, 134);
+            this.Accept.Location = new System.Drawing.Point(518, 134);
             this.Accept.Name = "Accept";
             this.Accept.Size = new System.Drawing.Size(86, 23);
             this.Accept.TabIndex = 1;

@@ -99,7 +99,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(22, 13);
             this.label7.TabIndex = 7;
-            this.label7.Text = "1.7";
+            this.label7.Text = "2.0";
             // 
             // label6
             // 
@@ -119,7 +119,7 @@
             this.LinkMS.TabIndex = 9;
             this.LinkMS.TabStop = true;
             this.LinkMS.Text = "Misco-Solution";
-            this.LinkMS.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.LinkMS.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkMS_LinkClicked);
             // 
             // About
             // 
