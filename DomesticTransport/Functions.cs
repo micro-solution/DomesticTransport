@@ -1265,8 +1265,8 @@ namespace DomesticTransport
         private void CheckAndAddNewRoute(Order order)
         {
             ShefflerWB sheffler = new ShefflerWB();
-            if (!(string.IsNullOrWhiteSpace(order?.Customer?.Id)) && sheffler.CheckCustomerId(order.Customer.Id))
-            {
+            if (string.IsNullOrWhiteSpace(order?.Customer?.Id) || sheffler.CheckCustomerId(order.Customer.Id))
+            { return; }
                 if (MessageBox.Show("Добвить маршрут?",
                                     "Маршрут с клиетном не найден!",
                                     MessageBoxButtons.YesNo,
@@ -1284,12 +1284,7 @@ namespace DomesticTransport
                     }
                     catch (Exception ex)
                     { Debug.WriteLine(ex.Message); }
-                }
-                else
-                {
-                    throw new Exception("Выход без добавления клиента");
-                }
-            }
+                }                
         }     
 
         /// <summary>
