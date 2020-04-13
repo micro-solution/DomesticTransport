@@ -1,8 +1,6 @@
 ﻿using DomesticTransport.Forms;
 using DomesticTransport.Model;
-
 using Microsoft.Office.Interop.Excel;
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -120,7 +118,7 @@ namespace DomesticTransport
             PrintOrder(rowOrder, order, 0);
             CheckAndAddNewRoute(order);
 
-            List<Order> orders = GetOrdersFromTable(ShefflerWB.OrdersTable);
+            List<Order> orders = GetOrdersFromTable();
             List<Delivery> deliveries = CompleteAuto(orders);
 
             ClearListObj(ShefflerWB.DeliveryTable);
@@ -243,7 +241,7 @@ namespace DomesticTransport
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck.Tonnage;
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Маршрут"].Index].Value =
-                                                           delivery.MapDelivery[0].RouteName;
+                                                                                 delivery.MapDelivery[0].RouteName;
             }
         }
 
@@ -318,7 +316,7 @@ namespace DomesticTransport
         public void СhangeDelivery()
         {
             ListObject carrierTable = ShefflerWB.DeliveryTable;
-            List<Order> orders = GetOrdersFromTable(ShefflerWB.OrdersTable);
+            List<Order> orders = GetOrdersFromTable();
             List<Delivery> deliveries = EditDeliveres(orders);
 
             ClearListObj(carrierTable);
@@ -332,6 +330,7 @@ namespace DomesticTransport
                 string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
                 orderId = new string('0', 10 - orderId.Length) + orderId;
                 Delivery delivery = deliveries.Find(d => d.Number == deliveryNumber);
+
                 if (delivery == null) continue;
 
                 Order order = delivery.Orders.Find(r => r.Id == orderId);
@@ -445,8 +444,9 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="ordersTable"></param>
         /// <returns></returns>
-        public List<Order> GetOrdersFromTable(ListObject ordersTable)
+        public List<Order> GetOrdersFromTable()
         {
+            ListObject ordersTable = ShefflerWB.OrdersTable;
             List<Order> orders = new List<Order>();
 
             foreach (ListRow row in ordersTable.ListRows)
@@ -1130,7 +1130,7 @@ namespace DomesticTransport
         private List<Delivery> ReadFromDelivery()
         {
             List<Delivery> deliveries = new List<Delivery>();
-            List<Order> orders = GetOrdersFromTable(ShefflerWB.OrdersTable);
+            List<Order> orders = GetOrdersFromTable();
 
             foreach (ListRow deliveryRow in ShefflerWB.DeliveryTable.ListRows)
             {
@@ -1178,11 +1178,12 @@ namespace DomesticTransport
                     List<Order> orderList = orders.FindAll(
                                 o => o.DeliveryNumber == deliveryNumber).ToList().OrderBy(
                                                                 x => x.PointNumber).ToList();
+                    
                     if (orderList.Count > 0)
                     {
                         Delivery delivery = EditDelivery(orderList);
 
-                        delivery.Number = deliveryNumber;
+                        delivery.Number = i;
                         deliveries.Add(delivery);
                     }
                 }
@@ -1203,7 +1204,9 @@ namespace DomesticTransport
         {
             ShefflerWB functionsBook = new ShefflerWB();
             Delivery delivery = new Delivery();
-            int idRoute = FindRoute(ordersCurrentDelivery);
+            delivery.Orders = ordersCurrentDelivery;
+
+            int idRoute = FindRoute(delivery.MapDelivery);
             if (idRoute == 0)
             {
                 // Добавить маршрут 
@@ -1235,24 +1238,22 @@ namespace DomesticTransport
         /// <param name="orders"></param>
         /// <param name="functionsBook"></param>
         /// <returns></returns>
-        private int FindRoute(List<Order> orders)
-        {
-            //Таблица routes
-            List<DeliveryPoint> pointMap = ShefflerWB.RoutesList;
+        private int FindRoute(List<DeliveryPoint> map)
+        {               
             //список id маршрутов
-            List<int> uRoutes = (from p in pointMap
+            List<int> uRoutes = (from p in ShefflerWB.RoutesList
                                  select p.Id).Distinct().ToList();
 
             for (int i = 0; i < uRoutes.Count; i++)
             {
                 int idRoute = uRoutes[i];
                 bool hasRoute = true;
-                foreach (Order order in orders)
+                foreach (DeliveryPoint point in map)
                 {
-                    List<DeliveryPoint> routes = pointMap.FindAll(
+                    List<DeliveryPoint> routesVariants = ShefflerWB.RoutesList.FindAll(
                                  x => x.Id == idRoute &&
-                                 x.IdCustomer == order.Customer.Id).ToList();
-                    if (routes.Count == 0)
+                                 x.IdCustomer == point.IdCustomer).ToList();
+                    if (routesVariants.Count == 0)
                     {
                         hasRoute = false;
                         break;

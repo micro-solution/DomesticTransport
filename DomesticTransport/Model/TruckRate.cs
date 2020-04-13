@@ -124,7 +124,7 @@ namespace DomesticTransport.Model
         public static List<TruckRate> GetTruckRateInternational(double totalWeight, List<DeliveryPoint> mapDelivery)
         {
             List<TruckRate> rateVariants = new List<TruckRate>();
-            int centner = (int)Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
+            int centner = (int)Math.Round(totalWeight / 100); //центнеры огругление до близжайшего целого
             double tonnageNeed = (double)centner / 10;   //тонн 
 
             for (int j = 0; j < ShefflerWB.RateInternationalList.Count; j++)
