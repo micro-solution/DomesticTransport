@@ -56,7 +56,7 @@
             this.lvProvider.Location = new System.Drawing.Point(2, 22);
             this.lvProvider.MultiSelect = false;
             this.lvProvider.Name = "lvProvider";
-            this.lvProvider.Size = new System.Drawing.Size(266, 173);
+            this.lvProvider.Size = new System.Drawing.Size(277, 173);
             this.lvProvider.TabIndex = 0;
             this.lvProvider.UseCompatibleStateImageBehavior = false;
             this.lvProvider.View = System.Windows.Forms.View.Details;
@@ -76,7 +76,7 @@
             // btnAccept
             // 
             this.btnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAccept.Location = new System.Drawing.Point(297, 201);
+            this.btnAccept.Location = new System.Drawing.Point(301, 201);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(80, 23);
             this.btnAccept.TabIndex = 1;
@@ -88,7 +88,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(383, 201);
+            this.btnCancel.Location = new System.Drawing.Point(386, 201);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 23);
             this.btnCancel.TabIndex = 1;
@@ -106,7 +106,7 @@
             this.lvMap.FullRowSelect = true;
             this.lvMap.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvMap.HideSelection = false;
-            this.lvMap.Location = new System.Drawing.Point(277, 22);
+            this.lvMap.Location = new System.Drawing.Point(288, 22);
             this.lvMap.Name = "lvMap";
             this.lvMap.Size = new System.Drawing.Size(186, 173);
             this.lvMap.TabIndex = 0;
@@ -126,7 +126,7 @@
             // tbWeight
             // 
             this.tbWeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbWeight.Location = new System.Drawing.Point(184, 1);
+            this.tbWeight.Location = new System.Drawing.Point(195, 1);
             this.tbWeight.Name = "tbWeight";
             this.tbWeight.Size = new System.Drawing.Size(84, 20);
             this.tbWeight.TabIndex = 2;
@@ -135,7 +135,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(104, 5);
+            this.label1.Location = new System.Drawing.Point(115, 5);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 3;
@@ -145,7 +145,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.label2.Location = new System.Drawing.Point(274, 5);
+            this.label2.Location = new System.Drawing.Point(285, 5);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(189, 16);
             this.label2.TabIndex = 4;
@@ -157,7 +157,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(467, 226);
+            this.ClientSize = new System.Drawing.Size(478, 226);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbWeight);

@@ -1,6 +1,6 @@
 ﻿namespace DomesticTransport.Model
 {
-   public class Carrier
+    public struct Driver
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomesticTransport.Model
 {
@@ -23,21 +21,9 @@ namespace DomesticTransport.Model
 
 
         ///// <summary>
-        ///// ??????
+        ///// Информация о водителе
         ///// </summary>
-        public Carrier Carrier
-        {
-            get
-            {
-                if (_carrier == null)
-                {
-                    _carrier = new Carrier();
-                }
-                return _carrier;
-            }
-            private set { _carrier = value; }
-        }
-        private Carrier _carrier;
+        public Driver Driver { get; set; }
 
         /// <summary>
         /// Стоимость доставки
@@ -59,7 +45,7 @@ namespace DomesticTransport.Model
                 }
                 return _cost;
             }
-            set { _cost = value; }
+            set => _cost = value;
         }
         private double _cost;
         /// <summary>
@@ -98,10 +84,7 @@ namespace DomesticTransport.Model
                 }
                 return _orders;
             }
-            set
-            {
-                _orders = value;
-            }
+            set => _orders = value;
         }
         private List<Order> _orders;
 
@@ -128,7 +111,7 @@ namespace DomesticTransport.Model
                 if (_truck == null)
                 {
                     ShefflerWB workBook = new ShefflerWB();
-                    _truck = workBook.GetTruck(TotalWeight, MapDelivery);
+                    _truck = Truck.GetTruck(TotalWeight, MapDelivery);
                     if (!string.IsNullOrWhiteSpace(MapDelivery.Find(
                                     x => x.RouteName.Contains("Сборный груз")).IdCustomer))
                     {
@@ -137,7 +120,7 @@ namespace DomesticTransport.Model
                 }
                 return _truck;
             }
-            set { _truck = value; }
+            set => _truck = value;
         }
         private Truck _truck;
 
@@ -161,6 +144,46 @@ namespace DomesticTransport.Model
         {
             double sum = TotalWeight + order.WeightNetto;
             return sum <= 20000;
+        }
+
+        public void SaveRoute()
+        {
+            if (!CheckPoints(MapDelivery))
+            { return; }
+
+
+
+        }
+
+        /// <summary>
+        /// Проверить наличие маршрута
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> true если все точки есть в таблице</returns>
+        public static bool CheckCustomerRoute(string id)
+        {
+            DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer.Contains(id));
+            return string.IsNullOrWhiteSpace(dp.IdCustomer);
+        }
+
+
+        /// <summary>
+        ///  Проверить  все ли клиенты есть в таблице
+        /// </summary>
+        /// <param name="mapDelivery"></param>
+        /// <returns></returns>
+        public static bool CheckPoints(List<DeliveryPoint> mapDelivery)
+        {
+            bool chk = mapDelivery.Count > 0;
+            foreach (DeliveryPoint point in mapDelivery)
+            {
+                chk = ShefflerWB.RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count > 0;
+                if (!chk) 
+                {
+                    break; 
+                }
+            }
+            return chk;
         }
     }
 }

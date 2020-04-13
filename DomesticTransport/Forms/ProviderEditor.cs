@@ -25,8 +25,7 @@ namespace DomesticTransport.Forms
         }
 
         private void Provider_Load(object sender, EventArgs e)
-        {
-            ShefflerWB shefflerWorkBook = new ShefflerWB();
+        {                  
             List<DeliveryPoint> mapDpelivery = DeliveryTarget?.MapDelivery;
             int iProviler = 0;
             tbWeight.Text = Weight.ToString();
@@ -34,7 +33,7 @@ namespace DomesticTransport.Forms
             {
                 string name = row.Cells[1, 1].Text;
                 lvProvider.Items.Add(name);
-                Truck truck = shefflerWorkBook.GetTruck(Weight, mapDpelivery, name);
+                Truck truck = Truck.GetTruck(Weight, mapDpelivery, name);
                 string cost = truck == null ? "0" : truck.Cost.ToString();
                 lvProvider.Items[iProviler].SubItems.Add(cost);
                 iProviler++;

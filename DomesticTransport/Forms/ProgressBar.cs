@@ -10,10 +10,7 @@ namespace DomesticTransport.Forms
         public bool Cancel { get; set; } = false;
         public string Title
         {
-            get
-            {
-                return title;
-            }
+            get => title;
             set
             {
                 title = value;

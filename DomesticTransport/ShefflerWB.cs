@@ -4,10 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DomesticTransport
 {
@@ -15,8 +11,9 @@ namespace DomesticTransport
     /// <summary>
     /// Действия с текущей книгой
     /// </summary>
-    class ShefflerWB
-    {          
+    public class ShefflerWB
+    {
+
         public static Worksheet DeliverySheet
         {
             get
@@ -152,7 +149,7 @@ namespace DomesticTransport
         /// <summary>
         /// Прайс
         /// </summary>
-         private static List<TruckRate> RateList
+        public static List<TruckRate> RateList
         {
             get
             {
@@ -197,8 +194,8 @@ namespace DomesticTransport
             Range range = null;
             foreach (ListRow row in TotalTable.ListRows)
             {
-              string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
-                if ((!string.IsNullOrWhiteSpace(cell)) &&  idOrder.Contains(cell))
+                string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
+                if ((!string.IsNullOrWhiteSpace(cell)) && idOrder.Contains(cell))
                 {
                     range = row.Range;
                     break;
@@ -245,20 +242,19 @@ namespace DomesticTransport
                                       y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
             }
-            set
-            { _routes = value;  }
+            set => _routes = value;
         }
         static List<DeliveryPoint> _routes;
 
-         /// <summary>
-         ///  Список цен международных перевозок
-         /// </summary>
-        public  List<TruckRate> RateInternationalList
+        /// <summary>
+        ///  Список цен международных перевозок
+        /// </summary>
+        public static List<TruckRate> RateInternationalList
         {
             get
             {
                 if (_RateInternationalList == null)
-                {                     
+                {
                     _RateInternationalList = new ShefflerWB().GetTruckRateInternational();
                 }
                 return _RateInternationalList;
@@ -266,23 +262,7 @@ namespace DomesticTransport
         }
         private static List<TruckRate> _RateInternationalList;
 
-        /// <summary>
-        /// Города
-        /// </summary>
-        public string[] CityList
-        {
-            get
-            {
-                if (_cityList == null)
-                {
-                    _cityList = (from LR in RateList
-                                 select LR.City
-                                 ).Distinct().ToArray();
-                }
-                return _cityList;
-            }
-        }
-        private string[] _cityList;
+
 
         /// <summary>
         /// Города Нур-Султан, Ереван
@@ -293,7 +273,7 @@ namespace DomesticTransport
             {
                 if (_internationalCityList == null)
                 {
-                    List<TruckRate> rates = new ShefflerWB().RateInternationalList;
+                    List<TruckRate> rates = ShefflerWB.RateInternationalList;
                     _internationalCityList = (from LR in rates
                                               select LR.City
                                  ).Distinct().ToArray();
@@ -303,240 +283,17 @@ namespace DomesticTransport
         }
         private static string[] _internationalCityList;
 
-        /// <summary>
-        /// Выбрать авто 
-        /// </summary>
-        /// <param name="totalWeight"></param>
-        /// <param name="mapDelivery"></param>
-        /// <param name="provider"></param>
-        /// <returns></returns>
-        public Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery, string provider = "")
-        {
-            if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
-            if (!CheckPoints(mapDelivery)) return null;  //Нет клиента
 
-            Truck truck = null;
-            List<TruckRate> rateVariants = new List<TruckRate>();
-            double tonnageNeed = totalWeight / 1000 - 0.05;  /// 50kg Допустимый перегруз
-            try
-            {
-                if (mapDelivery.FindAll(m => m.City == "MSK" || m.City == "MO").Count > 0)
-                {
-                    rateVariants = GetCostMskRoutes(tonnageNeed, mapDelivery); //Для Москвы и области  (первая точка с наибольшим приоритетом по таблице)
-                }
-                else
-                {
-                    bool isInternational = false;
-                   
-                    foreach (string city in InternationalCityList) // Nur - Sultan //Yerevan
-                    {
-                        string pointCity = mapDelivery[0].City ?? "";
-                        if (pointCity.Contains(city))
-                        {
-                            isInternational = true;
-                            break;
-                        }
-                    }
-                   rateVariants = isInternational ?
-                   // Для  LTL маршрутов расчет суммы за 100 кг веса + add.point
-                   rateVariants = GetTruckRateInternational(totalWeight, mapDelivery) :
-                   rateVariants = GetTruckRate(tonnageNeed, mapDelivery);
-                }
-            }
-            catch
-            {
-                truck = new Truck()
-                {
-                    Cost = 0,
-                    Tonnage = 0
-                };                            
-                return truck;
-            }
 
-           //RateList Вся таблица
-            if (rateVariants.Count > 0)
-            {
-                if (provider == "")
-                {
-                    truck = new Truck(rateVariants.First());
-                }
-                else
-                {
-                    TruckRate providerRate = rateVariants.Find(x => x.Company == provider);
-                    truck = providerRate.Company == "" ? truck : new Truck(providerRate);
-                }
-            }
-            return truck;
-        }
+      
 
-        // Проверить  все ли маршруты есть в таблице
-        private bool CheckPoints(List<DeliveryPoint> mapDelivery)
-        {
-            bool chk = mapDelivery.Count > 0 ;           
-            foreach (DeliveryPoint point in mapDelivery)
-            {                                    
-                 chk = RoutesList.FindAll( x => x.IdCustomer == point.IdCustomer ).Count > 0;
-                if (!chk) { break; }
-            }
-            return chk;
-        }
 
-        /// <summary>
-        /// Региональные перевозки
-        /// </summary>
-        /// <param name="rateVariants"></param>
-        /// <returns></returns>
-        private List<TruckRate> GetTruckRate(double tonnageNeed,
-                 List<DeliveryPoint> mapDelivery)
-        {
-            List<TruckRate> rateVariants = new List<TruckRate>();
-            int ix = 0;
-            double MaxCost = 0;
-            string city = "";
-
-            /// подходящие варианты перевозчиков
-
-            for (int i = 0; i < mapDelivery.Count; i++)
-            {      //выбор дальней точки
-                DeliveryPoint point = mapDelivery[i];                 
-                try
-                {
-                    double? MaxCostPoint = 0;
-                    MaxCostPoint = (from rv in RateList
-                                    where rv.City == point.City &&
-                                            rv.Tonnage >= tonnageNeed
-                                    select rv.PriceFirstPoint
-                                )?.Max();
-                    if (MaxCostPoint != null)
-                    {
-                        if (MaxCost < MaxCostPoint)
-                        {
-                            MaxCost = (double)MaxCostPoint;
-                            ix = i;
-                            city = point.City;
-                        }
-                    }
-                }
-                catch
-                {
-                    Debug.WriteLine($"Не удалось найти точку. Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
-                    throw new Exception("Не удалось найти точку.");
-                }
-            }
-            rateVariants = RateList.FindAll(r =>
-                                        r.City == mapDelivery[ix].City &&
-                                        r.Tonnage >= tonnageNeed
-                                        ).ToList();
-
-            if (rateVariants.Count > 0)
-            {
-                //По каждому варианту фирмы с дальним городом
-                for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
-                {
-                    bool hasFirstpoint = false;
-                    TruckRate variantRate = rateVariants[rateIx];
-                    variantRate.TotalDeliveryCost = 0;
-                    // считаем общую стоимость
-                    for (int pointNumber = 0; pointNumber < mapDelivery.Count; pointNumber++)
-                    {
-                        if (mapDelivery[pointNumber].City == city && !hasFirstpoint)
-                        {
-                            variantRate.TotalDeliveryCost += rateVariants[rateIx].PriceFirstPoint;
-                            hasFirstpoint = true;
-                        }
-                        else
-                        {
-                            //Ищем стоимость доп точки в другом городе для той же машины 
-                            TruckRate addPointRate =
-                                RateList.Where(x => x.Company == variantRate.Company &&
-                                                    x.Tonnage == variantRate.Tonnage &&
-                                                    x.City == mapDelivery[pointNumber].City).First();
-                            variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;
-                        }
-                    }
-                    rateVariants[rateIx] = variantRate;
-                }
-                rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
-            }
-            return rateVariants;
-        }
-
-        /// <summary>
-        /// варианты Провайдеров для авто
-        /// </summary>
-        /// <param name="totalWeight"></param>
-        /// <param name="mapDelivery"></param>
-        /// <returns></returns>
-        public List<TruckRate> GetTruckRateInternational(double totalWeight, List<DeliveryPoint> mapDelivery)
-        {
-            int centner = (int)Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
-            List<TruckRate> rateVariants = new List<TruckRate>();
-            double tonnageNeed =(double) centner/10 ;   //тонн 
-
-            for (int j=0; j< RateInternationalList.Count; j++)
-            {
-                TruckRate rate = RateInternationalList[j];
-                if (mapDelivery[0].City.Contains(rate.City) && rate.Tonnage == tonnageNeed)
-                {
-                    rateVariants.Add(rate);
-                }
-            }
-                     
-            for (int i = 0; i < rateVariants.Count; i++)
-            {
-                TruckRate rate = rateVariants[i];
-                double addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
-                rate.TotalDeliveryCost =
-                    (int)Math.Ceiling(rateVariants[i].PriceFirstPoint * totalWeight / 100 + addpointCost);
-                rateVariants[i] = rate;
-            }
-            rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
-            return rateVariants;
-        }
-
-        /// <summary>
-        /// По МСК и МО
-        /// </summary>
-        /// <param name="tonnageNeed"></param>
-        /// <param name="rateVariants"></param>
-        /// <param name="mapDelivery"></param>
-        /// <returns></returns>
-        private List<TruckRate> GetCostMskRoutes(double tonnageNeed,
-                  List<DeliveryPoint> mapDelivery)
-        {
-            List<TruckRate> rateVariants = new List<TruckRate>();
-            rateVariants = RateList.FindAll(r =>
-                                        r.City == mapDelivery[0].City &&
-                                      r.Tonnage >= tonnageNeed
-                                        ).ToList();
-
-            if (rateVariants.Count > 0)
-            {
-                for (int rateIx = 0; rateIx < rateVariants.Count; rateIx++)
-                {
-                    TruckRate variantRate = rateVariants[rateIx];
-                    variantRate.TotalDeliveryCost = rateVariants[rateIx].PriceFirstPoint;
-                    for (int pointNumber = 1; pointNumber < mapDelivery.Count; pointNumber++)
-                    {
-                        TruckRate addPointRate =
-                            RateList.Where(x => x.Company == variantRate.Company &&
-                                                x.Tonnage == variantRate.Tonnage &&
-                                                x.City == mapDelivery[pointNumber].City).First();
-                        if (addPointRate.PriceAddPoint > 0)
-                            variantRate.TotalDeliveryCost += addPointRate.PriceAddPoint;
-                    }
-                    rateVariants[rateIx] = variantRate;
-                }
-                rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
-            }
-            return rateVariants;
-        }
 
         /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
         /// </summary>
         /// <returns></returns>
-         private static List<TruckRate> GetTruckRateList()
+        private static List<TruckRate> GetTruckRateList()
         {
             List<TruckRate> ListRate = new List<TruckRate>();
             foreach (ListRow row in RateTable.ListRows)
@@ -750,7 +507,7 @@ namespace DomesticTransport
                     int counter = int.TryParse(row.Cells[1, colCounter].Text, out int count) ? count : 0;
                     row.Cells[1, colCounter].Value = ++counter;
                     string Counter = counter.ToString();
-                    Counter = Counter.Length < 6 ? new string('0', 6 - Counter.Length) + Counter : Counter ;
+                    Counter = Counter.Length < 6 ? new string('0', 6 - Counter.Length) + Counter : Counter;
                     id = ix + Counter;
                     break;
                 }
@@ -758,12 +515,7 @@ namespace DomesticTransport
             return id;
         }
 
-        internal bool CheckCustomerId(string id)
-        {
-            DeliveryPoint dp = RoutesList.Find(x => x.IdCustomer.Contains(id));
-            return string.IsNullOrWhiteSpace(dp.IdCustomer);
-        }
-
+      
         #endregion Вспомогательные
     }
 }

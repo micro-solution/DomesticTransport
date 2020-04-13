@@ -56,6 +56,7 @@
             this.about = this.Factory.CreateRibbonGroup();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
+            this.btnSaveRoute = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -280,6 +281,14 @@
             this.btnSetts.ShowImage = true;
             this.btnSetts.Visible = false;
             // 
+            // btnSaveRoute
+            // 
+            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSaveRoute.Label = "Сохранить маршрут";
+            this.btnSaveRoute.Name = "btnSaveRoute";
+            this.btnSaveRoute.ShowImage = true;
+            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveRoute_Click);
+            // 
             // RibbonDelivery
             // 
             this.Name = "RibbonDelivery";
@@ -323,6 +332,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSelectFoldersOutlook;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendToCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSettingLetterCS;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveRoute;
     }
 
     partial class ThisRibbonCollection

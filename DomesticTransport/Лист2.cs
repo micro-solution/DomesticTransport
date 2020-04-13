@@ -115,7 +115,7 @@ namespace DomesticTransport
                 ProviderEditor providerFrm = new ProviderEditor();
                 string wt = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["Вес доставки"].Range.Column].Text;
                 Functions functions = new Functions();
-                List<Order> orders = functions.GetOrdersFromTable(ordersTable);
+                List<Order> orders = functions.GetOrdersFromTable();
                 Delivery delivery = new Delivery();
                 string numStr = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["№ Доставки"].Range.Column].Text;
                 int number = int.TryParse(numStr, out int n) ? n : 0;
