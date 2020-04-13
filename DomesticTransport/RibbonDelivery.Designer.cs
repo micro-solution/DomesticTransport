@@ -48,12 +48,14 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.btnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.btnReadCarrierInvoice = this.Factory.CreateRibbonButton();
+            this.buttonSendToCS = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnSaveSignature = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
+            this.buttonSettingLetterCS = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -157,6 +159,7 @@
             // 
             this.group1.Items.Add(this.btnSendShippingCompany);
             this.group1.Items.Add(this.btnReadCarrierInvoice);
+            this.group1.Items.Add(this.buttonSendToCS);
             this.group1.Label = "Сообщения";
             this.group1.Name = "group1";
             // 
@@ -178,10 +181,20 @@
             this.btnReadCarrierInvoice.ShowImage = true;
             this.btnReadCarrierInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadCarrierInvoice_Click_1);
             // 
+            // buttonSendToCS
+            // 
+            this.buttonSendToCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonSendToCS.Image = ((System.Drawing.Image)(resources.GetObject("buttonSendToCS.Image")));
+            this.buttonSendToCS.Label = "Отправить в CS";
+            this.buttonSendToCS.Name = "buttonSendToCS";
+            this.buttonSendToCS.ShowImage = true;
+            this.buttonSendToCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendToCS_Click);
+            // 
             // settings
             // 
             this.settings.Items.Add(this.btnSaveSignature);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
+            this.settings.Items.Add(this.buttonSettingLetterCS);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
             // 
@@ -230,6 +243,15 @@
             this.btnSetts.ShowImage = true;
             this.btnSetts.Visible = false;
             // 
+            // buttonSettingLetterCS
+            // 
+            this.buttonSettingLetterCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonSettingLetterCS.Image = ((System.Drawing.Image)(resources.GetObject("buttonSettingLetterCS.Image")));
+            this.buttonSettingLetterCS.Label = "Письмо CS";
+            this.buttonSettingLetterCS.Name = "buttonSettingLetterCS";
+            this.buttonSettingLetterCS.ShowImage = true;
+            this.buttonSettingLetterCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
+            // 
             // RibbonDelivery
             // 
             this.Name = "RibbonDelivery";
@@ -271,6 +293,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAccept;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveSignature;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSelectFoldersOutlook;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSendToCS;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSettingLetterCS;
     }
 
     partial class ThisRibbonCollection

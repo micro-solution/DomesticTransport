@@ -233,5 +233,25 @@ namespace DomesticTransport
             }
 
         }
+
+        /// <summary>
+        /// Отправка файла отгрузки в CS
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSendToCS_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Настройки письма для CS
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSettingLetterCS_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
     }
 }
