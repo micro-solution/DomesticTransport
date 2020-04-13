@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomesticTransport.Model
 {
@@ -23,21 +20,9 @@ namespace DomesticTransport.Model
 
 
         ///// <summary>
-        ///// ??????
+        ///// Информация о водителе
         ///// </summary>
-        public Carrier Carrier
-        {
-            get
-            {
-                if (_carrier == null)
-                {
-                    _carrier = new Carrier();
-                }
-                return _carrier;
-            }
-            private set { _carrier = value; }
-        }
-        private Carrier _carrier;
+        public Driver Driver { get; set; }
 
         /// <summary>
         /// Стоимость доставки
@@ -59,7 +44,7 @@ namespace DomesticTransport.Model
                 }
                 return _cost;
             }
-            set { _cost = value; }
+            set => _cost = value;
         }
         private double _cost;
         /// <summary>
@@ -98,10 +83,7 @@ namespace DomesticTransport.Model
                 }
                 return _orders;
             }
-            set
-            {
-                _orders = value;
-            }
+            set => _orders = value;
         }
         private List<Order> _orders;
 
@@ -128,7 +110,7 @@ namespace DomesticTransport.Model
                 if (_truck == null)
                 {
                     ShefflerWB workBook = new ShefflerWB();
-                    _truck = workBook.GetTruck(TotalWeight, MapDelivery);
+                    _truck = Truck.GetTruck(TotalWeight, MapDelivery);
                     if (!string.IsNullOrWhiteSpace(MapDelivery.Find(
                                     x => x.RouteName.Contains("Сборный груз")).IdCustomer))
                     {
@@ -137,7 +119,7 @@ namespace DomesticTransport.Model
                 }
                 return _truck;
             }
-            set { _truck = value; }
+            set => _truck = value;
         }
         private Truck _truck;
 

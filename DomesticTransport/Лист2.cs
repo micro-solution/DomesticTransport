@@ -110,15 +110,15 @@ namespace DomesticTransport
                     Target.Offset[0, 4].Value = providerFrm.CostDelivery;
                     //На лист отгрузки 
                     string idOrder = delivery.Orders[0].Id;
-                    Range row=null;
+                    Range row = null;
                     row = new ShefflerWB().GetRowOrderTotal(idOrder);
-                      if (row != null)
+                    if (row != null)
                     {
-                    row.Cells[0, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
-                    row.Cells[0, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
+                        row.Cells[0, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
+                        row.Cells[0, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
                     }
 
-                   
+
                 }
 
             }

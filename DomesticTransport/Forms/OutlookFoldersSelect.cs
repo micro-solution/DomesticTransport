@@ -53,12 +53,12 @@ namespace DomesticTransport.Forms
                     }
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
-     
+
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace DomesticTransport.Forms
         /// <param name="folder"></param>
         private void FillTreeNode(TreeNode folderNode, Outlook.MAPIFolder folder)
         {
-            try 
-            { 
+            try
+            {
                 foreach (Outlook.MAPIFolder subfolder in folder.Folders)
                 {
                     TreeNode subfolderNode = new TreeNode { Text = subfolder.Name };
@@ -200,7 +200,7 @@ namespace DomesticTransport.Forms
                 MessageBox.Show(ex.Message);
                 return null;
             }
-        
+
         }
     }
 }

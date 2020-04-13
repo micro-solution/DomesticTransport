@@ -165,7 +165,7 @@
     <Compile Include="Functions.cs" />
     <Compile Include="ScanMail.cs" />
     <Compile Include="ShefflerWB.cs" />
-    <Compile Include="Model\Carrier.cs" />
+    <Compile Include="Model\Driver.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Delivery.cs" />
     <Compile Include="Model\DeliveryPoint.cs" />

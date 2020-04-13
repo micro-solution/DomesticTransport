@@ -10,10 +10,7 @@ namespace DomesticTransport.Forms
         public bool Cancel { get; set; } = false;
         public string Title
         {
-            get
-            {
-                return title;
-            }
+            get => title;
             set
             {
                 title = value;
@@ -101,12 +98,12 @@ namespace DomesticTransport.Forms
             Timer.Stop();
             Cancel = true;
             _exist = false;
-           
+
         }
 
         private void ProcessBar_Load(object sender, EventArgs e)
         {
-           
+
         }
 
     }

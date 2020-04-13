@@ -4,10 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DomesticTransport
 {
@@ -15,8 +11,9 @@ namespace DomesticTransport
     /// <summary>
     /// Действия с текущей книгой
     /// </summary>
-  public  class ShefflerWB
-    {          
+    public class ShefflerWB
+    {
+
         public static Worksheet DeliverySheet
         {
             get
@@ -152,7 +149,7 @@ namespace DomesticTransport
         /// <summary>
         /// Прайс
         /// </summary>
-         public static List<TruckRate> RateList
+        public static List<TruckRate> RateList
         {
             get
             {
@@ -197,8 +194,8 @@ namespace DomesticTransport
             Range range = null;
             foreach (ListRow row in TotalTable.ListRows)
             {
-              string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
-                if ((!string.IsNullOrWhiteSpace(cell)) &&  idOrder.Contains(cell))
+                string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
+                if ((!string.IsNullOrWhiteSpace(cell)) && idOrder.Contains(cell))
                 {
                     range = row.Range;
                     break;
@@ -245,20 +242,19 @@ namespace DomesticTransport
                                       y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
             }
-            set
-            { _routes = value;  }
+            set => _routes = value;
         }
         static List<DeliveryPoint> _routes;
 
-         /// <summary>
-         ///  Список цен международных перевозок
-         /// </summary>
+        /// <summary>
+        ///  Список цен международных перевозок
+        /// </summary>
         public static List<TruckRate> RateInternationalList
         {
             get
             {
                 if (_RateInternationalList == null)
-                {                     
+                {
                     _RateInternationalList = new ShefflerWB().GetTruckRateInternational();
                 }
                 return _RateInternationalList;
@@ -266,23 +262,7 @@ namespace DomesticTransport
         }
         private static List<TruckRate> _RateInternationalList;
 
-        /// <summary>
-        /// Города
-        /// </summary>
-        public string[] CityList
-        {
-            get
-            {
-                if (_cityList == null)
-                {
-                    _cityList = (from LR in RateList
-                                 select LR.City
-                                 ).Distinct().ToArray();
-                }
-                return _cityList;
-            }
-        }
-        private string[] _cityList;
+
 
         /// <summary>
         /// Города Нур-Султан, Ереван
@@ -303,27 +283,27 @@ namespace DomesticTransport
         }
         private static string[] _internationalCityList;
 
-     
+
 
         // Проверить  все ли маршруты есть в таблице
         public static bool CheckPoints(List<DeliveryPoint> mapDelivery)
         {
-            bool chk = mapDelivery.Count > 0 ;           
+            bool chk = mapDelivery.Count > 0;
             foreach (DeliveryPoint point in mapDelivery)
-            {                                    
-                 chk = RoutesList.FindAll( x => x.IdCustomer == point.IdCustomer ).Count > 0;
+            {
+                chk = RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count > 0;
                 if (!chk) { break; }
             }
             return chk;
         }
 
-     
+
 
         /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
         /// </summary>
         /// <returns></returns>
-         private static List<TruckRate> GetTruckRateList()
+        private static List<TruckRate> GetTruckRateList()
         {
             List<TruckRate> ListRate = new List<TruckRate>();
             foreach (ListRow row in RateTable.ListRows)
@@ -537,7 +517,7 @@ namespace DomesticTransport
                     int counter = int.TryParse(row.Cells[1, colCounter].Text, out int count) ? count : 0;
                     row.Cells[1, colCounter].Value = ++counter;
                     string Counter = counter.ToString();
-                    Counter = Counter.Length < 6 ? new string('0', 6 - Counter.Length) + Counter : Counter ;
+                    Counter = Counter.Length < 6 ? new string('0', 6 - Counter.Length) + Counter : Counter;
                     id = ix + Counter;
                     break;
                 }

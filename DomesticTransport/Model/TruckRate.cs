@@ -18,6 +18,24 @@ namespace DomesticTransport.Model
 
 
         /// <summary>
+        /// Города   ( проверять наличие города при поиске стоимости перевозки) 
+        /// </summary>
+        public string[] CityList
+        {
+            get
+            {
+                if (_cityList == null)
+                {
+                    _cityList = (from LR in ShefflerWB.RateList
+                                 select LR.City
+                                 ).Distinct().ToArray();
+                }
+                return _cityList;
+            }
+        }
+        private string[] _cityList;
+
+        /// <summary>
         /// Региональные перевозки
         /// </summary>
         /// <param name="rateVariants"></param>
@@ -105,8 +123,8 @@ namespace DomesticTransport.Model
         /// <returns></returns>
         public static List<TruckRate> GetTruckRateInternational(double totalWeight, List<DeliveryPoint> mapDelivery)
         {
-            int centner = (int)System.Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
             List<TruckRate> rateVariants = new List<TruckRate>();
+            int centner = (int)Math.Ceiling(totalWeight / 100); //центнеры огругление вверх
             double tonnageNeed = (double)centner / 10;   //тонн 
 
             for (int j = 0; j < ShefflerWB.RateInternationalList.Count; j++)
@@ -118,6 +136,7 @@ namespace DomesticTransport.Model
                 }
             }
 
+            // Расчет стоимости доставки LTL
             for (int i = 0; i < rateVariants.Count; i++)
             {
                 TruckRate rate = rateVariants[i];

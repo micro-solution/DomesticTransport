@@ -63,9 +63,9 @@ namespace DomesticTransport
                     if (mail.ReceivedTime.Date != DateTime.Today) continue;
 
                     string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
-                    if (!System.IO.Directory.Exists(path))
+                    if (!Directory.Exists(path))
                     {
-                        System.IO.Directory.CreateDirectory(path);
+                        Directory.CreateDirectory(path);
                     }
 
                     foreach (Outlook.Attachment attach in mail.Attachments)
@@ -119,18 +119,16 @@ namespace DomesticTransport
 
         public void GetMessage()
         {
-
             string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
-            //string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + ShefflerWB.DateDelivery + '\\';
-            if (!System.IO.Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
-                MessageBox.Show("Папка "+path+" отсутствует");
+                MessageBox.Show("Папка " + path + " отсутствует");
                 return;
             }
             string[] files = Directory.GetFiles(path);
-            foreach(string file in files)
+            foreach (string file in files)
             {
-              if (!file.Contains(".xls") ) { continue; }
+                if (!file.Contains(".xls")) { continue; }
                 new Functions().ReadMessageFile(file);
             }
         }

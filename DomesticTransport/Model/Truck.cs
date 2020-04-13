@@ -7,22 +7,20 @@ namespace DomesticTransport.Model
     /// <summary>
     /// Класс автомобиля перевозчика
     /// </summary>
-   public class Truck
-    {   
+    public class Truck
+    {
         public double Tonnage { get; set; }
-       
+
         /// <summary>
         /// Стоимость доставки
         /// </summary>
         public double Cost
-        { 
-           get {
-                return _cost;
-            }
-    set { _cost = Math.Ceiling(value); }
+        {
+           get => _cost;
+    set => _cost = Math.Ceiling(value);
         }
         double _cost;
-public Provider ProviderCompany
+        public Provider ProviderCompany
         {
             get
             {
@@ -32,7 +30,7 @@ public Provider ProviderCompany
                 }
                 return _shippingCompany;
             }
-            set { _shippingCompany = value; }
+            set => _shippingCompany = value;
         }
         private Provider _shippingCompany;
 
@@ -41,7 +39,7 @@ public Provider ProviderCompany
 
         public Truck(TruckRate truckRate)
         {
-            Tonnage = truckRate.Tonnage;            
+            Tonnage = truckRate.Tonnage;
             Cost = truckRate.TotalDeliveryCost;
             string companyName = truckRate.Company;
             ProviderCompany = new Provider() { Name = companyName };
@@ -54,7 +52,7 @@ public Provider ProviderCompany
         /// <param name="mapDelivery"></param>
         /// <param name="provider"></param>
         /// <returns></returns>
-        public Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery, string provider = "")
+        public static Truck GetTruck(double totalWeight, List<DeliveryPoint> mapDelivery, string provider = "")
         {
             if (mapDelivery.Count <= 0 || totalWeight <= 0) return null;
             if (!ShefflerWB.CheckPoints(mapDelivery)) return null;  //Нет клиента

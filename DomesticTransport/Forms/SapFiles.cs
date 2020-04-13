@@ -18,13 +18,7 @@ namespace DomesticTransport
                 return tbExport.Text;
             }
         }
-        public string OrderFile
-        {
-            get
-            {
-                return tbOrders.Text;
-            }
-        }
+        public string OrderFile => tbOrders.Text;
 
         public SapFiles()
         {
@@ -56,7 +50,7 @@ namespace DomesticTransport
         ///  Выбрать файл выгрузки SAP
         /// </summary>
         /// <returns></returns>
-        static public string SelectFile()
+        public static string SelectFile()
         {
             string sapUnload = "";
             string defaultPath = Config.Default.SapUnloadPath;
@@ -133,7 +127,7 @@ namespace DomesticTransport
                         if (fi.Name.Contains("Export"))
                         {
                             tbExport.Text = file;
-                        } 
+                        }
                     }
                 }
             }

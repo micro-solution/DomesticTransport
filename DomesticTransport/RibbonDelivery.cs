@@ -12,7 +12,7 @@ namespace DomesticTransport
         {
             try
             {
-                ShefflerWB.ExcelOptimizateOn();                    
+                ShefflerWB.ExcelOptimizateOn();
                 new Functions().ExportFromSAP();
             }
             catch (Exception ex)
@@ -28,10 +28,10 @@ namespace DomesticTransport
 
 
         private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
-        {                 
+        {
             try
             {
-                ShefflerWB.ExcelOptimizateOn();                
+                ShefflerWB.ExcelOptimizateOn();
                 new Functions().CreateMasseges();
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace DomesticTransport
 
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
-        {                   
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -64,7 +64,7 @@ namespace DomesticTransport
         }
 
         private void button2_Click(object sender, RibbonControlEventArgs e)
-        {                
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -98,7 +98,7 @@ namespace DomesticTransport
         }
 
         private void BtnLoadAllOrders_Click(object sender, RibbonControlEventArgs e)
-        {                     
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -115,7 +115,7 @@ namespace DomesticTransport
         }
 
         private void btnReadForms_Click(object sender, RibbonControlEventArgs e)
-        {              
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -133,7 +133,7 @@ namespace DomesticTransport
 
         private void btnAccept_Click(object sender, RibbonControlEventArgs e)
         {
-             try
+            try
             {
                 ShefflerWB.ExcelOptimizateOn();
                 new Functions().UpdateTotal();
@@ -149,7 +149,7 @@ namespace DomesticTransport
         }
 
         private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)
-        {                     
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -166,8 +166,8 @@ namespace DomesticTransport
         }
 
         private void btnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
-        {            
-           try
+        {
+            try
             {
                 ShefflerWB.ExcelOptimizateOn();
                 new About().ShowDialog();
@@ -188,7 +188,8 @@ namespace DomesticTransport
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ButtonSelectFoldersOutlook_Click(object sender, RibbonControlEventArgs e)
-        {   try
+        {
+            try
             {
                 ShefflerWB.ExcelOptimizateOn();
                 new OutlookFoldersSelect().ShowDialog();
@@ -210,7 +211,7 @@ namespace DomesticTransport
         /// <param name="e"></param>   
         private void btnReadCarrierInvoice_Click_1(object sender, RibbonControlEventArgs e)
         {
-           
+
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
