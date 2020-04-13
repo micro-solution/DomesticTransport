@@ -16,7 +16,7 @@ namespace DomesticTransport
     /// Действия с текущей книгой
     /// </summary>
     class ShefflerWB
-    {
+    {          
         public static Worksheet DeliverySheet
         {
             get
@@ -55,6 +55,9 @@ namespace DomesticTransport
         }
         private static Worksheet _rateSheet;
 
+        /// <summary>
+        /// Routes лист 
+        /// </summary>
         public static Worksheet RoutesSheet
         {
             get
@@ -204,11 +207,6 @@ namespace DomesticTransport
             return range;
         }
 
-
-
-
-
-
         /// <summary>
         /// Получить таблицу Маршрутов 
         /// </summary>
@@ -242,27 +240,25 @@ namespace DomesticTransport
                         };
                         _routes.Add(route);
                     }
-
                 }
                 _routes = _routes.OrderBy(x => x.Id).ThenBy(
                                       y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
             }
             set
-            {
-                _routes = value;
-            }
+            { _routes = value;  }
         }
         static List<DeliveryPoint> _routes;
 
-
+         /// <summary>
+         ///  Список цен международных перевозок
+         /// </summary>
         public  List<TruckRate> RateInternationalList
         {
             get
             {
                 if (_RateInternationalList == null)
-                {
-                    
+                {                     
                     _RateInternationalList = new ShefflerWB().GetTruckRateInternational();
                 }
                 return _RateInternationalList;
@@ -270,6 +266,9 @@ namespace DomesticTransport
         }
         private static List<TruckRate> _RateInternationalList;
 
+        /// <summary>
+        /// Города
+        /// </summary>
         public string[] CityList
         {
             get
@@ -284,6 +283,10 @@ namespace DomesticTransport
             }
         }
         private string[] _cityList;
+
+        /// <summary>
+        /// Города Нур-Султан, Ереван
+        /// </summary>
         public static string[] InternationalCityList
         {
             get
@@ -346,12 +349,11 @@ namespace DomesticTransport
                 {
                     Cost = 0,
                     Tonnage = 0
-                };
-                //  truck.ShippingCompany.Name = "";
+                };                            
                 return truck;
             }
-           //RateList Вся таблица
 
+           //RateList Вся таблица
             if (rateVariants.Count > 0)
             {
                 if (provider == "")
@@ -367,13 +369,13 @@ namespace DomesticTransport
             return truck;
         }
 
+        // Проверить  все ли маршруты есть в таблице
         private bool CheckPoints(List<DeliveryPoint> mapDelivery)
         {
-            bool chk = mapDelivery.Count >0 ;           
-
+            bool chk = mapDelivery.Count > 0 ;           
             foreach (DeliveryPoint point in mapDelivery)
             {                                    
-                 chk =RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count>0;
+                 chk = RoutesList.FindAll( x => x.IdCustomer == point.IdCustomer ).Count > 0;
                 if (!chk) { break; }
             }
             return chk;
@@ -396,9 +398,7 @@ namespace DomesticTransport
 
             for (int i = 0; i < mapDelivery.Count; i++)
             {      //выбор дальней точки
-                DeliveryPoint point = mapDelivery[i];
-
-                //  List < DeliveryPoint > variants  
+                DeliveryPoint point = mapDelivery[i];                 
                 try
                 {
                     double? MaxCostPoint = 0;
@@ -572,12 +572,11 @@ namespace DomesticTransport
                     ListRate.Add(rate);
                 }
             }
-
             return ListRate;
         }
 
         /// <summary>
-        /// Получить таблицу международных 
+        /// Получить таблицу цен международных перевозок 
         /// </summary>
         /// <returns></returns>
         internal List<TruckRate> GetTruckRateInternational()
@@ -620,8 +619,8 @@ namespace DomesticTransport
             return ListRate;
         }
 
-
-        internal int CreateRoute(List<Order> ordersCurrentDelivery)
+        // Добавить маршрут в таблицу
+        public int CreateRoute(List<Order> ordersCurrentDelivery)
         {
             List<DeliveryPoint> pointMap = RoutesList;
             DeliveryPoint LastPoint = RoutesList.Last();
@@ -641,6 +640,8 @@ namespace DomesticTransport
                 priorityRoute = maxPriority > priorityRoute ? maxPriority : priorityRoute;
             }
             int point = 0;
+
+
             foreach (Order order in ordersCurrentDelivery)
             {
                 ListRow row = RoutesTable.ListRows[RoutesTable.ListRows.Count];
@@ -667,7 +668,11 @@ namespace DomesticTransport
             return idRoute;
         }
 
-        public Range GetCurrentShippingRange()
+        /// <summary>
+        /// Собирает диапазон Отгрузки с текущей даты
+        /// </summary>
+        /// <returns></returns>
+        public Range GetCurrentTotalRange()
         {
             Range currentRng = null;
             string dateDelivery = DateDelivery;
@@ -726,6 +731,11 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
         }
 
+        /// <summary>
+        /// Возвращает id увеличивает счетчик заявок провайдеру 
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <returns></returns>
         public static string GetProviderId(string providerName)
         {
             int colName = ProviderTable.ListColumns["Company"].Index;

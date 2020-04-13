@@ -26,11 +26,17 @@ namespace DomesticTransport
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(Лист3_Startup);
-            this.Shutdown += new System.EventHandler(Лист3_Shutdown);
+            this.TableRoutes.Change += new Microsoft.Office.Tools.Excel.ListObjectChangeHandler(this.TableRoutes_Change);
+            this.Startup += new System.EventHandler(this.Лист3_Startup);
+            this.Shutdown += new System.EventHandler(this.Лист3_Shutdown);
+
         }
 
         #endregion
 
+        private void TableRoutes_Change(Excel.Range targetRange, Microsoft.Office.Tools.Excel.ListRanges changedRanges)
+        {
+            ShefflerWB.RoutesList = null;             
+        }
     }
 }
