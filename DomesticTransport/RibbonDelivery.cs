@@ -9,7 +9,7 @@ namespace DomesticTransport
 {
     public partial class RibbonDelivery
     {
-        private void btnStart_Click(object sender, RibbonControlEventArgs e)
+        private void BtnStart_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -25,8 +25,6 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
-
-
 
         private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
         {
@@ -212,7 +210,6 @@ namespace DomesticTransport
         /// <param name="e"></param>   
         private void btnReadCarrierInvoice_Click_1(object sender, RibbonControlEventArgs e)
         {
-
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -222,8 +219,14 @@ namespace DomesticTransport
                     return;
                 }
                 ScanMail scanMail = new ScanMail();
-                scanMail.SaveAttachments();
-                scanMail.GetMessage();
+                if (scanMail.SaveAttachments() == 0)
+                {
+                    MessageBox.Show("Сегодня письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    scanMail.GetMessage();
+                }
             }
             catch (Exception ex)
             {

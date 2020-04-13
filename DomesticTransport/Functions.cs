@@ -518,10 +518,10 @@ namespace DomesticTransport
                     string pc = row.Range[1, ShefflerWB.TotalTable.ListColumns["Кол-во паллет"].Index].text;
                     if (int.TryParse(pc, out int pallets)) order.PalletsCount = pallets;
 
-                    string wb = row.Range[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].text;
+                    string wb = row.Range[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].Value.ToString();
                     if (double.TryParse(wb, out double wbrutto)) order.WeightBrutto = wbrutto;
 
-                    string cost = row.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].text;
+                    string cost = row.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value.ToString();
                     if (double.TryParse(cost, out double costProd)) order.Cost = costProd;
 
                     break;
@@ -590,19 +590,20 @@ namespace DomesticTransport
                 order.Id = idOrder;
                 order.TransportationUnit = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Номер накладной"].Index].Text;
 
-                double.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].Text, out double wt);
+                double.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].Value.ToString(), out double wt);
                 order.WeightBrutto = wt;
 
-                double.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Нетто вес"].Index].Text, out wt);
+                double.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Нетто вес"].Index].Value.ToString(), out wt);
                 order.WeightNetto = wt;
 
-                double.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Text, out wt);
+                double.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value.ToString(), out wt);
                 order.Cost = wt;
 
                 int.TryParse(row.Cells[1, ShefflerWB.TotalTable.ListColumns["Кол-во паллет"].Index].Text, out int countpallet);
                 order.PalletsCount = countpallet;
 
                 order.Customer.Id = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Номер грузополучателя"].Index].Text;
+                order.Customer.Name = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Грузополучатель"].Index].Text;
                 order.Route = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Text;
 
                 orders.Add(order);

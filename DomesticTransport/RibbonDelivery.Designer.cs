@@ -90,7 +90,7 @@
             this.btnStart.Label = "Export from SAP";
             this.btnStart.Name = "btnStart";
             this.btnStart.ShowImage = true;
-            this.btnStart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStart_Click);
+            this.btnStart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnStart_Click);
             // 
             // btnReadForms
             // 
