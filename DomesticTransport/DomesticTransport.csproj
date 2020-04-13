@@ -282,6 +282,9 @@
     <EmbeddedResource Include="Лист2.resx">
       <DependentUpon>Лист2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Лист3.resx">
+      <DependentUpon>Лист3.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Лист81.resx">
       <DependentUpon>Лист81.cs</DependentUpon>
     </EmbeddedResource>
