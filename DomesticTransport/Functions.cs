@@ -319,7 +319,7 @@ namespace DomesticTransport
         internal void SecondPriorityRoute()
         {
             
-            List <Delivery>  deliveries= SecondCompleteAuto();
+            List <Delivery>  deliveries= SecondCompleteAuto(ReadFromDelivery());
             PrintChanges(deliveries); 
         }
 
@@ -1124,9 +1124,10 @@ namespace DomesticTransport
         }
 
 
-        private List<Delivery> SecondCompleteAuto()
+        private List<Delivery> SecondCompleteAuto(List<Delivery> deliveries)
         {
-          List<Delivery> deliveries = ReadFromDelivery();
+         
+                Lisxt<Delivery> resultDeliveries = new List<Delivery>();
             
             List<Delivery> deliveriesMSK = deliveries.FindAll( x => x.MapDelivery.Count < 3  && 
                                                     (x.MapDelivery[0].City == "MO" ||
@@ -1134,30 +1135,46 @@ namespace DomesticTransport
             if (deliveriesMSK.Count < 2) throw new Exception("Нет подходящих поездок по MSK и MO");
 
                 //  List<Order> orders = GetOrdersFromTable();
-                List<Delivery> resultDeliveries = new List<Delivery>();
-            List<DeliveryPoint> SecondRoutes = ShefflerWB.RoutesList.FindAll(x=> x.PriorityRoute >1).
-                                        OrderBy(d=>d.PriorityRoute).ThenBy(s=>s.PriorityPoint).ToList();
-            
+            for(int i = 0; i< deliveriesMSK.Count ; i++)
+            {
+                MergeDelivery()
+
+            }
+            return resultDeliveries;
+        }
+
+        private List<Delivery> MergeDelivery (Delivery delivery, List<Delivery> deliveries)
+        {
+                for(int i = 0; i < deliveries.Count; i++)
+            {
+                if ((delivery.Orders.Count + deliveries[i].Orders.Count) > 3) continue;
+
+
+            }
+
+
+
+            List<DeliveryPoint> SecondRoutes = ShefflerWB.RoutesList.FindAll(x => x.PriorityRoute > 1).
+                                      OrderBy(d => d.PriorityRoute).ThenBy(s => s.PriorityPoint).ToList();
+
             int[] routesId = (from r in SecondRoutes
                               where r.City == "МО" || r.City == "МSK"
                               select r.Id
                                ).Distinct().ToArray();
-            for(int ix = 0; ix < deliveriesMSK.Count ; ix++)
+            for (int ix = 0; ix < deliveriesMSK.Count; ix++)
             {
 
-            for (int ixRourte = 0; ixRourte < routesId.Length; ixRourte++)
-            {
-                int idRoute = routesId[ixRourte];
-               
+                for (int ixRourte = 0; ixRourte < routesId.Length; ixRourte++)
+                {
+                    int idRoute = routesId[ixRourte];
 
 
-             }
+
+                }
 
             }
 
-            return resultDeliveries;
         }
-
 
         /// <summary>
         /// перенести с деливери на лист Отгрузка
