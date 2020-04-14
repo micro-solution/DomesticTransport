@@ -238,11 +238,33 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Пересобрать авто
+        /// Пересобрать авто используя основные маршруты
         /// </summary>
-        public void UpdateAll()
+        public void UpdateAutoMain()
         {
+            Range range = ShefflerWB.TotalTable.DataBodyRange;
+            List<Order> orders = GetOrdersFromTotalTable(range);
+            List<Delivery> deliveries = CompleteAuto(orders);
 
+            ClearListObj(ShefflerWB.DeliveryTable);
+            ClearListObj(ShefflerWB.OrdersTable);
+
+            if (deliveries != null && deliveries.Count > 0)
+            {
+                PrintDelivery(deliveries);
+                PrintOrders(deliveries);
+                PrintTotal(ShefflerWB.TotalTable, deliveries);
+            }
+            ShefflerWB.DeliverySheet.Columns.AutoFit();
+
+            return;
+        }
+
+        /// <summary>
+        /// Пересобрать авто пытаясь доукомплектовать авто по второстепенным маршрутам
+        /// </summary>
+        public void UpdateAutoSecond()
+        {
             Range range = ShefflerWB.TotalTable.DataBodyRange;
             List<Order> orders = GetOrdersFromTotalTable(range);
             List<Delivery> deliveries = CompleteAuto(orders);
@@ -261,8 +283,6 @@ namespace DomesticTransport
 
             return;
         }
-
-
 
         /// <summary>
         ///кнопка Добавить авто

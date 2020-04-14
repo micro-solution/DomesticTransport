@@ -41,7 +41,9 @@
             this.ButtonOrderFromCS = this.Factory.CreateRibbonButton();
             this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
             this.groupEdit = this.Factory.CreateRibbonGroup();
-            this.ButtonUpdateAuto = this.Factory.CreateRibbonButton();
+            this.splitButtonUpdateAuto = this.Factory.CreateRibbonSplitButton();
+            this.ButtonUpdateAutoMain = this.Factory.CreateRibbonButton();
+            this.ButtonUpdateAutoSecond = this.Factory.CreateRibbonButton();
             this.ButtonAddAuto = this.Factory.CreateRibbonButton();
             this.ButtonDeleteAuto = this.Factory.CreateRibbonButton();
             this.btnSaveRoute = this.Factory.CreateRibbonButton();
@@ -122,7 +124,7 @@
             // 
             // groupEdit
             // 
-            this.groupEdit.Items.Add(this.ButtonUpdateAuto);
+            this.groupEdit.Items.Add(this.splitButtonUpdateAuto);
             this.groupEdit.Items.Add(this.ButtonAddAuto);
             this.groupEdit.Items.Add(this.ButtonDeleteAuto);
             this.groupEdit.Items.Add(this.btnSaveRoute);
@@ -133,16 +135,42 @@
             this.groupEdit.Label = "Формирование транспорта";
             this.groupEdit.Name = "groupEdit";
             // 
-            // ButtonUpdateAuto
+            // splitButtonUpdateAuto
             // 
-            this.ButtonUpdateAuto.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ButtonUpdateAuto.Image = ((System.Drawing.Image)(resources.GetObject("ButtonUpdateAuto.Image")));
-            this.ButtonUpdateAuto.Label = "Обновить авто";
-            this.ButtonUpdateAuto.Name = "ButtonUpdateAuto";
-            this.ButtonUpdateAuto.ScreenTip = "Обновить авто";
-            this.ButtonUpdateAuto.ShowImage = true;
-            this.ButtonUpdateAuto.SuperTip = "Пересчет всех данных и формирование нового списка доставок";
-            this.ButtonUpdateAuto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonUpdateAuto_Click);
+            this.splitButtonUpdateAuto.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.splitButtonUpdateAuto.Image = ((System.Drawing.Image)(resources.GetObject("splitButtonUpdateAuto.Image")));
+            this.splitButtonUpdateAuto.Items.Add(this.ButtonUpdateAutoMain);
+            this.splitButtonUpdateAuto.Items.Add(this.ButtonUpdateAutoSecond);
+            this.splitButtonUpdateAuto.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.splitButtonUpdateAuto.Label = "Обновить авто";
+            this.splitButtonUpdateAuto.Name = "splitButtonUpdateAuto";
+            this.splitButtonUpdateAuto.ScreenTip = "Обновление поставок";
+            this.splitButtonUpdateAuto.SuperTip = "Программа пересчитывает все поставки. По умолчанию используются только основные м" +
+    "аршруты";
+            this.splitButtonUpdateAuto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitButtonUpdateAuto_Click);
+            // 
+            // ButtonUpdateAutoMain
+            // 
+            this.ButtonUpdateAutoMain.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonUpdateAutoMain.Image = ((System.Drawing.Image)(resources.GetObject("ButtonUpdateAutoMain.Image")));
+            this.ButtonUpdateAutoMain.Label = "Используя основные маршруты";
+            this.ButtonUpdateAutoMain.Name = "ButtonUpdateAutoMain";
+            this.ButtonUpdateAutoMain.ScreenTip = "По основным маршрутам";
+            this.ButtonUpdateAutoMain.ShowImage = true;
+            this.ButtonUpdateAutoMain.SuperTip = "Пересчет всех данных и формирование нового списка доставок. Используются только о" +
+    "сновные маршруты";
+            this.ButtonUpdateAutoMain.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonUpdateAutoMain_Click);
+            // 
+            // ButtonUpdateAutoSecond
+            // 
+            this.ButtonUpdateAutoSecond.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonUpdateAutoSecond.Image = ((System.Drawing.Image)(resources.GetObject("ButtonUpdateAutoSecond.Image")));
+            this.ButtonUpdateAutoSecond.Label = "Объединить неукомплектованные авто";
+            this.ButtonUpdateAutoSecond.Name = "ButtonUpdateAutoSecond";
+            this.ButtonUpdateAutoSecond.ShowImage = true;
+            this.ButtonUpdateAutoSecond.SuperTip = "Пересчет всех данных и формирование нового списка доставок. Программа пытается до" +
+    "укомплектовать транспорт с учетом второстепенных маршрутов";
+            this.ButtonUpdateAutoSecond.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonUpdateAutoSecond_Click);
             // 
             // ButtonAddAuto
             // 
@@ -385,8 +413,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnNunerateDeliveries;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton btnChangeRoute;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAuto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAutoMain;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonUpdateAuto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAutoSecond;
     }
 
     partial class ThisRibbonCollection

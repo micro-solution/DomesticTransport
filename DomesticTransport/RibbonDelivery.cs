@@ -364,16 +364,60 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Обновление всех маршрутов
+        /// Обновление всех маршрутов по основным маршрутам
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ButtonUpdateAuto_Click(object sender, RibbonControlEventArgs e)
+        private void ButtonUpdateAutoMain_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().UpdateAll();
+                new Functions().UpdateAutoMain();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        /// <summary>
+        /// Сплитбатон обновления авто
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SplitButtonUpdateAuto_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().UpdateAutoMain();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        /// <summary>
+        /// Кнопка обновления авто по второстепенным маршрутам
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonUpdateAutoSecond_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().UpdateAutoSecond();
             }
             catch (Exception ex)
             {
