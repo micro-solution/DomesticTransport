@@ -8,6 +8,9 @@ using Config = DomesticTransport.Properties.Settings;
 
 namespace DomesticTransport
 {
+    /// <summary>
+    /// Выбор файлоы из SAP
+    /// </summary>
     public partial class SapFiles : Form
     {
         public string ExportFile
@@ -31,20 +34,20 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+        private void SelectAllOrders_Click(object sender, EventArgs e)
         {
             tbOrders.Text = SelectFile();
         }
+
         /// <summary>
         /// Кнопка выбрать папку
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
+        private void SelectExport_Click(object sender, EventArgs e)
         {
             tbExport.Text = SelectFile();
         }
-
 
         /// <summary>
         ///  Выбрать файл выгрузки SAP
@@ -94,20 +97,30 @@ namespace DomesticTransport
             return true;
         }
 
+        /// <summary>
+        /// Кнопка ОК
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Accept_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Hide();
-        }
-
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.None;
-            this.Close();
+            Close();
         }
 
         /// <summary>
-        /// 
+        /// Кнопка отмены
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        /// <summary>
+        /// Загрузка формы
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -121,8 +134,8 @@ namespace DomesticTransport
                 {
                     FileInfo fi = new FileInfo(file);
                     if (!fi.Name.Contains("~$") &&
-                        (fi.Extension.ToLower().Contains("xls") |
-                         fi.Extension.ToLower().Contains("csv")))
+                       (fi.Extension.ToLower().Contains("xls") |
+                        fi.Extension.ToLower().Contains("csv")))
                     {
                         if (fi.Name.Contains("Export"))
                         {
@@ -133,5 +146,4 @@ namespace DomesticTransport
             }
         }
     }
-
 }

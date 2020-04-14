@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace DomesticTransport
@@ -35,8 +36,9 @@ namespace DomesticTransport
         /// <summary>
         /// Сохранение вложений в выбранных папках, полученные текущей датой
         /// </summary>
-        public void SaveAttachments()
+        public int SaveAttachments()
         {
+            int count = 0;
             OutlookApp.Session.Logon();
             foreach (string folderName in FolderNames)
             {
@@ -72,10 +74,12 @@ namespace DomesticTransport
                     {
                         if (!attach.FileName.Contains("xls")) continue;
                         attach.SaveAsFile(path + attach.FileName);
+                        count++;
                     }
                 }
                 pb.Close();
             }
+            return count;
         }
 
 
@@ -117,7 +121,10 @@ namespace DomesticTransport
             catch { return null; }
         }
 
-        public void GetMessage()
+        /// <summary>
+        /// Получение данных из писем провайдеров
+        /// </summary>
+        public void GetDataFromProviderFiles()
         {
             string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
             if (!Directory.Exists(path))

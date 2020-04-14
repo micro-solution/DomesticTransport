@@ -60,7 +60,8 @@
             this.lvProvider.TabIndex = 0;
             this.lvProvider.UseCompatibleStateImageBehavior = false;
             this.lvProvider.View = System.Windows.Forms.View.Details;
-            this.lvProvider.SelectedIndexChanged += new System.EventHandler(this.lvProvider_SelectedIndexChanged);
+            this.lvProvider.SelectedIndexChanged += new System.EventHandler(this.SelectedProvider);
+            this.lvProvider.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LvProvider_MouseDoubleClick);
             // 
             // columnProvider
             // 
@@ -81,7 +82,7 @@
             this.btnAccept.TabIndex = 1;
             this.btnAccept.Text = "Принять";
             this.btnAccept.UseVisualStyleBackColor = true;
-            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
+            this.btnAccept.Click += new System.EventHandler(this.BtnAccept_Click);
             // 
             // btnCancel
             // 
@@ -93,6 +94,7 @@
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Отменить";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // lvMap
             // 
@@ -106,7 +108,7 @@
             this.lvMap.HideSelection = false;
             this.lvMap.Location = new System.Drawing.Point(288, 22);
             this.lvMap.Name = "lvMap";
-            this.lvMap.Size = new System.Drawing.Size(189, 173);
+            this.lvMap.Size = new System.Drawing.Size(186, 173);
             this.lvMap.TabIndex = 0;
             this.lvMap.UseCompatibleStateImageBehavior = false;
             this.lvMap.View = System.Windows.Forms.View.Details;

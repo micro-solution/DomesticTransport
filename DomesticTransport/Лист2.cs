@@ -30,40 +30,54 @@ namespace DomesticTransport
 
         private void Лист2_Startup(object sender, System.EventArgs e)
         {
-            //ShefflerWB.ExcelOptimizateOff();
-            //Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            //deliverySheet.Calculate();
         }
 
         private void Лист2_SelectionChange(Range Target)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject carrierTable = deliverySheet?.ListObjects["TableCarrier"];
-            ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
-            if (carrierTable == null || OrdersTable == null) return;
-
-            Range commonOrdrrRng = Globals.ThisWorkbook.Application.Intersect(Target, OrdersTable.Range);
-            if (carrierTable?.DataBodyRange == null) return;
-
-            Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
-            if (commonRng == null && commonOrdrrRng == null)
+            try
             {
-                OrdersTable.Range.AutoFilter(Field: 1);
+                ShefflerWB.ExcelOptimizateOn();
+                Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+                ListObject carrierTable = deliverySheet?.ListObjects["TableCarrier"];
+                ListObject OrdersTable = deliverySheet?.ListObjects["TableOrders"];
+                if (carrierTable == null || OrdersTable == null) return;
+
+                Range commonOrdrrRng = Globals.ThisWorkbook.Application.Intersect(Target, OrdersTable.Range);
+                if (carrierTable?.DataBodyRange == null) return;
+
+                Range commonRng = Globals.ThisWorkbook.Application.Intersect(Target, carrierTable.DataBodyRange);
+                if (commonRng == null && commonOrdrrRng == null)
+                {
+                    OrdersTable.Range.AutoFilter(Field: 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
             }
         }
 
-        // Фильтр заказов по активной доставке   
+        /// <summary>
+        /// Фильтр заказов по активной доставке 
+        /// </summary>
+        /// <param name="Target"></param>
         private void TableCarrier_SelectionChange(Range Target)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
-            ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
-            Range TargetCell = Globals.ThisWorkbook.Application.ActiveCell;
-            OrdersTable.Range.AutoFilter(Field: 1);
-            if (TargetCell == null) return;
-            if (carrierTable.DataBodyRange == null) return;
             try
             {
+                ShefflerWB.ExcelOptimizateOn();
+                Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
+                ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
+                ListObject OrdersTable = deliverySheet.ListObjects["TableOrders"];
+                Range TargetCell = Globals.ThisWorkbook.Application.ActiveCell;
+                OrdersTable.Range.AutoFilter(Field: 1);
+                if (TargetCell == null) return;
+                if (carrierTable.DataBodyRange == null) return;
+
                 Range commonRng = Globals.ThisWorkbook.Application.Intersect(TargetCell, carrierTable.DataBodyRange);
 
                 if (commonRng != null)
@@ -76,8 +90,17 @@ namespace DomesticTransport
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
 
+        /// <summary>
+        /// Смена провайдера по двойному клику 
+        /// </summary>
+        /// <param name="Target"></param>
+        /// <param name="Cancel"></param>
         private void TableCarrier_BeforeDoubleClick(Range Target, ref bool Cancel)
         {
             Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
@@ -99,7 +122,7 @@ namespace DomesticTransport
                 if (number == 0) return;
                 delivery.Orders = orders.FindAll(o => o.DeliveryNumber == number);
 
-                if (orders.Count == 0) { return; }
+                if (orders.Count == 0) return;
                 providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
                 providerFrm.ProviderName = Target.Text;
                 providerFrm.DeliveryTarget = delivery;
@@ -117,12 +140,8 @@ namespace DomesticTransport
                         row.Cells[0, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
                         row.Cells[0, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
                     }
-
-
                 }
-
             }
-
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DomesticTransport.Forms;
 
 using Microsoft.Office.Tools.Ribbon;
+
 using System;
 using System.Windows.Forms;
 
@@ -8,7 +9,12 @@ namespace DomesticTransport
 {
     public partial class RibbonDelivery
     {
-        private void btnStart_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка Export from SAP
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExportFromSap_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -25,9 +31,12 @@ namespace DomesticTransport
             }
         }
 
-
-
-        private void btnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка отправки писем провайдерам
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSendShippingCompany_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -44,9 +53,12 @@ namespace DomesticTransport
             }
         }
 
-
-
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка создания нового авто
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonAddAuto_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -63,7 +75,12 @@ namespace DomesticTransport
             }
         }
 
-        private void button2_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка удаления авто
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonDeleteAuto_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -80,7 +97,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Пересчет маршрутов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnRecalcilate_Click(object sender, RibbonControlEventArgs e)
         {
             ChangeRoute();
         }
@@ -102,8 +124,11 @@ namespace DomesticTransport
             }
         }
 
-
-
+        /// <summary>
+        /// Кнопка загрузки файла All Orders
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnLoadAllOrders_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -121,7 +146,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnReadForms_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка загрузки файла от CS
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonOrderFromCS_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -138,7 +168,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnAccept_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка перенести в отгрузки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnFillTable_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -155,7 +190,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnSaveSignature_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка сохранения подписи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSaveSignature_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -172,7 +212,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка о программе
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAboutProgrramm_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -212,13 +257,12 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Сканирование писем
+        /// Кнопка сканирования писем от провайдеров
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>   
-        private void btnReadCarrierInvoice_Click_1(object sender, RibbonControlEventArgs e)
+        private void BtnReadCarrierInvoice_Click(object sender, RibbonControlEventArgs e)
         {
-
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -228,8 +272,14 @@ namespace DomesticTransport
                     return;
                 }
                 ScanMail scanMail = new ScanMail();
-                scanMail.SaveAttachments();
-                scanMail.GetMessage();
+                if (scanMail.SaveAttachments() == 0)
+                {
+                    MessageBox.Show("Сегодня письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    scanMail.GetDataFromProviderFiles();
+                }
             }
             catch (Exception ex)
             {
@@ -239,7 +289,39 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOff();
             }
+        }
 
+        /// <summary>
+        /// Отправка файла отгрузки в CS
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSendToCS_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().CreateLetterToCS();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        /// <summary>
+        /// Настройки письма для CS
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSettingLetterCS_Click(object sender, RibbonControlEventArgs e)
+        {
+            SettingLetterToCS setting = new SettingLetterToCS();
+            setting.ShowDialog();
         }
 
         private void btnSaveRoute_Click(object sender, RibbonControlEventArgs e)

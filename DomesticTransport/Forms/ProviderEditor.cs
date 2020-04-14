@@ -1,18 +1,22 @@
 ﻿using DomesticTransport.Model;
+
 using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
 {
+    /// <summary>
+    /// Редактирование провайдера (выбор)
+    /// </summary>
     public partial class ProviderEditor : Form
     {
         public double Weight { get; set; }
         public string ProviderName { get; set; }
         public double CostDelivery { get; set; }
         public Delivery DeliveryTarget { get; set; }
-
 
         public ProviderEditor()
         {
@@ -42,18 +46,34 @@ namespace DomesticTransport.Forms
                     lvMap.Items.Add(row.ToString());
                     lvMap.Items[i].SubItems.Add(mapDpelivery[i].City);
                 }
-
             }
         }
 
-        private void btnAccept_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Кнопка ОК
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAccept_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Hide();
-
+            Close();
         }
 
-        private void lvProvider_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Выбор провайдера из списка
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SelectedProvider(object sender, EventArgs e)
+        {
+            SetProvider();
+        }
+
+        /// <summary>
+        /// Установка выбранного провайдера
+        /// </summary>
+        private void SetProvider()
         {
             if (lvProvider.SelectedItems.Count > 0)
             {
@@ -61,6 +81,29 @@ namespace DomesticTransport.Forms
                 string cost = lvProvider.SelectedItems[0].SubItems[1].Text;
                 CostDelivery = double.TryParse(cost, out double ct) ? ct : 0;
             }
+        }
+
+        /// <summary>
+        /// Отмена
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        /// <summary>
+        /// Двойной клик по провайдеру
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LvProvider_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            SetProvider();
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }
