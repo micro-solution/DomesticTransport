@@ -63,8 +63,9 @@ namespace DomesticTransport.Model
 
             try
             {
-                if (mapDelivery.FindAll(m => m.City == "MSK" || m.City == "MO").Count > 0)
-                {
+                int countMSK = mapDelivery.FindAll(m => m.City == "MSK" || m.City == "MO").Count;
+                if (countMSK == mapDelivery.Count)
+                {   //По москве                                
                     rateVariants = TruckRate.GetCostMskRoutes(tonnageNeed, mapDelivery); //Для Москвы и области  (первая точка с наибольшим приоритетом по таблице)
                 }
                 else

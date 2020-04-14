@@ -1,4 +1,6 @@
-﻿namespace DomesticTransport.Model
+﻿using System;
+
+namespace DomesticTransport.Model
 {
     /// <summary>
     /// Строка таблицы Routes (Точка Доставки или Получатель)
@@ -57,5 +59,17 @@
             set => _routeName = value.Trim();
         }
         string _routeName;
+
+        /// <summary>
+        /// Найти у клиента название маршрута
+        /// </summary>
+        public void GetRouteName()
+        {
+            string routename =RouteName;
+            string id = IdCustomer;
+            DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id && (!string.IsNullOrWhiteSpace(x.RouteName)));
+            if (!string.IsNullOrWhiteSpace(dp.RouteName)) routename = dp.RouteName;
+            RouteName = routename;
+        }
     }
 }

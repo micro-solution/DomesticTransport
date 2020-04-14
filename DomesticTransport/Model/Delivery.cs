@@ -105,15 +105,18 @@ namespace DomesticTransport.Model
             get
             {
                 if (_truck == null)
-                {
-                    ShefflerWB workBook = new ShefflerWB();
-                    _truck = Truck.GetTruck(TotalWeight, MapDelivery);
-                    
+                {                     
                     if (  !string.IsNullOrWhiteSpace(MapDelivery.Find(
                                     x => x.RouteName.Contains("Сборный груз")).IdCustomer))
                     {
-                        Truck.ProviderCompany.Name = "Деловые линии";
+                        _truck = new Truck();
+                        _truck.ProviderCompany.Name = "Деловые линии";
                     }
+                    else
+                    {
+                    _truck = Truck.GetTruck(TotalWeight, MapDelivery);
+                    }
+                    
                 }
                 return _truck;
             }

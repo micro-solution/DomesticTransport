@@ -37,24 +37,25 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonDelivery));
             this.ShefflerRibbon = this.Factory.CreateRibbonTab();
             this.groupGeneral = this.Factory.CreateRibbonGroup();
+            this.groupEdit = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.settings = this.Factory.CreateRibbonGroup();
+            this.about = this.Factory.CreateRibbonGroup();
             this.btnStart = this.Factory.CreateRibbonButton();
             this.btnReadForms = this.Factory.CreateRibbonButton();
             this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
-            this.groupEdit = this.Factory.CreateRibbonGroup();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button2 = this.Factory.CreateRibbonButton();
+            this.btnSaveRoute = this.Factory.CreateRibbonButton();
             this.btnChangeSet = this.Factory.CreateRibbonButton();
             this.btnAccept = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.btnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.btnReadCarrierInvoice = this.Factory.CreateRibbonButton();
-            this.settings = this.Factory.CreateRibbonGroup();
             this.btnSaveSignature = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
-            this.about = this.Factory.CreateRibbonGroup();
             this.btnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
-            this.btnSaveRoute = this.Factory.CreateRibbonButton();
+            this.btnRenumberDeliveries = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -81,6 +82,38 @@
             this.groupGeneral.Items.Add(this.BtnLoadAllOrders);
             this.groupGeneral.Label = "Загрузка заказов";
             this.groupGeneral.Name = "groupGeneral";
+            // 
+            // groupEdit
+            // 
+            this.groupEdit.Items.Add(this.button1);
+            this.groupEdit.Items.Add(this.button2);
+            this.groupEdit.Items.Add(this.btnSaveRoute);
+            this.groupEdit.Items.Add(this.btnChangeSet);
+            this.groupEdit.Items.Add(this.btnAccept);
+            this.groupEdit.Items.Add(this.btnRenumberDeliveries);
+            this.groupEdit.Label = "Редактирование";
+            this.groupEdit.Name = "groupEdit";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.btnSendShippingCompany);
+            this.group1.Items.Add(this.btnReadCarrierInvoice);
+            this.group1.Label = "Сообщения";
+            this.group1.Name = "group1";
+            // 
+            // settings
+            // 
+            this.settings.Items.Add(this.btnSaveSignature);
+            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
+            this.settings.Label = "Настройки";
+            this.settings.Name = "settings";
+            // 
+            // about
+            // 
+            this.about.Items.Add(this.btnAboutProgrramm);
+            this.about.Items.Add(this.btnSetts);
+            this.about.Label = "Справка";
+            this.about.Name = "about";
             // 
             // btnStart
             // 
@@ -109,16 +142,6 @@
             this.BtnLoadAllOrders.ShowImage = true;
             this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadAllOrders_Click);
             // 
-            // groupEdit
-            // 
-            this.groupEdit.Items.Add(this.button1);
-            this.groupEdit.Items.Add(this.button2);
-            this.groupEdit.Items.Add(this.btnSaveRoute);
-            this.groupEdit.Items.Add(this.btnChangeSet);
-            this.groupEdit.Items.Add(this.btnAccept);
-            this.groupEdit.Label = "Редактирование";
-            this.groupEdit.Name = "groupEdit";
-            // 
             // button1
             // 
             this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -136,6 +159,14 @@
             this.button2.Name = "button2";
             this.button2.ShowImage = true;
             this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
+            // 
+            // btnSaveRoute
+            // 
+            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSaveRoute.Label = "Сохранить маршрут";
+            this.btnSaveRoute.Name = "btnSaveRoute";
+            this.btnSaveRoute.ShowImage = true;
+            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveRoute_Click);
             // 
             // btnChangeSet
             // 
@@ -155,13 +186,6 @@
             this.btnAccept.ShowImage = true;
             this.btnAccept.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAccept_Click);
             // 
-            // group1
-            // 
-            this.group1.Items.Add(this.btnSendShippingCompany);
-            this.group1.Items.Add(this.btnReadCarrierInvoice);
-            this.group1.Label = "Сообщения";
-            this.group1.Name = "group1";
-            // 
             // btnSendShippingCompany
             // 
             this.btnSendShippingCompany.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -179,13 +203,6 @@
             this.btnReadCarrierInvoice.Name = "btnReadCarrierInvoice";
             this.btnReadCarrierInvoice.ShowImage = true;
             this.btnReadCarrierInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadCarrierInvoice_Click_1);
-            // 
-            // settings
-            // 
-            this.settings.Items.Add(this.btnSaveSignature);
-            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
-            this.settings.Label = "Настройки";
-            this.settings.Name = "settings";
             // 
             // btnSaveSignature
             // 
@@ -207,13 +224,6 @@
     "водителях";
             this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
-            // about
-            // 
-            this.about.Items.Add(this.btnAboutProgrramm);
-            this.about.Items.Add(this.btnSetts);
-            this.about.Label = "Справка";
-            this.about.Name = "about";
-            // 
             // btnAboutProgrramm
             // 
             this.btnAboutProgrramm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -232,13 +242,13 @@
             this.btnSetts.ShowImage = true;
             this.btnSetts.Visible = false;
             // 
-            // btnSaveRoute
+            // btnRenumberDeliveries
             // 
-            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSaveRoute.Label = "Сохранить маршрут";
-            this.btnSaveRoute.Name = "btnSaveRoute";
-            this.btnSaveRoute.ShowImage = true;
-            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveRoute_Click);
+            this.btnRenumberDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnRenumberDeliveries.Label = "Изменить нумерацию";
+            this.btnRenumberDeliveries.Name = "btnRenumberDeliveries";
+            this.btnRenumberDeliveries.ShowImage = true;
+            this.btnRenumberDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRenumberDeliveries_Click);
             // 
             // RibbonDelivery
             // 
@@ -282,6 +292,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveSignature;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSelectFoldersOutlook;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveRoute;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRenumberDeliveries;
     }
 
     partial class ThisRibbonCollection
