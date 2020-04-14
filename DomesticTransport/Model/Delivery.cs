@@ -10,15 +10,11 @@ namespace DomesticTransport.Model
     public class Delivery
     {
         /// <summary>
-        /// Найден маршрут доставки в таблице
-        /// </summary>
-        public bool HasRoute { get; set; } = true;
-
-        /// <summary>
         /// Номер доставки
         /// </summary>
         public int Number { get; set; } = 0;
 
+        public bool HasRoute { get; set; } = true;
 
         ///// <summary>
         ///// Информация о водителе
@@ -112,7 +108,8 @@ namespace DomesticTransport.Model
                 {
                     ShefflerWB workBook = new ShefflerWB();
                     _truck = Truck.GetTruck(TotalWeight, MapDelivery);
-                    if (!string.IsNullOrWhiteSpace(MapDelivery.Find(
+                    
+                    if (  !string.IsNullOrWhiteSpace(MapDelivery.Find(
                                     x => x.RouteName.Contains("Сборный груз")).IdCustomer))
                     {
                         Truck.ProviderCompany.Name = "Деловые линии";
@@ -148,11 +145,47 @@ namespace DomesticTransport.Model
 
         public void SaveRoute()
         {
-            if (!CheckPoints(MapDelivery))
-            { return; }
+            if (HasFullRoute(this.MapDelivery)) { return; }           
+          int idRoute = new ShefflerWB().CreateRoute(MapDelivery);
+            foreach(Order ord in Orders)
+            {                  
+                DeliveryPoint dp = ord.DeliveryPoint;
+                dp.Id =  idRoute;
+                ord.DeliveryPoint = dp;
+            }
+        }
+        /// <summary>
+        ///True если все точки из маршрута есть в таблице маршрутов с общим Id  
+        /// </summary>
+        /// <param name="mapDelivery"></param>
+        /// <returns></returns>
+        public static bool HasFullRoute(List<DeliveryPoint> mapDelivery)
+        {
+            if (mapDelivery.Count == 0) return false;
+            //все Id маршрутов             
+            int[] variantsId = (from r in ShefflerWB.RoutesList
+                                where r.IdCustomer == mapDelivery[0].IdCustomer
+                                select r.Id).Distinct().ToArray();
 
-
-
+            if (variantsId.Length == 0 ) return false;
+            bool chk = false;
+            for (int i = 0; i < variantsId.Length; i++)
+            {
+                chk = true;
+                foreach (DeliveryPoint point in mapDelivery)
+                {
+                    if (ShefflerWB.RoutesList.FindAll(x => x.Id == variantsId[i] &&
+                                            x.IdCustomer == point.IdCustomer).Count == 0)
+                    {
+                        chk = false; break; // В группе нет точки
+                    }
+                }
+                if (chk)
+                {
+                    break; //есть маршрут, удовлетворяет всем точкам поездки 
+                }
+            }
+            return chk;
         }
 
         /// <summary>
@@ -178,9 +211,9 @@ namespace DomesticTransport.Model
             foreach (DeliveryPoint point in mapDelivery)
             {
                 chk = ShefflerWB.RoutesList.FindAll(x => x.IdCustomer == point.IdCustomer).Count > 0;
-                if (!chk) 
+                if (!chk)
                 {
-                    break; 
+                    break;
                 }
             }
             return chk;

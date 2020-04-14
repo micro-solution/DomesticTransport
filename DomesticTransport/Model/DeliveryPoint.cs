@@ -53,7 +53,7 @@
 
         public string RouteName
         {
-            get => _routeName;
+            get => _routeName ?? "" ;
             set => _routeName = value.Trim();
         }
         string _routeName;
