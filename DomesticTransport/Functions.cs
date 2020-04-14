@@ -1124,23 +1124,37 @@ namespace DomesticTransport
         }
 
 
-        private List<Delivery> SecondCompleteAuto(List<Order> orders)
+        private List<Delivery> SecondCompleteAuto()
         {
           List<Delivery> deliveries = ReadFromDelivery();
-          //  List<Order> orders = GetOrdersFromTable();
-            List<Delivery> resultDeliveries = new List<Delivery>();
+            
+            List<Delivery> deliveriesMSK = deliveries.FindAll( x => x.MapDelivery.Count < 3  && 
+                                                    (x.MapDelivery[0].City == "MO" ||
+                                                    x.MapDelivery[0].City == "MSK") ).ToList();
+            if (deliveriesMSK.Count < 2) throw new Exception("Нет подходящих поездок по MSK и MO");
+
+                //  List<Order> orders = GetOrdersFromTable();
+                List<Delivery> resultDeliveries = new List<Delivery>();
             List<DeliveryPoint> SecondRoutes = ShefflerWB.RoutesList.FindAll(x=> x.PriorityRoute >1).
                                         OrderBy(d=>d.PriorityRoute).ThenBy(s=>s.PriorityPoint).ToList();
+            
             int[] routesId = (from r in SecondRoutes
+                              where r.City == "МО" || r.City == "МSK"
                               select r.Id
                                ).Distinct().ToArray();
+            for(int ix = 0; ix < deliveriesMSK.Count ; ix++)
+            {
 
             for (int ixRourte = 0; ixRourte < routesId.Length; ixRourte++)
             {
                 int idRoute = routesId[ixRourte];
+               
 
+
+             }
 
             }
+
             return resultDeliveries;
         }
 
