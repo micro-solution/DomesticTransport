@@ -358,7 +358,7 @@ namespace DomesticTransport
         {
             List<Delivery> deliveries = ReadFromDelivery();
             RenumerateDeliveries(deliveries);
-            //  CopyDeliveryToTotal(deliveries);
+           CopyDeliveryToTotal(ReadFromDelivery());
         }
 
         public void RenumerateDeliveries(List<Delivery> deliveries)
@@ -383,9 +383,7 @@ namespace DomesticTransport
                     }
                     else
                     {
-                        ///Обновить номер 
-                        // delivery.Number = newDeliveryNumber;
-                        // delivery.Orders.ForEach(o => o.DeliveryNumber = newDeliveryNumber);
+                        
 
                         row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = newDeliveryNumber.ToString();
                         foreach (ListRow rowOrder in ShefflerWB.OrdersTable.ListRows)
@@ -398,6 +396,7 @@ namespace DomesticTransport
                             {
                                 rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = newDeliveryNumber.ToString();
                                 ShefflerWB.DeliverySheet.Cells[rowOrder.Range.Row, 25].Value = "+";
+                       
                             }
                         }
                         newDeliveryNumber--;
