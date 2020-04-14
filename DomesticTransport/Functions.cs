@@ -878,19 +878,24 @@ namespace DomesticTransport
         private List<string> GetOrderInfo(Worksheet sheet, string delivery)
         {
             Range findRange = sheet.Columns[1];
-
+            Range fcell = null;
             string search = delivery.Length < 10 ? new string('0', 10 - delivery.Length) + delivery : delivery;
-            Range fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
+             fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
             if (fcell == null) return null;
 
             string strCell = fcell.Text.Trim();
-            if (!strCell.Contains("Доставка")) return null;
+         //   if (!strCell.Contains("Доставка")) return null;
             //Начало накладной 
-            int rowStart = 0;
+            int rowStart = fcell.Row;
+            
             for (int i = fcell.Row; i > 1; --i)
             {
+                // Ограничения вверх
                 strCell = findRange.Cells[i, 1].Text.Trim();
-                if (strCell.Contains("ТТН:") || strCell.Contains("№") || string.IsNullOrWhiteSpace(strCell))
+                if (strCell.Contains("KG/") || 
+                    strCell.Contains("ТТН:") || 
+                    strCell.Contains("№") || 
+                    string.IsNullOrWhiteSpace(strCell))
                 {
                     rowStart = i;
                     break;
@@ -899,7 +904,7 @@ namespace DomesticTransport
 
             int lastRow = sheet.Cells[sheet.Rows.Count, 1].End(XlDirection.xlUp).Row;
             // конец диапазона
-            int rowEnd = rowStart;
+            int rowEnd = rowStart+1 ;
             List<string> info = new List<string>();
             do
             {
@@ -908,7 +913,10 @@ namespace DomesticTransport
                 cellText.Trim();
                 cellText = cellText.Replace("\t", "");
                 cellText = cellText.Replace(";;;", "");
-                if (string.IsNullOrEmpty(cellText.Replace(";", "")) || strCell.Contains("№ грузового места")) break;
+                if (string.IsNullOrEmpty(cellText.Replace(";", ""))  ||
+                     cellText.Contains("№ грузового места") ||
+                        cellText.Contains("KG/"))
+                    break;
                 info.Add(cellText);
             }
             while (rowEnd <= lastRow);
