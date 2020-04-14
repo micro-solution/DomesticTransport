@@ -235,8 +235,29 @@ namespace DomesticTransport
             }
         }
 
-      
+        /// <summary>
+        /// Пересобрать авто
+        /// </summary>
+        public void UpdateAll()
+        {
 
+            Range range = ShefflerWB.TotalTable.DataBodyRange;
+            List<Order> orders = GetOrdersFromTotalTable(range);
+            List<Delivery> deliveries = CompleteAuto(orders);
+
+            ClearListObj(ShefflerWB.DeliveryTable);
+            ClearListObj(ShefflerWB.OrdersTable);
+
+            if (deliveries != null && deliveries.Count > 0)
+            {
+                PrintDelivery(deliveries);
+                PrintOrders(deliveries);
+                PrintTotal(ShefflerWB.TotalTable, deliveries);
+            }
+            ShefflerWB.DeliverySheet.Columns.AutoFit();
+
+            return;
+        }
 
 
 
@@ -665,6 +686,9 @@ namespace DomesticTransport
 
             foreach (Range row in range.Rows)
             {
+                string dateTable = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Дата доставки"].Index].Text;
+                string dateDelivery = ShefflerWB.DateDelivery;
+                if (dateTable != dateDelivery) continue;
                 string idOrder = row.Cells[1, column].Text;
                 if (string.IsNullOrWhiteSpace(idOrder)) continue;
                 Order order = new Order();
@@ -1215,7 +1239,10 @@ namespace DomesticTransport
         }
 
 
-      
+        private void CompileAutoSecond()
+        {
+
+        }
 
 
         /// <summary>

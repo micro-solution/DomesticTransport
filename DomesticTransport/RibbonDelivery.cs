@@ -98,7 +98,7 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Пересчет маршрутов
+        /// Кнопка пересчитать стоимость
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -352,6 +352,28 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOn();
                 new Functions().RenumberDeliveries();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        /// <summary>
+        /// Обновление всех маршрутов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonUpdateAuto_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().UpdateAll();
             }
             catch (Exception ex)
             {

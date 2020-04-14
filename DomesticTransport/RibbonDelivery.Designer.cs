@@ -41,11 +41,13 @@
             this.ButtonOrderFromCS = this.Factory.CreateRibbonButton();
             this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
             this.groupEdit = this.Factory.CreateRibbonGroup();
+            this.ButtonUpdateAuto = this.Factory.CreateRibbonButton();
             this.ButtonAddAuto = this.Factory.CreateRibbonButton();
             this.ButtonDeleteAuto = this.Factory.CreateRibbonButton();
+            this.btnSaveRoute = this.Factory.CreateRibbonButton();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.BtnRecalcilate = this.Factory.CreateRibbonButton();
             this.btnNunerateDeliveries = this.Factory.CreateRibbonButton();
-            this.btnSaveRoute = this.Factory.CreateRibbonButton();
             this.BtnFillTable = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
@@ -120,14 +122,27 @@
             // 
             // groupEdit
             // 
+            this.groupEdit.Items.Add(this.ButtonUpdateAuto);
             this.groupEdit.Items.Add(this.ButtonAddAuto);
             this.groupEdit.Items.Add(this.ButtonDeleteAuto);
+            this.groupEdit.Items.Add(this.btnSaveRoute);
+            this.groupEdit.Items.Add(this.separator1);
             this.groupEdit.Items.Add(this.BtnRecalcilate);
             this.groupEdit.Items.Add(this.btnNunerateDeliveries);
-            this.groupEdit.Items.Add(this.btnSaveRoute);
             this.groupEdit.Items.Add(this.BtnFillTable);
-            this.groupEdit.Label = "Редактирование";
+            this.groupEdit.Label = "Формирование транспорта";
             this.groupEdit.Name = "groupEdit";
+            // 
+            // ButtonUpdateAuto
+            // 
+            this.ButtonUpdateAuto.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonUpdateAuto.Image = ((System.Drawing.Image)(resources.GetObject("ButtonUpdateAuto.Image")));
+            this.ButtonUpdateAuto.Label = "Обновить авто";
+            this.ButtonUpdateAuto.Name = "ButtonUpdateAuto";
+            this.ButtonUpdateAuto.ScreenTip = "Обновить авто";
+            this.ButtonUpdateAuto.ShowImage = true;
+            this.ButtonUpdateAuto.SuperTip = "Пересчет всех данных и формирование нового списка доставок";
+            this.ButtonUpdateAuto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonUpdateAuto_Click);
             // 
             // ButtonAddAuto
             // 
@@ -152,11 +167,27 @@
     " целиком";
             this.ButtonDeleteAuto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonDeleteAuto_Click);
             // 
+            // btnSaveRoute
+            // 
+            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSaveRoute.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRoute.Image")));
+            this.btnSaveRoute.Label = "Сохранить маршрут";
+            this.btnSaveRoute.Name = "btnSaveRoute";
+            this.btnSaveRoute.ScreenTip = "Сохраняет отредактированные маршруты, если их еще нет в таблице";
+            this.btnSaveRoute.ShowImage = true;
+            this.btnSaveRoute.SuperTip = "Измените маршруты на листе Delivery и нажмите, чтобы записать новые маршруты в та" +
+    "блицу";
+            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveRoute_Click);
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
             // BtnRecalcilate
             // 
             this.BtnRecalcilate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnRecalcilate.Image = ((System.Drawing.Image)(resources.GetObject("BtnRecalcilate.Image")));
-            this.BtnRecalcilate.Label = "Пересчитать маршруты";
+            this.BtnRecalcilate.Label = "Пересчитать стоимость";
             this.BtnRecalcilate.Name = "BtnRecalcilate";
             this.BtnRecalcilate.ScreenTip = "Пересчет транспорта";
             this.BtnRecalcilate.ShowImage = true;
@@ -173,18 +204,6 @@
             this.btnNunerateDeliveries.ShowImage = true;
             this.btnNunerateDeliveries.SuperTip = "Восстанавливает нумерацию достатов в случае внесения ручных корректировок";
             this.btnNunerateDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.NunerateDeliveries);
-            // 
-            // btnSaveRoute
-            // 
-            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSaveRoute.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRoute.Image")));
-            this.btnSaveRoute.Label = "Сохранить маршрут";
-            this.btnSaveRoute.Name = "btnSaveRoute";
-            this.btnSaveRoute.ScreenTip = "Сохраняет отредактированные маршруты, если их еще нет в таблице";
-            this.btnSaveRoute.ShowImage = true;
-            this.btnSaveRoute.SuperTip = "Измените маршруты на листе Delivery и нажмите, чтобы записать новые маршруты в та" +
-    "блицу";
-            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveRoute_Click);
             // 
             // BtnFillTable
             // 
@@ -366,6 +385,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnNunerateDeliveries;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton btnChangeRoute;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAuto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
     }
 
     partial class ThisRibbonCollection
