@@ -45,6 +45,8 @@
             this.ButtonDeleteAuto = this.Factory.CreateRibbonButton();
             this.BtnRecalcilate = this.Factory.CreateRibbonButton();
             this.BtnFillTable = this.Factory.CreateRibbonButton();
+            this.btnSaveRoute = this.Factory.CreateRibbonButton();
+            this.btnRenumberDeliveries = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.BtnReadCarrierInvoice = this.Factory.CreateRibbonButton();
@@ -56,7 +58,8 @@
             this.about = this.Factory.CreateRibbonGroup();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnSetts = this.Factory.CreateRibbonButton();
-            this.btnSaveRoute = this.Factory.CreateRibbonButton();
+            this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
+            this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -121,6 +124,8 @@
             this.groupEdit.Items.Add(this.ButtonDeleteAuto);
             this.groupEdit.Items.Add(this.BtnRecalcilate);
             this.groupEdit.Items.Add(this.BtnFillTable);
+            this.groupEdit.Items.Add(this.btnSaveRoute);
+            this.groupEdit.Items.Add(this.btnRenumberDeliveries);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
             // 
@@ -168,6 +173,14 @@
             this.BtnFillTable.ShowImage = true;
             this.BtnFillTable.SuperTip = "Переносит данные из таблиц товары и доставки в таблицу отгрузки";
             this.BtnFillTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillTable_Click);
+            // 
+            // btnRenumberDeliveries
+            // 
+            this.btnRenumberDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnRenumberDeliveries.Label = "Изменить нумерацию";
+            this.btnRenumberDeliveries.Name = "btnRenumberDeliveries";
+            this.btnRenumberDeliveries.ShowImage = true;
+            this.btnRenumberDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRenumberDeliveries_Click);
             // 
             // group1
             // 
@@ -281,7 +294,7 @@
             this.btnSetts.ShowImage = true;
             this.btnSetts.Visible = false;
             // 
-            // btnSaveRoute
+            // btnChangeRoute
             // 
             this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnSaveRoute.Label = "Сохранить маршрут";
@@ -333,6 +346,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendToCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSettingLetterCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveRoute;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRenumberDeliveries;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton btnChangeRoute;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
     }
 
     partial class ThisRibbonCollection

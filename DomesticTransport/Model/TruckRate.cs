@@ -53,6 +53,10 @@ namespace DomesticTransport.Model
             for (int i = 0; i < mapDelivery.Count; i++)
             {      //выбор дальней точки
                 DeliveryPoint point = mapDelivery[i];
+                if (ShefflerWB.RateList.FindAll(x => x.City == point.City).Count == 0)
+                {
+                    throw new Exception("В \"Rate\" отсутствует город " + point.City);
+                }
                 try
                 {
                     double? MaxCostPoint = 0;

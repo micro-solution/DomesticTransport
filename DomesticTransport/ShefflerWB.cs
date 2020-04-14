@@ -273,7 +273,7 @@ namespace DomesticTransport
             {
                 if (_internationalCityList == null)
                 {
-                    List<TruckRate> rates = ShefflerWB.RateInternationalList;
+                    List<TruckRate> rates = RateInternationalList;
                     _internationalCityList = (from LR in rates
                                               select LR.City
                                  ).Distinct().ToArray();
@@ -377,49 +377,50 @@ namespace DomesticTransport
         }
 
         // Добавить маршрут в таблицу
-        public int CreateRoute(List<Order> ordersCurrentDelivery)
+        public int CreateRoute(List<DeliveryPoint> mapDelivery)
         {
-            List<DeliveryPoint> pointMap = RoutesList;
+           
             DeliveryPoint LastPoint = RoutesList.Last();
             int idRoute = LastPoint.Id + 1;
-            int priorityRoute = LastPoint.PriorityRoute + 1;
-            //Поиск подходящего максимального приоритета
-            foreach (Order ord in ordersCurrentDelivery)
-            {
-                string customerId = ord.Customer.Id;
-                List<int> routes = (from p in pointMap
-                                    where p.IdCustomer == customerId
+            int priorityNewRoute = 1; 
+            //Поиск максимального приоритета, из всех где встречается клиент
+            foreach (DeliveryPoint point in mapDelivery)
+            {                       
+                List<int> routes = (from p in RoutesList
+                                    where p.IdCustomer == point.IdCustomer
                                     select p.PriorityRoute
                                      ).Distinct().ToList();
                 int maxPriority = 0;
-                if (routes.Count != 0) maxPriority = routes.Max();
+                if (routes.Count > 0) maxPriority = routes.Max();
 
-                priorityRoute = maxPriority > priorityRoute ? maxPriority : priorityRoute;
+                priorityNewRoute = maxPriority > priorityNewRoute ? maxPriority+1 : priorityNewRoute;
             }
-            int point = 0;
 
+            int priorityPoint = 0;
 
-            foreach (Order order in ordersCurrentDelivery)
+            foreach (DeliveryPoint point in mapDelivery)
             {
-                ListRow row = RoutesTable.ListRows[RoutesTable.ListRows.Count];
                 RoutesTable.ListRows.Add();
+                ListRow row = RoutesTable.ListRows[RoutesTable.ListRows.Count];
                 row.Range[1, RoutesTable.ListColumns["Id route"].Index].Value = idRoute;
-                row.Range[1, RoutesTable.ListColumns["Priority route"].Index].Value = priorityRoute;
-                row.Range[1, RoutesTable.ListColumns["Priority point"].Index].Value = ++point;
-                row.Range[1, RoutesTable.ListColumns["Получатель материала"].Index].Value = order.Customer.Id;
-                row.Range[1, RoutesTable.ListColumns["City"].Index].Value = order.DeliveryPoint.City;
+                row.Range[1, RoutesTable.ListColumns["Priority route"].Index].Value = priorityNewRoute;
+                row.Range[1, RoutesTable.ListColumns["Priority point"].Index].Value = ++priorityPoint;
+                row.Range[1, RoutesTable.ListColumns["Получатель материала"].Index].Value = point.IdCustomer;
+                row.Range[1, RoutesTable.ListColumns["City"].Index].Value = point.City;
 
                 //поиск этого же Получателя в другой строке
-                DeliveryPoint findPoint = pointMap.Find(x => x.IdCustomer == order.Customer.Id && x.CityLongName != "");
-                if (!string.IsNullOrWhiteSpace(findPoint.CustomerNumber))
+                string customerName = string.IsNullOrEmpty(point.Customer) ? "": point.Customer ;
+                DeliveryPoint findPoint = RoutesList.Find(x => x.IdCustomer == point.IdCustomer && x.Customer != "");
+                if (!string.IsNullOrWhiteSpace(findPoint.Customer))
                 {
                     row.Range[1, RoutesTable.ListColumns["Город"].Index].Value = findPoint.CityLongName;
                     row.Range[1, RoutesTable.ListColumns["Маршрут"].Index].Value = findPoint.Route;
                     row.Range[1, RoutesTable.ListColumns["Направление"].Index].Value = findPoint.RouteName;
-                    row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = findPoint.Customer;
                     row.Range[1, RoutesTable.ListColumns["Номер клиента"].Index].Value = findPoint.CustomerNumber;
+                    if (!string.IsNullOrWhiteSpace(customerName)) customerName = findPoint.Customer;
+                }                    
+                    row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = point.Customer;               
                     row.Range[1, RoutesTable.ListColumns["Add"].Index].Value = "Auto";
-                }
             }
             RoutesList = null;
             return idRoute;

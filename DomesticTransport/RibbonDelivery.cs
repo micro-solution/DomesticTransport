@@ -104,6 +104,11 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void BtnRecalcilate_Click(object sender, RibbonControlEventArgs e)
         {
+            ChangeRoute();
+        }
+
+        private void ChangeRoute()
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -334,6 +339,46 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOff();
             }
+        }
+
+        private void btnRenumberDeliveries_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().RenumberDeliveries();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        private void btnChangeRoute_Click(object sender, RibbonControlEventArgs e)
+        {
+            ChangeRoute();
+        }
+
+        private void button3_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().SecondPriorityRoute();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+
         }
     }
 }
