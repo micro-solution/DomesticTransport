@@ -318,9 +318,8 @@ namespace DomesticTransport
 
         internal void SecondPriorityRoute()
         {
-            // List<Delivery> deliveries = ReadFromDelivery();
-            List<Order> orders = GetOrdersFromTable();
-            List <Delivery>  deliveries= SecondCompleteAuto(orders);
+            
+            List <Delivery>  deliveries= SecondCompleteAuto();
             PrintChanges(deliveries); 
         }
 
@@ -1127,13 +1126,22 @@ namespace DomesticTransport
 
         private List<Delivery> SecondCompleteAuto(List<Order> orders)
         {
-            List<Delivery> deliveries = new List<Delivery>();
+          List<Delivery> deliveries = ReadFromDelivery();
+          //  List<Order> orders = GetOrdersFromTable();
+            List<Delivery> resultDeliveries = new List<Delivery>();
+            List<DeliveryPoint> SecondRoutes = ShefflerWB.RoutesList.FindAll(x=> x.PriorityRoute >1).
+                                        OrderBy(d=>d.PriorityRoute).ThenBy(s=>s.PriorityPoint).ToList();
+            int[] routesId = (from r in SecondRoutes
+                              select r.Id
+                               ).Distinct().ToArray();
+
+            for (int ixRourte = 0; ixRourte < routesId.Length; ixRourte++)
+            {
+                int idRoute = routesId[ixRourte];
 
 
-
-
-
-            return deliveries;
+            }
+            return resultDeliveries;
         }
 
 
