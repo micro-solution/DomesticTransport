@@ -354,11 +354,27 @@ namespace DomesticTransport
         public void RenumberDeliveries()
         {
             List<Delivery> deliveries = ReadFromDelivery();
-            RenumerateDeliveries(deliveries);
-           CopyDeliveryToTotal(ReadFromDelivery());
+            deliveries = Renumerate(deliveries);
+            ClearListObj(ShefflerWB.DeliveryTable);
+            PrintDelivery(deliveries);
+            ClearListObj(ShefflerWB.OrdersTable);
+          PrintOrders(deliveries);
+            CopyDeliveryToTotal(deliveries);
+            //  List < Delivery> deliveries1 =  CopyDeliveryToTotal(deliveries);
         }
-
-        public void RenumerateDeliveries(List<Delivery> deliveries)
+        public List<Delivery> Renumerate(List<Delivery > deliveries)
+        {
+            for (int i = 0; i < deliveries.Count; i++)
+            {
+                deliveries[i].Number = i + 1;
+               foreach(Order ors in deliveries[i].Orders)
+                {
+                    ors.DeliveryNumber = i + 1; 
+                }
+            }
+            return deliveries;
+        }
+            public void RenumerateDeliveries(List<Delivery> deliveries)
         {
             int rowsDeliveryCount = ShefflerWB.DeliveryTable.ListRows.Count;
             if (rowsDeliveryCount == 0) return;
