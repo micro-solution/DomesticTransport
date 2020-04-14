@@ -44,9 +44,9 @@
             this.ButtonAddAuto = this.Factory.CreateRibbonButton();
             this.ButtonDeleteAuto = this.Factory.CreateRibbonButton();
             this.BtnRecalcilate = this.Factory.CreateRibbonButton();
-            this.BtnFillTable = this.Factory.CreateRibbonButton();
-            this.btnSaveRoute = this.Factory.CreateRibbonButton();
             this.btnNunerateDeliveries = this.Factory.CreateRibbonButton();
+            this.btnSaveRoute = this.Factory.CreateRibbonButton();
+            this.BtnFillTable = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.BtnReadCarrierInvoice = this.Factory.CreateRibbonButton();
@@ -123,9 +123,9 @@
             this.groupEdit.Items.Add(this.ButtonAddAuto);
             this.groupEdit.Items.Add(this.ButtonDeleteAuto);
             this.groupEdit.Items.Add(this.BtnRecalcilate);
-            this.groupEdit.Items.Add(this.BtnFillTable);
-            this.groupEdit.Items.Add(this.btnSaveRoute);
             this.groupEdit.Items.Add(this.btnNunerateDeliveries);
+            this.groupEdit.Items.Add(this.btnSaveRoute);
+            this.groupEdit.Items.Add(this.BtnFillTable);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
             // 
@@ -163,16 +163,16 @@
             this.BtnRecalcilate.SuperTip = "Пересчитывает стоимость транспорта, а также выбирает оптимального провайдера";
             this.BtnRecalcilate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnChangeRoute_Click);
             // 
-            // BtnFillTable
+            // btnNunerateDeliveries
             // 
-            this.BtnFillTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnFillTable.Image = ((System.Drawing.Image)(resources.GetObject("BtnFillTable.Image")));
-            this.BtnFillTable.Label = "Перенести в отгрузки";
-            this.BtnFillTable.Name = "BtnFillTable";
-            this.BtnFillTable.ScreenTip = "Перенос данных в таблицу открузки";
-            this.BtnFillTable.ShowImage = true;
-            this.BtnFillTable.SuperTip = "Переносит данные из таблиц товары и доставки в таблицу отгрузки";
-            this.BtnFillTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillTable_Click);
+            this.btnNunerateDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnNunerateDeliveries.Image = ((System.Drawing.Image)(resources.GetObject("btnNunerateDeliveries.Image")));
+            this.btnNunerateDeliveries.Label = "Нумерация по порядку";
+            this.btnNunerateDeliveries.Name = "btnNunerateDeliveries";
+            this.btnNunerateDeliveries.ScreenTip = "Восстановить нумерацию";
+            this.btnNunerateDeliveries.ShowImage = true;
+            this.btnNunerateDeliveries.SuperTip = "Восстанавливает нумерацию достатов в случае внесения ручных корректировок";
+            this.btnNunerateDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.NunerateDeliveries);
             // 
             // btnSaveRoute
             // 
@@ -184,15 +184,18 @@
             this.btnSaveRoute.ShowImage = true;
             this.btnSaveRoute.SuperTip = "Измените маршруты на листе Delivery и нажмите, чтобы записать новые маршруты в та" +
     "блицу";
-            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveRoute_Click);
+            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveRoute_Click);
             // 
-            // btnNunerateDeliveries
+            // BtnFillTable
             // 
-            this.btnNunerateDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnNunerateDeliveries.Label = "Изменить нумерацию";
-            this.btnNunerateDeliveries.Name = "btnNunerateDeliveries";
-            this.btnNunerateDeliveries.ShowImage = true;
-            this.btnNunerateDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.NunerateDeliveries);
+            this.BtnFillTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnFillTable.Image = ((System.Drawing.Image)(resources.GetObject("BtnFillTable.Image")));
+            this.BtnFillTable.Label = "Перенести в отгрузки";
+            this.BtnFillTable.Name = "BtnFillTable";
+            this.BtnFillTable.ScreenTip = "Перенос данных в таблицу открузки";
+            this.BtnFillTable.ShowImage = true;
+            this.BtnFillTable.SuperTip = "Переносит данные из таблиц товары и доставки в таблицу отгрузки";
+            this.BtnFillTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillTable_Click);
             // 
             // group1
             // 

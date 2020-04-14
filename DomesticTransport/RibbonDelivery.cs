@@ -104,11 +104,6 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void BtnChangeRoute_Click(object sender, RibbonControlEventArgs e)
         {
-            ChangeRoute();
-        }
-
-        private void ChangeRoute()
-        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -324,9 +319,14 @@ namespace DomesticTransport
             setting.ShowDialog();
         }
 
-        private void btnSaveRoute_Click(object sender, RibbonControlEventArgs e)
-        {             
-                  try
+        /// <summary>
+        /// Кнопка сохранить маршрут
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSaveRoute_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
             {
                 ShefflerWB.ExcelOptimizateOn();
                 new Functions().SaveRoute();
@@ -362,9 +362,5 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
-
-     
-       
-        
     }
 }
