@@ -245,6 +245,8 @@ namespace DomesticTransport
             }
         }
 
+      
+
 
 
 
@@ -311,6 +313,14 @@ namespace DomesticTransport
                     }
                 }
             }
+        }
+
+
+        internal void SecondPriorityRoute()
+        {
+            // List<Delivery> deliveries = ReadFromDelivery();
+            List<Order> orders = GetOrdersFromTable();
+
         }
 
         /// <summary>

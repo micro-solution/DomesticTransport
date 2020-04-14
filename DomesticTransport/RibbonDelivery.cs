@@ -82,6 +82,11 @@ namespace DomesticTransport
 
         private void btnChangeSet_Click(object sender, RibbonControlEventArgs e)
         {
+            ChangeRoute();
+        }
+
+        private void ChangeRoute()
+        {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
@@ -96,6 +101,8 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
+
+
 
         private void BtnLoadAllOrders_Click(object sender, RibbonControlEventArgs e)
         {
@@ -267,6 +274,29 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOff();
             }
+        }
+
+        private void btnChangeRoute_Click(object sender, RibbonControlEventArgs e)
+        {
+            ChangeRoute();
+        }
+
+        private void button3_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().SecondPriorityRoute();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+
         }
     }
 }
