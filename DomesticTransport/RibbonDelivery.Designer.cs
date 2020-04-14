@@ -46,7 +46,7 @@
             this.BtnRecalcilate = this.Factory.CreateRibbonButton();
             this.BtnFillTable = this.Factory.CreateRibbonButton();
             this.btnSaveRoute = this.Factory.CreateRibbonButton();
-            this.btnRenumberDeliveries = this.Factory.CreateRibbonButton();
+            this.btnNunerateDeliveries = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.BtnReadCarrierInvoice = this.Factory.CreateRibbonButton();
@@ -125,7 +125,7 @@
             this.groupEdit.Items.Add(this.BtnRecalcilate);
             this.groupEdit.Items.Add(this.BtnFillTable);
             this.groupEdit.Items.Add(this.btnSaveRoute);
-            this.groupEdit.Items.Add(this.btnRenumberDeliveries);
+            this.groupEdit.Items.Add(this.btnNunerateDeliveries);
             this.groupEdit.Label = "Редактирование";
             this.groupEdit.Name = "groupEdit";
             // 
@@ -161,7 +161,7 @@
             this.BtnRecalcilate.ScreenTip = "Пересчет транспорта";
             this.BtnRecalcilate.ShowImage = true;
             this.BtnRecalcilate.SuperTip = "Пересчитывает стоимость транспорта, а также выбирает оптимального провайдера";
-            this.BtnRecalcilate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRecalcilate_Click);
+            this.BtnRecalcilate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnChangeRoute_Click);
             // 
             // BtnFillTable
             // 
@@ -174,13 +174,25 @@
             this.BtnFillTable.SuperTip = "Переносит данные из таблиц товары и доставки в таблицу отгрузки";
             this.BtnFillTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillTable_Click);
             // 
-            // btnRenumberDeliveries
+            // btnSaveRoute
             // 
-            this.btnRenumberDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnRenumberDeliveries.Label = "Изменить нумерацию";
-            this.btnRenumberDeliveries.Name = "btnRenumberDeliveries";
-            this.btnRenumberDeliveries.ShowImage = true;
-            this.btnRenumberDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRenumberDeliveries_Click);
+            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSaveRoute.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRoute.Image")));
+            this.btnSaveRoute.Label = "Сохранить маршрут";
+            this.btnSaveRoute.Name = "btnSaveRoute";
+            this.btnSaveRoute.ScreenTip = "Сохраняет отредактированные маршруты, если их еще нет в таблице";
+            this.btnSaveRoute.ShowImage = true;
+            this.btnSaveRoute.SuperTip = "Измените маршруты на листе Delivery и нажмите, чтобы записать новые маршруты в та" +
+    "блицу";
+            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveRoute_Click);
+            // 
+            // btnNunerateDeliveries
+            // 
+            this.btnNunerateDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnNunerateDeliveries.Label = "Изменить нумерацию";
+            this.btnNunerateDeliveries.Name = "btnNunerateDeliveries";
+            this.btnNunerateDeliveries.ShowImage = true;
+            this.btnNunerateDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.NunerateDeliveries);
             // 
             // group1
             // 
@@ -296,11 +308,13 @@
             // 
             // btnChangeRoute
             // 
-            this.btnSaveRoute.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSaveRoute.Label = "Сохранить маршрут";
-            this.btnSaveRoute.Name = "btnSaveRoute";
-            this.btnSaveRoute.ShowImage = true;
-            this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveRoute_Click);
+            this.btnChangeRoute.Label = "";
+            this.btnChangeRoute.Name = "btnChangeRoute";
+            // 
+            // button3
+            // 
+            this.button3.Label = "";
+            this.button3.Name = "button3";
             // 
             // RibbonDelivery
             // 
@@ -346,7 +360,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendToCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSettingLetterCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveRoute;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRenumberDeliveries;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnNunerateDeliveries;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton btnChangeRoute;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
     }

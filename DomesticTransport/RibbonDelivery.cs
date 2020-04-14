@@ -102,7 +102,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnRecalcilate_Click(object sender, RibbonControlEventArgs e)
+        private void BtnChangeRoute_Click(object sender, RibbonControlEventArgs e)
         {
             ChangeRoute();
         }
@@ -341,7 +341,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnRenumberDeliveries_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Сквозное нумерование доставок 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NunerateDeliveries(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -358,27 +363,8 @@ namespace DomesticTransport
             }
         }
 
-        private void btnChangeRoute_Click(object sender, RibbonControlEventArgs e)
-        {
-            ChangeRoute();
-        }
-
-        private void button3_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                ShefflerWB.ExcelOptimizateOn();
-                new Functions().SecondPriorityRoute();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                ShefflerWB.ExcelOptimizateOff();
-            }
-
-        }
+     
+       
+        
     }
 }
