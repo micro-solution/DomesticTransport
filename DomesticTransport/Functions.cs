@@ -320,8 +320,12 @@ namespace DomesticTransport
         {
             // List<Delivery> deliveries = ReadFromDelivery();
             List<Order> orders = GetOrdersFromTable();
-
+            List <Delivery>  deliveries= SecondCompleteAuto(orders);
+            PrintChanges(deliveries); 
         }
+
+      
+
 
         /// <summary>
         ///Кнопка Пересчитать маршруты
@@ -1050,7 +1054,7 @@ namespace DomesticTransport
         private List<Delivery> CompleteAuto(List<Order> orders)
         {
             List<Delivery> deliveries = new List<Delivery>();
-            orders = orders.OrderBy(x => x.WeightNetto).ToList();
+            orders = orders.OrderBy(x => x.Customer.Id).ToList();
 
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
             Delivery deliveryNoRoute = new Delivery
@@ -1119,6 +1123,19 @@ namespace DomesticTransport
             if (deliveryNoRoute.Orders.Count > 0) deliveries.Add(deliveryNoRoute);
             return deliveries;
         }
+
+
+        private List<Delivery> SecondCompleteAuto(List<Order> orders)
+        {
+            List<Delivery> deliveries = new List<Delivery>();
+
+
+
+
+
+            return deliveries;
+        }
+
 
         /// <summary>
         /// перенести с деливери на лист Отгрузка
