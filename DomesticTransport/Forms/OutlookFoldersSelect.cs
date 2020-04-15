@@ -160,6 +160,7 @@ namespace DomesticTransport.Forms
         /// <param name="e"></param>
         private void TreeViewFolders_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
+            e.Node.Nodes.Clear();
             FillTreeNode(e.Node, GetFolder(e.Node.FullPath));
         }
 

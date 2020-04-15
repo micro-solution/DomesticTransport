@@ -98,16 +98,11 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Пересчет маршрутов
+        /// Кнопка пересчитать стоимость
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnRecalcilate_Click(object sender, RibbonControlEventArgs e)
-        {
-            ChangeRoute();
-        }
-
-        private void ChangeRoute()
+        private void BtnChangeRoute_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -324,9 +319,14 @@ namespace DomesticTransport
             setting.ShowDialog();
         }
 
-        private void btnSaveRoute_Click(object sender, RibbonControlEventArgs e)
-        {             
-                  try
+        /// <summary>
+        /// Кнопка сохранить маршрут
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSaveRoute_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
             {
                 ShefflerWB.ExcelOptimizateOn();
                 new Functions().SaveRoute();
@@ -341,7 +341,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnRenumberDeliveries_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Сквозное нумерование доставок 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NunerateDeliveries(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -358,17 +363,17 @@ namespace DomesticTransport
             }
         }
 
-        private void btnChangeRoute_Click(object sender, RibbonControlEventArgs e)
-        {
-            ChangeRoute();
-        }
-
-        private void button3_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Обновление всех маршрутов по основным маршрутам
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonUpdateAutoMain_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().SecondPriorityRoute();
+                new Functions().UpdateAutoMain();
             }
             catch (Exception ex)
             {
@@ -378,7 +383,50 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOff();
             }
+        }
 
+        /// <summary>
+        /// Сплитбатон обновления авто
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SplitButtonUpdateAuto_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().UpdateAutoMain();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        /// <summary>
+        /// Кнопка обновления авто по второстепенным маршрутам
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonUpdateAutoSecond_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().UpdateAutoSecond();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using DomesticTransport.Model;
+
 using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -285,7 +287,7 @@ namespace DomesticTransport
 
 
 
-      
+
 
 
 
@@ -379,13 +381,13 @@ namespace DomesticTransport
         // Добавить маршрут в таблицу
         public int CreateRoute(List<DeliveryPoint> mapDelivery)
         {
-           
+
             DeliveryPoint LastPoint = RoutesList.Last();
             int idRoute = LastPoint.Id + 1;
-            int priorityNewRoute = 1; 
+            int priorityNewRoute = 2;
             //Поиск максимального приоритета, из всех где встречается клиент
             foreach (DeliveryPoint point in mapDelivery)
-            {                       
+            {
                 List<int> routes = (from p in RoutesList
                                     where p.IdCustomer == point.IdCustomer
                                     select p.PriorityRoute
@@ -393,7 +395,7 @@ namespace DomesticTransport
                 int maxPriority = 0;
                 if (routes.Count > 0) maxPriority = routes.Max();
 
-                priorityNewRoute = maxPriority > priorityNewRoute ? maxPriority+1 : priorityNewRoute;
+                priorityNewRoute = maxPriority > priorityNewRoute ? maxPriority + 1 : priorityNewRoute;
             }
 
             int priorityPoint = 0;
@@ -409,7 +411,7 @@ namespace DomesticTransport
                 row.Range[1, RoutesTable.ListColumns["City"].Index].Value = point.City;
 
                 //поиск этого же Получателя в другой строке
-                string customerName = string.IsNullOrEmpty(point.Customer) ? "": point.Customer ;
+                string customerName = string.IsNullOrEmpty(point.Customer) ? "" : point.Customer;
                 DeliveryPoint findPoint = RoutesList.Find(x => x.IdCustomer == point.IdCustomer && x.Customer != "");
                 if (!string.IsNullOrWhiteSpace(findPoint.Customer))
                 {
@@ -418,9 +420,9 @@ namespace DomesticTransport
                     row.Range[1, RoutesTable.ListColumns["Направление"].Index].Value = findPoint.RouteName;
                     row.Range[1, RoutesTable.ListColumns["Номер клиента"].Index].Value = findPoint.CustomerNumber;
                     if (!string.IsNullOrWhiteSpace(customerName)) customerName = findPoint.Customer;
-                }                    
-                    row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = point.Customer;               
-                    row.Range[1, RoutesTable.ListColumns["Add"].Index].Value = "Auto";
+                }
+                row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = point.Customer;
+                row.Range[1, RoutesTable.ListColumns["Add"].Index].Value = "Auto";
             }
             RoutesList = null;
             return idRoute;
@@ -453,6 +455,7 @@ namespace DomesticTransport
             return currentRng;
         }
         #region Вспомогательные
+
         /// <summary>
         /// Ищет в диапазоне текст возвращает значение ячейки по указанному смещению
         /// </summary>
@@ -516,7 +519,6 @@ namespace DomesticTransport
             return id;
         }
 
-      
         #endregion Вспомогательные
     }
 }
