@@ -678,8 +678,8 @@ namespace DomesticTransport
                 string customerId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["ID Получателя"].Index].Text;
                 customerId = customerId.Length < 10 ? new string('0', 10 - customerId.Length) + customerId : customerId;
                 string customerName = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Получатель"].Index].Text;
-                Customer customer = new Customer(customerId);
-                customer.Name = customerName;
+                
+                Customer customer = new Customer(customerId) { Name = customerName };
                 order.Customer = customer;
 
                 DeliveryPoint point = ShefflerWB.RoutesList.Find(r => r.IdCustomer == customerId);
@@ -925,20 +925,17 @@ namespace DomesticTransport
         private List<string> GetOrderInfo(Worksheet sheet, string delivery)
         {
             Range findRange = sheet.Columns[1];
-            Range fcell = null;
             string search = delivery.Length < 10 ? new string('0', 10 - delivery.Length) + delivery : delivery;
-            fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
+            Range fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
             if (fcell == null) return null;
 
-            string strCell = fcell.Text.Trim();
-            //   if (!strCell.Contains("Доставка")) return null;
             //Начало накладной 
             int rowStart = fcell.Row;
 
             for (int i = fcell.Row; i > 1; --i)
             {
                 // Ограничения вверх
-                strCell = findRange.Cells[i, 1].Text.Trim();
+                string strCell = findRange.Cells[i, 1].Text.Trim();
                 if (strCell.Contains("KG/") ||
                     strCell.Contains("ТТН:") ||
                     strCell.Contains("№") ||
@@ -1219,8 +1216,11 @@ namespace DomesticTransport
                             // У машины другой маршрут
                             if (iDelivery.Orders[0].DeliveryPoint.Id != point.Id) continue;
                             // Для мск допустимо 3 точки 
-                            if ((city.Contains("MSK") ||
-                                city.Contains("MO")) && iDelivery.MapDelivery.Count == 3) { continue; }
+                            if ((city.Contains("MSK") || city.Contains("MO")) && iDelivery.MapDelivery.Count == 3) 
+                            {
+                                Order orderFind = iDelivery.Orders.Find(x => x.Customer.Id == orders[iOrder].Customer.Id);
+                                if (orderFind == null) continue; 
+                            }
 
                             if (ShefflerWB.InternationalCityList.Any(x => x == city) &&
                                      orders[iOrder].DeliveryPoint.City == city) //Nur - Sultan //Yerevan
@@ -1571,10 +1571,6 @@ namespace DomesticTransport
                     }
                 }
             }
-            // найти подходящий маршрут
-
-            #region Добавление нового маршрута
-            #endregion
             return deliveries;
         }
         private List<Delivery> CreateDeliveries(List<Order> orders)
@@ -1634,9 +1630,7 @@ namespace DomesticTransport
         /// <returns></returns>
         private Delivery EditDelivery(List<Order> ordersCurrentDelivery)
         {
-
-            Delivery delivery = new Delivery();
-            delivery.Orders = ordersCurrentDelivery;
+            Delivery delivery = new Delivery { Orders = ordersCurrentDelivery };
 
             int idRoute = FindRoute(delivery.MapDelivery);
             if (idRoute == 0)
@@ -1761,8 +1755,7 @@ namespace DomesticTransport
                     string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Text;
                     delivery.Cost = double.TryParse(costDelivery, out double cd) ? cd : 0;
 
-                    Driver driver = new Driver();
-                    driver.Id = ShefflerWB.GetProviderId(providerName);
+                    Driver driver = new Driver() { Id = ShefflerWB.GetProviderId(providerName) };
                     delivery.Driver = driver;
                     total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Value = driver.Id;
                     deliveries.Add(delivery);
