@@ -216,7 +216,6 @@ namespace DomesticTransport
                     _routes = new List<DeliveryPoint>();
                     foreach (ListRow row in RoutesTable.ListRows)
                     {
-                        Debug.WriteLine(row.Range.Row.ToString());
                         if (row.Range[1, 1].Value == null ||
                             row.Range[1, 2].Value == null ||
                             row.Range[1, 3].Value == null ||
@@ -282,11 +281,6 @@ namespace DomesticTransport
             }
         }
         private static string[] _internationalCityList;
-
-
-
-      
-
 
 
         /// <summary>
@@ -379,13 +373,13 @@ namespace DomesticTransport
         // Добавить маршрут в таблицу
         public int CreateRoute(List<DeliveryPoint> mapDelivery)
         {
-           
+
             DeliveryPoint LastPoint = RoutesList.Last();
             int idRoute = LastPoint.Id + 1;
-            int priorityNewRoute = 1; 
+            int priorityNewRoute = 1;
             //Поиск максимального приоритета, из всех где встречается клиент
             foreach (DeliveryPoint point in mapDelivery)
-            {                       
+            {
                 List<int> routes = (from p in RoutesList
                                     where p.IdCustomer == point.IdCustomer
                                     select p.PriorityRoute
@@ -393,7 +387,7 @@ namespace DomesticTransport
                 int maxPriority = 0;
                 if (routes.Count > 0) maxPriority = routes.Max();
 
-                priorityNewRoute = maxPriority > priorityNewRoute ? maxPriority+1 : priorityNewRoute;
+                priorityNewRoute = maxPriority > priorityNewRoute ? maxPriority + 1 : priorityNewRoute;
             }
 
             int priorityPoint = 0;
@@ -409,7 +403,7 @@ namespace DomesticTransport
                 row.Range[1, RoutesTable.ListColumns["City"].Index].Value = point.City;
 
                 //поиск этого же Получателя в другой строке
-                string customerName = string.IsNullOrEmpty(point.Customer) ? "": point.Customer ;
+                string customerName = string.IsNullOrEmpty(point.Customer) ? "" : point.Customer;
                 DeliveryPoint findPoint = RoutesList.Find(x => x.IdCustomer == point.IdCustomer && x.Customer != "");
                 if (!string.IsNullOrWhiteSpace(findPoint.Customer))
                 {
@@ -418,9 +412,9 @@ namespace DomesticTransport
                     row.Range[1, RoutesTable.ListColumns["Направление"].Index].Value = findPoint.RouteName;
                     row.Range[1, RoutesTable.ListColumns["Номер клиента"].Index].Value = findPoint.CustomerNumber;
                     if (!string.IsNullOrWhiteSpace(customerName)) customerName = findPoint.Customer;
-                }                    
-                    row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = point.Customer;               
-                    row.Range[1, RoutesTable.ListColumns["Add"].Index].Value = "Auto";
+                }
+                row.Range[1, RoutesTable.ListColumns["Клиент"].Index].Value = point.Customer;
+                row.Range[1, RoutesTable.ListColumns["Add"].Index].Value = "Auto";
             }
             RoutesList = null;
             return idRoute;
@@ -489,6 +483,8 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
         }
 
+
+
         /// <summary>
         /// Возвращает id увеличивает счетчик заявок провайдеру 
         /// </summary>
@@ -516,7 +512,11 @@ namespace DomesticTransport
             return id;
         }
 
-      
+        public static bool isDeliverySheet()
+        {
+            Worksheet sh = Globals.ThisWorkbook.Application.ActiveSheet;
+            return sh.Name == "Delivery";
+        }
         #endregion Вспомогательные
     }
 }

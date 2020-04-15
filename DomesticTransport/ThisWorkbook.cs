@@ -2,21 +2,7 @@
 {
     public partial class ThisWorkbook
     {
-        private void ThisWorkbook_Startup(object sender, System.EventArgs e)
-        {
-            // try
-            // {
-            // Excel.Worksheet MsgSheet = Globals.ThisWorkbook.Sheets["Email"];
-            // Excel.Shape btnSaveReestr = MsgSheet.Shapes.Item("btnSave");
-            //     Debug.WriteLine(btnSaveReestr.TextFrame2.TextRange.Text);
-            // }
-            //catch (Exception ex)
-            // {
-            //     Debug.WriteLine(ex.Message);
-            // }
-            //btnSaveReestr.
-        }
-
+       
         private void ThisWorkbook_Shutdown(object sender, System.EventArgs e)
         {
         }
@@ -29,7 +15,7 @@
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ThisWorkbook_Startup);
+          
             this.Shutdown += new System.EventHandler(ThisWorkbook_Shutdown);
         }
 

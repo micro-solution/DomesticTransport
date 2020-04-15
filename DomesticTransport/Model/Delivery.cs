@@ -171,24 +171,24 @@ namespace DomesticTransport.Model
                                 select r.Id).Distinct().ToArray();
 
             if (variantsId.Length == 0 ) return false;
-            bool chk = false;
+            bool hasRoute = false;
             for (int i = 0; i < variantsId.Length; i++)
             {
-                chk = true;
+                hasRoute = true;
                 foreach (DeliveryPoint point in mapDelivery)
                 {
                     if (ShefflerWB.RoutesList.FindAll(x => x.Id == variantsId[i] &&
                                             x.IdCustomer == point.IdCustomer).Count == 0)
                     {
-                        chk = false; break; // В группе нет точки
+                        hasRoute = false; break; // В группе нет точки
                     }
                 }
-                if (chk)
+                if (hasRoute)
                 {
                     break; //есть маршрут, удовлетворяет всем точкам поездки 
                 }
             }
-            return chk;
+            return hasRoute;
         }
 
         /// <summary>
