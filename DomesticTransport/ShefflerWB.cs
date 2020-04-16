@@ -1,5 +1,7 @@
 ﻿using DomesticTransport.Model;
+
 using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -216,6 +218,7 @@ namespace DomesticTransport
                     _routes = new List<DeliveryPoint>();
                     foreach (ListRow row in RoutesTable.ListRows)
                     {
+                        Debug.WriteLine(row.Range.Row.ToString());
                         if (row.Range[1, 1].Value == null ||
                             row.Range[1, 2].Value == null ||
                             row.Range[1, 3].Value == null ||
@@ -281,6 +284,11 @@ namespace DomesticTransport
             }
         }
         private static string[] _internationalCityList;
+
+
+
+
+
 
 
         /// <summary>
@@ -376,7 +384,7 @@ namespace DomesticTransport
 
             DeliveryPoint LastPoint = RoutesList.Last();
             int idRoute = LastPoint.Id + 1;
-            int priorityNewRoute = 1;
+            int priorityNewRoute = 2;
             //Поиск максимального приоритета, из всех где встречается клиент
             foreach (DeliveryPoint point in mapDelivery)
             {
@@ -447,6 +455,7 @@ namespace DomesticTransport
             return currentRng;
         }
         #region Вспомогательные
+
         /// <summary>
         /// Ищет в диапазоне текст возвращает значение ячейки по указанному смещению
         /// </summary>
@@ -483,8 +492,6 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
         }
 
-
-
         /// <summary>
         /// Возвращает id увеличивает счетчик заявок провайдеру 
         /// </summary>
@@ -512,11 +519,6 @@ namespace DomesticTransport
             return id;
         }
 
-        public static bool isDeliverySheet()
-        {
-            Worksheet sh = Globals.ThisWorkbook.Application.ActiveSheet;
-            return sh.Name == "Delivery";
-        }
         #endregion Вспомогательные
     }
 }
