@@ -1585,8 +1585,7 @@ namespace DomesticTransport
                         {
                             orderID.PointNumber = pnum;
                             DeliveryPoint dp = orderID.DeliveryPoint;
-                            dp.PriorityPoint = pnum;
-                            dp.GetRouteName();
+                            dp.PriorityPoint = pnum;                            
                             dp.PriorityRoute = deliveryNumber;
 
                             orderID.DeliveryPoint = dp;
@@ -1798,6 +1797,7 @@ namespace DomesticTransport
                                 "Водитель (ФИО)",
                                 "Номер, марка",
                                 "Телефон водителя",
+                                "Время погрузки",
                                 "Город"            ,
                                 "Направление"   ,
                                 "Порядок выгрузки",

@@ -14,6 +14,20 @@ namespace DomesticTransport.Model
         /// </summary>
         public int Number { get; set; } = 0;
 
+        public string Time 
+        {
+            get {
+                   if (string.IsNullOrWhiteSpace(_timetable))
+                {
+                    string city = MapDelivery.Count>0 ? MapDelivery[0].City :"";
+                    _timetable = ShefflerWB.GetTime(city);
+                }
+                return _timetable;
+            } 
+            private set =>  _timetable = value; 
+        }
+        string _timetable;
+
         public bool HasRoute { get; set; } = true;
 
         ///// <summary>

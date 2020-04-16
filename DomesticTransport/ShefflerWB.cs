@@ -27,6 +27,34 @@ namespace DomesticTransport
                 return _deliverySheet;
             }
         }
+
+        public static string GetTime(string city)
+        {
+            ListObject TimeTable = RoutesSheet.ListObjects["Timetable"];
+            string time ="";
+            int len = (from r in InternationalCityList
+                       where r == city
+                       select r).ToArray().Length;
+            if (len>0)
+            {
+                city = "LTL";
+            }
+            else
+            {
+                city = "Межгород";
+            }
+            foreach (ListRow row in TimeTable.ListRows)
+            {
+                string direction = row.Range[1, TimeTable.ListColumns["Направление"].Index].Text;
+                if ( direction.Contains(city))
+                {
+                 time = row.Range[1, TimeTable.ListColumns["Время погрузки"].Index].Text;
+                   break;
+                }                 
+            }
+            return time;
+        }
+
         private static Worksheet _deliverySheet;
         public static Worksheet TotalSheet
         {
