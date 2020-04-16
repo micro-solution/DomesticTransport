@@ -408,24 +408,36 @@ namespace DomesticTransport
         /// <param name="deliveries"></param>
         public void RenumerateDeliveries(List<Delivery> deliveries)
         {
-            Dictionary<string, int> numbers = new Dictionary<string, int>();
+            Dictionary<int, int> numbers = new Dictionary<int, int>();
+            deliveries = (from d in deliveries
+                          orderby d.SortPriority
+                          select d).ToList();
+
+            foreach (var item in deliveries)
+            {
+                numbers.Add(item.Number, numbers.Count + 1);
+            }
 
             foreach (ListRow row in ShefflerWB.DeliveryTable.ListRows)
             {
                 string oldDeliveryNumber = row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Text;
-                if (string.IsNullOrEmpty(oldDeliveryNumber)) continue;
-                numbers.Add(oldDeliveryNumber, numbers.Count + 1);
-                row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = numbers[oldDeliveryNumber];
+                if (!int.TryParse(oldDeliveryNumber, out int num)) continue;
+                row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
+
+            ShefflerWB.DeliveryTableSort();
 
             foreach (ListRow rowOrder in ShefflerWB.OrdersTable.ListRows)
             {
                 string orderDeliveryNumber = rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
-                if (string.IsNullOrEmpty(orderDeliveryNumber)) continue;
-                rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[orderDeliveryNumber];
+                if (!int.TryParse(orderDeliveryNumber, out int num)) continue;
+                rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
+            ShefflerWB.OrderTableSort();
+
             return;
         }
+
         /// <summary>
         /// Перенос данных в таблицу Отгрузки
         /// </summary>

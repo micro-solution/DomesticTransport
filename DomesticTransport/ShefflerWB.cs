@@ -146,7 +146,21 @@ namespace DomesticTransport
         }
         private static ListObject _providerTable;
 
-
+        /// <summary>
+        /// Таблица городов
+        /// </summary>
+        public static ListObject SityTable
+        {
+            get
+            {
+                if (_sityTable == null)
+                {
+                    _sityTable = RoutesSheet.ListObjects["TableCity"];
+                }
+                return _sityTable;
+            }
+        }
+        private static ListObject _sityTable;
 
         /// <summary>
         /// Прайс
@@ -286,8 +300,43 @@ namespace DomesticTransport
         private static string[] _internationalCityList;
 
 
+        /// <summary>
+        /// Сортировка таблицы доставки
+        /// </summary>
+        public static void DeliveryTableSort()
+        {
 
 
+
+            Range table = DeliveryTable.Range;
+            Range col1 = table.Columns[DeliveryTable.ListColumns["№ Доставки"].Index];
+            table.Sort(
+                Key1: col1, 
+                Order1: XlSortOrder.xlAscending, 
+                Header: XlYesNoGuess.xlYes, 
+                Type: Type.Missing, 
+                OrderCustom: Type.Missing, MatchCase: Type.Missing,
+                DataOption1: XlSortDataOption.xlSortNormal, 
+                Orientation: XlSortOrientation.xlSortColumns, 
+                SortMethod: XlSortMethod.xlPinYin);
+        }
+
+        /// <summary>
+        /// Сортировка таблицы поставки
+        /// </summary>
+        public static void OrderTableSort()
+        {
+            Range table = OrdersTable.Range;
+            Range col1 = table.Columns[OrdersTable.ListColumns["№ Доставки"].Index];
+            Range col2 = table.Columns[OrdersTable.ListColumns["Порядок выгрузки"].Index];
+            table.Sort(
+                Key1: col1, 
+                Order1: XlSortOrder.xlAscending, 
+                Key2: col2, 
+                Order2: XlSortOrder.xlAscending,
+                OrderCustom: Type.Missing, MatchCase: Type.Missing,
+                Header: XlYesNoGuess.xlYes, Orientation: XlSortOrientation.xlSortColumns);
+        }
 
 
 
