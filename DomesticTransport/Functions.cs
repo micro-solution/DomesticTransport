@@ -1507,8 +1507,8 @@ namespace DomesticTransport
                     double tonnage = double.TryParse(carTonnage, out double ton) ? ton : 0;
                     delivery.Truck = new Truck() { ProviderCompany = shippingCompany, Tonnage = tonnage };
 
-                    string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Text;
-                    delivery.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
+                    string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
+                    delivery.Cost = decimal.TryParse(costStr, out decimal cost) ? cost : 0;
                     deliveries.Add(delivery);
                     //Компания
                     //Деловые линии
@@ -1741,8 +1741,8 @@ namespace DomesticTransport
                     delivery.Truck.ProviderCompany.Name = providerName;
                     string tonn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Text;
                     delivery.Truck.Tonnage = double.TryParse(tonn, out double ton) ? ton : 0;
-                    string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Text;
-                    delivery.Cost = double.TryParse(costDelivery, out double cd) ? cd : 0;
+                    string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
+                    delivery.Cost = decimal.TryParse(costDelivery, out decimal cd) ? cd : 0;
 
                     Driver driver = new Driver() { Id = ShefflerWB.GetProviderId(providerName) };
                     delivery.Driver = driver;

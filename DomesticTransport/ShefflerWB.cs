@@ -305,9 +305,6 @@ namespace DomesticTransport
         /// </summary>
         public static void DeliveryTableSort()
         {
-
-
-
             Range table = DeliveryTable.Range;
             Range col1 = table.Columns[DeliveryTable.ListColumns["№ Доставки"].Index];
             table.Sort(
@@ -338,8 +335,6 @@ namespace DomesticTransport
                 Header: XlYesNoGuess.xlYes, Orientation: XlSortOrientation.xlSortColumns);
         }
 
-
-
         /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
         /// </summary>
@@ -361,11 +356,10 @@ namespace DomesticTransport
 
                 if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
                 {
-
-                    string strPrice = row.Range[1, RateTable.ListColumns["vehicle"].Index].Text;
-                    double priceFirst = double.TryParse(strPrice, out double pf) ? pf : 0;
-                    strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Text;
-                    double priceAdd = double.TryParse(strPrice, out double pa) ? pa : 0;
+                    string strPrice = row.Range[1, RateTable.ListColumns["vehicle"].Index].Value.ToString();
+                    decimal priceFirst = decimal.TryParse(strPrice, out decimal pf) ? pf : 0;
+                    strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Value.ToString();
+                    decimal priceAdd = decimal.TryParse(strPrice, out decimal pa) ? pa : 0;
                     TruckRate rate = new TruckRate()
                     {
                         City = valCity,
@@ -405,11 +399,11 @@ namespace DomesticTransport
 
                 if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
                 {
-                    string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
-                    double price = double.TryParse(strPrice, out double pf) ? pf : 0;
+                    string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Value.ToString();
+                    decimal price = decimal.TryParse(strPrice, out decimal pf) ? pf : 0;
 
-                    strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Text;
-                    double priceAdd = double.TryParse(strPrice, out double pa) ? pa : 0;
+                    strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Value.ToString();
+                    decimal priceAdd = decimal.TryParse(strPrice, out decimal pa) ? pa : 0;
 
                     TruckRate rate = new TruckRate()
                     {

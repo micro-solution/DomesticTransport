@@ -14,12 +14,12 @@ namespace DomesticTransport.Model
         /// <summary>
         /// Стоимость доставки
         /// </summary>
-        public double Cost
+        public decimal Cost
         {
-           get => _cost;
-    set => _cost = Math.Ceiling(value);
+            get => _cost;
+            set => _cost = Math.Ceiling(value);
         }
-        double _cost;
+        decimal _cost;
         public Provider ProviderCompany
         {
             get

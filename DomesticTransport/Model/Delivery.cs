@@ -25,7 +25,7 @@ namespace DomesticTransport.Model
         /// <summary>
         /// Стоимость доставки
         /// </summary>
-        public double Cost
+        public decimal Cost
         {
             get
             {
@@ -44,7 +44,7 @@ namespace DomesticTransport.Model
             }
             set => _cost = value;
         }
-        private double _cost;
+        private decimal _cost;
         /// <summary>
         /// Общий вес
         /// </summary>
