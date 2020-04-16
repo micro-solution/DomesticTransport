@@ -370,7 +370,7 @@ namespace DomesticTransport
                 string strNum = row.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : 0;
                 if (deliveryNumber == 0) continue;
-                string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
+                string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Поставка"].Index].Text;
                 if (orderId.Length < 10 && !orderId.Contains(" "))
                 {
                     orderId = new string('0', 10 - orderId.Length) + orderId;
@@ -568,7 +568,7 @@ namespace DomesticTransport
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : -1;
                 if (deliveryNumber == -1) continue;
                 order.DeliveryNumber = deliveryNumber;
-                order.Id = row.Range[1, ordersTable.ListColumns["Доставка"].Index].Text;
+                order.Id = row.Range[1, ordersTable.ListColumns["Поставка"].Index].Text;
 
                 string city = row.Range[1, ordersTable.ListColumns["Город"].Index].Text;
 
@@ -645,7 +645,7 @@ namespace DomesticTransport
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : -1;
                 if (deliveryNumber == -1) continue;
                 order.DeliveryNumber = deliveryNumber;
-                order.Id = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
+                order.Id = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Поставка"].Index].Text;
 
                 string city = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Город"].Index].Text;
 
@@ -1069,7 +1069,7 @@ namespace DomesticTransport
             }
 
             row.Range[1, ordersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
-            row.Range[1, ordersTable.ListColumns["Доставка"].Index].Value = order.Id;
+            row.Range[1, ordersTable.ListColumns["Поставка"].Index].Value = order.Id;
             row.Range[1, ordersTable.ListColumns["ID Получателя"].Index].Value = order.Customer?.Id ?? "";
             row.Range[1, ordersTable.ListColumns["Получатель"].Index].Value = order.Customer.Name;
             row.Range[1, ordersTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
