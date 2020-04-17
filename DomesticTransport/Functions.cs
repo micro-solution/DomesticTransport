@@ -1159,7 +1159,7 @@ namespace DomesticTransport
                 row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                 row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                 row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-                row.Range[1, totalTable.ListColumns["Время погрузки"].Index].Value = delivery.Time;
+                row.Range[1, totalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
                 foreach (Order order in delivery.Orders)
                 {
                     if (!mainRow)
@@ -1491,14 +1491,14 @@ namespace DomesticTransport
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value =
                                                                                 delivery.Truck?.ProviderCompany?.Name ?? "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время погрузки"].Index].Value = delivery.Time;
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
                     }
                     else
                     {
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = "";
-                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время погрузки"].Index].Value = "";
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Value = "";
 
                     }
                 }
@@ -1787,7 +1787,7 @@ namespace DomesticTransport
                     };
                     string providerName = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Text;
                     delivery.Truck.ProviderCompany.Name = providerName;
-                    delivery.Time = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Время погрузки"].Index].Text;
+                    delivery.Time = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Text;
                     string tonn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Text;
                     delivery.Truck.Tonnage = double.TryParse(tonn, out double ton) ? ton : 0;
                     string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
@@ -1859,7 +1859,7 @@ namespace DomesticTransport
                                 "Водитель (ФИО)",
                                 "Номер, марка",
                                 "Телефон водителя",
-                                "Время погрузки",
+                                "Время подачи ТС",
                                 "Город"            ,
                                 "Направление"   ,
                                 "Порядок выгрузки",

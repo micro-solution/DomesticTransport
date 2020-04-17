@@ -45,12 +45,12 @@ namespace DomesticTransport
                 string direction = row.Range[1, TimeTable.ListColumns["Направление"].Index].Text;
                 if ( direction.Contains(city) )
                 {
-                 time = row.Range[1, TimeTable.ListColumns["Время погрузки"].Index].Text;
+                 time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
                    break;
                 }
                 if (direction.Contains("Межгород"))
                 {
-                    time = row.Range[1, TimeTable.ListColumns["Время погрузки"].Index].Text;
+                    time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
                 }
             }  
             return time;
