@@ -54,6 +54,8 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.BtnReadCarrierInvoice = this.Factory.CreateRibbonButton();
+            this.MenuSendTotal = this.Factory.CreateRibbonMenu();
+            this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
@@ -254,7 +256,7 @@
             // 
             this.group1.Items.Add(this.BtnSendShippingCompany);
             this.group1.Items.Add(this.BtnReadCarrierInvoice);
-            this.group1.Items.Add(this.ButtonSendToCS);
+            this.group1.Items.Add(this.MenuSendTotal);
             this.group1.Label = "Сообщения";
             this.group1.Name = "group1";
             // 
@@ -282,11 +284,31 @@
     "узки";
             this.BtnReadCarrierInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnReadCarrierInvoice_Click);
             // 
+            // MenuSendTotal
+            // 
+            this.MenuSendTotal.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.MenuSendTotal.Image = ((System.Drawing.Image)(resources.GetObject("MenuSendTotal.Image")));
+            this.MenuSendTotal.Items.Add(this.ButtonTotalToProviders);
+            this.MenuSendTotal.Items.Add(this.ButtonSendToCS);
+            this.MenuSendTotal.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.MenuSendTotal.Label = "Отправка Отгрузок";
+            this.MenuSendTotal.Name = "MenuSendTotal";
+            this.MenuSendTotal.ShowImage = true;
+            // 
+            // ButtonTotalToProviders
+            // 
+            this.ButtonTotalToProviders.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonTotalToProviders.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTotalToProviders.Image")));
+            this.ButtonTotalToProviders.Label = "Провайдерам";
+            this.ButtonTotalToProviders.Name = "ButtonTotalToProviders";
+            this.ButtonTotalToProviders.ShowImage = true;
+            this.ButtonTotalToProviders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTotalToProviders_Click);
+            // 
             // ButtonSendToCS
             // 
             this.ButtonSendToCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.ButtonSendToCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSendToCS.Image")));
-            this.ButtonSendToCS.Label = "Отправить в CS и WH";
+            this.ButtonSendToCS.Label = "В CS и WH";
             this.ButtonSendToCS.Name = "ButtonSendToCS";
             this.ButtonSendToCS.ScreenTip = "Отправить отгрузки в CS и WH";
             this.ButtonSendToCS.ShowImage = true;
@@ -421,6 +443,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonUpdateAuto;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAutoSecond;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu MenuSendTotal;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTotalToProviders;
     }
 
     partial class ThisRibbonCollection

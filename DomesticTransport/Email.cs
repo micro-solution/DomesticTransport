@@ -72,6 +72,51 @@ namespace DomesticTransport
             }
         }
 
+        public void CreateMessage2(string сompany,
+                                   string date,
+                                  string attachment,
+                                  string subject)
+        {
+            //TODO Сделать универсальную фукнцию отправки сообщения, убрать дублирован
+
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
+            ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
+            string addres = "";
+            foreach (Range row in tableEmail.DataBodyRange.Rows)
+            {
+                if (row.Cells[1, 1].Text == сompany)
+                {
+                    string stroka = row.Cells[1, 2].Text;
+                    addres = stroka == "" ? addres : $"{stroka}; {addres}";
+                }
+            }
+            string signature = ReadReestrSignature();
+            string textMsg = messageSheet.Cells[10, 2].Text;
+            string copyTo = messageSheet.Cells[9, 2].Text;
+            textMsg = "Коллеги, добрый день! Отправляем уточненную информацию по отгрузкам.";
+            string HtmlBody =
+                  textMsg +
+                   "<br><br>" +
+               signature;
+            try
+            {
+                OutlookApp.Session.Logon();
+                Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
+                mail.To = addres;
+                mail.HTMLBody = HtmlBody;
+                mail.BCC = "";
+                mail.CC = copyTo;
+                mail.Subject = subject;
+                mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
+                mail.Display();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+        }
+
         /// <summary>
         /// Создание сообщения
         /// </summary>
