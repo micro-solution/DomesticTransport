@@ -8,8 +8,8 @@ namespace DomesticTransport.Model
     public struct DeliveryPoint
     {
         public int Id { get; set; }
-        public int PriorityRoute { get; set; }
-        public int PriorityPoint { get; set; }
+        public int PriorityRoute { get; set; } 
+        public int PriorityPoint { get; set; } 
 
         public string IdCustomer
         {

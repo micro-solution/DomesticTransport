@@ -24,7 +24,7 @@ namespace DomesticTransport.Model
                 }
                 return _timetable;
             } 
-            private set =>  _timetable = value; 
+             set =>  _timetable = value; 
         }
         string _timetable;
 

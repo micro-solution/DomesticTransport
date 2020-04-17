@@ -32,26 +32,27 @@ namespace DomesticTransport
         {
             ListObject TimeTable = RoutesSheet.ListObjects["Timetable"];
             string time ="";
-            int len = (from r in InternationalCityList
+            int     isinternational = (from r in InternationalCityList
                        where r == city
                        select r).ToArray().Length;
-            if (len>0)
+            if (isinternational > 0)
             {
                 city = "LTL";
             }
-            else
-            {
-                city = "Межгород";
-            }
+          
             foreach (ListRow row in TimeTable.ListRows)
             {
                 string direction = row.Range[1, TimeTable.ListColumns["Направление"].Index].Text;
-                if ( direction.Contains(city))
+                if ( direction.Contains(city) )
                 {
                  time = row.Range[1, TimeTable.ListColumns["Время погрузки"].Index].Text;
                    break;
-                }                 
-            }
+                }
+                if (direction.Contains("Межгород"))
+                {
+                    time = row.Range[1, TimeTable.ListColumns["Время погрузки"].Index].Text;
+                }
+            }  
             return time;
         }
 
@@ -267,11 +268,12 @@ namespace DomesticTransport
                         };
                         _routes.Add(route);
                     }
+
+                    _routes = _routes.OrderBy(x => x.Id).ThenBy(
+                                        y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 }
-                _routes = _routes.OrderBy(x => x.Id).ThenBy(
-                                      y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
-            }
+           } 
             set => _routes = value;
         }
         static List<DeliveryPoint> _routes;
@@ -314,7 +316,24 @@ namespace DomesticTransport
         private static string[] _internationalCityList;
 
 
-
+        /// <summary>
+        /// Города Нур-Султан, Ереван
+        /// </summary>
+        public static string[] CityList
+        {
+            get
+            {
+                if (_cityList == null)
+                {
+                    List<TruckRate> rates = RateList;
+                    _cityList = (from r in rates
+                                              select r.City
+                                 ).Distinct().ToArray();
+                }
+                return _cityList;
+            }
+        }
+        private static string[] _cityList;
 
 
 
@@ -464,11 +483,11 @@ namespace DomesticTransport
         {
             Range currentRng = null;
             string dateDelivery = DateDelivery;
-            int columnDeliveryId = TotalTable.ListColumns["Дата доставки"].Index;
+            int columnDelivery = TotalTable.ListColumns["Дата доставки"].Index;
             foreach (ListRow row in TotalTable.ListRows)
             {
-                string dateTable = row.Range[0, columnDeliveryId].Text;
-                if (dateTable == dateDelivery || string.IsNullOrEmpty(dateTable))
+                string dateTable = row.Range[1, columnDelivery].Text;
+                if (dateTable == dateDelivery )
                 {
                     if (currentRng == null)
                     {
