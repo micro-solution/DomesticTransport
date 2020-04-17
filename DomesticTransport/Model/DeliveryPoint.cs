@@ -8,8 +8,8 @@ namespace DomesticTransport.Model
     public struct DeliveryPoint
     {
         public int Id { get; set; }
-        public int PriorityRoute { get; set; }
-        public int PriorityPoint { get; set; }
+        public int PriorityRoute { get; set; } 
+        public int PriorityPoint { get; set; } 
 
         public string IdCustomer
         {
@@ -55,15 +55,25 @@ namespace DomesticTransport.Model
 
         public string RouteName
         {
-            get => _routeName ?? "" ;
+            get => _routeName ?? GetRouteName();
             set => _routeName = value.Trim();
         }
         string _routeName;
 
+
+
+        private string GetRouteName()
+        {
+            string routename ="";
+            string id = IdCustomer;
+            DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id && (!string.IsNullOrWhiteSpace(x.RouteName)));
+            if (!string.IsNullOrWhiteSpace(dp.RouteName)) routename = dp.RouteName;              
+            return routename;
+        }
         /// <summary>
         /// Найти у клиента название маршрута
         /// </summary>
-        public void GetRouteName()
+        public void SetRouteName()
         {
             string routename =RouteName;
             string id = IdCustomer;

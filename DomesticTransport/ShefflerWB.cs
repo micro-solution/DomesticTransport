@@ -27,6 +27,35 @@ namespace DomesticTransport
                 return _deliverySheet;
             }
         }
+
+        public static string GetTime(string city)
+        {
+            ListObject TimeTable = RoutesSheet.ListObjects["Timetable"];
+            string time ="";
+            int     isinternational = (from r in InternationalCityList
+                       where r == city
+                       select r).ToArray().Length;
+            if (isinternational > 0)
+            {
+                city = "LTL";
+            }
+          
+            foreach (ListRow row in TimeTable.ListRows)
+            {
+                string direction = row.Range[1, TimeTable.ListColumns["Направление"].Index].Text;
+                if ( direction.Contains(city) )
+                {
+                 time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
+                   break;
+                }
+                if (direction.Contains("Межгород"))
+                {
+                    time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
+                }
+            }  
+            return time;
+        }
+
         private static Worksheet _deliverySheet;
         public static Worksheet TotalSheet
         {
@@ -146,7 +175,21 @@ namespace DomesticTransport
         }
         private static ListObject _providerTable;
 
-
+        /// <summary>
+        /// Таблица городов
+        /// </summary>
+        public static ListObject SityTable
+        {
+            get
+            {
+                if (_sityTable == null)
+                {
+                    _sityTable = RoutesSheet.ListObjects["TableCity"];
+                }
+                return _sityTable;
+            }
+        }
+        private static ListObject _sityTable;
 
         /// <summary>
         /// Прайс
@@ -239,11 +282,12 @@ namespace DomesticTransport
                         };
                         _routes.Add(route);
                     }
+
+                    _routes = _routes.OrderBy(x => x.Id).ThenBy(
+                                        y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 }
-                _routes = _routes.OrderBy(x => x.Id).ThenBy(
-                                      y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 return _routes;
-            }
+           } 
             set => _routes = value;
         }
         static List<DeliveryPoint> _routes;
@@ -286,10 +330,40 @@ namespace DomesticTransport
         private static string[] _internationalCityList;
 
 
+        /// <summary>
+        /// Сортировка таблицы доставки
+        /// </summary>
+        public static void DeliveryTableSort()
+        {
+            Range table = DeliveryTable.Range;
+            Range col1 = table.Columns[DeliveryTable.ListColumns["№ Доставки"].Index];
+            table.Sort(
+                Key1: col1, 
+                Order1: XlSortOrder.xlAscending, 
+                Header: XlYesNoGuess.xlYes, 
+                Type: Type.Missing, 
+                OrderCustom: Type.Missing, MatchCase: Type.Missing,
+                DataOption1: XlSortDataOption.xlSortNormal, 
+                Orientation: XlSortOrientation.xlSortColumns, 
+                SortMethod: XlSortMethod.xlPinYin);
+        }
 
-
-
-
+        /// <summary>
+        /// Сортировка таблицы поставки
+        /// </summary>
+        public static void OrderTableSort()
+        {
+            Range table = OrdersTable.Range;
+            Range col1 = table.Columns[OrdersTable.ListColumns["№ Доставки"].Index];
+            Range col2 = table.Columns[OrdersTable.ListColumns["Порядок выгрузки"].Index];
+            table.Sort(
+                Key1: col1, 
+                Order1: XlSortOrder.xlAscending, 
+                Key2: col2, 
+                Order2: XlSortOrder.xlAscending,
+                OrderCustom: Type.Missing, MatchCase: Type.Missing,
+                Header: XlYesNoGuess.xlYes, Orientation: XlSortOrientation.xlSortColumns);
+        }
 
         /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
@@ -312,11 +386,10 @@ namespace DomesticTransport
 
                 if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
                 {
-
-                    string strPrice = row.Range[1, RateTable.ListColumns["vehicle"].Index].Text;
-                    double priceFirst = double.TryParse(strPrice, out double pf) ? pf : 0;
-                    strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Text;
-                    double priceAdd = double.TryParse(strPrice, out double pa) ? pa : 0;
+                    string strPrice = row.Range[1, RateTable.ListColumns["vehicle"].Index].Value.ToString();
+                    decimal priceFirst = decimal.TryParse(strPrice, out decimal pf) ? pf : 0;
+                    strPrice = row.Range[1, RateTable.ListColumns["add.point"].Index].Value.ToString();
+                    decimal priceAdd = decimal.TryParse(strPrice, out decimal pa) ? pa : 0;
                     TruckRate rate = new TruckRate()
                     {
                         City = valCity,
@@ -356,11 +429,11 @@ namespace DomesticTransport
 
                 if (tonnage > 0 && !string.IsNullOrWhiteSpace(valCity))
                 {
-                    string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Text;
-                    double price = double.TryParse(strPrice, out double pf) ? pf : 0;
+                    string strPrice = row.Range[1, rateTable.ListColumns["vehicle"].Index].Value.ToString();
+                    decimal price = decimal.TryParse(strPrice, out decimal pf) ? pf : 0;
 
-                    strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Text;
-                    double priceAdd = double.TryParse(strPrice, out double pa) ? pa : 0;
+                    strPrice = row.Range[1, rateTable.ListColumns["add.point"].Index].Value.ToString();
+                    decimal priceAdd = decimal.TryParse(strPrice, out decimal pa) ? pa : 0;
 
                     TruckRate rate = new TruckRate()
                     {
@@ -436,11 +509,11 @@ namespace DomesticTransport
         {
             Range currentRng = null;
             string dateDelivery = DateDelivery;
-            int columnDeliveryId = TotalTable.ListColumns["Дата доставки"].Index;
+            int columnDelivery = TotalTable.ListColumns["Дата доставки"].Index;
             foreach (ListRow row in TotalTable.ListRows)
             {
-                string dateTable = row.Range[0, columnDeliveryId].Text;
-                if (dateTable == dateDelivery || string.IsNullOrEmpty(dateTable))
+                string dateTable = row.Range[1, columnDelivery].Text;
+                if (dateTable == dateDelivery )
                 {
                     if (currentRng == null)
                     {

@@ -54,6 +54,8 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.BtnReadCarrierInvoice = this.Factory.CreateRibbonButton();
+            this.MenuSendTotal = this.Factory.CreateRibbonMenu();
+            this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
@@ -97,7 +99,7 @@
             this.BtnExportFromSap.Image = ((System.Drawing.Image)(resources.GetObject("BtnExportFromSap.Image")));
             this.BtnExportFromSap.Label = "Export from SAP";
             this.BtnExportFromSap.Name = "BtnExportFromSap";
-            this.BtnExportFromSap.ScreenTip = "Загрузка файла из SAP";
+            this.BtnExportFromSap.ScreenTip = "Загрузка поставок из файла SAP";
             this.BtnExportFromSap.ShowImage = true;
             this.BtnExportFromSap.SuperTip = "Выберите файл Excel из SAP и нажмите кнопку ОК";
             this.BtnExportFromSap.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExportFromSap_Click);
@@ -108,9 +110,9 @@
             this.ButtonOrderFromCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonOrderFromCS.Image")));
             this.ButtonOrderFromCS.Label = "Order from CS";
             this.ButtonOrderFromCS.Name = "ButtonOrderFromCS";
-            this.ButtonOrderFromCS.ScreenTip = "Загрузка заявки от customer servises";
+            this.ButtonOrderFromCS.ScreenTip = "Загрузка заявки от CS IND";
             this.ButtonOrderFromCS.ShowImage = true;
-            this.ButtonOrderFromCS.SuperTip = "Нажмите на кнопку и выберите файл Excel от CS ";
+            this.ButtonOrderFromCS.SuperTip = "Нажмите на кнопку и выберите файл Excel с заявкой от CS IND";
             this.ButtonOrderFromCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonOrderFromCS_Click);
             // 
             // BtnLoadAllOrders
@@ -119,7 +121,10 @@
             this.BtnLoadAllOrders.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadAllOrders.Image")));
             this.BtnLoadAllOrders.Label = "Загрузить All Orders";
             this.BtnLoadAllOrders.Name = "BtnLoadAllOrders";
+            this.BtnLoadAllOrders.ScreenTip = "Загрузка данных по поставкам";
             this.BtnLoadAllOrders.ShowImage = true;
+            this.BtnLoadAllOrders.SuperTip = "Выберите файл с выгрузкой из SAP с информацией о собранных поставках для загрузки" +
+    " брутто веса, количества паллет, стоимости поставки";
             this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadAllOrders_Click);
             // 
             // groupEdit
@@ -178,9 +183,10 @@
             this.ButtonAddAuto.Image = ((System.Drawing.Image)(resources.GetObject("ButtonAddAuto.Image")));
             this.ButtonAddAuto.Label = "Добавить авто";
             this.ButtonAddAuto.Name = "ButtonAddAuto";
-            this.ButtonAddAuto.ScreenTip = "Добавление новой машины без товаров";
+            this.ButtonAddAuto.ScreenTip = "Добавление новой машины";
             this.ButtonAddAuto.ShowImage = true;
-            this.ButtonAddAuto.SuperTip = "При необходимости разделить груз на несколько машин";
+            this.ButtonAddAuto.SuperTip = "Используется при необходимости разделить доставку на несколько машин. Выделите яч" +
+    "ейки с нужными поставками и нажмите кнопку Добавить авто";
             this.ButtonAddAuto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonAddAuto_Click);
             // 
             // ButtonDeleteAuto
@@ -203,8 +209,8 @@
             this.btnSaveRoute.Name = "btnSaveRoute";
             this.btnSaveRoute.ScreenTip = "Сохраняет отредактированные маршруты, если их еще нет в таблице";
             this.btnSaveRoute.ShowImage = true;
-            this.btnSaveRoute.SuperTip = "Измените маршруты на листе Delivery и нажмите, чтобы записать новые маршруты в та" +
-    "блицу";
+            this.btnSaveRoute.SuperTip = "Измените маршруты на листе Delivery и нажмите эту кнопку, чтобы сохранить новые м" +
+    "аршруты в таблицу Routes";
             this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveRoute_Click);
             // 
             // separator1
@@ -217,38 +223,40 @@
             this.BtnRecalcilate.Image = ((System.Drawing.Image)(resources.GetObject("BtnRecalcilate.Image")));
             this.BtnRecalcilate.Label = "Пересчитать стоимость";
             this.BtnRecalcilate.Name = "BtnRecalcilate";
-            this.BtnRecalcilate.ScreenTip = "Пересчет транспорта";
+            this.BtnRecalcilate.ScreenTip = "Пересчет стоимости доставок";
             this.BtnRecalcilate.ShowImage = true;
-            this.BtnRecalcilate.SuperTip = "Пересчитывает стоимость транспорта, а также выбирает оптимального провайдера";
+            this.BtnRecalcilate.SuperTip = "По сформированным маршрутам определятся оптимальный провайдер и рассчитывается ст" +
+    "оимось перевозки";
             this.BtnRecalcilate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnChangeRoute_Click);
             // 
             // btnNunerateDeliveries
             // 
             this.btnNunerateDeliveries.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnNunerateDeliveries.Image = ((System.Drawing.Image)(resources.GetObject("btnNunerateDeliveries.Image")));
-            this.btnNunerateDeliveries.Label = "Нумерация по порядку";
+            this.btnNunerateDeliveries.Label = "Сортировка отгрузок";
             this.btnNunerateDeliveries.Name = "btnNunerateDeliveries";
-            this.btnNunerateDeliveries.ScreenTip = "Восстановить нумерацию";
+            this.btnNunerateDeliveries.ScreenTip = "Сортировка отгрузок";
             this.btnNunerateDeliveries.ShowImage = true;
-            this.btnNunerateDeliveries.SuperTip = "Восстанавливает нумерацию достатов в случае внесения ручных корректировок";
+            this.btnNunerateDeliveries.SuperTip = "Сортирует отгрузки и восстанавливает нумерацию (МСК -> Регионы -> СНГ -> LTL -> С" +
+    "борный груз)";
             this.btnNunerateDeliveries.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.NunerateDeliveries);
             // 
             // BtnFillTable
             // 
             this.BtnFillTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnFillTable.Image = ((System.Drawing.Image)(resources.GetObject("BtnFillTable.Image")));
-            this.BtnFillTable.Label = "Перенести в отгрузки";
+            this.BtnFillTable.Label = "Перенести в Отгрузки";
             this.BtnFillTable.Name = "BtnFillTable";
-            this.BtnFillTable.ScreenTip = "Перенос данных в таблицу открузки";
+            this.BtnFillTable.ScreenTip = "Перенос данных в таблицу Открузки";
             this.BtnFillTable.ShowImage = true;
-            this.BtnFillTable.SuperTip = "Переносит данные из таблиц товары и доставки в таблицу отгрузки";
+            this.BtnFillTable.SuperTip = "Переносит данные из таблиц Транспорт и Поставки в таблицу Отгрузки";
             this.BtnFillTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillTable_Click);
             // 
             // group1
             // 
             this.group1.Items.Add(this.BtnSendShippingCompany);
             this.group1.Items.Add(this.BtnReadCarrierInvoice);
-            this.group1.Items.Add(this.ButtonSendToCS);
+            this.group1.Items.Add(this.MenuSendTotal);
             this.group1.Label = "Сообщения";
             this.group1.Name = "group1";
             // 
@@ -260,8 +268,8 @@
             this.BtnSendShippingCompany.Name = "BtnSendShippingCompany";
             this.BtnSendShippingCompany.ScreenTip = "Подготовка писем провайдерам";
             this.BtnSendShippingCompany.ShowImage = true;
-            this.BtnSendShippingCompany.SuperTip = "Создает письма провайдером, со списком отгрузки для дальнейшего заполнения данных" +
-    " о перевозчике";
+            this.BtnSendShippingCompany.SuperTip = "Создает письма провайдерам со списком отгрузок для дальнейшего заполнения данных " +
+    "о перевозке";
             this.BtnSendShippingCompany.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSendShippingCompany_Click);
             // 
             // BtnReadCarrierInvoice
@@ -272,19 +280,39 @@
             this.BtnReadCarrierInvoice.Name = "BtnReadCarrierInvoice";
             this.BtnReadCarrierInvoice.ScreenTip = "Сканирование писем от провайдеров";
             this.BtnReadCarrierInvoice.ShowImage = true;
-            this.BtnReadCarrierInvoice.SuperTip = "Скарирует письма от провайдеров и переносит в таблицу отгрузки данные о перевозчи" +
-    "ках";
+            this.BtnReadCarrierInvoice.SuperTip = "Скарирует письма от провайдеров и переносит заполненные ими данные в таблицу Отгр" +
+    "узки";
             this.BtnReadCarrierInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnReadCarrierInvoice_Click);
+            // 
+            // MenuSendTotal
+            // 
+            this.MenuSendTotal.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.MenuSendTotal.Image = ((System.Drawing.Image)(resources.GetObject("MenuSendTotal.Image")));
+            this.MenuSendTotal.Items.Add(this.ButtonTotalToProviders);
+            this.MenuSendTotal.Items.Add(this.ButtonSendToCS);
+            this.MenuSendTotal.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.MenuSendTotal.Label = "Отправка Отгрузок";
+            this.MenuSendTotal.Name = "MenuSendTotal";
+            this.MenuSendTotal.ShowImage = true;
+            // 
+            // ButtonTotalToProviders
+            // 
+            this.ButtonTotalToProviders.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonTotalToProviders.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTotalToProviders.Image")));
+            this.ButtonTotalToProviders.Label = "Провайдерам";
+            this.ButtonTotalToProviders.Name = "ButtonTotalToProviders";
+            this.ButtonTotalToProviders.ShowImage = true;
+            this.ButtonTotalToProviders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTotalToProviders_Click);
             // 
             // ButtonSendToCS
             // 
             this.ButtonSendToCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.ButtonSendToCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSendToCS.Image")));
-            this.ButtonSendToCS.Label = "Отправить в CS";
+            this.ButtonSendToCS.Label = "В CS и WH";
             this.ButtonSendToCS.Name = "ButtonSendToCS";
-            this.ButtonSendToCS.ScreenTip = "Отправить в CS";
+            this.ButtonSendToCS.ScreenTip = "Отправить отгрузки в CS и WH";
             this.ButtonSendToCS.ShowImage = true;
-            this.ButtonSendToCS.SuperTip = "Подготовка письма с данными об отгрузке для Custom Servises";
+            this.ButtonSendToCS.SuperTip = "Подготовка письма с данными об отгрузках для CS и WH";
             this.ButtonSendToCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendToCS_Click);
             // 
             // settings
@@ -314,8 +342,7 @@
             this.ButtonSelectFoldersOutlook.Name = "ButtonSelectFoldersOutlook";
             this.ButtonSelectFoldersOutlook.ScreenTip = "Выбор папок сканирования";
             this.ButtonSelectFoldersOutlook.ShowImage = true;
-            this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма от провайдеров с информацией о " +
-    "водителях";
+            this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма с заявками от провайдеров";
             this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
             // ButtonSettingLetterCS
@@ -324,10 +351,9 @@
             this.ButtonSettingLetterCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSettingLetterCS.Image")));
             this.ButtonSettingLetterCS.Label = "Письмо CS";
             this.ButtonSettingLetterCS.Name = "ButtonSettingLetterCS";
-            this.ButtonSettingLetterCS.ScreenTip = "Настройки письма для CS";
+            this.ButtonSettingLetterCS.ScreenTip = "Настройки письма для CS и WH";
             this.ButtonSettingLetterCS.ShowImage = true;
-            this.ButtonSettingLetterCS.SuperTip = "Настройка шаблона письма, которое отправляется Customer Servises с файлом отгрузк" +
-    "и";
+            this.ButtonSettingLetterCS.SuperTip = "Настройка шаблона письма, которое отправляется CS и WH с файлом Отгрузки";
             this.ButtonSettingLetterCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
             // 
             // about
@@ -343,8 +369,8 @@
             this.BtnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("BtnAboutProgrramm.Image")));
             this.BtnAboutProgrramm.Label = "О программе";
             this.BtnAboutProgrramm.Name = "BtnAboutProgrramm";
-            this.BtnAboutProgrramm.ScreenTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.ShowImage = true;
+            this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
             // 
             // btnSetts
@@ -417,6 +443,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonUpdateAuto;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAutoSecond;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu MenuSendTotal;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTotalToProviders;
     }
 
     partial class ThisRibbonCollection

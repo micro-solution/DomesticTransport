@@ -11,10 +11,10 @@ namespace DomesticTransport.Model
         public string PlaceDelivery { get; set; }
         public string City { get; set; }
         public string Company { get; set; }
-        public double PriceFirstPoint { get; set; }
-        public double PriceAddPoint { get; set; }
+        public decimal PriceFirstPoint { get; set; }
+        public decimal PriceAddPoint { get; set; }
         public double Tonnage { get; set; }
-        public double TotalDeliveryCost { get; set; }
+        public decimal TotalDeliveryCost { get; set; }
 
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace DomesticTransport.Model
         {
             List<TruckRate> rateVariants = new List<TruckRate>();
             int ix = 0;
-            double MaxCost = 0;
+            decimal MaxCost = 0;
             string city = "";
 
             /// подходящие варианты перевозчиков
@@ -59,7 +59,7 @@ namespace DomesticTransport.Model
                 }
                 try
                 {
-                    double? MaxCostPoint = 0;
+                    decimal? MaxCostPoint = 0;
                     MaxCostPoint = (from rv in ShefflerWB.RateList
                                     where rv.City == point.City &&
                                             rv.Tonnage >= tonnageNeed
@@ -69,7 +69,7 @@ namespace DomesticTransport.Model
                     {
                         if (MaxCost < MaxCostPoint)
                         {
-                            MaxCost = (double)MaxCostPoint;
+                            MaxCost = (decimal)MaxCostPoint;
                             ix = i;
                             city = point.City;
                         }
@@ -144,9 +144,9 @@ namespace DomesticTransport.Model
             for (int i = 0; i < rateVariants.Count; i++)
             {
                 TruckRate rate = rateVariants[i];
-                double addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
+                decimal addpointCost = (mapDelivery.Count - 1) * rateVariants[i].PriceAddPoint;
                 rate.TotalDeliveryCost =
-                    (int)Math.Ceiling(rateVariants[i].PriceFirstPoint * totalWeight / 100 + addpointCost);
+                    (int)Math.Round(rateVariants[i].PriceFirstPoint * (decimal)totalWeight / 100 + addpointCost, 0);
                 rateVariants[i] = rate;
             }
             rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();

@@ -61,7 +61,7 @@ namespace DomesticTransport
             {
                 PrintDelivery(deliveries);
                 PrintOrders(deliveries);
-                PrintTotal(ShefflerWB.TotalTable, deliveries);
+                PrintTotal(deliveries);
             }
             ShefflerWB.DeliverySheet.Columns.AutoFit();
         }
@@ -85,8 +85,8 @@ namespace DomesticTransport
             {
                 string idOrder = row.Cells[1, columnId].Text;
                 if (string.IsNullOrWhiteSpace(idOrder)) continue;
-                idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
-                Order order = orders.Find(o => o.Id == idOrder);
+                // idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                Order order = orders.Find(o => o.Id.Contains(idOrder));
                 if (order == null) continue;
 
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].Value = order.WeightBrutto;
@@ -120,7 +120,7 @@ namespace DomesticTransport
             {
                 PrintDelivery(deliveries);
                 PrintOrders(deliveries);
-                PrintTotal(ShefflerWB.TotalTable, deliveries);
+                PrintTotal(deliveries);
             }
             ShefflerWB.DeliverySheet.Columns.AutoFit();
 
@@ -134,6 +134,7 @@ namespace DomesticTransport
         {
             int idRoute = 0;
             int number = 0;
+            if (Globals.ThisWorkbook.Application.ActiveSheet.Name != "Delivery") return;
             if (ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].DataBodyRange != null)
             {
                 foreach (Range rng in ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].DataBodyRange)
@@ -148,41 +149,51 @@ namespace DomesticTransport
             Range selection;
             Range orfderRng;
             // Выделенный диапазон
-            try
-            {
-                selection = Globals.ThisWorkbook.Application.Selection;
-                orfderRng = Globals.ThisWorkbook.Application.Intersect(selection, ShefflerWB.OrdersTable.DataBodyRange);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
+
+            selection = Globals.ThisWorkbook.Application.Selection;
+            orfderRng = ((Microsoft.Office.Interop.Excel.Application)(Globals.ThisWorkbook.Application)).Intersect(selection, ShefflerWB.OrdersTable.DataBodyRange);
 
             Delivery delivery = null;
+            int colNumberDelivery = orfderRng.Column;
+            int colWtNetto = colNumberDelivery + ShefflerWB.OrdersTable.ListColumns["Вес нетто"].Index - 1;
+            int colWtBrutto = colNumberDelivery + ShefflerWB.OrdersTable.ListColumns["Вес брутто"].Index - 1;
+            int colID = colNumberDelivery + ShefflerWB.OrdersTable.ListColumns["Поставка"].Index - 1;
+            int colCustomerID = colNumberDelivery + ShefflerWB.OrdersTable.ListColumns["ID Получателя"].Index - 1;
             if (orfderRng != null)
             {
                 ShefflerWB workBook = new ShefflerWB();
 
                 string orderId = "";
                 List<Order> orders = new List<Order>();
-
+                int dpPriority = 1;
                 foreach (Range orderLine in orfderRng.Rows)
                 {
-                    Range cl = ShefflerWB.DeliverySheet.Cells[orderLine.Row, 2];
-                    orderId = cl.Offset[0, 1].Text; //  "Номер поставки"
-                    cl.Value = number;
-                    double weight = double.TryParse(cl.Offset[0, 4].Text, out double wgt) ? wgt : 0;
-                    string idCustomer = cl.Offset[0, 5].Text;
+
+
+                    ShefflerWB.DeliverySheet.Cells[orderLine.Row, colNumberDelivery].Value = number;
+                    orderId = ShefflerWB.DeliverySheet.Cells[orderLine.Row, colID].Text; //  "Номер поставки"
+                    string idCustomer = ShefflerWB.DeliverySheet.Cells[orderLine.Row, colCustomerID].Text;
+
+                    double weightNetto = double.TryParse(ShefflerWB.DeliverySheet.Cells[orderLine.Row, colWtNetto].Text, out double wgt) ? wgt : 0;
+                    double weightBrutto = double.TryParse(ShefflerWB.DeliverySheet.Cells[orderLine.Row, colWtBrutto].Text, out double wgtb) ? wgtb : 0;
+
                     Customer customer = new Customer(idCustomer);
-                    orders.Add(new Order()
-                    {
-                        Id = orderId,
-                        WeightNetto = weight,
-                        Customer = customer
-                    });
+                    DeliveryPoint dp = new DeliveryPoint();
+                    dp.IdCustomer = orderId;
+                    dp.PriorityPoint = dpPriority;
+                    Order ord = new Order();
+                    ord.Id = orderId;
+                    ord.PointNumber = dpPriority;
+                    ord.DeliveryPoint = dp;
+                    ord.WeightNetto = weightNetto;
+                    ord.WeightBrutto = weightBrutto;
+                    ord.Customer = customer;
+                    orders.Add(ord);
+                    dpPriority++;
                 }
-                List<Delivery> deliveries = CompleteAuto(orders);
+
+                List<Delivery> deliveries = CompleteAuto(orders);    //  EditDelivery(orders);
+                                                                     // List<Delivery> deliveries = EditDeliveres(orders); //new List<Delivery>
                 Range totalRng = workBook.GetCurrentTotalRange();
                 if (deliveries != null && deliveries.Count > 0 && totalRng != null)
                 {
@@ -191,7 +202,7 @@ namespace DomesticTransport
 
                     foreach (Range row in totalRng.Rows)
                     {
-                        string idOrderTotal = row.Cells[0, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Text;
+                        string idOrderTotal = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Text;
                         idOrderTotal = idOrderTotal.Length < 10 ? new string('0', 10 - idOrderTotal.Length) + idOrderTotal : idOrderTotal;
                         Order findOrder = orders.Find(x => x.Id == idOrderTotal);
                         if (findOrder != null)
@@ -204,11 +215,11 @@ namespace DomesticTransport
                     foreach (Range orderLine in orfderRng.Rows)
                     {
                         ShefflerWB.DeliverySheet.Cells[orderLine.Row, 4].Value = delivery.MapDelivery[0].Id;   //ID Route
-                        string IDdelivery = ShefflerWB.DeliverySheet.Cells[orderLine.Row, 4].Text;
-                        Order orderFnd = deliveries[0].Orders.Find(x => x.Id.Contains(IDdelivery));
+                        string IDdelivery = ShefflerWB.DeliverySheet.Cells[orderLine.Row, colID].Text;
+                        Order orderFnd = delivery.Orders.Find(x => x.Id.Contains(IDdelivery));
                         if (orderFnd != null)
                         {
-                            ShefflerWB.DeliverySheet.Cells[orderLine.Row, 5].Value = orderFnd.DeliveryPoint;
+                            ShefflerWB.DeliverySheet.Cells[orderLine.Row, 5].Value = orderFnd.PointNumber;
                         }
                     }
                 }
@@ -235,6 +246,7 @@ namespace DomesticTransport
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Маршрут"].Index].Value =
                                                                                  delivery.MapDelivery[0].RouteName;
             }
+            СhangeDelivery();
         }
 
         /// <summary>
@@ -253,7 +265,7 @@ namespace DomesticTransport
             {
                 PrintDelivery(deliveries);
                 PrintOrders(deliveries);
-                PrintTotal(ShefflerWB.TotalTable, deliveries);
+                PrintTotal(deliveries);
             }
             ShefflerWB.DeliverySheet.Columns.AutoFit();
 
@@ -277,7 +289,7 @@ namespace DomesticTransport
             {
                 PrintDelivery(deliveries);
                 PrintOrders(deliveries);
-                PrintTotal(ShefflerWB.TotalTable, deliveries);
+                PrintTotal(deliveries);
             }
             ShefflerWB.DeliverySheet.Columns.AutoFit();
 
@@ -370,7 +382,7 @@ namespace DomesticTransport
                 string strNum = row.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : 0;
                 if (deliveryNumber == 0) continue;
-                string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
+                string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Поставка"].Index].Text;
                 if (orderId.Length < 10 && !orderId.Contains(" "))
                 {
                     orderId = new string('0', 10 - orderId.Length) + orderId;
@@ -408,24 +420,36 @@ namespace DomesticTransport
         /// <param name="deliveries"></param>
         public void RenumerateDeliveries(List<Delivery> deliveries)
         {
-            Dictionary<string, int> numbers = new Dictionary<string, int>();
+            Dictionary<int, int> numbers = new Dictionary<int, int>();
+            deliveries = (from d in deliveries
+                          orderby d.SortPriority
+                          select d).ToList();
+
+            foreach (var item in deliveries)
+            {
+                numbers.Add(item.Number, numbers.Count + 1);
+            }
 
             foreach (ListRow row in ShefflerWB.DeliveryTable.ListRows)
             {
                 string oldDeliveryNumber = row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Text;
-                if (string.IsNullOrEmpty(oldDeliveryNumber)) continue;
-                numbers.Add(oldDeliveryNumber, numbers.Count + 1);
-                row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = numbers[oldDeliveryNumber];
+                if (!int.TryParse(oldDeliveryNumber, out int num)) continue;
+                row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
+
+            ShefflerWB.DeliveryTableSort();
 
             foreach (ListRow rowOrder in ShefflerWB.OrdersTable.ListRows)
             {
                 string orderDeliveryNumber = rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
-                if (string.IsNullOrEmpty(orderDeliveryNumber)) continue;
-                rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[orderDeliveryNumber];
+                if (!int.TryParse(orderDeliveryNumber, out int num)) continue;
+                rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
+            ShefflerWB.OrderTableSort();
+
             return;
         }
+
         /// <summary>
         /// Перенос данных в таблицу Отгрузки
         /// </summary>
@@ -434,6 +458,7 @@ namespace DomesticTransport
             List<Delivery> deliveries = ReadFromDelivery();
             CopyDeliveryToTotal(deliveries);
         }
+
 
         /// <summary>
         /// Подготовка сообщений перевозчикам
@@ -471,6 +496,50 @@ namespace DomesticTransport
                 // Найти Email
                 Email messenger = new Email();
                 messenger.CreateMessage(сompany: сompanyShipping,
+                                          date: date,
+                                          attachment: attachment,
+                                          subject: subject);
+            }
+            pb.Close();
+        }
+
+        /// <summary>
+        /// Подготовка сообщений перевозчикам
+        /// </summary>
+        public void CreateMasseges2()
+        {
+            //TODO Сделать универсальную фукнцию отправки сообщения, убрать дублирование
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
+            List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
+            if (deliveries?.Count == 0) return;
+
+            //Уникальны провайдеры в списке доставок
+            string[] shippingComp = (from d in deliveries
+                                     select d.Truck.ProviderCompany.Name).Distinct().ToArray();
+            ClearFolder();
+            ProcessBar pb = ProcessBar.Init("Сообщения", shippingComp.Length, 1, "Подготовка писем");
+            //Для каждого провайдера
+            for (int i = 0; i < shippingComp.Length; i++)
+            {
+                string сompanyShipping = shippingComp[i];
+
+                if (pb == null) return;
+                pb.Show();
+                if (pb.Cancel) break;
+                pb.Action($"Письмо {i + 1} из {pb.Count} {shippingComp[i]} ");
+
+                if (сompanyShipping == "" || сompanyShipping == "Деловые линии") continue;
+                List<Delivery> deliverShipping = deliveries.FindAll(x =>
+                               x.Truck.ProviderCompany.Name == сompanyShipping).ToList();
+
+                string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
+                string subject = messageSheet.Cells[8, 2].Text;
+                subject = subject.Replace("[date]", date).Replace("[provider]", shippingComp[i]);
+                // Прикрепленный файл
+                string attachment = GenerateAttachmentFile(deliverShipping, subject);
+                // Найти Email
+                Email messenger = new Email();
+                messenger.CreateMessage2(сompany: сompanyShipping,
                                           date: date,
                                           attachment: attachment,
                                           subject: subject);
@@ -539,7 +608,7 @@ namespace DomesticTransport
                 }
 
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -568,7 +637,7 @@ namespace DomesticTransport
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : -1;
                 if (deliveryNumber == -1) continue;
                 order.DeliveryNumber = deliveryNumber;
-                order.Id = row.Range[1, ordersTable.ListColumns["Доставка"].Index].Text;
+                order.Id = row.Range[1, ordersTable.ListColumns["Поставка"].Index].Text;
 
                 string city = row.Range[1, ordersTable.ListColumns["Город"].Index].Text;
 
@@ -645,7 +714,7 @@ namespace DomesticTransport
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : -1;
                 if (deliveryNumber == -1) continue;
                 order.DeliveryNumber = deliveryNumber;
-                order.Id = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Доставка"].Index].Text;
+                order.Id = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Поставка"].Index].Text;
 
                 string city = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Город"].Index].Text;
 
@@ -844,7 +913,7 @@ namespace DomesticTransport
         /// <returns></returns>
         public List<Order> GetOrdersInfo(string ordersPath, List<Order> ordersSap)
         {
-            if (ordersPath == "") return null;
+            if (ordersPath == "" || ordersSap.Count == 0) return null;
             Workbook orderBook = null;
             try
             {
@@ -852,7 +921,7 @@ namespace DomesticTransport
             }
             catch
             {
-                throw new Exception("Не удалось открыть книгу Excel: " + ordersPath);
+                throw new System.Exception("Не удалось открыть книгу Excel: " + ordersPath);
             }
 
             List<Order> ordersInfo = new List<Order>();
@@ -1069,7 +1138,7 @@ namespace DomesticTransport
             }
 
             row.Range[1, ordersTable.ListColumns["Порядок выгрузки"].Index].Value = order.PointNumber;
-            row.Range[1, ordersTable.ListColumns["Доставка"].Index].Value = order.Id;
+            row.Range[1, ordersTable.ListColumns["Поставка"].Index].Value = order.Id;
             row.Range[1, ordersTable.ListColumns["ID Получателя"].Index].Value = order.Customer?.Id ?? "";
             row.Range[1, ordersTable.ListColumns["Получатель"].Index].Value = order.Customer.Name;
             row.Range[1, ordersTable.ListColumns["Город"].Index].Value = order.DeliveryPoint.City;
@@ -1079,31 +1148,63 @@ namespace DomesticTransport
             row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Value = order.Route;
         }
 
+        private void ClearTotal()
+        {
+
+            int column = ShefflerWB.TotalTable.ListColumns["Дата доставки"].Index;
+            foreach (Range row in ShefflerWB.TotalTable.DataBodyRange.Rows)
+            {
+                string dataRow = row.Cells[1, column].Text;
+                if (string.IsNullOrWhiteSpace(dataRow))
+                {
+                    ShefflerWB.TotalSheet.Cells.Rows[row.Row].Delete();
+                }
+            }
+        }
+
         /// <summary>
         /// Заполнить таблицу отгрузки
         /// </summary>
         /// <param name="totalTable"></param>
         /// <param name="deliveries"></param>
-        private void PrintTotal(ListObject totalTable, List<Delivery> deliveries)
+        private void PrintTotal(List<Delivery> deliveries)
         {
+            ListObject totalTable = ShefflerWB.TotalTable;
             if (deliveries.Count < 1) return;
             ShefflerWB shefflerBook = new ShefflerWB();
-
             Range CurrentDateRng = shefflerBook.GetCurrentTotalRange();
+            if (CurrentDateRng != null)
+            {
+                CurrentDateRng.Rows.Delete();
+            }
+            ClearTotal();
 
-            if (CurrentDateRng != null) CurrentDateRng.EntireRow.Delete();
+            if (totalTable.ListRows.Count > 0 &&
+                totalTable.ListRows[totalTable.ListRows.Count].Range[1, 1].Text != "")
+            {
+                ShefflerWB.TotalTable.ListRows.Add();
+            }
 
             foreach (Delivery delivery in deliveries)
             {
-                totalTable.ListRows.Add();
-                bool mainRow = true;
-                ListRow row = totalTable.ListRows[totalTable.ListRows.Count - 1];
+                ListRow row;
+                if (totalTable.ListRows.Count == 0)
+                {
+                    ShefflerWB.TotalTable.ListRows.Add();
+                    row = totalTable.ListRows[1];
+                }
+                else
+                {
+                    ShefflerWB.TotalTable.ListRows.Add();
+                    row = totalTable.ListRows[totalTable.ListRows.Count - 1];
+                }
 
-                row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
+                bool mainRow = true;
                 string date = ShefflerWB.DateDelivery;
+                row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                 row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                 row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-
+                row.Range[1, totalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
                 foreach (Order order in delivery.Orders)
                 {
                     if (!mainRow)
@@ -1114,6 +1215,7 @@ namespace DomesticTransport
                     row.Range[1, totalTable.ListColumns["Дата доставки"].Index].Value = date;
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
+
 
                     row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
                     row.Range[1, totalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
@@ -1434,12 +1536,15 @@ namespace DomesticTransport
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value =
                                                                                 delivery.Truck?.ProviderCompany?.Name ?? "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
                     }
                     else
                     {
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = "";
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Value = "";
+
                     }
                 }
             }
@@ -1495,8 +1600,8 @@ namespace DomesticTransport
                     double tonnage = double.TryParse(carTonnage, out double ton) ? ton : 0;
                     delivery.Truck = new Truck() { ProviderCompany = shippingCompany, Tonnage = tonnage };
 
-                    string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Text;
-                    delivery.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
+                    string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
+                    delivery.Cost = decimal.TryParse(costStr, out decimal cost) ? cost : 0;
                     deliveries.Add(delivery);
                     //Компания
                     //Деловые линии
@@ -1586,7 +1691,6 @@ namespace DomesticTransport
                             orderID.PointNumber = pnum;
                             DeliveryPoint dp = orderID.DeliveryPoint;
                             dp.PriorityPoint = pnum;
-                            dp.GetRouteName();
                             dp.PriorityRoute = deliveryNumber;
 
                             orderID.DeliveryPoint = dp;
@@ -1607,7 +1711,8 @@ namespace DomesticTransport
         /// <returns></returns>
         private Delivery EditDelivery(List<Order> ordersCurrentDelivery)
         {
-            Delivery delivery = new Delivery { Orders = ordersCurrentDelivery };
+            Delivery delivery = new Delivery();
+            delivery.Orders = ordersCurrentDelivery;
 
             int idRoute = FindRoute(delivery.MapDelivery);
             if (idRoute == 0)
@@ -1691,7 +1796,7 @@ namespace DomesticTransport
                         ShefflerWB.RoutesSheet.Activate();
                         RouteRow.Range.Select();
                     }
-                    catch (Exception ex)
+                    catch (System.Exception ex)
                     { Debug.WriteLine(ex.Message); }
                 }
                 return;
@@ -1727,14 +1832,30 @@ namespace DomesticTransport
                     };
                     string providerName = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Text;
                     delivery.Truck.ProviderCompany.Name = providerName;
+                    delivery.Time = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Text;
                     string tonn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Text;
                     delivery.Truck.Tonnage = double.TryParse(tonn, out double ton) ? ton : 0;
-                    string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Text;
-                    delivery.Cost = double.TryParse(costDelivery, out double cd) ? cd : 0;
+                    string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
+                    delivery.Cost = decimal.TryParse(costDelivery, out decimal cd) ? cd : 0;
 
-                    Driver driver = new Driver() { Id = ShefflerWB.GetProviderId(providerName) };
+                    string id = total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
+                    string curNumber = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Номер,марка"].Index].Text;
+                    string phone = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон водителя"].Index].Text;
+                    string fio = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Text;
+
+                    if (string.IsNullOrEmpty(id)) id = ShefflerWB.GetProviderId(providerName);
+
+                    Driver driver = new Driver() 
+                    { 
+                        Id = id,
+                        CarNumber = curNumber,
+                        Name = fio,
+                        Phone = phone
+
+                    };
                     delivery.Driver = driver;
                     total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Value = driver.Id;
+
                     deliveries.Add(delivery);
                 }
                 string ID = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Text;
@@ -1798,6 +1919,7 @@ namespace DomesticTransport
                                 "Водитель (ФИО)",
                                 "Номер, марка",
                                 "Телефон водителя",
+                                "Время подачи ТС",
                                 "Город"            ,
                                 "Направление"   ,
                                 "Порядок выгрузки",
@@ -1821,7 +1943,11 @@ namespace DomesticTransport
                 string providerName = delivery.Truck.ProviderCompany.Name;
                 if (string.IsNullOrWhiteSpace(providerName)) continue;
                 sh.Cells[row, 1].Value = delivery.Driver.Id;
-                sh.Cells[row, 18].Value = delivery.Cost;
+                sh.Cells[row, 7].Value = delivery.Time;
+                sh.Cells[row, 19].Value = delivery.Cost;
+                sh.Cells[row, 4].Value = delivery.Driver.Name;
+                sh.Cells[row, 5].Value = delivery.Driver.CarNumber;
+                sh.Cells[row, 6].Value = delivery.Driver.Phone;
 
                 for (int i = 0; i < delivery.Orders.Count; i++)
                 {
@@ -1838,18 +1964,20 @@ namespace DomesticTransport
                     sh.Cells[row, 2].Value = providerName;
                     sh.Cells[row, 3].Value = delivery.Truck.Tonnage;
 
-                    sh.Cells[row, 7].Value = order.DeliveryPoint.City;
-                    sh.Cells[row, 8].Value = order.Route;
+                    
 
-                    sh.Cells[row, 9].Value = order.PointNumber;
-                    sh.Cells[row, 10].Value = order.Customer.Id;
-                    sh.Cells[row, 11].Value = order.TransportationUnit;
-                    sh.Cells[row, 12].Value = order.Id;
-                    sh.Cells[row, 13].Value = order.Customer.Name ?? "";
-                    sh.Cells[row, 14].Value = order.WeightBrutto;
-                    sh.Cells[row, 15].Value = order.WeightNetto;
-                    sh.Cells[row, 16].Value = order.PalletsCount;
-                    sh.Cells[row, 17].Value = order.Cost;
+                    sh.Cells[row, 8].Value = order.DeliveryPoint.City;
+                    sh.Cells[row, 9].Value = order.Route;
+
+                    sh.Cells[row, 10].Value = order.PointNumber;
+                    sh.Cells[row, 11].Value = order.Customer.Id;
+                    sh.Cells[row, 12].Value = order.TransportationUnit;
+                    sh.Cells[row, 13].Value = order.Id;
+                    sh.Cells[row, 14].Value = order.Customer.Name ?? "";
+                    sh.Cells[row, 15].Value = order.WeightBrutto;
+                    sh.Cells[row, 16].Value = order.WeightNetto;
+                    sh.Cells[row, 17].Value = order.PalletsCount;
+                    sh.Cells[row, 18].Value = order.Cost;
                     row++;
                 }
             }
