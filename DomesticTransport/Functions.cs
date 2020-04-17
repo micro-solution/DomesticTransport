@@ -420,24 +420,36 @@ namespace DomesticTransport
         /// <param name="deliveries"></param>
         public void RenumerateDeliveries(List<Delivery> deliveries)
         {
-            Dictionary<string, int> numbers = new Dictionary<string, int>();
+            Dictionary<int, int> numbers = new Dictionary<int, int>();
+            deliveries = (from d in deliveries
+                          orderby d.SortPriority
+                          select d).ToList();
+
+            foreach (var item in deliveries)
+            {
+                numbers.Add(item.Number, numbers.Count + 1);
+            }
 
             foreach (ListRow row in ShefflerWB.DeliveryTable.ListRows)
             {
                 string oldDeliveryNumber = row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Text;
-                if (string.IsNullOrEmpty(oldDeliveryNumber)) continue;
-                numbers.Add(oldDeliveryNumber, numbers.Count + 1);
-                row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = numbers[oldDeliveryNumber];
+                if (!int.TryParse(oldDeliveryNumber, out int num)) continue;
+                row.Range[1, ShefflerWB.DeliveryTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
+
+            ShefflerWB.DeliveryTableSort();
 
             foreach (ListRow rowOrder in ShefflerWB.OrdersTable.ListRows)
             {
                 string orderDeliveryNumber = rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
-                if (string.IsNullOrEmpty(orderDeliveryNumber)) continue;
-                rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[orderDeliveryNumber];
+                if (!int.TryParse(orderDeliveryNumber, out int num)) continue;
+                rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
+            ShefflerWB.OrderTableSort();
+
             return;
         }
+
         /// <summary>
         /// Перенос данных в таблицу Отгрузки
         /// </summary>
@@ -1543,8 +1555,8 @@ namespace DomesticTransport
                     double tonnage = double.TryParse(carTonnage, out double ton) ? ton : 0;
                     delivery.Truck = new Truck() { ProviderCompany = shippingCompany, Tonnage = tonnage };
 
-                    string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Text;
-                    delivery.Cost = double.TryParse(costStr, out double cost) ? cost : 0;
+                    string costStr = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
+                    delivery.Cost = decimal.TryParse(costStr, out decimal cost) ? cost : 0;
                     deliveries.Add(delivery);
                     //Компания
                     //Деловые линии
@@ -1778,8 +1790,8 @@ namespace DomesticTransport
                     delivery.Time = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Время погрузки"].Index].Text;
                     string tonn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Text;
                     delivery.Truck.Tonnage = double.TryParse(tonn, out double ton) ? ton : 0;
-                    string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Text;
-                    delivery.Cost = double.TryParse(costDelivery, out double cd) ? cd : 0;
+                    string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
+                    delivery.Cost = decimal.TryParse(costDelivery, out decimal cd) ? cd : 0;
 
                     Driver driver = new Driver() { Id = ShefflerWB.GetProviderId(providerName) };
                     delivery.Driver = driver;

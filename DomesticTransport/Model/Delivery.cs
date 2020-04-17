@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +39,7 @@ namespace DomesticTransport.Model
         /// <summary>
         /// Стоимость доставки
         /// </summary>
-        public double Cost
+        public decimal Cost
         {
             get
             {
@@ -57,7 +58,7 @@ namespace DomesticTransport.Model
             }
             set => _cost = value;
         }
-        private double _cost;
+        private decimal _cost;
         /// <summary>
         /// Общий вес
         /// </summary>
@@ -113,14 +114,32 @@ namespace DomesticTransport.Model
             }
         }
 
+        /// <summary>
+        /// Приоритет в таблице отгрузки
+        /// </summary>
+        public int SortPriority
+        {
+            get
+            {
+                if (MapDelivery?[0].RouteName == "Сборный груз") return 9999;
+                
+                int i = 0;
+                foreach (ListRow row in ShefflerWB.SityTable.ListRows)
+                {
+                    i++;
+                    if (MapDelivery != null && row.Range.Cells[1, 1].Text == MapDelivery?[0].City) break;
+                }
+                return i;
+            }
+        }
 
         public Truck Truck
         {
             get
             {
                 if (_truck == null)
-                {                     
-                    if (  !string.IsNullOrWhiteSpace(MapDelivery.Find(
+                {
+                    if (!string.IsNullOrWhiteSpace(MapDelivery.Find(
                                     x => x.RouteName.Contains("Сборный груз")).IdCustomer))
                     {
                         _truck = new Truck();
@@ -128,9 +147,9 @@ namespace DomesticTransport.Model
                     }
                     else
                     {
-                    _truck = Truck.GetTruck(TotalWeight, MapDelivery);
+                        _truck = Truck.GetTruck(TotalWeight, MapDelivery);
                     }
-                    
+
                 }
                 return _truck;
             }
@@ -162,12 +181,12 @@ namespace DomesticTransport.Model
 
         public void SaveRoute()
         {
-            if (HasFullRoute(this.MapDelivery)) { return; }           
-          int idRoute = new ShefflerWB().CreateRoute(MapDelivery);
-            foreach(Order ord in Orders)
-            {                  
+            if (HasFullRoute(this.MapDelivery)) { return; }
+            int idRoute = new ShefflerWB().CreateRoute(MapDelivery);
+            foreach (Order ord in Orders)
+            {
                 DeliveryPoint dp = ord.DeliveryPoint;
-                dp.Id =  idRoute;
+                dp.Id = idRoute;
                 ord.DeliveryPoint = dp;
             }
         }
