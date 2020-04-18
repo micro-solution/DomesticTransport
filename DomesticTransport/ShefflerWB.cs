@@ -1,4 +1,5 @@
-﻿using DomesticTransport.Model;
+﻿using DomesticTransport.Forms;
+using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
 
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace DomesticTransport
 {
@@ -234,7 +236,7 @@ namespace DomesticTransport
                     if (dateCell != null)
                         if (string.IsNullOrWhiteSpace(_dateDelivery))
                         {
-                            dateCell.Formula = "=Today()+1";
+                            dateCell.Formula = "=WORKDAY(TODAY(),1)";
                             _dateDelivery = dateCell?.Text;
                         }
                         else
@@ -246,6 +248,23 @@ namespace DomesticTransport
             }
         }
         static string _dateDelivery;
+        public void SetDateCell()
+        {
+             Calendar calendar = new Calendar();
+            DateCell.Value = calendar.DateDelivery;
+            calendar.ShowDialog();
+            if (calendar.DialogResult == DialogResult.OK)
+            {
+                DateCell.Value = calendar.DateDelivery;
+            }
+            else if (calendar.DialogResult == DialogResult.Yes)
+            {
+                DateCell.FormulaR1C1 = "=WORKDAY(TODAY(),1)";
+            }
+
+        }
+
+
 
         internal Range GetRowOrderTotal(string idOrder)
         {

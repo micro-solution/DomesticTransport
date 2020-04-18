@@ -22,6 +22,7 @@ namespace DomesticTransport
         {
             this.TableCarrier.BeforeDoubleClick += new Microsoft.Office.Interop.Excel.DocEvents_BeforeDoubleClickEventHandler(this.TableCarrier_BeforeDoubleClick);
             this.TableCarrier.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.TableCarrier_SelectionChange);
+            this.DateDelivery.BeforeDoubleClick += new Microsoft.Office.Interop.Excel.DocEvents_BeforeDoubleClickEventHandler(this.DateDelivery_BeforeDoubleClick);
             this.SelectionChange += new Microsoft.Office.Interop.Excel.DocEvents_SelectionChangeEventHandler(this.Лист2_SelectionChange);
             this.Startup += new System.EventHandler(this.Лист2_Startup);
 
@@ -60,6 +61,9 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
+
+      
+
 
         /// <summary>
         /// Фильтр заказов по активной доставке 
@@ -107,8 +111,6 @@ namespace DomesticTransport
             ListObject deliveryTable = ShefflerWB.DeliveryTable;
             ListObject ordersTable = ShefflerWB.OrdersTable;
 
-            
-
             if (Target.Column == deliveryTable.ListColumns["Компания"].Range.Column &&
                 Target.Row > deliveryTable.HeaderRowRange.Row &&
                 Target.Text != "")
@@ -144,18 +146,17 @@ namespace DomesticTransport
                     }
                 }
             }
-            else  if ( Target.Column == deliveryTable.ListColumns["Компания"].Range.Column &&
-                Target.Row > deliveryTable.HeaderRowRange.Row &&
-                Target.Text != "")
-                {
-                    Cancel = true;)
-            
 
-            }
         }
 
+        private void DateDelivery_BeforeDoubleClick(Range Target, ref bool Cancel)
+        {
+            if (Target.Column != ShefflerWB.DateCell.Column ||
+            Target.Row != ShefflerWB.DateCell.Row) return;
+            Cancel = true;
+            new ShefflerWB().SetDateCell();
+        }
 
-
-
+       
     }
 }

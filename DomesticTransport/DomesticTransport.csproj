@@ -210,6 +210,12 @@
     <Compile Include="Лист1.Designer.cs">
       <DependentUpon>Лист1.Designer.xml</DependentUpon>
     </Compile>
+    <Compile Include="Лист102.cs">
+      <DependentUpon>DomesticTransport.xlsx</DependentUpon>
+    </Compile>
+    <Compile Include="Лист102.Designer.cs">
+      <DependentUpon>Лист102.Designer.xml</DependentUpon>
+    </Compile>
     <Compile Include="Лист2.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
     </Compile>
@@ -394,6 +400,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons8-truck-96 %283%29.ico" />
+    <None Include="Лист102.Designer.xml">
+      <DependentUpon>Лист102.cs</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -420,6 +429,7 @@
         <Host Name="Excel Document" Path=".\DomesticTransport.xlsx" GeneratedCodeNamespace="DomesticTransport">
           <HostItem Name="ThisWorkbook" Code="ThisWorkbook.cs" CanonicalName="ThisWorkbook" Blueprint="ThisWorkbook.Designer.xml" GeneratedCode="ThisWorkbook.Designer.cs" />
           <HostItem Name="Лист1" Code="Лист1.cs" CanonicalName="Лист1" DisplayName="Отгрузка" Blueprint="Лист1.Designer.xml" GeneratedCode="Лист1.Designer.cs" />
+          <HostItem Name="Лист10" Code="Лист102.cs" CanonicalName="Лист10" DisplayName="Архив" Blueprint="Лист102.Designer.xml" GeneratedCode="Лист102.Designer.cs" />
           <HostItem Name="Лист2" Code="Лист2.cs" CanonicalName="Лист2" DisplayName="Delivery" Blueprint="Лист2.Designer.xml" GeneratedCode="Лист2.Designer.cs" />
           <HostItem Name="Лист3" Code="Лист3.cs" CanonicalName="Лист3" DisplayName="Routes" Blueprint="Лист3.Designer.xml" GeneratedCode="Лист3.Designer.cs" />
           <HostItem Name="Лист4" Code="Лист4.cs" CanonicalName="Лист4" CanActivate="false" DisplayName="ZoneCustomer" Blueprint="Лист4.Designer.xml" GeneratedCode="Лист4.Designer.cs" />
