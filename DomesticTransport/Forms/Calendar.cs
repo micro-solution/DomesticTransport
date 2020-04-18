@@ -55,8 +55,8 @@ namespace DomesticTransport.Forms
 
         private void Calendar_Load(object sender, EventArgs e)
         {
-         
-            tbDate.Text = DateTime.Today.AddDays(1).ToShortDateString();
+
+            tbDate.Text = ShefflerWB.DateDelivery;
         }
     }
 }

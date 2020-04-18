@@ -248,11 +248,16 @@ namespace DomesticTransport
             }
         }
         static string _dateDelivery;
+        
+        
+        /// <summary>
+        /// Установить значение ячейки "дата отгрузки"
+        /// </summary>
         public void SetDateCell()
         {
              Calendar calendar = new Calendar();
             DateCell.Value = calendar.DateDelivery;
-            calendar.ShowDialog();
+            calendar.ShowDialog();            
             if (calendar.DialogResult == DialogResult.OK)
             {
                 DateCell.Value = calendar.DateDelivery;
@@ -260,8 +265,7 @@ namespace DomesticTransport
             else if (calendar.DialogResult == DialogResult.Yes)
             {
                 DateCell.FormulaR1C1 = "=WORKDAY(TODAY(),1)";
-            }
-
+            }            
         }
 
 

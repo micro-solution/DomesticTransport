@@ -450,5 +450,19 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
+
+        private void btnDate_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                new ShefflerWB().SetDateCell();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+    
     }
 }

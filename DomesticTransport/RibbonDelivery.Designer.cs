@@ -66,6 +66,7 @@
             this.btnSetts = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
+            this.btnDate = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -317,6 +318,7 @@
             // 
             // settings
             // 
+            this.settings.Items.Add(this.btnDate);
             this.settings.Items.Add(this.BtnSaveSignature);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Items.Add(this.ButtonSettingLetterCS);
@@ -325,7 +327,6 @@
             // 
             // BtnSaveSignature
             // 
-            this.BtnSaveSignature.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("BtnSaveSignature.Image")));
             this.BtnSaveSignature.Label = "Сохранить подпись";
             this.BtnSaveSignature.Name = "BtnSaveSignature";
@@ -392,6 +393,15 @@
             this.button3.Label = "";
             this.button3.Name = "button3";
             // 
+            // btnDate
+            // 
+            this.btnDate.Image = ((System.Drawing.Image)(resources.GetObject("btnDate.Image")));
+            this.btnDate.Label = "Выбрать дату";
+            this.btnDate.Name = "btnDate";
+            this.btnDate.ScreenTip = "Установить дату отгрузки";
+            this.btnDate.ShowImage = true;
+            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
+            // 
             // RibbonDelivery
             // 
             this.Name = "RibbonDelivery";
@@ -445,6 +455,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonUpdateAutoSecond;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu MenuSendTotal;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTotalToProviders;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDate;
     }
 
     partial class ThisRibbonCollection
