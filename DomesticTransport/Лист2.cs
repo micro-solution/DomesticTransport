@@ -103,21 +103,23 @@ namespace DomesticTransport
         /// <param name="Cancel"></param>
         private void TableCarrier_BeforeDoubleClick(Range Target, ref bool Cancel)
         {
-            Worksheet deliverySheet = Globals.ThisWorkbook.Sheets["Delivery"];
-            ListObject carrierTable = deliverySheet.ListObjects["TableCarrier"];
-            ListObject ordersTable = deliverySheet.ListObjects["TableOrders"];
+            Worksheet deliverySheet = ShefflerWB.DeliverySheet;
+            ListObject deliveryTable = ShefflerWB.DeliveryTable;
+            ListObject ordersTable = ShefflerWB.OrdersTable;
 
-            if (Target.Column == carrierTable.ListColumns["Компания"].Range.Column &&
-                Target.Row > carrierTable.HeaderRowRange.Row &&
+            
+
+            if (Target.Column == deliveryTable.ListColumns["Компания"].Range.Column &&
+                Target.Row > deliveryTable.HeaderRowRange.Row &&
                 Target.Text != "")
             {
                 Cancel = true;
                 ProviderEditor providerFrm = new ProviderEditor();
-                string wt = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["Вес доставки"].Range.Column].Text;
+                string wt = deliverySheet.Cells[Target.Row, deliveryTable.ListColumns["Вес доставки"].Range.Column].Text;
                 Functions functions = new Functions();
                 List<Order> orders = functions.GetOrdersFromTable();
                 Delivery delivery = new Delivery();
-                string numStr = deliverySheet.Cells[Target.Row, carrierTable.ListColumns["№ Доставки"].Range.Column].Text;
+                string numStr = deliverySheet.Cells[Target.Row, deliveryTable.ListColumns["№ Доставки"].Range.Column].Text;
                 int number = int.TryParse(numStr, out int n) ? n : 0;
                 if (number == 0) return;
                 delivery.Orders = orders.FindAll(o => o.DeliveryNumber == number);
@@ -142,6 +144,18 @@ namespace DomesticTransport
                     }
                 }
             }
+            else  if ( Target.Column == deliveryTable.ListColumns["Компания"].Range.Column &&
+                Target.Row > deliveryTable.HeaderRowRange.Row &&
+                Target.Text != "")
+                {
+                    Cancel = true;)
+            
+
+            }
         }
+
+
+
+
     }
 }

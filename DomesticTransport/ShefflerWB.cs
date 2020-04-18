@@ -27,6 +27,19 @@ namespace DomesticTransport
                 return _deliverySheet;
             }
         }
+        public static Range DateCell
+        {
+            get
+            {
+                if (_dateCell == null)
+                {
+                    _dateCell =  DeliverySheet.Range["DateDelivery"];
+                }
+                return _dateCell;
+            }
+        }
+       static Range _dateCell;
+
 
         public static string GetTime(string city)
         {
@@ -214,7 +227,7 @@ namespace DomesticTransport
         {
             get
             {
-                Range dateCell = DeliverySheet.Range["DateDelivery"];
+                Range dateCell = DateCell;               //DeliverySheet.Range["DateDelivery"];
                 _dateDelivery = dateCell?.Text;
                 if (string.IsNullOrWhiteSpace(_dateDelivery))
                 {

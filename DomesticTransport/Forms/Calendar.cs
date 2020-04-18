@@ -19,7 +19,7 @@ namespace DomesticTransport.Forms
 
         private void btnFormula_Click(object sender, EventArgs e)
         {
-
+         //   Range dateCell = DeliverySheet.Range["DateDelivery"]; "=Today()+1";
         }
 
         private void btnAcept_Click(object sender, EventArgs e)

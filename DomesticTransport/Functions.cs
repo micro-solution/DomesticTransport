@@ -1074,9 +1074,12 @@ namespace DomesticTransport
                     rowDelivery.Range[1, DeliveryTable.ListColumns["ID Route"].Index].Value =
                                                                         delivery?.MapDelivery[0].Id;
                 }
-                rowDelivery.Range[1, DeliveryTable.ListColumns["Тоннаж ТС"].Index].Value = delivery.Truck?.Tonnage ?? 0;
-                rowDelivery.Range[1, DeliveryTable.ListColumns["Вес доставки"].Index].FormulaR1C1 =
-                                                "=IF(SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто])=0, SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес нетто]), SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто]))";
+                rowDelivery.Range[1, DeliveryTable.ListColumns["Тип ТС, тонн"].Index].Value 
+                                                                                = delivery.Truck?.Tonnage ?? 0;
+                rowDelivery.Range[1, DeliveryTable.ListColumns["Вес доставки"].Index].Value 
+                                                                               = delivery.TotalWeight.ToString();
+                                                //FormulaR1C1 =
+                                               // "=IF(SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто])=0, SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес нетто]), SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто]))";
             }
             pb.Close();
         }
