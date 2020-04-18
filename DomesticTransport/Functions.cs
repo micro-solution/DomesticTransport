@@ -242,8 +242,8 @@ namespace DomesticTransport
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["ID Route"].Index].Value = delivery.MapDelivery[0].Id;
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Компания"].Index].Value = delivery.Truck?.ProviderCompany?.Name ?? "";
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
-                rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck.Tonnage;
-                rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Маршрут"].Index].Value =
+                rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж ТС"].Index].Value = delivery.Truck.Tonnage;
+                rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Направление"].Index].Value =
                                                                                  delivery.MapDelivery[0].RouteName;
             }
             СhangeDelivery();
@@ -385,7 +385,7 @@ namespace DomesticTransport
                 string orderId = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Поставка"].Index].Text;
                 if (orderId.Length < 10 && !orderId.Contains(" "))
                 {
-                    orderId = new string('0', 10 - orderId.Length) + orderId;
+                    orderId = orderId.Length < 10 ? new string('0', 10 - orderId.Length) + orderId : orderId ;
                 }
 
                 Delivery delivery = deliveries.Find(d => d.Number == deliveryNumber);
@@ -654,7 +654,7 @@ namespace DomesticTransport
                 order.Customer = customer;
                 string idRouteStr = row.Range[1, ordersTable.ListColumns["ID Route"].Index].Text;
                 int idRoute = int.TryParse(idRouteStr, out int idr) ? idr : 0;
-                string Route = row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Text;
+                string Route = row.Range[1, ordersTable.ListColumns["Направление"].Index].Text;
 
                 DeliveryPoint point = new DeliveryPoint
                 {
@@ -666,7 +666,7 @@ namespace DomesticTransport
                     Route = Route
                 };
                 order.DeliveryPoint = point;
-                order.Route = row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Text;
+                order.Route = row.Range[1, ordersTable.ListColumns["Направление"].Index].Text;
                 string weight = row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Text;
                 order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
 
@@ -730,7 +730,7 @@ namespace DomesticTransport
 
                 DeliveryPoint point = ShefflerWB.RoutesList.Find(r => r.IdCustomer == customerId);
                 order.DeliveryPoint = point;
-                order.Route = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Маршрут"].Index].Text;
+                order.Route = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Направление"].Index].Text;
                 string weight = row.Range[1, ShefflerWB.OrdersTable.ListColumns["Вес нетто"].Index].Text;
                 order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
 
@@ -901,7 +901,7 @@ namespace DomesticTransport
             // Вес брутто для товара будет весом нетто для доставки 
             string weight = row.Cells[1, GetColumn(row.Parent, "Вес брутто", 1)].Text;
             order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
-            order.Route = row.Cells[1, GetColumn(row.Parent, "Маршрут", 1)].Text;
+          //  order.Route = row.Cells[1, GetColumn(row.Parent, "Направление", 1)].Text;
             return order;
         }
 
@@ -1069,12 +1069,12 @@ namespace DomesticTransport
 
                 if (delivery?.MapDelivery.Count > 0)
                 {
-                    rowDelivery.Range[1, DeliveryTable.ListColumns["Маршрут"].Index].Value =
+                    rowDelivery.Range[1, DeliveryTable.ListColumns["Направление"].Index].Value =
                                                             delivery.MapDelivery[0].RouteName;
                     rowDelivery.Range[1, DeliveryTable.ListColumns["ID Route"].Index].Value =
                                                                         delivery?.MapDelivery[0].Id;
                 }
-                rowDelivery.Range[1, DeliveryTable.ListColumns["Тоннаж"].Index].Value = delivery.Truck?.Tonnage ?? 0;
+                rowDelivery.Range[1, DeliveryTable.ListColumns["Тоннаж ТС"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                 rowDelivery.Range[1, DeliveryTable.ListColumns["Вес доставки"].Index].FormulaR1C1 =
                                                 "=IF(SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто])=0, SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес нетто]), SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто]))";
             }
@@ -1145,7 +1145,7 @@ namespace DomesticTransport
             row.Range[1, ordersTable.ListColumns["ID Route"].Index].Value = order.DeliveryPoint.Id;
             row.Range[1, ordersTable.ListColumns["Вес нетто"].Index].Value = order.WeightNetto;
             row.Range[1, ordersTable.ListColumns["Вес брутто"].Index].Value = order.WeightBrutto;
-            row.Range[1, ordersTable.ListColumns["Маршрут"].Index].Value = order.Route;
+            row.Range[1, ordersTable.ListColumns["Направление"].Index].Value = order.Route;
         }
 
         private void ClearTotal()
@@ -1596,7 +1596,7 @@ namespace DomesticTransport
                     };
                     string providerName = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Компания"].Index].Text;
                     Provider shippingCompany = new Provider() { Name = providerName };
-                    string carTonnage = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж"].Index].Text;
+                    string carTonnage = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж ТС"].Index].Text;
                     double tonnage = double.TryParse(carTonnage, out double ton) ? ton : 0;
                     delivery.Truck = new Truck() { ProviderCompany = shippingCompany, Tonnage = tonnage };
 

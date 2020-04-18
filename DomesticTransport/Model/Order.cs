@@ -45,7 +45,32 @@
         private string _transportationUnit;
 
         public double Cost { get; set; }
-        public string Route { get; set; }
-        public DeliveryPoint DeliveryPoint { get; set; }
+        public string Route 
+        {
+            get {
+                if (string.IsNullOrWhiteSpace(_route) && DeliveryPoint.RouteName !="")
+                {
+                    _route = DeliveryPoint.RouteName;
+                }
+                return _route;
+            }
+            set => _route = value;
+        }
+        string _route;
+        public DeliveryPoint DeliveryPoint 
+        {
+            get {
+                 if (string.IsNullOrWhiteSpace(_deliveryPoint.City))
+                {
+                    _deliveryPoint = new DeliveryPoint();
+                    
+                    //_deliveryPoint.City = DeliveryPoint.Find(Customer.Id , City )
+                }
+                return _deliveryPoint;
+            }
+            set => _deliveryPoint = value; 
+
+        }
+        DeliveryPoint _deliveryPoint; 
     }
 }
