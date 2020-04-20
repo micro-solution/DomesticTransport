@@ -29,6 +29,20 @@ namespace DomesticTransport.Model
         }
         string _timetable;
 
+        /// <summary>
+        /// Дата доставки
+        /// </summary>
+        public  string DateDelivery {
+            get {
+                if (string.IsNullOrEmpty(_dateDelivery))
+                {
+                    _dateDelivery = ShefflerWB.DateDelivery;
+                }
+                return _dateDelivery;
+            }
+            set => _dateDelivery = value; }
+        string _dateDelivery;
+
         public bool HasRoute { get; set; } = true;
 
         ///// <summary>

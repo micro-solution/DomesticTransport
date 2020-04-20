@@ -28,7 +28,19 @@ namespace DomesticTransport
                 }
                 return _deliverySheet;
             }
-        }
+        } private static Worksheet _deliverySheet;
+        public static Worksheet ArchiveSheet
+        {
+            get
+            {
+                if (_archiveSheet == null)
+                {
+                    _archiveSheet = Globals.ThisWorkbook.Sheets["Архив"];
+                }
+                return _archiveSheet;
+            }
+        }       private static Worksheet _archiveSheet;
+
         public static Range DateCell
         {
             get
@@ -71,7 +83,7 @@ namespace DomesticTransport
             return time;
         }
 
-        private static Worksheet _deliverySheet;
+  
         public static Worksheet TotalSheet
         {
             get
@@ -151,6 +163,20 @@ namespace DomesticTransport
             }
         }
         private static ListObject _totalTable;
+
+        public static ListObject ArchiveTable
+        {
+            get
+            {
+                if (_archiveTable == null)
+                {
+                    _archiveTable = TotalSheet.ListObjects["ArchiveTable"];
+                }
+                return _archiveTable;
+            }
+        }
+        private static ListObject _archiveTable;
+
 
         public static ListObject RateTable
         {

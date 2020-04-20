@@ -1,4 +1,5 @@
 ﻿using DomesticTransport.Forms;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,12 @@ namespace DomesticTransport
 
         internal static void LoadToArhive()
         {
-           
+            ListObject total = ShefflerWB.TotalTable;
+            //new Functions().
+
+
+
+
         }
 
     }

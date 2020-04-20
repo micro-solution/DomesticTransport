@@ -2,7 +2,7 @@
 using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
-
+using Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -702,6 +702,7 @@ namespace DomesticTransport
 
             return order;
         }
+      
 
         private void UpdateOrderFromTotal()
         {
@@ -788,11 +789,69 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Получить инфо из выгруза  
+        /// 
         /// </summary>
-        /// <param name="file"></param>
         /// <returns></returns>
-        private Order GetFromFile(string file)
+        public List<Delivery> GetFromTotal()
+        {
+            List<Delivery> deliveries = new List<Delivery>();
+            deliveries = GetDeliveriesFromTotal();
+            return deliveries;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        private List<Delivery> GetDeliveriesFromTotal()
+        {
+            List<Order> orders = new List<Order>();
+            List<Delivery> deliveries = new List<Delivery>();
+            XlTable table = new XlTable() { ListTable = ShefflerWB.TotalTable };
+
+            foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
+            {
+                table.CurrentRowRange = row.Range;
+                 Order order = GetOrdersFromTotalRow(table);
+               if (order!=null) orders.Add(order);
+                Delivery delivery = GetDeliveryFromTotalRow(table);
+                if (delivery != null) deliveries.Add(delivery);
+            }
+            return deliveries;
+        }
+        private Order GetOrdersFromTotalRow(XlTable xlTable )
+        {
+            Order order = new Order();
+             string idOrder = xlTable.GetValueString("Номер поставки");
+            if (string.IsNullOrWhiteSpace(idOrder)) return null;
+            order.Id = idOrder;
+            order.TransportationUnit = xlTable.GetValueString("Номер накладной");
+            order.WeightBrutto = xlTable.GetValueDouble("Брутто вес");
+            order.WeightNetto = xlTable.GetValueDouble("Нетто вес");
+            order.Cost= xlTable.GetValueDouble("Стоимость поставки"); 
+            order.PalletsCount = xlTable.GetValueInt("Кол-во паллет");
+            order.Customer.Id = xlTable.GetValueString("Номер грузополучателя");
+            order.Customer.Name = xlTable.GetValueString("Грузополучатель");
+            order.Route = xlTable.GetValueString("Направление");
+            //order.date dateTable = GetValueString( row , "Дата доставки", ShefflerWB.TotalTable); 
+            return order;
+        }
+        private Delivery GetDeliveryFromTotalRow(XlTable xlTable)
+        {
+            Delivery delivery = new Delivery();
+            //delivery.date
+
+            return delivery;
+        }
+
+            //'=============================================================================
+            /// <summary>
+            /// Получить инфо из выгруза  
+            /// </summary>
+            /// <param name="file"></param>
+            /// <returns></returns>
+            private Order GetFromFile(string file)
         {
             Order order = new Order();
             Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
