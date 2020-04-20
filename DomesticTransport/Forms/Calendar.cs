@@ -12,8 +12,8 @@ namespace DomesticTransport.Forms
 {
     public partial class Calendar : Form
     {
-        public string DateDelivery    { get; set; }
-     
+        public string DateDelivery { get; set; }
+
 
         public Calendar()
         {
@@ -28,27 +28,27 @@ namespace DomesticTransport.Forms
 
         private void btnAcept_Click(object sender, EventArgs e)
         {
-            DateDelivery =  tbDate.Text;
+            DateDelivery = tbDate.Text;
             DialogResult = DialogResult.OK;
             Hide();
         }
-       
+
         private void calendarControl_DateChanged(object sender, DateRangeEventArgs e)
-        {             
+        {
             tbDate.Text = e.Start.ToShortDateString();
         }
 
         private void tbDate_TextChanged(object sender, EventArgs e)
         {
-            
-           if ( DateTime.TryParse(tbDate.Text, out DateTime dt))
+
+            if (DateTime.TryParse(tbDate.Text, out DateTime dt))
             {
-             if (dt >= calendarControl.MinDate && dt <= calendarControl.MaxDate)
+                if (dt >= calendarControl.MinDate && dt <= calendarControl.MaxDate)
                 {
 
-                DateDelivery =  dt.ToShortDateString() ;                
-                calendarControl.SetSelectionRange(dt, dt);
-             
+                    DateDelivery = dt.ToShortDateString();
+                    calendarControl.SetSelectionRange(dt, dt);
+
                 }
             }
         }
@@ -58,5 +58,10 @@ namespace DomesticTransport.Forms
 
             tbDate.Text = ShefflerWB.DateDelivery;
         }
+        public void  OpenSelectDate()
+            {
+            btnFormula.Visible = false;
+            ShowDialog();            
+            }
     }
 }

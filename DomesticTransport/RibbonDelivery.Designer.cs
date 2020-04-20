@@ -58,6 +58,7 @@
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
+            this.btnDate = this.Factory.CreateRibbonButton();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.ButtonSettingLetterCS = this.Factory.CreateRibbonButton();
@@ -66,7 +67,6 @@
             this.btnSetts = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
-            this.btnDate = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -325,6 +325,15 @@
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
             // 
+            // btnDate
+            // 
+            this.btnDate.Image = ((System.Drawing.Image)(resources.GetObject("btnDate.Image")));
+            this.btnDate.Label = "Выбрать дату";
+            this.btnDate.Name = "btnDate";
+            this.btnDate.ScreenTip = "Установить дату отгрузки";
+            this.btnDate.ShowImage = true;
+            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
+            // 
             // BtnSaveSignature
             // 
             this.BtnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("BtnSaveSignature.Image")));
@@ -392,15 +401,6 @@
             // 
             this.button3.Label = "";
             this.button3.Name = "button3";
-            // 
-            // btnDate
-            // 
-            this.btnDate.Image = ((System.Drawing.Image)(resources.GetObject("btnDate.Image")));
-            this.btnDate.Label = "Выбрать дату";
-            this.btnDate.Name = "btnDate";
-            this.btnDate.ScreenTip = "Установить дату отгрузки";
-            this.btnDate.ShowImage = true;
-            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
             // 
             // RibbonDelivery
             // 

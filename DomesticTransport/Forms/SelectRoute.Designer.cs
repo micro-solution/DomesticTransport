@@ -35,9 +35,9 @@
             // btnAcept
             // 
             this.btnAcept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAcept.Location = new System.Drawing.Point(67, 291);
+            this.btnAcept.Location = new System.Drawing.Point(323, 291);
             this.btnAcept.Name = "btnAcept";
-            this.btnAcept.Size = new System.Drawing.Size(91, 29);
+            this.btnAcept.Size = new System.Drawing.Size(104, 29);
             this.btnAcept.TabIndex = 0;
             this.btnAcept.Text = "Принять";
             this.btnAcept.UseVisualStyleBackColor = true;
@@ -45,22 +45,22 @@
             // btncancel
             // 
             this.btncancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btncancel.Location = new System.Drawing.Point(175, 291);
+            this.btncancel.Location = new System.Drawing.Point(431, 291);
             this.btncancel.Name = "btncancel";
-            this.btncancel.Size = new System.Drawing.Size(91, 29);
+            this.btncancel.Size = new System.Drawing.Size(104, 29);
             this.btncancel.TabIndex = 0;
             this.btncancel.Text = "Отменить";
             this.btncancel.UseVisualStyleBackColor = true;
             // 
-            // Calendar
+            // RouteSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(269, 322);
+            this.ClientSize = new System.Drawing.Size(538, 322);
             this.Controls.Add(this.btncancel);
             this.Controls.Add(this.btnAcept);
-            this.Name = "Calendar";
-            this.Text = "Calendar";
+            this.Name = "RouteSelector";
+            this.Text = "Выбрать маршрут";
             this.ResumeLayout(false);
 
         }
