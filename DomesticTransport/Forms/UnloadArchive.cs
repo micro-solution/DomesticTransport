@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
 {
-    public partial class  UnloadArhive : Form
+    public partial class  UnloadArchive : Form
     {
-        public UnloadArhive()
+        public UnloadArchive()
         {
             InitializeComponent();
         }

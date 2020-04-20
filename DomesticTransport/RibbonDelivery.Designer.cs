@@ -57,6 +57,10 @@
             this.MenuSendTotal = this.Factory.CreateRibbonMenu();
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.btnToArchive = this.Factory.CreateRibbonButton();
+            this.btnFromArchive = this.Factory.CreateRibbonButton();
+            this.toFile = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnDate = this.Factory.CreateRibbonButton();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
@@ -71,6 +75,7 @@
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.settings.SuspendLayout();
             this.about.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +85,7 @@
             this.ShefflerRibbon.Groups.Add(this.groupGeneral);
             this.ShefflerRibbon.Groups.Add(this.groupEdit);
             this.ShefflerRibbon.Groups.Add(this.group1);
+            this.ShefflerRibbon.Groups.Add(this.group2);
             this.ShefflerRibbon.Groups.Add(this.settings);
             this.ShefflerRibbon.Groups.Add(this.about);
             this.ShefflerRibbon.Label = "Schaeffler";
@@ -316,6 +322,37 @@
             this.ButtonSendToCS.SuperTip = "Подготовка письма с данными об отгрузках для CS и WH";
             this.ButtonSendToCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendToCS_Click);
             // 
+            // group2
+            // 
+            this.group2.Items.Add(this.btnToArchive);
+            this.group2.Items.Add(this.btnFromArchive);
+            this.group2.Items.Add(this.toFile);
+            this.group2.Label = "Архив";
+            this.group2.Name = "group2";
+            // 
+            // btnToArchive
+            // 
+            this.btnToArchive.Image = ((System.Drawing.Image)(resources.GetObject("btnToArchive.Image")));
+            this.btnToArchive.Label = "В архив";
+            this.btnToArchive.Name = "btnToArchive";
+            this.btnToArchive.ShowImage = true;
+            this.btnToArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnToArchive_Click);
+            // 
+            // btnFromArchive
+            // 
+            this.btnFromArchive.Image = ((System.Drawing.Image)(resources.GetObject("btnFromArchive.Image")));
+            this.btnFromArchive.Label = "Из архива";
+            this.btnFromArchive.Name = "btnFromArchive";
+            this.btnFromArchive.ShowImage = true;
+            this.btnFromArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFromArchive_Click);
+            // 
+            // toFile
+            // 
+            this.toFile.Image = ((System.Drawing.Image)(resources.GetObject("toFile.Image")));
+            this.toFile.Label = "В файл";
+            this.toFile.Name = "toFile";
+            this.toFile.ShowImage = true;
+            // 
             // settings
             // 
             this.settings.Items.Add(this.btnDate);
@@ -415,6 +452,8 @@
             this.groupEdit.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.settings.ResumeLayout(false);
             this.settings.PerformLayout();
             this.about.ResumeLayout(false);
@@ -456,6 +495,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu MenuSendTotal;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTotalToProviders;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDate;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnToArchive;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFromArchive;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton toFile;
     }
 
     partial class ThisRibbonCollection

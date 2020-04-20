@@ -1,6 +1,6 @@
 ﻿namespace DomesticTransport.Forms
 {
-    partial class UnloadArhive
+    partial class UnloadArchive
     {
         /// <summary>
         /// Required designer variable.
@@ -127,7 +127,7 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "id Провайдера";
             // 
-            // UnloadArhive
+            // UnloadArchive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -141,7 +141,7 @@
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.btncancel);
             this.Controls.Add(this.btnAcept);
-            this.Name = "UnloadArhive";
+            this.Name = "UnloadArchive";
             this.Text = "Выгрузить из архива";
             this.ResumeLayout(false);
             this.PerformLayout();
