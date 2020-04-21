@@ -30,7 +30,7 @@ namespace DomesticTransport.Model
         string _timetable;
 
         /// <summary>
-        /// Дата доставки
+        /// Дата отгрузки
         /// </summary>
         public  string DateDelivery {
             get {
@@ -82,6 +82,7 @@ namespace DomesticTransport.Model
             {
                 double sum = 0;
                 Orders.ForEach(x => sum += x.WeightBrutto == 0 ? x.WeightNetto : x.WeightBrutto);
+                sum = System.Math.Round(sum, 2); 
                 return sum;
             }
         }

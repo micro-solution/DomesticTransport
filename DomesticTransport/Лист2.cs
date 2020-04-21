@@ -125,7 +125,7 @@ namespace DomesticTransport
                 int number = int.TryParse(numStr, out int n) ? n : 0;
                 if (number == 0) return;
                 delivery.Orders = orders.FindAll(o => o.DeliveryNumber == number);
-
+                               
                 if (orders.Count == 0) return;
                 providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
                 providerFrm.ProviderName = Target.Text;
@@ -134,6 +134,15 @@ namespace DomesticTransport
                 if (providerFrm.DialogResult == DialogResult.OK)
                 {
                     Target.Value = providerFrm.ProviderName;
+
+                    if (providerFrm.ProviderName== "Деловые линии")
+                    {
+                        delivery.MapDelivery.ForEach(p => p.RouteName = "Сборный груз");
+                    Target.Offset[0, 5].Value ="Сборный груз";
+                    Target.Offset[0, 2].Value = "";
+                    Target.Offset[0, 1].Value = "";
+                    }
+
                     Target.Offset[0, 4].Value = providerFrm.CostDelivery;
                     //На лист отгрузки 
                     string idOrder = delivery.Orders[0].Id;
@@ -143,6 +152,9 @@ namespace DomesticTransport
                     {
                         row.Cells[0, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
                         row.Cells[0, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
+                        row.Cells[0, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value ="";
+                      // row.Cells[0, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Value = "Сборный груз";
+
                     }
                 }
             }

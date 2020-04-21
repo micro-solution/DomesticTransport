@@ -249,7 +249,7 @@ namespace DomesticTransport
         private static List<TruckRate> _rateList;
 
         /// <summary>
-        /// Дата Доставки
+        /// Дата отгрузки
         /// </summary>
         public static string DateDelivery
         {
@@ -571,7 +571,7 @@ namespace DomesticTransport
         {
             Range currentRng = null;
             string dateDelivery = DateDelivery;
-            int columnDelivery = TotalTable.ListColumns["Дата доставки"].Index;
+            int columnDelivery = TotalTable.ListColumns["Дата отгрузки"].Index;
             foreach (ListRow row in TotalTable.ListRows)
             {
                 string dateTable = row.Range[1, columnDelivery].Text;
