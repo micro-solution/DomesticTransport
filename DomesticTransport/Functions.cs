@@ -843,13 +843,14 @@ namespace DomesticTransport
             Customer customer = new Customer(customerId);
             customer.Name = nameCustomer;
             order.Customer = customer;
+
             order.TransportationUnit = xlTable.GetValueString("Номер накладной");
             order.WeightBrutto = xlTable.GetValueDouble("Брутто вес");
             order.WeightNetto = xlTable.GetValueDouble("Нетто вес");
             order.Cost= xlTable.GetValueDouble("Стоимость поставки"); 
             order.PalletsCount = xlTable.GetValueInt("Кол-во паллет");
-            order.Customer.Id = xlTable.GetValueString("Номер грузополучателя");
-            order.Customer.Name = xlTable.GetValueString("Грузополучатель");
+           // order.Customer.Id = xlTable.GetValueString("Номер грузополучателя");
+          //  order.Customer.Name = xlTable.GetValueString("Грузополучатель");
             order.RouteCity = xlTable.GetValueString("Направление");
   
             return order;

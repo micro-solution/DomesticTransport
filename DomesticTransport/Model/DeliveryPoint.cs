@@ -59,7 +59,7 @@ namespace DomesticTransport.Model
             set => _routeName = value.Trim();
         }
         string _routeName;
-        private string id;
+      //  private string id;
 
         public DeliveryPoint(string id , string routeName) : this()
         {               
