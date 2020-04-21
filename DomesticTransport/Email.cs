@@ -3,6 +3,8 @@ using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 
 using System;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 using Outlook = Microsoft.Office.Interop.Outlook;
@@ -127,7 +129,8 @@ namespace DomesticTransport
         /// <param name="attachment">вложение</param>
         public void CreateMail(string to, string copy, string subject, string message, string attachment)
         {
-            string signature = ReadReestrSignature();
+            string signature = ReadSignature();
+            if (string.IsNullOrEmpty(signature)) signature = ReadReestrSignature();
             string HtmlBody = message + "<br><br>" + signature;
             try
             {
@@ -146,6 +149,40 @@ namespace DomesticTransport
                 MessageBox.Show(ex.Message);
                 return;
             }
+        }
+
+        private string ReadSignature()
+        {
+            try
+            {
+                string appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Microsoft\\Signatures";
+                string signature = string.Empty;
+                DirectoryInfo diInfo = new DirectoryInfo(appDataDir);
+
+                if (diInfo.Exists)
+                {
+                    FileInfo[] fiSignature = diInfo.GetFiles("*.htm");
+
+                    if (fiSignature.Length > 0)
+                    {
+                        StreamReader sr = new StreamReader(fiSignature[0].FullName, Encoding.Default);
+                        signature = sr.ReadToEnd();
+
+                        if (!string.IsNullOrEmpty(signature))
+                        {
+                            string fileName = fiSignature[0].Name.Replace(fiSignature[0].Extension, string.Empty);
+                            signature = signature.Replace(fileName + "_files/", appDataDir + "/" + fileName + "_files/");
+                        }
+                    }
+                }
+                return signature;
+            }
+            catch
+            {
+                return "";
+            }
+            
+            
         }
 
         public static void WriteReestrSignature()
