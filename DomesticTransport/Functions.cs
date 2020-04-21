@@ -29,6 +29,8 @@ namespace DomesticTransport
             sapFiles.ShowDialog();
             if (sapFiles.DialogResult != DialogResult.OK) return;
 
+            ShefflerWB.DateCell.Value = sapFiles.calendarControl.SelectionStart;
+
             string sapPath = "";
             string ordersPath = "";
             try

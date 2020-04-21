@@ -26,8 +26,22 @@ namespace DomesticTransport
         public SapFiles()
         {
             InitializeComponent();
+            DateTime date = DateTime.Today;
+            do
+            {
+                date = date.AddDays(1);
+            } while (IsWeekEnd(date));
+
+            calendarControl.SetDate(date);
             DialogResult = DialogResult.None;
         }
+
+        private static bool IsWeekEnd(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Saturday
+                || date.DayOfWeek == DayOfWeek.Sunday;
+        }
+
 
         /// <summary>
         /// Кнопка выбрать папку
