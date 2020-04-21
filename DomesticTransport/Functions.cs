@@ -1883,7 +1883,7 @@ namespace DomesticTransport
         /// Собрать доставки из актуального диапазона таблицы Отгрузка
         /// </summary>
         /// <returns></returns>
-        private List<Delivery> GetDeliveriesFromTotalSheet()
+        public List<Delivery> GetDeliveriesFromTotalSheet()
         {
             List<Delivery> deliveries = new List<Delivery>();
             Range total = new ShefflerWB().GetCurrentTotalRange();

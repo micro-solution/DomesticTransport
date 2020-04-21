@@ -352,6 +352,7 @@
             this.toFile.Label = "В файл";
             this.toFile.Name = "toFile";
             this.toFile.ShowImage = true;
+            this.toFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toFile_Click);
             // 
             // settings
             // 

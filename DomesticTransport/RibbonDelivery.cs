@@ -497,5 +497,11 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
+
+        private void toFile_Click(object sender, RibbonControlEventArgs e)
+        {
+            TransportTable transportTable = new TransportTable();
+            transportTable.ImportDeliveryes(new Functions().GetDeliveriesFromTotalSheet());
+        }
     }
 }

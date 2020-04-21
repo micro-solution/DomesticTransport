@@ -119,5 +119,29 @@ namespace DomesticTransport.Properties {
                 this["SettingCSLetterMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TransportTableFileFullName {
+            get {
+                return ((string)(this["TransportTableFileFullName"]));
+            }
+            set {
+                this["TransportTableFileFullName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShipmentFileFullName {
+            get {
+                return ((string)(this["ShipmentFileFullName"]));
+            }
+            set {
+                this["ShipmentFileFullName"] = value;
+            }
+        }
     }
 }

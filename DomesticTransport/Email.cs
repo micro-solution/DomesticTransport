@@ -180,9 +180,7 @@ namespace DomesticTransport
             catch
             {
                 return "";
-            }
-            
-            
+            } 
         }
 
         public static void WriteReestrSignature()

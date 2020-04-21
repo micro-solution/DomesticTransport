@@ -26,5 +26,11 @@
     <Setting Name="SettingCSLetterMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)">Коллеги, добрый день! В приложении отгрузка на [date], прошу принять к работе.</Value>
     </Setting>
+    <Setting Name="TransportTableFileFullName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ShipmentFileFullName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
