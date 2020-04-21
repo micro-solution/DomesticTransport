@@ -170,7 +170,7 @@ namespace DomesticTransport
             {
                 if (_archiveTable == null)
                 {
-                    _archiveTable = TotalSheet.ListObjects["ArchiveTable"];
+                    _archiveTable = ArchiveSheet.ListObjects["ArchiveTable"];
                 }
                 return _archiveTable;
             }

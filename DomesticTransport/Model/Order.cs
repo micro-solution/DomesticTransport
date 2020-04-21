@@ -14,7 +14,10 @@
             set => _id = value.Length < 10 ? new string('0', 10 - value.Length) + value : value;
         }
         private string _id;
-
+        /// <summary>
+        /// Дата отгрузки
+        /// </summary>
+        public string DateDelivery { get; set; }
         // Прорядковый номер доставки
         public int DeliveryNumber { get; set; }
 
@@ -45,7 +48,7 @@
         private string _transportationUnit;
 
         public double Cost { get; set; }
-        public string Route 
+        public string RouteCity 
         {
             get {
                 if (string.IsNullOrWhiteSpace(_route) && DeliveryPoint.RouteName !="")
@@ -60,17 +63,15 @@
         public DeliveryPoint DeliveryPoint 
         {
             get {
-                 if (string.IsNullOrWhiteSpace(_deliveryPoint.City))
+                 if (string.IsNullOrWhiteSpace(_deliveryPoint.RouteName) && !string.IsNullOrWhiteSpace(RouteCity))
                 {
-                    _deliveryPoint = new DeliveryPoint();
-                    
-                    //_deliveryPoint.City = DeliveryPoint.Find(Customer.Id , City )
+                    _deliveryPoint = new DeliveryPoint(Customer.Id, RouteCity);                   
+
                 }
                 return _deliveryPoint;
             }
             set => _deliveryPoint = value; 
 
-        }
-        DeliveryPoint _deliveryPoint; 
+        } DeliveryPoint _deliveryPoint; 
     }
 }

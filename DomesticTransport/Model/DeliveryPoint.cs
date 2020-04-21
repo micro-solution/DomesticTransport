@@ -59,8 +59,13 @@ namespace DomesticTransport.Model
             set => _routeName = value.Trim();
         }
         string _routeName;
+        private string id;
 
-
+        public DeliveryPoint(string id , string routeName) : this()
+        {               
+            this = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id   &&
+                x.CityLongName ==routeName);
+        }
 
         private string GetRouteName()
         {

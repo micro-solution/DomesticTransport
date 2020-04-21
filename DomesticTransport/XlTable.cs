@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DomesticTransport
 {
-    public class XlTable
+    public class XLTable
     {
         public ListObject ListTable { get; set; }
         public Range TableRange
@@ -72,6 +72,13 @@ namespace DomesticTransport
             int column = GetColumn(header);
             string str = CurrentRowRange.Cells[1, column].Value.ToString();
             double val = double.TryParse(str, out double v) ? v : 0;
+            return val;
+        }
+        public decimal GetValueDecimal(string header)
+        {
+            int column = GetColumn(header);
+            string str = CurrentRowRange.Cells[1, column].Value.ToString();
+            decimal val = decimal.TryParse(str, out decimal v) ? v : 0;
             return val;
         }
         public int GetValueInt( string header)
