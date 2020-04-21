@@ -859,6 +859,7 @@ namespace DomesticTransport
             Delivery delivery = new Delivery();
             delivery.DateDelivery   = xlTable.GetValueString("Дата отгрузки");
             delivery.Number = xlTable.GetValueInt("№ Доставки");
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) || delivery.Number == 0) return null;
             delivery.Time = xlTable.GetValueString("Время подачи ТС");
 
             string id = xlTable.GetValueString("ID перевозчика");

@@ -18,22 +18,14 @@ namespace DomesticTransport
             new UnloadArchive().ShowDialog();
         }
 
-
-
-
-
-        internal static void LoadToArhive()
-        {
-            //ListObject total = ShefflerWB.TotalTable;
+       public static void LoadToArhive()
+        {            
             Functions fn = new Functions();            
-            List<Delivery> deliveries = fn.GetDeliveriesFromTotal();
+            List<Delivery> deliveries = fn.GetDeliveriesFromTotal();            
             
             PrintArchive(deliveries);
                           //Проверить повторение заказов
-            CpopyTotalPastArchive();
-            ///
-
-
+            CpopyTotalPastArchive();            
         }                          
 
         static void CpopyTotalPastArchive()
@@ -46,6 +38,7 @@ namespace DomesticTransport
         }
         static void ClearArchive()
         {
+            
         }
 
             private static void PrintArchive(List<Delivery> deliveries)

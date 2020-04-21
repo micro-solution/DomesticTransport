@@ -70,21 +70,21 @@ namespace DomesticTransport
         public double GetValueDouble( string header)
         {
             int column = GetColumn(header);
-            string str = CurrentRowRange.Cells[1, column].Value.ToString();
+            string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
             double val = double.TryParse(str, out double v) ? v : 0;
             return val;
         }
         public decimal GetValueDecimal(string header)
         {
             int column = GetColumn(header);
-            string str = CurrentRowRange.Cells[1, column].Value.ToString();
+            string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
             decimal val = decimal.TryParse(str, out decimal v) ? v : 0;
             return val;
         }
         public int GetValueInt( string header)
         {
             int column = GetColumn(header);
-            string str = CurrentRowRange.Cells[1, column].Value.ToString();
+            string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
             int val = int.TryParse(str, out int v) ? v : 0;
             return val;
         }
