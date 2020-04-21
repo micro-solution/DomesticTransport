@@ -3,29 +3,42 @@ using DomesticTransport.Model;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomesticTransport
 {
     class Archive
     {
+        private static List<string> OrdersId {
+            get
+            {
+                if (_ordersId ==null ||  _ordersId.Count == 0)
+                {
+                    foreach (ListRow archiveRow in ShefflerWB.ArchiveTable.ListRows)
+                    {
+                        _ordersId = new List<string>();
+                        string idOrder = archiveRow.Range[1,
+                          ShefflerWB.ArchiveTable.ListColumns["Номер поставки"].Index].Text;
+                        idOrder = idOrder.Length < 10 ? 
+                                    new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                        _ordersId.Add(idOrder);
+                    }
+                }
+                return _ordersId;
+            }            
+        }
+        static List<string> _ordersId;
+
         public Archive() { }
 
-        public static void UnoadFromArhive()
-        {
-            new UnloadArchive().ShowDialog();
-        }
-
+        /// <summary>
+        /// Перенести на Лист Архив
+        /// </summary>
         public static void LoadToArhive()
-        {
-            Functions fn = new Functions();
-            List<Delivery> deliveries = fn.GetDeliveriesFromTotal();
-
+        {               
+            XLTable table = new XLTable() { ListTable = ShefflerWB.TotalTable };
+            List<Delivery> deliveries = GetAllDeliveries(table);
             if (!CheckArchive(deliveries))
-            {
-                //Проверить повторение заказов
+            {//Проверить повторение заказов
                 CpopyTotalPastArchive();
             }
             else
@@ -34,6 +47,11 @@ namespace DomesticTransport
             }
         }
 
+         /// <summary>
+         /// Проверить наличие в архиве
+         /// </summary>
+         /// <param name="deliveries"></param>
+         /// <returns></returns>
         static bool CheckArchive(List<Delivery> deliveries)
         {
             bool chk = false;
@@ -44,21 +62,26 @@ namespace DomesticTransport
             }
             return chk;
         }
+        /// <summary>
+        /// Проверить все заказы доставки
+        /// </summary>
+        /// <param name="delivery"></param>
+        /// <returns></returns>
         static bool CheckDelivery(Delivery delivery)
         {
             bool chk = false;
             ListObject archiveTable = ShefflerWB.ArchiveTable;
-            foreach (ListRow archiveRow in archiveTable.ListRows)
-            {
-                string idOrder = archiveRow.Range[1, archiveTable.ListColumns["Номер поставки"].Index].Text;
-                idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
-                chk = delivery.Orders.Find(a => a.Id == idOrder) != null;
+            foreach (string idOrder in OrdersId)
+            {                
+               // string idOrder = archiveRow.Range[1, archiveTable.ListColumns["Номер поставки"].Index].Text;
+               //idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+               chk = delivery.Orders.Find(a => a.Id == idOrder) != null;
                 if (chk) break;
             }
             return chk;
         }
 
-
+          //Скопировать все вставить в архив
         static void CpopyTotalPastArchive()
         {
             ShefflerWB.TotalTable.DataBodyRange.Copy();
@@ -79,12 +102,133 @@ namespace DomesticTransport
             bool chk = false;
             foreach (Delivery delivery in deliveries)
             {
+                PrintDeliveryArchiveRow(delivery, tableArchive);
                 chk = CheckDelivery(delivery);
                 if (chk) {
                     //delivery 
-                  
+                    for (int i = 0; i< delivery.Orders.Count; i++)
+                    {
+                       
+                        Order order = delivery.Orders[i];
+                        PrintArchiveRow(order, tableArchive);
+                    }
                 }
             }
         }
+
+        private static void PrintDeliveryArchiveRow(Delivery delivery, XLTable tableArchive)
+        {
+            //delivery. 
+            tableArchive.SetValue("№ Доставки", delivery.Number);     
+            tableArchive.SetValue("Время подачи ТС", delivery.Time);     
+            tableArchive.SetValue("Дата отгрузки", delivery.DateDelivery);
+            tableArchive.SetValue("ID перевозчика", delivery.Driver.Id);
+            tableArchive.SetValue("Грузополучатель", delivery.Driver.Name);
+        }
+        private static void PrintArchiveRow(Order order, object orders)
+        {
+            //tableArchive.SetValue("Грузополучатель", order.Id);
+        }
+
+
+
+
+        public static void UnoadFromArhive()
+        {
+            new UnloadArchive().ShowDialog();
+        }
+
+        ///=======================================================
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static List<Delivery> GetAllDeliveries(XLTable table)
+        {
+            List<Order> orders = new List<Order>();
+            List<Delivery> deliveries = new List<Delivery>();
+
+            foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
+            {
+                table.CurrentRowRange = row.Range;
+                Order order = GetOrdersFromTotalRow(table);
+                if (order != null) orders.Add(order);
+                Delivery delivery = GetDeliveryFromTotalRow(table);
+                if (delivery != null) deliveries.Add(delivery);
+            }
+            SortingOrders(orders, deliveries);
+            return deliveries;
+        }
+
+        private static List<Delivery> SortingOrders(List<Order> orders, List<Delivery> deliveries)
+        {
+            foreach (Delivery delivery in deliveries)
+            {
+                List<Order> ordersDelivery = orders.FindAll(a =>
+                                             a.DeliveryNumber == delivery.Number &&
+                                             a.DateDelivery == delivery.DateDelivery);
+                if (ordersDelivery != null)
+                {
+                    delivery.Orders = ordersDelivery;
+                    ordersDelivery.ForEach(x => orders.Remove(x));
+                }
+            }
+            return deliveries;
+        }
+
+        private static Order GetOrdersFromTotalRow(XLTable xlTable)
+        {
+            Order order = new Order();
+            string idOrder = xlTable.GetValueString("Номер поставки");
+            if (string.IsNullOrWhiteSpace(idOrder)) return null;
+            order.Id = idOrder;
+            order.DeliveryNumber = xlTable.GetValueInt("№ Доставки");
+            order.DateDelivery = xlTable.GetValueString("Дата отгрузки");
+            order.PointNumber = xlTable.GetValueInt("Порядок выгрузки");
+            string customerId = xlTable.GetValueString("Номер грузополучателя");
+            string nameCustomer = xlTable.GetValueString("Грузополучатель");
+            Customer customer = new Customer(customerId);
+            customer.Name = nameCustomer;
+            order.Customer = customer;
+
+            order.TransportationUnit = xlTable.GetValueString("Номер накладной");
+            order.WeightBrutto = xlTable.GetValueDouble("Брутто вес");
+            order.WeightNetto = xlTable.GetValueDouble("Нетто вес");
+            order.Cost = xlTable.GetValueDouble("Стоимость поставки");
+            order.PalletsCount = xlTable.GetValueInt("Кол-во паллет");
+            // order.Customer.Id = xlTable.GetValueString("Номер грузополучателя");
+            //  order.Customer.Name = xlTable.GetValueString("Грузополучатель");
+            order.RouteCity = xlTable.GetValueString("Направление");
+
+            return order;
+        }
+        private static Delivery GetDeliveryFromTotalRow(XLTable xlTable)
+        {
+            Delivery delivery = new Delivery();
+            delivery.DateDelivery = xlTable.GetValueString("Дата отгрузки");
+            delivery.Number = xlTable.GetValueInt("№ Доставки");
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) || delivery.Number == 0) return null;
+            delivery.Time = xlTable.GetValueString("Время подачи ТС");
+
+            string id = xlTable.GetValueString("ID перевозчика");
+            string curNumber = xlTable.GetValueString("Номер,марка");
+            string phone = xlTable.GetValueString("Телефон водителя");
+            string fio = xlTable.GetValueString("Водитель (ФИО)");
+            Driver driver = new Driver()
+            {
+                Id = id,
+                CarNumber = curNumber,
+                Name = fio,
+                Phone = phone
+            };
+            delivery.Driver = driver;
+            delivery.Cost = xlTable.GetValueDecimal("Стоимость доставки");
+
+            return delivery;
+        }
+
+
+
     }
 }
