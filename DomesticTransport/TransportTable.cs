@@ -1,7 +1,7 @@
 ﻿using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
-
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -98,6 +98,8 @@ namespace DomesticTransport
         public void ImportDeliveryes(List<Delivery> deliveries)
         {
             int iRow = NextRow;
+            DateTime dateMax = DateTime.Today;
+            dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
 
             Forms.ProcessBar pb = Forms.ProcessBar.Init("Экспорт в Transport Table", deliveries.Count, 1, "Экспорт");
             if (pb == null) return;
@@ -118,6 +120,8 @@ namespace DomesticTransport
                 double weightBrutto = 0;
                 double palletCount = 0;
                 double priceOrder = 0;
+
+                if (DateTime.Parse(delivery.DateDelivery) > dateMax) continue;
 
                 foreach (Order order in delivery.Orders)
                 {
@@ -152,7 +156,7 @@ namespace DomesticTransport
 
                 TableSheet.Cells[iRow, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
-                TableSheet.Cells[iRow, ColumnPointCount].Value = delivery.MapDelivery.Count;
+                TableSheet.Cells[iRow, ColumnPointCount].Value = clients.Count;
                 TableSheet.Cells[iRow, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
 
