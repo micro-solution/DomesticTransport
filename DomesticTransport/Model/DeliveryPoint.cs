@@ -64,7 +64,7 @@ namespace DomesticTransport.Model
         public DeliveryPoint(string id , string routeName) : this()
         {               
             this = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id   &&
-                x.CityLongName ==routeName);
+                x.RouteName ==routeName);
         }
 
         private string GetRouteName()
@@ -72,7 +72,7 @@ namespace DomesticTransport.Model
             string routename ="";
             string id = IdCustomer;
             DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id && (!string.IsNullOrWhiteSpace(x.RouteName)));
-            if (!string.IsNullOrWhiteSpace(dp.RouteName)) routename = dp.RouteName;              
+            if (dp.IdCustomer != null) routename = dp.RouteName;              
             return routename;
         }
         /// <summary>

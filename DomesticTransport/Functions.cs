@@ -244,7 +244,7 @@ namespace DomesticTransport
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["ID Route"].Index].Value = delivery.MapDelivery[0].Id;
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Компания"].Index].Value = delivery.Truck?.ProviderCompany?.Name ?? "";
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
-                rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж ТС"].Index].Value = delivery.Truck.Tonnage;
+                rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck.Tonnage;
                 rowDelivery.Range[1, ShefflerWB.DeliveryTable.ListColumns["Направление"].Index].Value =
                                                                                  delivery.MapDelivery[0].RouteName;
             }
@@ -1606,7 +1606,7 @@ namespace DomesticTransport
                     };
                     string providerName = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Компания"].Index].Text;
                     Provider shippingCompany = new Provider() { Name = providerName };
-                    string carTonnage = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тоннаж ТС"].Index].Text;
+                    string carTonnage = deliveryRow.Range[1, ShefflerWB.DeliveryTable.ListColumns["Тип ТС, тонн"].Index].Text;
                     double tonnage = double.TryParse(carTonnage, out double ton) ? ton : 0;
                     delivery.Truck = new Truck() { ProviderCompany = shippingCompany, Tonnage = tonnage };
 
