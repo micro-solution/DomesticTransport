@@ -106,25 +106,76 @@ namespace DomesticTransport
             tableArchive.ListTable = ShefflerWB.ArchiveTable;
 
             bool chk = false;
+            ShefflerWB.ArchiveTable.ListRows.Add();
             foreach (Delivery delivery in deliveries)
             {
-                chk = CheckDelivery(delivery);
-                if (chk) { continue; }
+              
+                if (CheckDelivery(delivery)) {
+                    DeleteDelivery(delivery.DateDelivery, delivery.Number, tableArchive);
+                }
 
                 for (int i = 0; i < delivery.Orders.Count; i++)
                 {
-                    ShefflerWB.ArchiveTable.ListRows.Add();
                     tableArchive.CurrentRowRange = ShefflerWB.ArchiveTable.ListRows[
                                         ShefflerWB.ArchiveTable.ListRows.Count].Range;
+                    ShefflerWB.ArchiveTable.ListRows.Add();
                     if (i == 0) PrintDeliveryArchiveRow(delivery, tableArchive);
 
                     Order order = delivery.Orders[i];
                     PrintArchiveRow(order, tableArchive);
                 }
+
+
             }
-            ShefflerWB.ArchiveTable.ListRows.Add();
         }
 
+        /// <summary>
+        /// Удалять строки заказов доставки
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="number"></param>
+        /// <param name="table"></param>
+        static void DeleteDelivery(string date, int number , XLTable table)
+        {
+            foreach (ListRow row in table.ListTable.ListRows)
+            {
+                table.CurrentRowRange = row.Range;
+                string currentDeliveryDate = table.GetValueString("Дата отгрузки");
+                int currentDeliveryNumber = table.GetValueInt("№ Доставки");
+                 if (currentDeliveryDate == date && currentDeliveryNumber== number)
+                {
+                    row.Range.EntireRow.Delete();
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Удалять строки всех заказов, отправленных на указанную дату и ранее 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="table"></param>
+        static void DeleteBefore(string date, XLTable table)
+        {
+            DateTime dateBound = DateTime.TryParse(date, out DateTime boundDate)? boundDate: DateTime.MinValue;
+            foreach (ListRow row in table.ListTable.ListRows)
+            {
+                table.CurrentRowRange = row.Range;
+              string currentOrderDate =  table.GetValueString("Дата отгрузки");
+                DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
+                if  (orderDate <= dateBound)
+                {
+                    row.Range.EntireRow.Delete();
+                }
+            }
+        } 
+
+
+        /// <summary>
+        /// Вывести строку доставок
+        /// </summary>
+        /// <param name="delivery"></param>
+        /// <param name="tableArchive"></param>
         private static void PrintDeliveryArchiveRow(Delivery delivery, XLTable tableArchive)
         {
             //delivery. 
@@ -185,7 +236,7 @@ namespace DomesticTransport
             List<Order> orders = new List<Order>();
             List<Delivery> deliveries = new List<Delivery>();
 
-            foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
+            foreach (ListRow row in table.ListTable.ListRows)
             {
                 table.CurrentRowRange = row.Range;
                 Order order = GetOrdersFromTotalRow(table);
