@@ -338,15 +338,15 @@ namespace DomesticTransport
             truck.ProviderCompany.Name = providerName;
             delivery.Truck = truck;
 
-            int id = xlTable.GetValueInt("ID перевозчика");
+            string id = xlTable.GetValueString("ID перевозчика");
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");
-            if (id>0)
+            if (string.IsNullOrWhiteSpace(id))
             {
                 Driver driver = new Driver()
                 {
-                    Id = id.ToString(),
+                    Id = id,
                     CarNumber = curNumber,
                     Name = fio,
                     Phone = phone
