@@ -46,6 +46,7 @@ namespace DomesticTransport
                 {
                     using (OpenFileDialog fileDialog = new OpenFileDialog()
                     {
+                        Title = "Выберите расположение файла Transport Table",
                         DefaultExt = "*.xls*",
                         CheckFileExists = true,
                         InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,

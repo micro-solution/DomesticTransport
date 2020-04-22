@@ -49,6 +49,7 @@ namespace DomesticTransport
                 {
                     using (OpenFileDialog fileDialog = new OpenFileDialog()
                     {
+                        Title = "Выберите расположение файла Transport Table",
                         DefaultExt = "*.xls*",
                         CheckFileExists = true,
                         InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,
@@ -149,7 +150,6 @@ namespace DomesticTransport
                     TableSheet.Cells[iRow, ColumnPriceOrder].Value = order.Cost;
                     iRow++;
                 }
-                iRow++;
             }
             pb.Close();
         }

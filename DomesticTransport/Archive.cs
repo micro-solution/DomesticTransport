@@ -172,17 +172,16 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="date"></param>
         /// <param name="table"></param>
-        static void DeleteBefore(string date, XLTable table)
+        static void DeleteBefore(DateTime date, XLTable table)
         {
             ListObject archive = table.ListTable;
-            DateTime dateBound = DateTime.TryParse(date, out DateTime boundDate)? boundDate: DateTime.MinValue;
             for (int i = archive.ListRows.Count; i > 0; i--)
             {
                 ListRow row = archive.ListRows[i];
                 table.CurrentRowRange = row.Range;
               string currentOrderDate =  table.GetValueString("Дата отгрузки");
                 DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
-                if  (orderDate <= dateBound)
+                if  (orderDate <= date)
                 {
                     row.Range.EntireRow.Delete();
                 }
@@ -256,6 +255,12 @@ namespace DomesticTransport
             ShipmentsTable shipmentsTable = new ShipmentsTable();
             shipmentsTable.ImportDeliveryes(deliveries);
             shipmentsTable.SaveAndClose();
+
+            DateTime dateMax = DateTime.Today;
+            dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
+            DeleteBefore(dateMax, tableArchive);
+
+            System.Windows.Forms.MessageBox.Show("Архив перенесен", "Операция выполнена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
             return;
         }
@@ -365,8 +370,5 @@ namespace DomesticTransport
 
             return delivery;
         }
-
-
-
     }
 }
