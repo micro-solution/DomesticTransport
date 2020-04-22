@@ -153,6 +153,7 @@ namespace DomesticTransport
             ListObject archive = table.ListTable;
             for (int i = archive.ListRows.Count; i > 0; i--)
             {
+                table.CurrentRowRange = archive.ListRows[i].Range;
                 string IdOrderRow = table.GetValueString("Номер поставки");
                 IdOrderRow = IdOrderRow.Length < 10 ?
                                    new string('0', 10 - IdOrderRow.Length) + IdOrderRow : IdOrderRow;
