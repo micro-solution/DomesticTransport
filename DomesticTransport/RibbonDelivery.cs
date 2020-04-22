@@ -493,8 +493,20 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void SaveToTransportTable_Click(object sender, RibbonControlEventArgs e)
         {
-            TransportTable transportTable = new TransportTable();
-            transportTable.ImportDeliveryes(Archive.GetDeliveriesFromArchive());
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                Archive.ToTransportTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+            
         }
     }
 }

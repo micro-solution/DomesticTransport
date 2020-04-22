@@ -50,6 +50,7 @@ namespace DomesticTransport
             {
                 PrintArchive(deliveries);
             }
+            SortArchive();
         }
 
         /// <summary>
@@ -85,6 +86,20 @@ namespace DomesticTransport
                 if (chk) break;
             }
             return chk;
+        }
+
+        static void SortArchive()
+        {
+            Range table = ShefflerWB.ArchiveTable.Range;
+            Range col1 = table.Columns[ShefflerWB.ArchiveTable.ListColumns["Дата отгрузки"].Index];
+            Range col2 = table.Columns[ShefflerWB.ArchiveTable.ListColumns["№ Доставки"].Index];
+            table.Sort(
+                Key1: col1,
+                Order1: XlSortOrder.xlAscending,
+                Key2: col2,
+                Order2: XlSortOrder.xlAscending,
+                OrderCustom: Type.Missing, MatchCase: Type.Missing,
+                Header: XlYesNoGuess.xlYes, Orientation: XlSortOrientation.xlSortColumns);
         }
 
         //Скопировать все вставить в архив
@@ -166,6 +181,16 @@ namespace DomesticTransport
             XLTable tableArchive = new XLTable();
             tableArchive.ListTable = ShefflerWB.ArchiveTable;
             return GetAllDeliveries(tableArchive);
+        }
+
+        public static void ToTransportTable()
+        {
+            TransportTable transportTable = new TransportTable();
+            XLTable tableArchive = new XLTable();
+            tableArchive.ListTable = ShefflerWB.ArchiveTable;
+            transportTable.ImportDeliveryes(GetAllDeliveries(tableArchive));
+            transportTable.SaveAndClose();
+            return;
         }
 
 
