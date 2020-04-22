@@ -1,13 +1,8 @@
 ﻿using Microsoft.Office.Interop.Excel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomesticTransport
 {
-    public class XlTable
+    public class XLTable
     {
         public ListObject ListTable { get; set; }
         public Range TableRange
@@ -44,8 +39,6 @@ namespace DomesticTransport
         public int CurrentRowIndex { get; set; }
 
 
-
-
         public int GetColumn(string header)
         {
             int column = 0;
@@ -61,6 +54,7 @@ namespace DomesticTransport
             return column;
         }
 
+        //Get
         public string GetValueString( string header)
         {
             int column = GetColumn(header);
@@ -70,16 +64,47 @@ namespace DomesticTransport
         public double GetValueDouble( string header)
         {
             int column = GetColumn(header);
-            string str = CurrentRowRange.Cells[1, column].Value.ToString();
+            string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
             double val = double.TryParse(str, out double v) ? v : 0;
+            return val;
+        }
+        public decimal GetValueDecimal(string header)
+        {
+            int column = GetColumn(header);
+            string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
+            decimal val = decimal.TryParse(str, out decimal v) ? v : 0;
             return val;
         }
         public int GetValueInt( string header)
         {
             int column = GetColumn(header);
-            string str = CurrentRowRange.Cells[1, column].Value.ToString();
+            string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
             int val = int.TryParse(str, out int v) ? v : 0;
             return val;
         }
+
+
+        ///  Set
+        public void SetValue(string header , string Value)
+        {               
+            int column = GetColumn(header);
+             CurrentRowRange.Cells[1, column].Value = Value;            
+        }
+        public void SetValue(string header, int Value)
+        {
+            int column = GetColumn(header);
+            CurrentRowRange.Cells[1, column].Value = Value;
+        }
+        public void SetValue(string header, double Value)
+        {
+            int column = GetColumn(header);
+            CurrentRowRange.Cells[1, column].Value = Value;
+        }
+        public void SetValue(string header, decimal Value)
+        {
+            int column = GetColumn(header);
+            CurrentRowRange.Cells[1, column].Value = Value;
+        }
+
     }
 }
