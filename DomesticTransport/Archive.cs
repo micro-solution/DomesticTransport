@@ -208,13 +208,16 @@ namespace DomesticTransport
             Delivery delivery = new Delivery();
             delivery.DateDelivery = xlTable.GetValueString("Дата отгрузки");
             delivery.Number = xlTable.GetValueInt("№ Доставки");
-            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) || delivery.Number == 0) return null;
             delivery.Time = xlTable.GetValueString("Время подачи ТС");
 
             string id = xlTable.GetValueString("ID перевозчика");
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
+                                            delivery.Number == 0 ||
+                                            string.IsNullOrWhiteSpace( id )
+                                            ) return null;               
             Driver driver = new Driver()
             {
                 Id = id,
