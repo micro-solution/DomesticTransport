@@ -35,7 +35,7 @@ namespace DomesticTransport
             {
                 if (_archiveSheet == null)
                 {
-                    _archiveSheet = Globals.ThisWorkbook.Sheets["Архив"];
+                    _archiveSheet = Globals.ThisWorkbook.Sheets["Текущий архив"];
                 }
                 return _archiveSheet;
             }
