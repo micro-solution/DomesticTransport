@@ -152,8 +152,10 @@ namespace DomesticTransport
         /// <param name="table"></param>
         static void DeleteDelivery(string date, int number , XLTable table)
         {
-            foreach (ListRow row in table.ListTable.ListRows)
+            ListObject archive = table.ListTable;
+            for ( int i= archive.ListRows.Count; i>0; i--)
             {
+                ListRow row = table.ListTable.ListRows[i];
                 table.CurrentRowRange = row.Range;
                 string currentDeliveryDate = table.GetValueString("Дата отгрузки");
                 int currentDeliveryNumber = table.GetValueInt("№ Доставки");
@@ -172,9 +174,11 @@ namespace DomesticTransport
         /// <param name="table"></param>
         static void DeleteBefore(string date, XLTable table)
         {
+            ListObject archive = table.ListTable;
             DateTime dateBound = DateTime.TryParse(date, out DateTime boundDate)? boundDate: DateTime.MinValue;
-            foreach (ListRow row in table.ListTable.ListRows)
+            for (int i = archive.ListRows.Count; i > 0; i--)
             {
+                ListRow row = archive.ListRows[i];
                 table.CurrentRowRange = row.Range;
               string currentOrderDate =  table.GetValueString("Дата отгрузки");
                 DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
