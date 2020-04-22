@@ -8,23 +8,28 @@ namespace DomesticTransport
 {
     class Archive
     {
-        private static List<string> OrdersId {
+        private static List<string> OrdersId
+        {
             get
             {
-                if (_ordersId ==null ||  _ordersId.Count == 0)
+                if (_ordersId == null || _ordersId.Count == 0)
                 {
+                        _ordersId = new List<string>();
                     foreach (ListRow archiveRow in ShefflerWB.ArchiveTable.ListRows)
                     {
-                        _ordersId = new List<string>();
                         string idOrder = archiveRow.Range[1,
                           ShefflerWB.ArchiveTable.ListColumns["Номер поставки"].Index].Text;
-                        idOrder = idOrder.Length < 10 ? 
+                        if (string.IsNullOrWhiteSpace(idOrder)) continue;
+                        
+                        idOrder = idOrder.Length < 10 ?
                                     new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+
                         _ordersId.Add(idOrder);
                     }
                 }
                 return _ordersId;
-            }            
+            }
+            set => _ordersId = value;
         }
         static List<string> _ordersId;
 
@@ -34,7 +39,7 @@ namespace DomesticTransport
         /// Перенести на Лист Архив
         /// </summary>
         public static void LoadToArhive()
-        {               
+        {
             XLTable table = new XLTable() { ListTable = ShefflerWB.TotalTable };
             List<Delivery> deliveries = GetAllDeliveries(table);
             if (!CheckArchive(deliveries))
@@ -47,14 +52,15 @@ namespace DomesticTransport
             }
         }
 
-         /// <summary>
-         /// Проверить наличие в архиве
-         /// </summary>
-         /// <param name="deliveries"></param>
-         /// <returns></returns>
+        /// <summary>
+        /// Проверить наличие в архиве
+        /// </summary>
+        /// <param name="deliveries"></param>
+        /// <returns></returns>
         static bool CheckArchive(List<Delivery> deliveries)
         {
             bool chk = false;
+            OrdersId = null;
             foreach (Delivery delivery in deliveries)
             {
                 chk = CheckDelivery(delivery);
@@ -72,16 +78,16 @@ namespace DomesticTransport
             bool chk = false;
             ListObject archiveTable = ShefflerWB.ArchiveTable;
             foreach (string idOrder in OrdersId)
-            {                
-               // string idOrder = archiveRow.Range[1, archiveTable.ListColumns["Номер поставки"].Index].Text;
-               //idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
-               chk = delivery.Orders.Find(a => a.Id == idOrder) != null;
+            {
+                // string idOrder = archiveRow.Range[1, archiveTable.ListColumns["Номер поставки"].Index].Text;
+                //idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                chk = delivery.Orders.Find(a => a.Id == idOrder) != null;
                 if (chk) break;
             }
             return chk;
         }
 
-          //Скопировать все вставить в архив
+        //Скопировать все вставить в архив
         static void CpopyTotalPastArchive()
         {
             ShefflerWB.TotalTable.DataBodyRange.Copy();
@@ -104,11 +110,12 @@ namespace DomesticTransport
             {
                 PrintDeliveryArchiveRow(delivery, tableArchive);
                 chk = CheckDelivery(delivery);
-                if (chk) {
+                if (chk)
+                {
                     //delivery 
-                    for (int i = 0; i< delivery.Orders.Count; i++)
+                    for (int i = 0; i < delivery.Orders.Count; i++)
                     {
-                       
+
                         Order order = delivery.Orders[i];
                         PrintArchiveRow(order, tableArchive);
                     }
@@ -119,15 +126,50 @@ namespace DomesticTransport
         private static void PrintDeliveryArchiveRow(Delivery delivery, XLTable tableArchive)
         {
             //delivery. 
-            tableArchive.SetValue("№ Доставки", delivery.Number);     
-            tableArchive.SetValue("Время подачи ТС", delivery.Time);     
+            tableArchive.SetValue("№ Доставки", delivery.Number);
+            tableArchive.SetValue("Время подачи ТС", delivery.Time);
             tableArchive.SetValue("Дата отгрузки", delivery.DateDelivery);
             tableArchive.SetValue("ID перевозчика", delivery.Driver.Id);
             tableArchive.SetValue("Грузополучатель", delivery.Driver.Name);
+
+
+            //Delivery delivery = new Delivery();
+            //delivery.DateDelivery = xlTable.GetValueString("Дата отгрузки");
+            //delivery.Number = xlTable.GetValueInt("№ Доставки");
+            //delivery.Time = xlTable.GetValueString("Время подачи ТС");
+            //delivery.Cost = xlTable.GetValueDecimal("Стоимость доставки");
+            //if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
+            //                                delivery.Number == 0 ||
+            //                                 delivery.Cost == 0
+            //                                ) return null;
+
+            //string id = xlTable.GetValueString("ID перевозчика");
+            //string curNumber = xlTable.GetValueString("Номер,марка");
+            //string phone = xlTable.GetValueString("Телефон водителя");
+            //string fio = xlTable.GetValueString("Водитель (ФИО)");
         }
-        private static void PrintArchiveRow(Order order, object orders)
+        private static void PrintArchiveRow(Order order, XLTable xlTable)
         {
             //tableArchive.SetValue("Грузополучатель", order.Id);
+           
+            //string idOrder = xlTable.GetValueString("Номер поставки");
+            //if (string.IsNullOrWhiteSpace(idOrder)) return null;
+            //order.Id = idOrder;
+            //order.DeliveryNumber = xlTable.GetValueInt("№ Доставки");
+            //order.DateDelivery = xlTable.GetValueString("Дата отгрузки");
+            //order.PointNumber = xlTable.GetValueInt("Порядок выгрузки");
+            //string customerId = xlTable.GetValueString("Номер грузополучателя");
+            //string nameCustomer = xlTable.GetValueString("Грузополучатель");
+            //Customer customer = new Customer(customerId);
+            //customer.Name = nameCustomer;
+            //order.Customer = customer;
+
+            //order.TransportationUnit = xlTable.GetValueString("Номер накладной");
+            //order.WeightBrutto = xlTable.GetValueDouble("Брутто вес");
+            //order.WeightNetto = xlTable.GetValueDouble("Нетто вес");
+            //order.Cost = xlTable.GetValueDouble("Стоимость поставки");
+            //order.PalletsCount = xlTable.GetValueInt("Кол-во паллет");
+            //order.RouteCity = xlTable.GetValueString("Направление");
         }
 
 
@@ -171,7 +213,7 @@ namespace DomesticTransport
                 if (ordersDelivery != null)
                 {
                     delivery.Orders = ordersDelivery;
-                    ordersDelivery.ForEach(x => orders.Remove(x));
+                    //ordersDelivery.ForEach(x => orders.Remove(x));
                 }
             }
             return deliveries;
@@ -197,8 +239,6 @@ namespace DomesticTransport
             order.WeightNetto = xlTable.GetValueDouble("Нетто вес");
             order.Cost = xlTable.GetValueDouble("Стоимость поставки");
             order.PalletsCount = xlTable.GetValueInt("Кол-во паллет");
-            // order.Customer.Id = xlTable.GetValueString("Номер грузополучателя");
-            //  order.Customer.Name = xlTable.GetValueString("Грузополучатель");
             order.RouteCity = xlTable.GetValueString("Направление");
 
             return order;
@@ -209,24 +249,27 @@ namespace DomesticTransport
             delivery.DateDelivery = xlTable.GetValueString("Дата отгрузки");
             delivery.Number = xlTable.GetValueInt("№ Доставки");
             delivery.Time = xlTable.GetValueString("Время подачи ТС");
+            delivery.Cost = xlTable.GetValueDecimal("Стоимость доставки");
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
+                                            delivery.Number == 0  ||
+                                             delivery.Cost ==0
+                                            ) return null;
 
             string id = xlTable.GetValueString("ID перевозчика");
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");
-            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
-                                            delivery.Number == 0 ||
-                                            string.IsNullOrWhiteSpace( id )
-                                            ) return null;               
-            Driver driver = new Driver()
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                Id = id,
-                CarNumber = curNumber,
-                Name = fio,
-                Phone = phone
-            };
-            delivery.Driver = driver;
-            delivery.Cost = xlTable.GetValueDecimal("Стоимость доставки");
+                Driver driver = new Driver()
+                {
+                    Id = id,
+                    CarNumber = curNumber,
+                    Name = fio,
+                    Phone = phone
+                };
+                delivery.Driver = driver;
+            }
 
             return delivery;
         }

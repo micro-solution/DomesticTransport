@@ -63,11 +63,13 @@
         public DeliveryPoint DeliveryPoint 
         {
             get {
-                 if (string.IsNullOrWhiteSpace(_deliveryPoint.RouteName) && !string.IsNullOrWhiteSpace(RouteCity))
-                {
-                    _deliveryPoint = new DeliveryPoint(Customer.Id, RouteCity);                   
+                // if (!string.IsNullOrWhiteSpace(_deliveryPoint.RouteName) && !string.IsNullOrWhiteSpace(RouteCity))
+                ///{
 
-                }
+                    // 
+                 ///  _deliveryPoint = new DeliveryPoint(Customer.Id, RouteCity);                   
+
+                //}
                 return _deliveryPoint;
             }
             set => _deliveryPoint = value; 
