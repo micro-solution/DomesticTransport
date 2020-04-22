@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using System;
 
 namespace DomesticTransport
 {
@@ -27,7 +28,7 @@ namespace DomesticTransport
                 {
                     if (ListTable != null)
                     {
-                        _currentRowRange = TableRange.Rows[CurrentRowIndex] ;
+                        _currentRowRange = TableRange.Rows[CurrentRowIndex];
                     }
                 }
                 return _currentRowRange;
@@ -42,7 +43,7 @@ namespace DomesticTransport
             {
                 if (_currentRowIndex == 0)
                     _currentRowIndex = GetLastRowIndex();
-             return _currentRowIndex;
+                return _currentRowIndex;
             }
             set => _currentRowIndex = value;
         }
@@ -67,9 +68,8 @@ namespace DomesticTransport
         //Get
         public string GetValueString(string header)
         {
-            int column = GetColumn(header);
-            string str = CurrentRowRange.Cells[1, column].Text;
-            return str;
+            int column = GetColumn(header);             
+            return CurrentRowRange.Cells[1, column].Text;
         }
         public double GetValueDouble(string header)
         {
@@ -99,38 +99,72 @@ namespace DomesticTransport
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
-           
+
         }
         public void SetValue(string header, int Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
-            
+
         }
         public void SetValue(string header, double Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
-            
+
         }
         public void SetValue(string header, decimal Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
-          
+
         }
 
-         /// <summary>
-         /// Последняя строка таблицы
-         /// </summary>
-         /// <returns></returns>
-       public int GetLastRowIndex()
+        /// <summary>
+        /// Последняя строка таблицы
+        /// </summary>
+        /// <returns></returns>
+        public int GetLastRowIndex()
         {
-            int ix=0;
+            int ix = 0;
             ix = ListTable.ListRows.Count;
+
+            for (int i = ix; i > 0; i--)
+            {
+                string str = ListTable.ListRows[i].Range[1, 1].Text;
+                if (str == "")
+                { ix = i; }
+                else
+                {
+                    if (ix == i)
+                    {
+                        ++ix;
+                        ListTable.ListRows.Add();
+                    }
+                    break;    
+                }                 
+            }
+
             //Добавить провекрку на пустоту в строке
             return ix;
         }
+
+        public Range GetLastRow()
+        {
+            int ix = GetLastRowIndex();
+            if (ix == 0)
+            {
+                ListTable.ListRows.Add();
+                ix = 1;
+            }
+            return ListTable.ListRows[ix].Range;
+        }
+        public void SetCurrentRow()
+        {
+            CurrentRowRange = GetLastRow();
+        }
+
+
 
     }
 }

@@ -105,14 +105,19 @@ namespace DomesticTransport
         //Скопировать все вставить в архив
         static void CpopyTotalPastArchive()
         {
+         //   Globals.ThisWorkbook.Application.CutCopyMode = XlCutCopyMode.xlCut;
             ShefflerWB.TotalTable.DataBodyRange.Copy();
-            ListObject arh = ShefflerWB.ArchiveTable;
-            Range rng = arh.ListRows[arh.ListRows.Count].Range[1, 1];
+            // ListObject arh = ShefflerWB.ArchiveTable;
+            XLTable archive = new XLTable() { ListTable = ShefflerWB.ArchiveTable };
+
+            Range rng = archive.GetLastRow();
+          
             rng.PasteSpecial(XlPasteType.xlPasteValuesAndNumberFormats);
+
         }
-      public  static void ClearArchive()
+        public static void ClearArchive()
         {
-            ShefflerWB.ArchiveTable.DataBodyRange.Clear() ;
+            ShefflerWB.ArchiveTable.DataBodyRange.Clear();
         }
 
         private static void PrintArchive(List<Delivery> deliveries)
@@ -120,27 +125,20 @@ namespace DomesticTransport
             XLTable tableArchive = new XLTable();
             tableArchive.ListTable = ShefflerWB.ArchiveTable;
 
-            bool chk = false;
-            ShefflerWB.ArchiveTable.ListRows.Add();
             foreach (Delivery delivery in deliveries)
             {
-              
-                if (CheckDelivery(delivery)) {
-                    DeleteDelivery(delivery.DateDelivery, delivery.Number, tableArchive);
+                if (CheckDelivery(delivery))
+                {
+                    DeleteChangedDelivery(delivery, tableArchive);
                 }
-
                 for (int i = 0; i < delivery.Orders.Count; i++)
                 {
-                    tableArchive.CurrentRowRange = ShefflerWB.ArchiveTable.ListRows[
-                                        ShefflerWB.ArchiveTable.ListRows.Count].Range;
-                    ShefflerWB.ArchiveTable.ListRows.Add();
-                    if (i == 0) PrintDeliveryArchiveRow(delivery, tableArchive);
+                    tableArchive.SetCurrentRow();
+                    if (i == 0) PrintArchiveDelivery(delivery, tableArchive);
 
                     Order order = delivery.Orders[i];
-                    PrintArchiveRow(order, tableArchive);
+                    PrintArchiveOrder(order, tableArchive);
                 }
-
-
             }
         }
 
@@ -150,21 +148,19 @@ namespace DomesticTransport
         /// <param name="date"></param>
         /// <param name="number"></param>
         /// <param name="table"></param>
-        static void DeleteDelivery(string date, int number , XLTable table)
+        static void DeleteChangedDelivery(Delivery delivery, XLTable table)
         {
             ListObject archive = table.ListTable;
-            for ( int i= archive.ListRows.Count; i>0; i--)
+            for (int i = archive.ListRows.Count; i > 0; i--)
             {
+                string IdOrderRow = table.GetValueString("Номер поставки");
+                IdOrderRow = IdOrderRow.Length < 10 ?
+                                   new string('0', 10 - IdOrderRow.Length) + IdOrderRow : IdOrderRow;
                 ListRow row = table.ListTable.ListRows[i];
                 table.CurrentRowRange = row.Range;
-                string currentDeliveryDate = table.GetValueString("Дата отгрузки");
-                int currentDeliveryNumber = table.GetValueInt("№ Доставки");
-                 if (currentDeliveryDate == date && currentDeliveryNumber== number)
-                {
-                    row.Range.EntireRow.Delete();
-                }
+                Order order = delivery.Orders.Find(o => o.Id == IdOrderRow);
+                if (order != null) row.Range.EntireRow.Delete();
             }
-
         }
 
         /// <summary>
@@ -175,34 +171,34 @@ namespace DomesticTransport
         static void DeleteBefore(string date, XLTable table)
         {
             ListObject archive = table.ListTable;
-            DateTime dateBound = DateTime.TryParse(date, out DateTime boundDate)? boundDate: DateTime.MinValue;
+            DateTime dateBound = DateTime.TryParse(date, out DateTime boundDate) ? boundDate : DateTime.MinValue;
             for (int i = archive.ListRows.Count; i > 0; i--)
             {
                 ListRow row = archive.ListRows[i];
                 table.CurrentRowRange = row.Range;
-              string currentOrderDate =  table.GetValueString("Дата отгрузки");
+                string currentOrderDate = table.GetValueString("Дата отгрузки");
                 DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
-                if  (orderDate <= dateBound)
+                if (orderDate <= dateBound)
                 {
                     row.Range.EntireRow.Delete();
                 }
             }
-        } 
+        }
 
 
         /// <summary>
-        /// Вывести строку доставок
+        /// Вывести  доставок в строку таблицы
         /// </summary>
         /// <param name="delivery"></param>
         /// <param name="tableArchive"></param>
-        private static void PrintDeliveryArchiveRow(Delivery delivery, XLTable tableArchive)
+        private static void PrintArchiveDelivery(Delivery delivery, XLTable tableArchive)
         {
             //delivery. 
             tableArchive.SetValue("№ Доставки", delivery.Number);
             tableArchive.SetValue("Время подачи ТС", delivery.Time);
-            tableArchive.SetValue("ID перевозчика", delivery.Driver.Id); 
-           tableArchive.SetValue("Дата отгрузки", delivery.DateDelivery);
-            tableArchive.SetValue("Перевозчик", delivery.Truck.ProviderCompany.Name);            
+            tableArchive.SetValue("ID перевозчика", delivery.Driver.Id);
+            tableArchive.SetValue("Дата отгрузки", delivery.DateDelivery);
+            tableArchive.SetValue("Перевозчик", delivery.Truck.ProviderCompany.Name);
             tableArchive.SetValue("Тип ТС, тонн", delivery.Truck.Tonnage);
             tableArchive.SetValue("Стоимость доставки", delivery.Cost);
             if (!string.IsNullOrEmpty(delivery.Driver.Id))
@@ -213,7 +209,13 @@ namespace DomesticTransport
                 tableArchive.SetValue("Номер,марка", delivery.Driver.CarNumber);
             }
         }
-        private static void PrintArchiveRow(Order order, XLTable xlTable)
+
+        /// <summary>
+        ///    Вывести заказ в строку таблицы
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="xlTable"></param>
+        private static void PrintArchiveOrder(Order order, XLTable xlTable)
         {
             xlTable.SetValue("№ Доставки", order.DeliveryNumber);
             xlTable.SetValue("Номер поставки", order.Id);
@@ -228,7 +230,7 @@ namespace DomesticTransport
             xlTable.SetValue("Кол-во паллет", order.PalletsCount);
             xlTable.SetValue("Направление", order.RouteCity);
             xlTable.SetValue("Город", order.DeliveryPoint.City);
-            
+
         }
 
         public static List<Delivery> GetDeliveriesFromArchive()
@@ -326,24 +328,25 @@ namespace DomesticTransport
             delivery.Number = xlTable.GetValueInt("№ Доставки");
             delivery.Time = xlTable.GetValueString("Время подачи ТС");
             delivery.Cost = xlTable.GetValueDecimal("Стоимость доставки");
+            string providerName = xlTable.GetValueString("Перевозчик");
             if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
                                             delivery.Number == 0 ||
-                                             delivery.Cost == 0
+                                            string.IsNullOrWhiteSpace(providerName)
                                             ) return null;
             Truck truck = new Truck();
-            truck.ProviderCompany.Name   = xlTable.GetValueString("Перевозчик");
             truck.Tonnage = xlTable.GetValueDouble("Тип ТС, тонн");
+            truck.ProviderCompany.Name = providerName;
             delivery.Truck = truck;
 
-            string id = xlTable.GetValueString("ID перевозчика");
+            int id = xlTable.GetValueInt("ID перевозчика");
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");
-            if (!string.IsNullOrWhiteSpace(id))
+            if (id>0)
             {
                 Driver driver = new Driver()
                 {
-                    Id = id,
+                    Id = id.ToString(),
                     CarNumber = curNumber,
                     Name = fio,
                     Phone = phone
