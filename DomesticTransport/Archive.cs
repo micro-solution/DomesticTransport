@@ -130,7 +130,12 @@ namespace DomesticTransport
             //tableArchive.SetValue("Грузополучатель", order.Id);
         }
 
-
+        public static List<Delivery> GetDeliveriesFromArchive()
+        {
+            XLTable tableArchive = new XLTable();
+            tableArchive.ListTable = ShefflerWB.ArchiveTable;
+            return GetAllDeliveries(tableArchive);
+        }
 
 
         public static void UnoadFromArhive()

@@ -463,7 +463,12 @@ namespace DomesticTransport
             }
         }
 
-        private void btnToArchive_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Сохранение листа отгрузки во временный архив
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveToArchive_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -481,27 +486,15 @@ namespace DomesticTransport
             }
         }
 
-        private void btnFromArchive_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                ShefflerWB.ExcelOptimizateOn();
-                Archive.UnoadFromArhive();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                ShefflerWB.ExcelOptimizateOff();
-            }
-        }
-
-        private void toFile_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Сохранение временного архива в TransportTable
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveToTransportTable_Click(object sender, RibbonControlEventArgs e)
         {
             TransportTable transportTable = new TransportTable();
-            transportTable.ImportDeliveryes(new Functions().GetDeliveriesFromTotalSheet());
+            transportTable.ImportDeliveryes(Archive.GetDeliveriesFromArchive());
         }
     }
 }

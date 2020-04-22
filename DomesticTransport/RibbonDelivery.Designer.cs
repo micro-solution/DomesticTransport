@@ -58,9 +58,8 @@
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.btnToArchive = this.Factory.CreateRibbonButton();
-            this.btnFromArchive = this.Factory.CreateRibbonButton();
-            this.toFile = this.Factory.CreateRibbonButton();
+            this.ButtonToArchive = this.Factory.CreateRibbonButton();
+            this.ToTransportTable = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnDate = this.Factory.CreateRibbonButton();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
@@ -68,7 +67,6 @@
             this.ButtonSettingLetterCS = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
-            this.btnSetts = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -324,35 +322,32 @@
             // 
             // group2
             // 
-            this.group2.Items.Add(this.btnToArchive);
-            this.group2.Items.Add(this.btnFromArchive);
-            this.group2.Items.Add(this.toFile);
-            this.group2.Label = "Архив";
+            this.group2.Items.Add(this.ButtonToArchive);
+            this.group2.Items.Add(this.ToTransportTable);
+            this.group2.Label = "Хранение данных";
             this.group2.Name = "group2";
             // 
-            // btnToArchive
+            // ButtonToArchive
             // 
-            this.btnToArchive.Image = ((System.Drawing.Image)(resources.GetObject("btnToArchive.Image")));
-            this.btnToArchive.Label = "В архив";
-            this.btnToArchive.Name = "btnToArchive";
-            this.btnToArchive.ShowImage = true;
-            this.btnToArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnToArchive_Click);
+            this.ButtonToArchive.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonToArchive.Image = ((System.Drawing.Image)(resources.GetObject("ButtonToArchive.Image")));
+            this.ButtonToArchive.Label = "Сохранить отгрузки";
+            this.ButtonToArchive.Name = "ButtonToArchive";
+            this.ButtonToArchive.ShowImage = true;
+            this.ButtonToArchive.SuperTip = "Сохранение листа Отгрузки во временный архив";
+            this.ButtonToArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveToArchive_Click);
             // 
-            // btnFromArchive
+            // ToTransportTable
             // 
-            this.btnFromArchive.Image = ((System.Drawing.Image)(resources.GetObject("btnFromArchive.Image")));
-            this.btnFromArchive.Label = "Из архива";
-            this.btnFromArchive.Name = "btnFromArchive";
-            this.btnFromArchive.ShowImage = true;
-            this.btnFromArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFromArchive_Click);
-            // 
-            // toFile
-            // 
-            this.toFile.Image = ((System.Drawing.Image)(resources.GetObject("toFile.Image")));
-            this.toFile.Label = "В файл";
-            this.toFile.Name = "toFile";
-            this.toFile.ShowImage = true;
-            this.toFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toFile_Click);
+            this.ToTransportTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ToTransportTable.Image = ((System.Drawing.Image)(resources.GetObject("ToTransportTable.Image")));
+            this.ToTransportTable.Label = "Перенести в архив";
+            this.ToTransportTable.Name = "ToTransportTable";
+            this.ToTransportTable.ScreenTip = "Перенести в архив";
+            this.ToTransportTable.ShowImage = true;
+            this.ToTransportTable.SuperTip = "Перенос данных в архив в таблицы Shipments и Transport Table. Переносятся данные " +
+    "за предыдущую неделю и старше";
+            this.ToTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveToTransportTable_Click);
             // 
             // settings
             // 
@@ -368,8 +363,8 @@
             this.btnDate.Image = ((System.Drawing.Image)(resources.GetObject("btnDate.Image")));
             this.btnDate.Label = "Выбрать дату";
             this.btnDate.Name = "btnDate";
-            this.btnDate.ScreenTip = "Установить дату отгрузки";
             this.btnDate.ShowImage = true;
+            this.btnDate.SuperTip = "Установить дату отгрузки";
             this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
             // 
             // BtnSaveSignature
@@ -407,7 +402,6 @@
             // about
             // 
             this.about.Items.Add(this.BtnAboutProgrramm);
-            this.about.Items.Add(this.btnSetts);
             this.about.Label = "Справка";
             this.about.Name = "about";
             // 
@@ -420,15 +414,6 @@
             this.BtnAboutProgrramm.ShowImage = true;
             this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
-            // 
-            // btnSetts
-            // 
-            this.btnSetts.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSetts.Image = ((System.Drawing.Image)(resources.GetObject("btnSetts.Image")));
-            this.btnSetts.Label = "Настройки";
-            this.btnSetts.Name = "btnSetts";
-            this.btnSetts.ShowImage = true;
-            this.btnSetts.Visible = false;
             // 
             // btnChangeRoute
             // 
@@ -473,7 +458,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSendShippingCompany;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnReadCarrierInvoice;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup settings;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSetts;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup about;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAboutProgrramm;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonAddAuto;
@@ -497,9 +481,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTotalToProviders;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDate;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnToArchive;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFromArchive;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton toFile;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonToArchive;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ToTransportTable;
     }
 
     partial class ThisRibbonCollection
