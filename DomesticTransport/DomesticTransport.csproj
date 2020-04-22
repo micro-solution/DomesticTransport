@@ -205,6 +205,7 @@
     <Compile Include="Forms\SapFiles.Designer.cs">
       <DependentUpon>SapFiles.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShipmentsTable.cs" />
     <Compile Include="TransportTable.cs" />
     <Compile Include="XlTable.cs" />
     <Compile Include="ThisWorkbook.cs">

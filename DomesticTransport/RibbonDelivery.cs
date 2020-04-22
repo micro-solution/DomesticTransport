@@ -496,7 +496,7 @@ namespace DomesticTransport
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                Archive.ToTransportTable();
+                Archive.ToTransportTableAndShepments();
             }
             catch (Exception ex)
             {

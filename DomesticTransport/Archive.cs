@@ -183,13 +183,25 @@ namespace DomesticTransport
             return GetAllDeliveries(tableArchive);
         }
 
-        public static void ToTransportTable()
+        /// <summary>
+        /// Перенос текущего архива в таблицы Shepments and TransportTable
+        /// </summary>
+        public static void ToTransportTableAndShepments()
         {
-            TransportTable transportTable = new TransportTable();
+
             XLTable tableArchive = new XLTable();
             tableArchive.ListTable = ShefflerWB.ArchiveTable;
-            transportTable.ImportDeliveryes(GetAllDeliveries(tableArchive));
+
+            List<Delivery> deliveries = GetAllDeliveries(tableArchive);
+
+            TransportTable transportTable = new TransportTable();
+            transportTable.ImportDeliveryes(deliveries);
             transportTable.SaveAndClose();
+
+            ShipmentsTable shipmentsTable = new ShipmentsTable();
+            shipmentsTable.ImportDeliveryes(deliveries);
+            shipmentsTable.SaveAndClose();
+
             return;
         }
 
