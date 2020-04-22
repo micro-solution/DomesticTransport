@@ -128,7 +128,7 @@ namespace DomesticTransport
 
 
                     sityes.Add(order.DeliveryPoint.City);
-                    routes.Add(order.Route);
+                    routes.Add(order.RouteCity);
                     ttns.Add(order.TransportationUnit);
 
                     string client = order.Customer.Name;
