@@ -27,7 +27,7 @@ namespace DomesticTransport
                 {
                     if (ListTable != null)
                     {
-                        _currentRowRange = TableRange.Rows[CurrentRowIndex].Range;
+                        _currentRowRange = TableRange.Rows[CurrentRowIndex] ;
                     }
                 }
                 return _currentRowRange;
@@ -36,7 +36,17 @@ namespace DomesticTransport
         }
         Range _currentRowRange;
 
-        public int CurrentRowIndex { get; set; }
+        public int CurrentRowIndex
+        {
+            get
+            {
+                if (_currentRowIndex == 0)
+                    _currentRowIndex = GetLastRowIndex();
+             return _currentRowIndex;
+            }
+            set => _currentRowIndex = value;
+        }
+        int _currentRowIndex;
 
 
         public int GetColumn(string header)
@@ -55,13 +65,13 @@ namespace DomesticTransport
         }
 
         //Get
-        public string GetValueString( string header)
+        public string GetValueString(string header)
         {
             int column = GetColumn(header);
             string str = CurrentRowRange.Cells[1, column].Text;
             return str;
         }
-        public double GetValueDouble( string header)
+        public double GetValueDouble(string header)
         {
             int column = GetColumn(header);
             string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
@@ -75,7 +85,7 @@ namespace DomesticTransport
             decimal val = decimal.TryParse(str, out decimal v) ? v : 0;
             return val;
         }
-        public int GetValueInt( string header)
+        public int GetValueInt(string header)
         {
             int column = GetColumn(header);
             string str = CurrentRowRange.Cells[1, column].Value?.ToString() ?? "";
@@ -85,25 +95,41 @@ namespace DomesticTransport
 
 
         ///  Set
-        public void SetValue(string header , string Value)
-        {               
+        public void SetValue(string header, string Value)
+        {
             int column = GetColumn(header);
-             CurrentRowRange.Cells[1, column].Value = Value;            
+            CurrentRowRange.Cells[1, column].Value = Value;
+           
         }
         public void SetValue(string header, int Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
+            
         }
         public void SetValue(string header, double Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
+            
         }
         public void SetValue(string header, decimal Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
+          
+        }
+
+         /// <summary>
+         /// Последняя строка таблицы
+         /// </summary>
+         /// <returns></returns>
+       public int GetLastRowIndex()
+        {
+            int ix=0;
+            ix = ListTable.ListRows.Count;
+            //Добавить провекрку на пустоту в строке
+            return ix;
         }
 
     }
