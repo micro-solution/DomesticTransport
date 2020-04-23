@@ -8,6 +8,9 @@ namespace DomesticTransport
 {
     class Archive
     {
+        /// <summary>
+        /// Список id товаров в Архиве
+        /// </summary>
         private static List<string> OrdersId
         {
             get
@@ -88,6 +91,9 @@ namespace DomesticTransport
             return chk;
         }
 
+        /// <summary>
+        /// Сортировка архива
+        /// </summary>
         static void SortArchive()
         {
             Range table = ShefflerWB.ArchiveTable.Range;
@@ -104,22 +110,23 @@ namespace DomesticTransport
 
         //Скопировать все вставить в архив
         static void CpopyTotalPastArchive()
-        {
-         //   Globals.ThisWorkbook.Application.CutCopyMode = XlCutCopyMode.xlCut;
-            ShefflerWB.TotalTable.DataBodyRange.Copy();
-            // ListObject arh = ShefflerWB.ArchiveTable;
+        {          
+            ShefflerWB.TotalTable.DataBodyRange.Copy();             
             XLTable archive = new XLTable() { ListTable = ShefflerWB.ArchiveTable };
-
-            Range rng = archive.GetLastRow();
-          
+            Range rng = archive.GetLastRow();            
             rng.PasteSpecial(XlPasteType.xlPasteValuesAndNumberFormats);
-
         }
+
+
         public static void ClearArchive()
         {
             ShefflerWB.ArchiveTable.DataBodyRange.Clear();
         }
 
+        /// <summary>
+        /// Вывод доставок в архив
+        /// </summary>
+        /// <param name="deliveries"></param>
         private static void PrintArchive(List<Delivery> deliveries)
         {
             XLTable tableArchive = new XLTable();
@@ -231,7 +238,6 @@ namespace DomesticTransport
             xlTable.SetValue("Кол-во паллет", order.PalletsCount);
             xlTable.SetValue("Направление", order.RouteCity);
             xlTable.SetValue("Город", order.DeliveryPoint.City);
-
         }
 
         public static List<Delivery> GetDeliveriesFromArchive()
@@ -255,11 +261,14 @@ namespace DomesticTransport
         public static void UnoadFromArhive()
         {
             new UnloadArchive().ShowDialog();
+
         }
 
         ///=======================================================
+       
+
         /// <summary>
-        /// 
+        /// Собрать доставки из таблицы
         /// </summary>
         /// <param name="range"></param>
         /// <returns></returns>
@@ -289,8 +298,7 @@ namespace DomesticTransport
                                              a.DateDelivery == delivery.DateDelivery);
                 if (ordersDelivery != null)
                 {
-                    delivery.Orders = ordersDelivery;
-                    //ordersDelivery.ForEach(x => orders.Remove(x));
+                    delivery.Orders = ordersDelivery;                    
                 }
             }
             return deliveries;

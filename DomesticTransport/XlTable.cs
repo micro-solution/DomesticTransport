@@ -3,9 +3,16 @@ using System;
 
 namespace DomesticTransport
 {
+   /// <summary>
+   /// Таблица 
+   /// </summary>
     public class XLTable
     {
         public ListObject ListTable { get; set; }
+     
+        /// <summary>
+        /// Диапазон таблицы
+        /// </summary>
         public Range TableRange
         {
             get
@@ -19,7 +26,10 @@ namespace DomesticTransport
             set => _range = value;
         }
         Range _range;
-
+        
+        /// <summary>
+        /// Строка для заполнения
+        /// </summary>
         public Range CurrentRowRange
         {
             get
@@ -37,6 +47,9 @@ namespace DomesticTransport
         }
         Range _currentRowRange;
 
+        /// <summary>
+        ///Номер последней строки
+        /// </summary>
         public int CurrentRowIndex
         {
             get
@@ -149,6 +162,9 @@ namespace DomesticTransport
             return ix;
         }
 
+        /// <summary>
+        /// Найти\добавить последнюю строку таблицы
+        /// </summary>
         public Range GetLastRow()
         {
             int ix = GetLastRowIndex();
@@ -159,12 +175,14 @@ namespace DomesticTransport
             }
             return ListTable.ListRows[ix].Range;
         }
+
+         /// <summary>
+         /// Установить последнюю строку таблицы
+         /// </summary>
         public void SetCurrentRow()
         {
             CurrentRowRange = GetLastRow();
         }
-
-
 
     }
 }

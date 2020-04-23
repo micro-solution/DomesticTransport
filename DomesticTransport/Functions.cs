@@ -1256,6 +1256,7 @@ namespace DomesticTransport
             listObject.DataBodyRange.EntireRow.Delete();
             Globals.ThisWorkbook.Application.DisplayAlerts = true;
         }
+
         private void AddListRow(ListObject listObject)
         {
             Worksheet worksheet = listObject.Parent;
@@ -1374,6 +1375,12 @@ namespace DomesticTransport
             return orders;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orders"></param>
+        /// <param name="routeId"></param>
+        /// <returns></returns>
         private bool IsComplete(List<Order> orders, int routeId)
         {
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
