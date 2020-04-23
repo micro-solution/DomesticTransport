@@ -245,13 +245,14 @@ namespace DomesticTransport
             return GetAllDeliveries(tableArchive);
         }
 
+      
         public static void ToTransportTable()
         {
-            TransportTable transportTable = new TransportTable();
-            XLTable tableArchive = new XLTable();
-            tableArchive.ListTable = ShefflerWB.ArchiveTable;
-            transportTable.ImportDeliveryes(GetAllDeliveries(tableArchive));
-            transportTable.SaveAndClose();
+            TransportTable transportTable = new TransportTable();            
+                XLTable tableArchive = new XLTable();
+                tableArchive.ListTable = ShefflerWB.ArchiveTable;
+                transportTable.ImportDeliveryes(GetAllDeliveries(tableArchive));
+                transportTable.SaveAndClose();
             return;
         }
 

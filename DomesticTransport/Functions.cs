@@ -515,6 +515,7 @@ namespace DomesticTransport
         public void CreateMasseges2()
         {
             //TODO Сделать универсальную фукнцию отправки сообщения, убрать дублирование
+
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             if (deliveries?.Count == 0) return;

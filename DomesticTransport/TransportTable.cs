@@ -1,4 +1,5 @@
-﻿using DomesticTransport.Model;
+﻿using DomesticTransport.Forms;
+using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
 using System;
@@ -11,6 +12,9 @@ namespace DomesticTransport
 {
     class TransportTable
     {
+        public DateTime FirstDate { get; set; }
+        public DateTime SecondDate { get; set; }
+        public string Compny { get; set; }
 
         #region Столбцы таблицы
         public const int ColumnId = 1;
@@ -92,7 +96,6 @@ namespace DomesticTransport
         {
             if (!File.Exists(FullName)) return;
             Workbook = Globals.ThisWorkbook.Application.Workbooks.Open(FullName);
-
             TableSheet = Workbook.Worksheets[1];
         }
 
@@ -100,7 +103,8 @@ namespace DomesticTransport
         {
             int iRow = NextRow;
             DateTime dateMax = DateTime.Today;
-            dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
+            SecondDate = dateMax;
+            FirstDate = dateMax.AddDays(-(double)dateMax.DayOfWeek);
 
             Forms.ProcessBar pb = Forms.ProcessBar.Init("Экспорт в Transport Table", deliveries.Count, 1, "Экспорт");
             if (pb == null) return;
@@ -122,7 +126,8 @@ namespace DomesticTransport
                 double palletCount = 0;
                 double priceOrder = 0;
 
-                if (DateTime.Parse(delivery.DateDelivery) > dateMax) continue;
+                if (DateTime.Parse(delivery.DateDelivery) > FirstDate &&
+                    DateTime.Parse(delivery.DateDelivery) < SecondDate) continue;
 
                 foreach (Order order in delivery.Orders)
                 {
@@ -140,7 +145,7 @@ namespace DomesticTransport
                     client = client.Substring(0, client.IndexOf('/'));
                     client = client.Replace(",", "");
                     client = client + "-" + order.Customer.Id;
-                   clients.Add(client);
+                    clients.Add(client);
                 }
 
                 sityes = sityes.Distinct().ToList();
@@ -157,7 +162,7 @@ namespace DomesticTransport
 
                 TableSheet.Cells[iRow, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
-               
+
                 TableSheet.Cells[iRow, ColumnPointCount].Value = delivery.MapDelivery.Count - 1; //Доп точек
                 TableSheet.Cells[iRow, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
@@ -183,5 +188,88 @@ namespace DomesticTransport
             Workbook = null;
         }
 
+
+        public void MessageProvider()
+        {
+            UnloadOnDate unloadOnDate = new UnloadOnDate();
+            unloadOnDate.ShowDialog();
+            if (unloadOnDate.DialogResult != System.Windows.Forms.DialogResult.OK)
+            { return; }
+
+            Compny = unloadOnDate.Compny;
+            FirstDate = unloadOnDate.FirstDate;
+            SecondDate = unloadOnDate.SecondDate;
+
+            XLTable tableArchive = new XLTable();
+            List<Delivery> deliveries = GetTransportTableDeliveries();
+
+
+            // ImportDeliveryes(GetAllDeliveries(tableArchive));
+            // ImportDeliveryes(List<Delivery> deliveries)
+         
+            // if (DateTime.Parse(delivery.DateDelivery) > FirstDate &&
+            //       DateTime.Parse(delivery.DateDelivery) < SecondDate) continue;
+
+            MailProviders(deliveries);
+
+        }
+
+        private List<Delivery> GetTransportTableDeliveries()
+        {
+            List<Delivery> deliveries = new List<Delivery>();
+            Open();
+            XLTable table = new XLTable();
+            table.TableRange = TableSheet.UsedRange;
+            int CountRows = table.GetLastRowIndex() ;
+            for (int i =1; i < CountRows; i++)
+            {
+                table.CurrentRowIndex = i;
+                Delivery delivery = GetDeliveryTransportTable(table);
+
+                if (delivery != null) deliveries.Add(delivery);
+            }
+            return deliveries;
+        }
+
+        public Delivery GetDeliveryTransportTable(XLTable table)
+        {
+            Delivery delivery = new Delivery();
+            
+            // Compny = unloadOnDate.Compny;
+            // FirstDate = unloadOnDate.FirstDate;
+            // SecondDate = unloadOnDate.SecondDate;
+             
+            delivery.DateDelivery = table.GetValueString("Дата отгрузки");
+            delivery.Number = table.GetValueInt("№ Доставки");
+            delivery.Time = table.GetValueString("Время подачи ТС");
+            delivery.Cost = table.GetValueDecimal("Стоимость доставки");
+            string providerName = table.GetValueString("Перевозчик");
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
+                                            delivery.Number == 0 ||
+                                            string.IsNullOrWhiteSpace(providerName)
+                                            ) return null;
+            Truck truck = new Truck();
+            truck.Tonnage = table.GetValueDouble("Тип ТС, тонн");
+            truck.ProviderCompany.Name = providerName;
+            delivery.Truck = truck;
+
+            string id = table.GetValueString("ID перевозчика");
+            string curNumber = table.GetValueString("Номер,марка");
+            string phone = table.GetValueString("Телефон водителя");
+            string fio = table.GetValueString("Водитель (ФИО)");
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                Driver driver = new Driver()
+                {
+                    Id = id,
+                    CarNumber = curNumber,
+                    Name = fio,
+                    Phone = phone
+                };
+                delivery.Driver = driver;
+            }
+
+            return delivery;
+        }
     }
 }
