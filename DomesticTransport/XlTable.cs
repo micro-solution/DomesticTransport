@@ -47,6 +47,11 @@ namespace DomesticTransport
         }
         Range _currentRowRange;
 
+
+       
+        
+
+
         /// <summary>
         ///Номер последней строки
         /// </summary>
@@ -63,7 +68,7 @@ namespace DomesticTransport
         int _currentRowIndex;
 
 
-        public int GetColumn(string header)
+    virtual public int GetColumn(string header)
         {
             int column = 0;
             if (ListTable != null)

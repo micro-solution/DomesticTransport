@@ -218,6 +218,7 @@
       <DependentUpon>SapFiles.cs</DependentUpon>
     </Compile>
     <Compile Include="TransportTable.cs" />
+    <Compile Include="XLRange.cs" />
     <Compile Include="XlTable.cs" />
     <Compile Include="ThisWorkbook.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
