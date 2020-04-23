@@ -69,6 +69,7 @@
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
+            this.btnSettings = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
             this.groupGeneral.SuspendLayout();
             this.groupEdit.SuspendLayout();
@@ -353,6 +354,7 @@
             // 
             this.settings.Items.Add(this.btnDate);
             this.settings.Items.Add(this.BtnSaveSignature);
+            this.settings.Items.Add(this.btnSettings);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Items.Add(this.ButtonSettingLetterCS);
             this.settings.Label = "Настройки";
@@ -425,6 +427,14 @@
             this.button3.Label = "";
             this.button3.Name = "button3";
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
+            this.btnSettings.Label = "Настройки";
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.ShowImage = true;
+            this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSettings_Click);
+            // 
             // RibbonDelivery
             // 
             this.Name = "RibbonDelivery";
@@ -483,6 +493,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonToArchive;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ToTransportTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
     }
 
     partial class ThisRibbonCollection

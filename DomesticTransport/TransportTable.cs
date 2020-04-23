@@ -92,6 +92,7 @@ namespace DomesticTransport
         {
             if (!File.Exists(FullName)) return;
             Workbook = Globals.ThisWorkbook.Application.Workbooks.Open(FullName);
+
             TableSheet = Workbook.Worksheets[1];
         }
 
@@ -156,7 +157,7 @@ namespace DomesticTransport
 
                 TableSheet.Cells[iRow, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
-                // TableSheet.Cells[iRow, ColumnPointCount].Value = clients.Count;
+               
                 TableSheet.Cells[iRow, ColumnPointCount].Value = delivery.MapDelivery.Count - 1; //Доп точек
                 TableSheet.Cells[iRow, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));

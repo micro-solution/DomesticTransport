@@ -508,5 +508,23 @@ namespace DomesticTransport
             }
             
         }
+
+        private void btnSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+               new Settings().ShowDialog() ;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
     }
 }

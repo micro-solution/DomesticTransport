@@ -45,15 +45,15 @@ namespace DomesticTransport
         {
             XLTable table = new XLTable() { ListTable = ShefflerWB.TotalTable };
             List<Delivery> deliveries = GetAllDeliveries(table);
-            if (!CheckArchive(deliveries))
-            {//Проверить повторение заказов
-                CpopyTotalPastArchive();
+            if (!CheckArchive(deliveries)) //Проверить повторение заказов по Id
+            {
+                CpopyTotalPastArchive();   //Копипастить
             }
             else
             {
-                PrintArchive(deliveries);
+                PrintArchive(deliveries);  // Удалять старые если совпадают, печатать по строке
             }
-            SortArchive();
+            SortArchive();   //Сортировка
         }
 
         /// <summary>
@@ -82,9 +82,7 @@ namespace DomesticTransport
             bool chk = false;
             ListObject archiveTable = ShefflerWB.ArchiveTable;
             foreach (string idOrder in OrdersId)
-            {
-                // string idOrder = archiveRow.Range[1, archiveTable.ListColumns["Номер поставки"].Index].Text;
-                //idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+            {                 
                 chk = delivery.Orders.Find(a => a.Id == idOrder) != null;
                 if (chk) break;
             }
