@@ -49,7 +49,7 @@ namespace DomesticTransport
                 {
                     using (OpenFileDialog fileDialog = new OpenFileDialog()
                     {
-                        Title = "Выберите расположение файла Transport Table",
+                        Title = "Выберите расположение файла Sheepments",
                         DefaultExt = "*.xls*",
                         CheckFileExists = true,
                         InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,

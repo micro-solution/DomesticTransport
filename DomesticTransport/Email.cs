@@ -171,7 +171,7 @@ namespace DomesticTransport
                         if (!string.IsNullOrEmpty(signature))
                         {
                             string fileName = fiSignature[0].Name.Replace(fiSignature[0].Extension, string.Empty);
-                            signature = signature.Replace(fileName + "_files/", appDataDir + "/" + fileName + "_files/");
+                            signature = signature.Replace(fileName + ".files/", appDataDir + "/" + fileName + ".files/");
                         }
                     }
                 }
