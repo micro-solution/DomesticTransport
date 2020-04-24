@@ -139,8 +139,8 @@ namespace DomesticTransport
                     {
                         delivery.MapDelivery.ForEach(p => p.RouteName = "Сборный груз");
                     Target.Offset[0, 5].Value ="Сборный груз";
-                    Target.Offset[0, 2].Value = "";
-                    Target.Offset[0, 1].Value = "";
+                    Target.Offset[0, 2].Value = "0";
+                    Target.Offset[0, 1].Value = "0";
                     }
 
                     Target.Offset[0, 4].Value = providerFrm.CostDelivery;
