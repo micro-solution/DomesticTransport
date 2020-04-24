@@ -612,7 +612,7 @@ namespace DomesticTransport
             try
             {
                 ListObject list = sh.ListObjects["Таблица1"];
-                for (int i = 1; i < list.ListRows.Count; i++)
+                for (int i = 1; i <= list.ListRows.Count; i++)
                 {
                     ListRow row = list.ListRows[i];
                     string idProvider = row.Range[1, list.ListColumns["ID перевозчика"].Index].Text;
