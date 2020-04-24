@@ -723,6 +723,8 @@ namespace DomesticTransport
                     string cost = row.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value.ToString();
                     if (double.TryParse(cost, out double costProd)) order.Cost = costProd;
 
+                    string ttn = row.Range[1, ShefflerWB.TotalTable.ListColumns["Номер накладной"].Index].Text;
+                    order.TransportationUnit = ttn;
                     break;
                 }
             }
