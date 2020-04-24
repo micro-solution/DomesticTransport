@@ -375,6 +375,8 @@ namespace DomesticTransport
         {
             List<Order> orders = GetOrdersFromTable();
             List<Delivery> deliveries = EditDeliveres(orders);
+
+            PrintTotal(deliveries); 
             PrintChanges(deliveries);
         }
 
@@ -764,11 +766,14 @@ namespace DomesticTransport
             foreach (Range row in range.Rows)
             {
                 string dateTable = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
-                string dateDelivery = ShefflerWB.DateDelivery;
-                if (dateTable != dateDelivery) continue;
+                // string dateDelivery = ShefflerWB.DateDelivery;
+                // if (dateTable != dateDelivery) continue;
+
                 string idOrder = row.Cells[1, column].Text;
                 if (string.IsNullOrWhiteSpace(idOrder)) continue;
                 Order order = new Order();
+                order.DateDelivery = dateTable;
+
                 idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
                 order.Id = idOrder;
                 order.TransportationUnit = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Номер накладной"].Index].Text;
