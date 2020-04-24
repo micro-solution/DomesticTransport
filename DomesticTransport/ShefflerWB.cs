@@ -305,8 +305,9 @@ namespace DomesticTransport
             Range range = null;
             foreach (ListRow row in TotalTable.ListRows)
             {
-                string cell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
-                if ((!string.IsNullOrWhiteSpace(cell)) && idOrder.Contains(cell))
+                string idOrderCell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
+                idOrder = idOrderCell.Length < 10 ? new string('0', 10 - idOrderCell.Length) + idOrderCell : idOrderCell;
+                if ((!string.IsNullOrWhiteSpace(idOrderCell)) && idOrder == idOrderCell)
                 {
                     range = row.Range;
                     break;

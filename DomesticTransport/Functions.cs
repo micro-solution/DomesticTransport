@@ -218,8 +218,9 @@ namespace DomesticTransport
                     foreach (Range orderLine in orfderRng.Rows)
                     {
                         ShefflerWB.DeliverySheet.Cells[orderLine.Row, 4].Value = delivery.MapDelivery[0].Id;   //ID Route
-                        string IDdelivery = ShefflerWB.DeliverySheet.Cells[orderLine.Row, colID].Text;
-                        Order orderFnd = delivery.Orders.Find(x => x.Id.Contains(IDdelivery));
+                        string idOrder = ShefflerWB.DeliverySheet.Cells[orderLine.Row, colID].Text;
+                        idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                        Order orderFnd = delivery.Orders.Find(x => x.Id==idOrder);
                         if (orderFnd != null)
                         {
                             ShefflerWB.DeliverySheet.Cells[orderLine.Row, 5].Value = orderFnd.PointNumber;
@@ -709,7 +710,8 @@ namespace DomesticTransport
             foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
             {
                 string idOrder = row.Range[1, column].Text;
-                if (order.Id.Contains(idOrder))
+                 idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                if (order.Id == idOrder)
                 {
                     string dateTable = row.Range[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
                     order.DateDelivery = dateTable;
@@ -1548,7 +1550,8 @@ namespace DomesticTransport
                         totalRow = ShefflerWB.TotalTable.ListRows[i];
                         string idOrder = totalRow.Range[1,
                                     ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Text;
-                        if ((!string.IsNullOrWhiteSpace(idOrder)) && (order.Id.Contains(idOrder)))
+                        idOrder = idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                        if ((!string.IsNullOrWhiteSpace(idOrder)) && (order.Id==idOrder))
                         { break; }
                         totalRow = null;
                     }
