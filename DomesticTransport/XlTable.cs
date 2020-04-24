@@ -3,16 +3,9 @@ using System;
 
 namespace DomesticTransport
 {
-   /// <summary>
-   /// Таблица 
-   /// </summary>
     public class XLTable
     {
         public ListObject ListTable { get; set; }
-     
-        /// <summary>
-        /// Диапазон таблицы
-        /// </summary>
         public Range TableRange
         {
             get
@@ -26,22 +19,17 @@ namespace DomesticTransport
             set => _range = value;
         }
         Range _range;
-        
-        /// <summary>
-        /// Строка для заполнения
-        /// </summary>
-   virtual  public Range CurrentRowRange
+
+        public Range CurrentRowRange
         {
             get
             {
                 if (_currentRowRange == null && CurrentRowIndex != 0)
                 {
-                    if (TableRange != null)
+                    if (ListTable != null)
                     {
                         _currentRowRange = TableRange.Rows[CurrentRowIndex];
                     }
-                 
-
                 }
                 return _currentRowRange;
             }
@@ -49,28 +37,12 @@ namespace DomesticTransport
         }
         Range _currentRowRange;
 
-
-       
-        
-
-
-        /// <summary>
-        ///Номер последней строки
-        /// </summary>
         public int CurrentRowIndex
         {
             get
             {
                 if (_currentRowIndex == 0)
-
-                    if (ListTable != null)
-                    {
-                    _currentRowIndex = GetLastListRowIndex();
-                    }
-                    else
-                    {
-                        _currentRowIndex = GetLastRowIndex();
-                    }
+                    _currentRowIndex = GetLastRowIndex();
                 return _currentRowIndex;
             }
             set => _currentRowIndex = value;
@@ -78,7 +50,7 @@ namespace DomesticTransport
         int _currentRowIndex;
 
 
-    virtual public int GetColumn(string header)
+        public int GetColumn(string header)
         {
             int column = 0;
             if (ListTable != null)
@@ -96,7 +68,7 @@ namespace DomesticTransport
         //Get
         public string GetValueString(string header)
         {
-            int column = GetColumn(header);             
+            int column = GetColumn(header);
             return CurrentRowRange.Cells[1, column].Text;
         }
         public double GetValueDouble(string header)
@@ -152,7 +124,7 @@ namespace DomesticTransport
         /// Последняя строка таблицы
         /// </summary>
         /// <returns></returns>
-        virtual public int GetLastListRowIndex()
+        public int GetLastRowIndex()
         {
             int ix = 0;
             ix = ListTable.ListRows.Count;
@@ -169,44 +141,14 @@ namespace DomesticTransport
                         ++ix;
                         ListTable.ListRows.Add();
                     }
-                    break;    
-                }                 
+                    break;
+                }
             }
 
             //Добавить провекрку на пустоту в строке
             return ix;
         }
 
-        /// <summary>
-        /// Найти первую строчку Для  List добавлять строку
-        /// </summary>
-        /// <returns></returns>
-        public int GetLastRowIndex()
-        {
-            int ix = 0;
-            ix = TableRange.Rows.Count;
-
-            for (int i = ix; i > 0; i--)
-            {
-                string str = TableRange.Cells[i, 1].Text;
-                if (str == "")
-                { ix = i; }
-                else
-                {
-                 //   ListTable.ListRows.Add();
-                    ++ix;            
-                    break;
-                }
-            }
-
-            return ix;
-        }
-
-
-
-        /// <summary>
-        /// Найти\добавить последнюю строку таблицы
-        /// </summary>
         public Range GetLastRow()
         {
             int ix = GetLastRowIndex();
@@ -215,16 +157,14 @@ namespace DomesticTransport
                 ListTable.ListRows.Add();
                 ix = 1;
             }
-            return TableRange.Rows[ix].Range;
+            return ListTable.ListRows[ix].Range;
         }
-
-         /// <summary>
-         /// Установить последнюю строку таблицы
-         /// </summary>
         public void SetCurrentRow()
         {
             CurrentRowRange = GetLastRow();
         }
+
+
 
     }
 }
