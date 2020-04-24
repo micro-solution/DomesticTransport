@@ -57,16 +57,19 @@
             this.MenuSendTotal = this.Factory.CreateRibbonMenu();
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
+            this.btnMsgTransportTable = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.ButtonToArchive = this.Factory.CreateRibbonButton();
             this.ToTransportTable = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnDate = this.Factory.CreateRibbonButton();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
+            this.btnSettings = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.ButtonSettingLetterCS = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
+            this.helper = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -295,6 +298,7 @@
             this.MenuSendTotal.Image = ((System.Drawing.Image)(resources.GetObject("MenuSendTotal.Image")));
             this.MenuSendTotal.Items.Add(this.ButtonTotalToProviders);
             this.MenuSendTotal.Items.Add(this.ButtonSendToCS);
+            this.MenuSendTotal.Items.Add(this.btnMsgTransportTable);
             this.MenuSendTotal.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.MenuSendTotal.Label = "Отправка Отгрузок";
             this.MenuSendTotal.Name = "MenuSendTotal";
@@ -319,6 +323,14 @@
             this.ButtonSendToCS.ShowImage = true;
             this.ButtonSendToCS.SuperTip = "Подготовка письма с данными об отгрузках для CS и WH";
             this.ButtonSendToCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendToCS_Click);
+            // 
+            // btnMsgTransportTable
+            // 
+            this.btnMsgTransportTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnMsgTransportTable.Label = "Провайдерам TransportTable";
+            this.btnMsgTransportTable.Name = "btnMsgTransportTable";
+            this.btnMsgTransportTable.ShowImage = true;
+            this.btnMsgTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnMsgTransportTable_Click);
             // 
             // group2
             // 
@@ -353,6 +365,7 @@
             // 
             this.settings.Items.Add(this.btnDate);
             this.settings.Items.Add(this.BtnSaveSignature);
+            this.settings.Items.Add(this.btnSettings);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Items.Add(this.ButtonSettingLetterCS);
             this.settings.Label = "Настройки";
@@ -376,6 +389,14 @@
             this.BtnSaveSignature.ShowImage = true;
             this.BtnSaveSignature.SuperTip = "Заполните данные подписи на листе Mail и нажмите сохранить";
             this.BtnSaveSignature.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveSignature_Click);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
+            this.btnSettings.Label = "Настройки";
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.ShowImage = true;
+            this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSettings_Click);
             // 
             // ButtonSelectFoldersOutlook
             // 
@@ -402,18 +423,27 @@
             // about
             // 
             this.about.Items.Add(this.BtnAboutProgrramm);
+            this.about.Items.Add(this.helper);
             this.about.Label = "Справка";
             this.about.Name = "about";
             // 
             // BtnAboutProgrramm
             // 
-            this.BtnAboutProgrramm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("BtnAboutProgrramm.Image")));
             this.BtnAboutProgrramm.Label = "О программе";
             this.BtnAboutProgrramm.Name = "BtnAboutProgrramm";
             this.BtnAboutProgrramm.ShowImage = true;
             this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
+            // 
+            // helper
+            // 
+            this.helper.Image = ((System.Drawing.Image)(resources.GetObject("helper.Image")));
+            this.helper.Label = "Справка";
+            this.helper.Name = "helper";
+            this.helper.ShowImage = true;
+            this.helper.SuperTip = "Некотороые сведения о программе";
+            this.helper.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.helper_Click);
             // 
             // btnChangeRoute
             // 
@@ -483,6 +513,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonToArchive;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ToTransportTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMsgTransportTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton helper;
     }
 
     partial class ThisRibbonCollection

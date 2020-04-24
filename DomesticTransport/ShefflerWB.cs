@@ -294,8 +294,11 @@ namespace DomesticTransport
             }            
         }
 
-
-
+        /// <summary>
+        ///  Найти строку по id
+        /// </summary>
+        /// <param name="idOrder"></param>
+        /// <returns></returns>
         internal Range GetRowOrderTotal(string idOrder)
         {
             Range range = null;
@@ -513,7 +516,12 @@ namespace DomesticTransport
             return ListRate;
         }
 
-        // Добавить маршрут в таблицу
+
+        /// <summary>
+        /// Добавить маршрут в таблицу
+        /// </summary>
+        /// <param name="mapDelivery"></param>
+        /// <returns></returns>
         public int CreateRoute(List<DeliveryPoint> mapDelivery)
         {
 
@@ -567,28 +575,28 @@ namespace DomesticTransport
         /// Собирает диапазон Отгрузки с текущей даты
         /// </summary>
         /// <returns></returns>
-        public Range GetCurrentTotalRange()
-        {
-            Range currentRng = null;
-            string dateDelivery = DateDelivery;
-            int columnDelivery = TotalTable.ListColumns["Дата отгрузки"].Index;
-            foreach (ListRow row in TotalTable.ListRows)
-            {
-                string dateTable = row.Range[1, columnDelivery].Text;
-                if (dateTable == dateDelivery )
-                {
-                    if (currentRng == null)
-                    {
-                        currentRng = row.Range;
-                    }
-                    else
-                    {
-                        currentRng = Globals.ThisWorkbook.Application.Union(currentRng, row.Range);
-                    }
-                }
-            }
-            return currentRng;
-        }
+        //public Range GetCurrentTotalRange()
+        //{
+        //    Range currentRng = null;
+        //    string dateDelivery = DateDelivery;
+        //    int columnDelivery = TotalTable.ListColumns["Дата отгрузки"].Index;
+        //    foreach (ListRow row in TotalTable.ListRows)
+        //    {
+        //        string dateTable = row.Range[1, columnDelivery].Text;
+        //        if (dateTable == dateDelivery )
+        //        {
+        //            if (currentRng == null)
+        //            {
+        //                currentRng = row.Range;
+        //            }
+        //            else
+        //            {
+        //                currentRng = Globals.ThisWorkbook.Application.Union(currentRng, row.Range);
+        //            }
+        //        }
+        //    }
+        //    return currentRng;
+        //}
         #region Вспомогательные
 
         /// <summary>

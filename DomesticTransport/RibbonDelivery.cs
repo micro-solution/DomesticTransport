@@ -3,6 +3,7 @@
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -507,6 +508,54 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
             
+        }
+
+        private void btnSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+               new Settings().ShowDialog() ;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        private void btnMsgTransportTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+               new TransportTable().MessageProvider();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        private void helper_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {              
+                Process.Start(Properties.Settings.Default.HelpPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
     }
 }

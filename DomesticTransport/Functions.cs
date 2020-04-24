@@ -58,6 +58,7 @@ namespace DomesticTransport
 
             ClearListObj(ShefflerWB.DeliveryTable);
             ClearListObj(ShefflerWB.OrdersTable);
+            ClearListObj(ShefflerWB.TotalTable);
 
             if (deliveries != null && deliveries.Count > 0)
             {
@@ -87,16 +88,15 @@ namespace DomesticTransport
             {
                 string idOrder = row.Cells[1, columnId].Text;
                 if (string.IsNullOrWhiteSpace(idOrder)) continue;
-                // idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
-                Order order = orders.Find(o => o.Id.Contains(idOrder));
+                idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
+                Order order = orders.Find(o => o.Id == idOrder);
                 if (order == null) continue;
 
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].Value = order.WeightBrutto;
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
             }
-
-            UpdateOrderFromTotal();
+            UpdateOrderFromTotal(); 
         }
 
         /// <summary>
@@ -117,6 +117,7 @@ namespace DomesticTransport
 
             ClearListObj(ShefflerWB.DeliveryTable);
             ClearListObj(ShefflerWB.OrdersTable);
+            ClearListObj(ShefflerWB.TotalTable);
 
             if (deliveries != null && deliveries.Count > 0)
             {
@@ -196,13 +197,13 @@ namespace DomesticTransport
 
                 List<Delivery> deliveries = CompleteAuto(orders);    //  EditDelivery(orders);
                                                                      // List<Delivery> deliveries = EditDeliveres(orders); //new List<Delivery>
-                Range totalRng = workBook.GetCurrentTotalRange();
-                if (deliveries != null && deliveries.Count > 0 && totalRng != null)
+              //  Range totalRng = workBook.GetCurrentTotalRange();
+                if (deliveries != null && deliveries.Count > 0 )
                 {
                     delivery = deliveries[0];
                     idRoute = delivery.MapDelivery[0].Id;
 
-                    foreach (Range row in totalRng.Rows)
+                    foreach (Range row in ShefflerWB.TotalTable.DataBodyRange.Rows)
                     {
                         string idOrderTotal = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Text;
                         idOrderTotal = idOrderTotal.Length < 10 ? new string('0', 10 - idOrderTotal.Length) + idOrderTotal : idOrderTotal;
@@ -262,6 +263,7 @@ namespace DomesticTransport
 
             ClearListObj(ShefflerWB.DeliveryTable);
             ClearListObj(ShefflerWB.OrdersTable);
+            ClearListObj(ShefflerWB.TotalTable);
 
             if (deliveries != null && deliveries.Count > 0)
             {
@@ -286,6 +288,7 @@ namespace DomesticTransport
 
             ClearListObj(ShefflerWB.DeliveryTable);
             ClearListObj(ShefflerWB.OrdersTable);
+            ClearListObj(ShefflerWB.TotalTable);
 
             if (deliveries != null && deliveries.Count > 0)
             {
@@ -347,7 +350,8 @@ namespace DomesticTransport
                         ShefflerWB.DeliverySheet.Rows[listOrderRow.Range.Row].Delete();
                 }
             }
-            Range rng = workBook.GetCurrentTotalRange();
+            //  Range rng = workBook. //GetCurrentTotalRange();
+            Range rng = ShefflerWB.TotalTable.DataBodyRange;
             if (rng == null) return;
             for (int k = rng.Rows.Count; k > 0; k--)
             {
@@ -511,6 +515,7 @@ namespace DomesticTransport
         public void CreateMasseges2()
         {
             //TODO Сделать универсальную фукнцию отправки сообщения, убрать дублирование
+
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             if (deliveries?.Count == 0) return;
@@ -1158,19 +1163,19 @@ namespace DomesticTransport
             row.Range[1, ordersTable.ListColumns["Направление"].Index].Value = order.RouteCity;
         }
 
-        private void ClearTotal()
-        {
+        //private void ClearTotal()
+        //{
 
-            int column = ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index;
-            foreach (Range row in ShefflerWB.TotalTable.DataBodyRange.Rows)
-            {
-                string dataRow = row.Cells[1, column].Text;
-                if (string.IsNullOrWhiteSpace(dataRow))
-                {
-                    ShefflerWB.TotalSheet.Cells.Rows[row.Row].Delete();
-                }
-            }
-        }
+        //    int column = ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index;
+        //    foreach (Range row in ShefflerWB.TotalTable.DataBodyRange.Rows)
+        //    {
+        //        string dataRow = row.Cells[1, column].Text;
+        //        if (string.IsNullOrWhiteSpace(dataRow))
+        //        {
+        //            ShefflerWB.TotalSheet.Cells.Rows[row.Row].Delete();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Заполнить таблицу отгрузки
@@ -1181,14 +1186,7 @@ namespace DomesticTransport
         {
             ListObject totalTable = ShefflerWB.TotalTable;
             if (deliveries.Count < 1) return;
-            ShefflerWB shefflerBook = new ShefflerWB();
-            Range CurrentDateRng = shefflerBook.GetCurrentTotalRange();
-            if (CurrentDateRng != null)
-            {
-                CurrentDateRng.Rows.Delete();
-            }
-            ClearTotal();
-
+           
             if (totalTable.ListRows.Count > 0 &&
                 totalTable.ListRows[totalTable.ListRows.Count].Range[1, 1].Text != "")
             {
@@ -1256,6 +1254,7 @@ namespace DomesticTransport
             listObject.DataBodyRange.EntireRow.Delete();
             Globals.ThisWorkbook.Application.DisplayAlerts = true;
         }
+
         private void AddListRow(ListObject listObject)
         {
             Worksheet worksheet = listObject.Parent;
@@ -1374,6 +1373,12 @@ namespace DomesticTransport
             return orders;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orders"></param>
+        /// <param name="routeId"></param>
+        /// <returns></returns>
         private bool IsComplete(List<Order> orders, int routeId)
         {
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
@@ -1820,7 +1825,7 @@ namespace DomesticTransport
         public List<Delivery> GetDeliveriesFromTotalSheet()
         {
             List<Delivery> deliveries = new List<Delivery>();
-            Range total = new ShefflerWB().GetCurrentTotalRange();
+            Range total =  ShefflerWB.TotalTable.DataBodyRange ; //GetCurrentTotalRange();
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
             if (total == null) return deliveries;
 

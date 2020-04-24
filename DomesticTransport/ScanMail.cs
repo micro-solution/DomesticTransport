@@ -9,7 +9,7 @@ using Outlook = Microsoft.Office.Interop.Outlook;
 namespace DomesticTransport
 {
     /// <summary>
-    /// Класс сканирования писем
+    /// Сканирование писем
     /// </summary>
     class ScanMail
     {

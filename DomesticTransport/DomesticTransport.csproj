@@ -139,6 +139,12 @@
     <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UnloadArchive.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,12 @@
     <Compile Include="Forms\SettingLetterToCS.Designer.cs">
       <DependentUpon>SettingLetterToCS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UnloadOnDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UnloadOnDate.Designer.cs">
+      <DependentUpon>UnloadOnDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="ScanMail.cs" />
     <Compile Include="ShefflerWB.cs" />
@@ -207,6 +219,7 @@
     </Compile>
     <Compile Include="ShipmentsTable.cs" />
     <Compile Include="TransportTable.cs" />
+    <Compile Include="XLRange.cs" />
     <Compile Include="XlTable.cs" />
     <Compile Include="ThisWorkbook.cs">
       <DependentUpon>DomesticTransport.xlsx</DependentUpon>
@@ -278,6 +291,9 @@
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnloadArchive.resx">
       <DependentUpon>UnloadArchive.cs</DependentUpon>
     </EmbeddedResource>
@@ -298,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingLetterToCS.resx">
       <DependentUpon>SettingLetterToCS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UnloadOnDate.resx">
+      <DependentUpon>UnloadOnDate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
