@@ -584,6 +584,7 @@ namespace DomesticTransport
             string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
 
             ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[22].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
             Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
 

@@ -121,18 +121,17 @@ namespace DomesticTransport
                 pb.Action($"Доставка {i} из {pb.Count}");
 
                 if (DateTime.Parse(delivery.DateDelivery) > dateMax) continue;
-
-                TableSheet.Cells[iRow, ColumnId].Value = delivery.Driver.Id;
-                TableSheet.Cells[iRow, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
-                TableSheet.Cells[iRow, ColumnCarType].Value = delivery.Truck.Tonnage;
-                TableSheet.Cells[iRow, ColumnDriver].Value = delivery.Driver.Name;
-                TableSheet.Cells[iRow, ColumnDriverPhone].Value = delivery.Driver.Phone;
-                TableSheet.Cells[iRow, ColumnCarNumber].Value = delivery.Driver.CarNumber;
                 TableSheet.Cells[iRow, ColumnPriceDelivery].Value = delivery.Cost;
 
                 foreach (Order order in delivery.Orders)
                 {
-
+                    TableSheet.Cells[iRow, ColumnId].Value = delivery.Driver.Id;
+                    TableSheet.Cells[iRow, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
+                    TableSheet.Cells[iRow, ColumnCarType].Value = delivery.Truck.Tonnage;
+                    TableSheet.Cells[iRow, ColumnDriver].Value = delivery.Driver.Name;
+                    TableSheet.Cells[iRow, ColumnDriverPhone].Value = delivery.Driver.Phone;
+                    TableSheet.Cells[iRow, ColumnCarNumber].Value = delivery.Driver.CarNumber;
+                    
                     TableSheet.Cells[iRow, ColumnDate].Value = delivery.DateDelivery;
                     TableSheet.Cells[iRow, ColumnTime].Value = delivery.Time;
                     TableSheet.Cells[iRow, ColumnDeliveryNumber].Value = order.DeliveryNumber;

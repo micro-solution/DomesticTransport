@@ -95,7 +95,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(287, 117);
+            this.btnCancel.Location = new System.Drawing.Point(294, 101);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(104, 29);
             this.btnCancel.TabIndex = 5;
@@ -106,7 +106,7 @@
             // btnAcept
             // 
             this.btnAcept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAcept.Location = new System.Drawing.Point(179, 117);
+            this.btnAcept.Location = new System.Drawing.Point(184, 101);
             this.btnAcept.Name = "btnAcept";
             this.btnAcept.Size = new System.Drawing.Size(104, 29);
             this.btnAcept.TabIndex = 6;
@@ -128,9 +128,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(9, 51);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Спркавка";
+            this.label1.Text = "Справка";
             // 
             // Settings
             // 
@@ -138,7 +138,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(402, 149);
+            this.ClientSize = new System.Drawing.Size(402, 142);
             this.Controls.Add(button1);
             this.Controls.Add(btnOFD);
             this.Controls.Add(this.label1);
@@ -147,6 +147,7 @@
             this.Controls.Add(this.tbTransortTable);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAcept);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Settings";
             this.Text = "Настройки";
             this.Load += new System.EventHandler(this.Settings_Load);
