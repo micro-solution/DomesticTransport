@@ -177,6 +177,10 @@ namespace DomesticTransport
             return ix;
         }
 
+        /// <summary>
+        /// Найти первую строчку Для  List добавлять строку
+        /// </summary>
+        /// <returns></returns>
         public int GetLastRowIndex()
         {
             int ix = 0;
@@ -188,7 +192,8 @@ namespace DomesticTransport
                 if (str == "")
                 { ix = i; }
                 else
-                {      
+                {
+                 //   ListTable.ListRows.Add();
                     ++ix;            
                     break;
                 }
@@ -210,7 +215,7 @@ namespace DomesticTransport
                 ListTable.ListRows.Add();
                 ix = 1;
             }
-            return ListTable.ListRows[ix].Range;
+            return TableRange.Rows[ix].Range;
         }
 
          /// <summary>
