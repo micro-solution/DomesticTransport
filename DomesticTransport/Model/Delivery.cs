@@ -281,7 +281,8 @@ namespace DomesticTransport.Model
         /// <returns> true если все точки есть в таблице</returns>
         public static bool CheckCustomerRoute(string id)
         {
-            DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer.Contains(id));
+            string idCustomer = id.Length < 10 ? new string('0', 10 - id.Length) + id : id;
+            DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer == idCustomer);
             return string.IsNullOrWhiteSpace(dp.IdCustomer);
         }
 
