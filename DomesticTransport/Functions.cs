@@ -1324,7 +1324,7 @@ namespace DomesticTransport
         private List<Delivery> CompleteAuto(List<Order> orders)
         {
             List<Delivery> deliveries = new List<Delivery>();
-            orders = orders.OrderBy(x => x.Customer.Id).ToList();
+            orders = orders.OrderBy(x => x.WeightNetto).ToList();
 
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
             Delivery deliveryNoRoute = new Delivery
@@ -1370,6 +1370,7 @@ namespace DomesticTransport
                         if (delivery == null)
                         {
                             delivery = new Delivery();
+                            delivery.Number = deliveries.Count+1;
                             deliveries.Add(delivery);
                         }
                         orders[iOrder].DeliveryPoint = point;
@@ -1380,7 +1381,7 @@ namespace DomesticTransport
                             : orderCurrentCustomer.PointNumber;
                         orders[iOrder].PointNumber = number;
                         delivery.Orders.Add(orders[iOrder]);
-                        delivery.Number = deliveries.Count;
+                        
                         orders.RemoveAt(iOrder);
                     }
                     if (hasDelivery) break;
@@ -1506,6 +1507,7 @@ namespace DomesticTransport
                         if (delivery == null)
                         {
                             delivery = new Delivery();
+                            delivery.Number = deliveries.Count+1;
                             deliveries.Add(delivery);
                         }
 
@@ -1518,7 +1520,7 @@ namespace DomesticTransport
                             : orderCurrentCustomer.PointNumber;
                         orders[iOrder].PointNumber = number;
                         delivery.Orders.Add(orders[iOrder]);
-                        delivery.Number = deliveries.Count;
+                        
                         orders.RemoveAt(iOrder);
                     }
                 }
