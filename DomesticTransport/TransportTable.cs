@@ -121,7 +121,7 @@ namespace DomesticTransport
                 List<string> routes = new List<string>();
                 List<string> ttns = new List<string>();
                 List<string> clients = new List<string>();
-
+                
                 double weightNetto = 0;
                 double weightBrutto = 0;
                 double palletCount = 0;
@@ -164,7 +164,7 @@ namespace DomesticTransport
                 TableSheet.Cells[iRow, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
 
-                TableSheet.Cells[iRow, ColumnPointCount].Value = delivery.MapDelivery.Count - 1; //Доп точек
+                TableSheet.Cells[iRow, ColumnPointCount].Value = clients.Count;
                 TableSheet.Cells[iRow, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
                 TableSheet.Cells[iRow, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
 

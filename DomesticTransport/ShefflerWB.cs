@@ -432,6 +432,32 @@ namespace DomesticTransport
         }
 
         /// <summary>
+        /// Сортировка таблицы отгрузки
+        /// </summary>
+        public static void TotalTableSort()
+        {
+            Range totalData = TotalTable.Range;
+            Range col1 = totalData.Columns[TotalTable.ListColumns["№ Доставки"].Index];
+            Range col2 = totalData.Columns[TotalTable.ListColumns["Дата отгрузки"].Index];
+            Range col3 = totalData.Columns[TotalTable.ListColumns["Порядок выгрузки"].Index];
+            totalData.Sort(col1,
+                XlSortOrder.xlAscending,
+               col2,
+                Type.Missing,
+                XlSortOrder.xlAscending,
+               col3,
+                XlSortOrder.xlAscending,
+                XlYesNoGuess.xlYes,
+                Type.Missing,
+                Type.Missing,
+                XlSortOrientation.xlSortColumns,
+                XlSortMethod.xlPinYin,
+                XlSortDataOption.xlSortNormal,
+                XlSortDataOption.xlSortNormal,
+                XlSortDataOption.xlSortNormal);
+        }
+
+        /// <summary>
         /// Получить вес список цен перевозчиков в формате списка         
         /// </summary>
         /// <returns></returns>

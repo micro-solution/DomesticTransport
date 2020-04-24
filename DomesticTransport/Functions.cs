@@ -112,6 +112,15 @@ namespace DomesticTransport
             CheckAndAddNewRoute(order);
             Range range = ShefflerWB.TotalTable.DataBodyRange;
             List<Order> orders = GetOrdersFromTotalTable(range);
+            int countDouble = 0;
+            foreach (Order item in orders)
+            {              
+                if (item.Id.Contains(order.Id))
+                {
+                    countDouble++;                 
+                }
+            }
+            if (countDouble > 0) order.Id += $"_{countDouble}";
             orders.Add(order);
             List<Delivery> deliveries = CompleteAuto(orders);
 
@@ -468,6 +477,14 @@ namespace DomesticTransport
                 rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
             }
             ShefflerWB.OrderTableSort();
+
+            foreach (ListRow rowOrder in ShefflerWB.TotalTable.ListRows)
+            {
+                string orderDeliveryNumber = rowOrder.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
+                if (!int.TryParse(orderDeliveryNumber, out int num)) continue;
+                rowOrder.Range[1, ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Value = numbers[num];
+            }
+            ShefflerWB.TotalTableSort();
 
             return;
         }
@@ -1591,25 +1608,7 @@ namespace DomesticTransport
                 }
             }
             // Сортировка
-            Range totalData = ShefflerWB.TotalTable.Range;
-            Range col1 = totalData.Columns[ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index];
-            Range col2 = totalData.Columns[ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index];
-            Range col3 = totalData.Columns[ShefflerWB.TotalTable.ListColumns["Порядок выгрузки"].Index];
-            totalData.Sort(col1,
-                XlSortOrder.xlAscending,
-               col2,
-                Type.Missing,
-                XlSortOrder.xlAscending,
-               col3,
-                XlSortOrder.xlAscending,
-                XlYesNoGuess.xlYes,
-                Type.Missing,
-                Type.Missing,
-                XlSortOrientation.xlSortColumns,
-                XlSortMethod.xlPinYin,
-                XlSortDataOption.xlSortNormal,
-                XlSortDataOption.xlSortNormal,
-                XlSortDataOption.xlSortNormal);
+            ShefflerWB.TotalTableSort();
             pb.Close();
             // ShefflerWB.TotalSheet.Activate();
         }

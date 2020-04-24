@@ -367,7 +367,7 @@ namespace DomesticTransport
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");
-            if (string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(id))
             {
                 Driver driver = new Driver()
                 {
