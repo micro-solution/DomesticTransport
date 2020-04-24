@@ -47,7 +47,7 @@ namespace DomesticTransport
                     addres = stroka == "" ? addres : $"{stroka}; {addres}";
                 }
             }
-            string signature = ReadReestrSignature();
+            string signature = ReadSignature(Properties.Settings.Default.Signature);
             string textMsg = messageSheet.Cells[10, 2].Text;
             string copyTo = messageSheet.Cells[9, 2].Text;
             textMsg = textMsg.Replace("[date]", date);
@@ -92,7 +92,7 @@ namespace DomesticTransport
                     addres = stroka == "" ? addres : $"{stroka}; {addres}";
                 }
             }
-            string signature = ReadReestrSignature();
+            string signature = ReadSignature(Properties.Settings.Default.Signature);
             string textMsg = messageSheet.Cells[10, 2].Text;
             string copyTo = messageSheet.Cells[9, 2].Text;
             textMsg = "Коллеги, добрый день! Отправляем уточненную информацию по отгрузкам.";
@@ -129,8 +129,7 @@ namespace DomesticTransport
         /// <param name="attachment">вложение</param>
         public void CreateMail(string to, string copy, string subject, string message, string attachment)
         {
-            string signature = ReadSignature();
-            if (string.IsNullOrEmpty(signature)) signature = ReadReestrSignature();
+            string signature = ReadSignature(Properties.Settings.Default.Signature);
             string HtmlBody = message + "<br><br>" + signature;
             try
             {
@@ -151,7 +150,7 @@ namespace DomesticTransport
             }
         }
 
-        private string ReadSignature()
+        private string ReadSignature(string signatureName = "")
         {
             try
             {
@@ -163,15 +162,17 @@ namespace DomesticTransport
                 {
                     FileInfo[] fiSignature = diInfo.GetFiles("*.htm");
 
-                    if (fiSignature.Length > 0)
+                    foreach (FileInfo file in fiSignature)
                     {
-                        StreamReader sr = new StreamReader(fiSignature[0].FullName, Encoding.Default);
-                        signature = sr.ReadToEnd();
-
-                        if (!string.IsNullOrEmpty(signature))
+                        string fileName = file.Name.Replace(file.Extension, string.Empty);
+                        if (signatureName == "") signatureName = fileName;
+                        if (signatureName == fileName)
                         {
-                            string fileName = fiSignature[0].Name.Replace(fiSignature[0].Extension, string.Empty);
+                            StreamReader sr = new StreamReader(fiSignature[0].FullName, Encoding.Default);
+                            signature = sr.ReadToEnd();
                             signature = signature.Replace(fileName + ".files/", appDataDir + "/" + fileName + ".files/");
+                            sr.Close();
+                            break;
                         }
                     }
                 }

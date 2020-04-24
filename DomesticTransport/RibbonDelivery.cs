@@ -3,6 +3,8 @@
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -192,19 +194,8 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void BtnSaveSignature_Click(object sender, RibbonControlEventArgs e)
         {
-            try
-            {
-                ShefflerWB.ExcelOptimizateOn();
-                Email.WriteReestrSignature();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                ShefflerWB.ExcelOptimizateOff();
-            }
+            SignatureSelect signatureSelect = new SignatureSelect();
+            signatureSelect.ShowDialog();
         }
 
         /// <summary>
@@ -507,6 +498,62 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
             
+        }
+
+        private void btnSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+               new Settings().ShowDialog() ;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        private void btnMsgTransportTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+               new TransportTable().MessageProvider();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        private void helper_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (File.Exists(Properties.Settings.Default.HelpPath))
+                {
+                Process.Start(Properties.Settings.Default.HelpPath);
+                }
+                else
+                {
+                    new Settings().ShowDialog();
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
     }
 }

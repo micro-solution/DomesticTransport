@@ -15,34 +15,47 @@ namespace DomesticTransport.Model
         /// </summary>
         public int Number { get; set; } = 0;
 
-        public string Time 
+        public string Time
         {
-            get {
-                   if (string.IsNullOrWhiteSpace(_timetable))
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_timetable))
                 {
-                    string city = MapDelivery.Count>0 ? MapDelivery[0].City :"";
+                    string city = MapDelivery.Count > 0 ? MapDelivery[0].City : "";
                     _timetable = ShefflerWB.GetTime(city);
                 }
                 return _timetable;
-            } 
-             set =>  _timetable = value; 
+            }
+            set => _timetable = value;
         }
         string _timetable;
 
         /// <summary>
         /// Дата отгрузки
         /// </summary>
-        public  string DateDelivery {
-            get {
+        public string DateDelivery
+        {
+            get
+            {
                 if (string.IsNullOrEmpty(_dateDelivery))
                 {
                     _dateDelivery = ShefflerWB.DateDelivery;
                 }
                 return _dateDelivery;
             }
-            set => _dateDelivery = value; }
+            set => _dateDelivery = value;
+        }
         string _dateDelivery;
 
+        public string DateCompleteDelivery { get; set; }
+        public string City { get; set; }
+        public string RouteName { get; set; }
+        public int TotalPalletsCount { get; set; }
+        public int DeliveryPointsCount { get; set; }
+        public double TotalWeightNetto { get; set; }
+        public double TotalWeightBrutto { get; set; }
+        public string OrdersInfo { get; set; }
+        public string TtnInfo { get; set; }
         public bool HasRoute { get; set; } = true;
 
         ///// <summary>
@@ -82,7 +95,7 @@ namespace DomesticTransport.Model
             {
                 double sum = 0;
                 Orders.ForEach(x => sum += x.WeightBrutto == 0 ? x.WeightNetto : x.WeightBrutto);
-                sum = System.Math.Round(sum, 2); 
+                sum = System.Math.Round(sum, 2);
                 return sum;
             }
         }
@@ -90,15 +103,18 @@ namespace DomesticTransport.Model
         ///// <summary>
         ///// Стоимость товаров
         ///// </summary>
-        public double CostProducts
+        public decimal CostProducts
         {
             get
             {
-                double sum = 0;
-                Orders.ForEach(x => sum += x.Cost);
-                return sum;
+                return _costProducts;
+                //double sum = 0;
+                //Orders.ForEach(x => sum += x.Cost);
+                //return sum;
             }
+            set => _costProducts = value;
         }
+        public decimal _costProducts = 0;
 
         public List<Order> Orders
         {
@@ -137,7 +153,7 @@ namespace DomesticTransport.Model
             get
             {
                 if (MapDelivery?[0].RouteName == "Сборный груз") return 9999;
-                
+
                 int i = 0;
                 foreach (ListRow row in ShefflerWB.SityTable.ListRows)
                 {
@@ -170,6 +186,9 @@ namespace DomesticTransport.Model
             }
             set => _truck = value;
         }
+
+
+
         private Truck _truck;
 
         public Delivery() { }
@@ -185,12 +204,28 @@ namespace DomesticTransport.Model
         /// <returns></returns>
         public bool CheckDeliveryWeight(Order order)
         {
-            double sum = TotalWeight + order.WeightNetto;
+            double sum;
+            if (order.WeightBrutto != 0)
+            {
+                sum = TotalWeight + order.WeightBrutto;
+            }
+            else
+            {
+                sum = TotalWeight + order.WeightNetto;
+            }
             return sum <= 20100;
         }
         public bool CheckDeliveryWeightLTL(Order order)
         {
-            double sum = TotalWeight + order.WeightNetto;
+            double sum;
+            if (order.WeightBrutto != 0)
+            {
+                sum = TotalWeight + order.WeightBrutto;
+            }
+            else
+            {
+                sum = TotalWeight + order.WeightNetto;
+            }
             return sum <= 20000;
         }
 
@@ -218,7 +253,7 @@ namespace DomesticTransport.Model
                                 where r.IdCustomer == mapDelivery[0].IdCustomer
                                 select r.Id).Distinct().ToArray();
 
-            if (variantsId.Length == 0 ) return false;
+            if (variantsId.Length == 0) return false;
             bool hasRoute = false;
             for (int i = 0; i < variantsId.Length; i++)
             {

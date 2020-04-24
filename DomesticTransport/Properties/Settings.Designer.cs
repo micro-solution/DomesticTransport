@@ -49,7 +49,7 @@ namespace DomesticTransport.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<p>С уважением, Имя Фамилия</p>")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Signature {
             get {
                 return ((string)(this["Signature"]));
@@ -141,6 +141,18 @@ namespace DomesticTransport.Properties {
             }
             set {
                 this["ShipmentFileFullName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HelpPath {
+            get {
+                return ((string)(this["HelpPath"]));
+            }
+            set {
+                this["HelpPath"] = value;
             }
         }
     }
