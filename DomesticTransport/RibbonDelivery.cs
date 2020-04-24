@@ -4,6 +4,7 @@ using Microsoft.Office.Tools.Ribbon;
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -537,8 +538,16 @@ namespace DomesticTransport
         private void helper_Click(object sender, RibbonControlEventArgs e)
         {
             try
-            {              
+            {
+                if (File.Exists(Properties.Settings.Default.HelpPath))
+                {
                 Process.Start(Properties.Settings.Default.HelpPath);
+                }
+                else
+                {
+                    new Settings().ShowDialog();
+                }
+                    
             }
             catch (Exception ex)
             {

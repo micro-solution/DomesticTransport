@@ -26,6 +26,11 @@ namespace DomesticTransport.Forms
         private void Settings_Load(object sender, EventArgs e)
         {
             tbTransortTable.Text = _pathTransortTable;
+            _pathHelper = Properties.Settings.Default.HelpPath;
+            string defaultHalper =  Globals.ThisWorkbook.Path + @"\help.docx" ;
+            defaultHalper = File.Exists(defaultHalper) ? defaultHalper : "";
+            _pathHelper = string.IsNullOrWhiteSpace(_pathHelper) ? defaultHalper : _pathHelper;
+            tbHelper.Text = _pathHelper;
         }
 
         private void btnOFD_Click(object sender, EventArgs e)
@@ -51,7 +56,7 @@ namespace DomesticTransport.Forms
 
         private void btnOfdWword_Click(object sender, EventArgs e)
         {
-            string defaultPath = Globals.ThisWorkbook.Application.Path ;
+            string defaultPath = Globals.ThisWorkbook.Path ;
             using (OpenFileDialog fileDialog = new OpenFileDialog()
             {
                 DefaultExt = "*.doc*",

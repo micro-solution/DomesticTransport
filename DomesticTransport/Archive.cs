@@ -45,6 +45,7 @@ namespace DomesticTransport
         {
             XLTable table = new XLTable() { ListTable = ShefflerWB.TotalTable };
             List<Delivery> deliveries = GetAllDeliveries(table);
+            if (deliveries.Count == 0) return;
             if (!CheckArchive(deliveries)) //Проверить повторение заказов по Id
             {
                 CpopyTotalPastArchive();   //Копипастить

@@ -17,7 +17,17 @@
         /// <summary>
         /// Дата отгрузки
         /// </summary>
-        public string DateDelivery { get; set; }
+        public string DateDelivery {
+            get {
+                if (string.IsNullOrWhiteSpace(_dateDelivery))
+                {
+                    _dateDelivery = ShefflerWB.DateDelivery;
+                }
+                    return _dateDelivery;
+                        }
+            set => _dateDelivery = value;
+        }
+        string _dateDelivery;
         // Прорядковый номер доставки
         public int DeliveryNumber { get; set; }
 

@@ -57,6 +57,22 @@
             btnOFD.UseVisualStyleBackColor = true;
             btnOFD.Click += new System.EventHandler(this.btnOFD_Click);
             // 
+            // button1
+            // 
+            button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            button1.Location = new System.Drawing.Point(376, 67);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(20, 20);
+            button1.TabIndex = 9;
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += new System.EventHandler(this.btnOfdWword_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -106,22 +122,6 @@
             this.tbHelper.Name = "tbHelper";
             this.tbHelper.Size = new System.Drawing.Size(358, 20);
             this.tbHelper.TabIndex = 7;
-            // 
-            // button1
-            // 
-            button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            button1.Location = new System.Drawing.Point(376, 67);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(20, 20);
-            button1.TabIndex = 9;
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += new System.EventHandler(this.btnOFD_Click);
             // 
             // label1
             // 
