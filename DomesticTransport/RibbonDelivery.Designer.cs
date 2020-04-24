@@ -69,6 +69,7 @@
             this.ButtonSettingLetterCS = this.Factory.CreateRibbonButton();
             this.about = this.Factory.CreateRibbonGroup();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
+            this.helper = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -422,18 +423,27 @@
             // about
             // 
             this.about.Items.Add(this.BtnAboutProgrramm);
+            this.about.Items.Add(this.helper);
             this.about.Label = "Справка";
             this.about.Name = "about";
             // 
             // BtnAboutProgrramm
             // 
-            this.BtnAboutProgrramm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("BtnAboutProgrramm.Image")));
             this.BtnAboutProgrramm.Label = "О программе";
             this.BtnAboutProgrramm.Name = "BtnAboutProgrramm";
             this.BtnAboutProgrramm.ShowImage = true;
             this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
+            // 
+            // helper
+            // 
+            this.helper.Image = ((System.Drawing.Image)(resources.GetObject("helper.Image")));
+            this.helper.Label = "Справка";
+            this.helper.Name = "helper";
+            this.helper.ShowImage = true;
+            this.helper.SuperTip = "Некотороые сведения о программе";
+            this.helper.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.helper_Click);
             // 
             // btnChangeRoute
             // 
@@ -505,6 +515,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ToTransportTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMsgTransportTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton helper;
     }
 
     partial class ThisRibbonCollection

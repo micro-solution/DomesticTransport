@@ -15,6 +15,8 @@ namespace DomesticTransport.Forms
     {
 
      private  string _pathTransortTable = Properties.Settings.Default.TransportTableFileFullName;
+        private string _pathHelper;
+
         public Settings()
         {
             InitializeComponent();
@@ -47,14 +49,41 @@ namespace DomesticTransport.Forms
             }
         }
 
+        private void btnOfdWword_Click(object sender, EventArgs e)
+        {
+            string defaultPath = Globals.ThisWorkbook.Application.Path ;
+            using (OpenFileDialog fileDialog = new OpenFileDialog()
+            {
+                DefaultExt = "*.doc*",
+                CheckFileExists = true,
+                InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,
+                ValidateNames = true,
+                Multiselect = false,
+                Filter = "Word|*.doc*"
+            })
+            {
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _pathHelper = fileDialog.FileName;
+                    tbHelper.Text = _pathHelper;
+                }
+            }
+        }
+
         private void btnAcept_Click(object sender, EventArgs e)
         {
             _pathTransortTable = tbTransortTable.Text;
             if ( File.Exists( _pathTransortTable))
             {
-            Properties.Settings.Default.TransportTableFileFullName = _pathTransortTable;
-            Properties.Settings.Default.Save();
+            Properties.Settings.Default.TransportTableFileFullName = _pathTransortTable;             
             }
+            _pathHelper = tbHelper.Text;
+            if (File.Exists(_pathHelper))
+            {
+                Properties.Settings.Default.HelpPath = _pathHelper;
+            }
+
+                Properties.Settings.Default.Save();
             Close();
         }
 

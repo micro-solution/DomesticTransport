@@ -3,6 +3,7 @@
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -543,6 +544,18 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
-    
+
+        private void helper_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {              
+                Process.Start(Properties.Settings.Default.HelpPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+        }
     }
 }
