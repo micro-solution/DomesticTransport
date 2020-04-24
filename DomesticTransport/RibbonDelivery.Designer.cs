@@ -383,7 +383,7 @@
             // BtnSaveSignature
             // 
             this.BtnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("BtnSaveSignature.Image")));
-            this.BtnSaveSignature.Label = "Сохранить подпись";
+            this.BtnSaveSignature.Label = "Подпись";
             this.BtnSaveSignature.Name = "BtnSaveSignature";
             this.BtnSaveSignature.ScreenTip = "Сохранить подпись";
             this.BtnSaveSignature.ShowImage = true;

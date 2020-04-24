@@ -193,19 +193,8 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void BtnSaveSignature_Click(object sender, RibbonControlEventArgs e)
         {
-            try
-            {
-                ShefflerWB.ExcelOptimizateOn();
-                Email.WriteReestrSignature();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                ShefflerWB.ExcelOptimizateOff();
-            }
+            SignatureSelect signatureSelect = new SignatureSelect();
+            signatureSelect.ShowDialog();
         }
 
         /// <summary>

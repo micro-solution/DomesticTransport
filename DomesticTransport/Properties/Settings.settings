@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Signature" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt;p&gt;С уважением, Имя Фамилия&lt;/p&gt;</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OutlookFolders" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
