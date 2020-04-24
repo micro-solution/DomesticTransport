@@ -30,16 +30,18 @@ namespace DomesticTransport
         /// <summary>
         /// Строка для заполнения
         /// </summary>
-        public Range CurrentRowRange
+   virtual  public Range CurrentRowRange
         {
             get
             {
                 if (_currentRowRange == null && CurrentRowIndex != 0)
                 {
-                    if (ListTable != null)
+                    if (TableRange != null)
                     {
                         _currentRowRange = TableRange.Rows[CurrentRowIndex];
                     }
+                 
+
                 }
                 return _currentRowRange;
             }
@@ -60,7 +62,15 @@ namespace DomesticTransport
             get
             {
                 if (_currentRowIndex == 0)
-                    _currentRowIndex = GetLastRowIndex();
+
+                    if (ListTable != null)
+                    {
+                    _currentRowIndex = GetLastListRowIndex();
+                    }
+                    else
+                    {
+                        _currentRowIndex = GetLastRowIndex();
+                    }
                 return _currentRowIndex;
             }
             set => _currentRowIndex = value;
@@ -142,7 +152,7 @@ namespace DomesticTransport
         /// Последняя строка таблицы
         /// </summary>
         /// <returns></returns>
-        public int GetLastRowIndex()
+        virtual public int GetLastListRowIndex()
         {
             int ix = 0;
             ix = ListTable.ListRows.Count;
@@ -166,6 +176,28 @@ namespace DomesticTransport
             //Добавить провекрку на пустоту в строке
             return ix;
         }
+
+        public int GetLastRowIndex()
+        {
+            int ix = 0;
+            ix = TableRange.Rows.Count;
+
+            for (int i = ix; i > 0; i--)
+            {
+                string str = TableRange.Cells[i, 1].Text;
+                if (str == "")
+                { ix = i; }
+                else
+                {      
+                    ++ix;            
+                    break;
+                }
+            }
+
+            return ix;
+        }
+
+
 
         /// <summary>
         /// Найти\добавить последнюю строку таблицы

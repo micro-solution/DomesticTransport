@@ -209,7 +209,7 @@ namespace DomesticTransport
             if (deliveries.Count == 0) return "";
 
             string folder = GenerateFolder();
-           // string filename = $"{folder}\\{name}.xlsx";
+           string filename = $"{folder}\\{name}.xlsx";
 
             Workbook workbook = Globals.ThisWorkbook.Application.Workbooks.Add();
 
@@ -302,10 +302,11 @@ namespace DomesticTransport
             Open();
             XLRange table = new XLRange();
             table.TableRange = TableSheet.UsedRange;
-            int CountRows = table.GetLastRowIndex() ;
+            int CountRows = table.TableRange.Rows.Count;
             for (int i =1; i < CountRows; i++)
             {
-                table.CurrentRowIndex = i;
+                table.CurrentRowRange = table.TableRange.Rows[i];
+
                 Delivery delivery = GetDeliveryTransportTable(table);
               
                 if (delivery.Truck.ProviderCompany.Name != Compny) delivery = null;
@@ -319,14 +320,22 @@ namespace DomesticTransport
         public Delivery GetDeliveryTransportTable(XLRange table)
         {
             Delivery delivery = new Delivery();
-             
-            delivery.DateDelivery = table.GetValueString("Дата отгрузки");
-            delivery.Number = table.GetValueInt("№ Доставки");
+            
+            delivery.DateDelivery = table.GetValueString("Дата подачи ТС");
+            delivery.DateCompleteDelivery = table.GetValueString("Дата доставки");
             delivery.Time = table.GetValueString("Время подачи ТС");
-            delivery.Cost = table.GetValueDecimal("Стоимость доставки");
+            delivery.Cost = table.GetValueDecimal("Стоимость доставки без НДС");
+            delivery.CostProducts = table.GetValueDecimal("Стоимость груза без НДС");
+            delivery.TotalPalletsCount = table.GetValueInt("Кол-во паллет");
+            delivery.DeliveryPointsCount = table.GetValueInt("Кол-во точек выгрузки");
+            delivery.TotalWeightNetto = table.GetValueDouble("Нетто вес");
+            delivery.TotalWeightBrutto = table.GetValueDouble("Брутто вес");
+            delivery.OrdersInfo = table.GetValueString("Наименования грузополучателей");
+            delivery.TtnInfo = table.GetValueString("Номера накладных");
+            delivery.RouteName = table.GetValueString("Направление");
+            delivery.City = table.GetValueString("Город доставки");
             string providerName = table.GetValueString("Перевозчик");
-            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
-                                            delivery.Number == 0 ||
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||                                            
                                             string.IsNullOrWhiteSpace(providerName)
                                             ) return null;
             Truck truck = new Truck();
@@ -334,10 +343,10 @@ namespace DomesticTransport
             truck.ProviderCompany.Name = providerName;
             delivery.Truck = truck;
 
-            string id = table.GetValueString("ID перевозчика");
-            string curNumber = table.GetValueString("Номер,марка");
+            string id = table.GetValueString("ID");
+            string curNumber = table.GetValueString("Номер машины");
             string phone = table.GetValueString("Телефон водителя");
-            string fio = table.GetValueString("Водитель (ФИО)");
+            string fio = table.GetValueString("ФИО водителя");
             if (string.IsNullOrWhiteSpace(id))
             {
                 Driver driver = new Driver()

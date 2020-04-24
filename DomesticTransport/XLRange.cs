@@ -15,25 +15,47 @@ namespace DomesticTransport
     {
         Range HeadRow
         {
-            get {
-               return TableRange.Rows[1]; 
-                }
+            get
+            {
+                return TableRange.Rows[1];
+            }
         }
 
-      override  public int GetColumn(string header)
+        public Range CurrentRowRange
+        {
+            get
+            {
+                if (_currentRowRange == null )
+                {
+                    if (TableRange != null)
+                    {
+                        _currentRowRange = TableRange.Rows[CurrentRowIndex];
+                    }
+                }
+                return _currentRowRange;
+            }
+            set => _currentRowRange = value;
+        }
+        Range _currentRowRange;
+       
+        override public int GetColumn(string header)
         {
             int column = 0;
             if (HeadRow != null)
             {
-                for (int i =1; i<=HeadRow.Columns.Count; i++ )
-                    if (HeadRow.Range[1,i].Text == header)
+                for (int i = 1; i <= HeadRow.Columns.Count; i++)
+                {
+
+                    string headCell = HeadRow.Cells[1, i].Text;
+                    if (headCell == header)
                     {
-                    column =i ;
+                        column = i;
                         break;
                     }
+                }
             }
             else { throw new Exception("Не найден столбец"); }
-          return column;  
+            return column;
         }
     }
 }

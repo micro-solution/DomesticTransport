@@ -43,6 +43,15 @@ namespace DomesticTransport.Model
             set => _dateDelivery = value; }
         string _dateDelivery;
 
+        public string DateCompleteDelivery { get; set; }
+        public string City { get; set; }
+        public string RouteName { get; set; }
+        public int TotalPalletsCount { get; set; }
+        public int DeliveryPointsCount { get; set; }
+        public double TotalWeightNetto { get; set; }
+        public double TotalWeightBrutto { get; set; }
+        public string OrdersInfo { get; set; }
+        public string TtnInfo { get; set; }
         public bool HasRoute { get; set; } = true;
 
         ///// <summary>
@@ -90,15 +99,18 @@ namespace DomesticTransport.Model
         ///// <summary>
         ///// Стоимость товаров
         ///// </summary>
-        public double CostProducts
+        public decimal CostProducts
         {
             get
             {
-                double sum = 0;
-                Orders.ForEach(x => sum += x.Cost);
-                return sum;
+                return _costProducts;
+                //double sum = 0;
+                //Orders.ForEach(x => sum += x.Cost);
+                //return sum;
             }
+            set => _costProducts=value;
         }
+        public decimal _costProducts =0;
 
         public List<Order> Orders
         {
@@ -170,6 +182,9 @@ namespace DomesticTransport.Model
             }
             set => _truck = value;
         }
+
+        
+
         private Truck _truck;
 
         public Delivery() { }
