@@ -252,6 +252,20 @@ namespace DomesticTransport
             СhangeDelivery();
         }
 
+        public static void SetDate()
+        {
+         foreach(ListRow row in ShefflerWB.TotalTable.ListRows)
+            {
+                //string dateTable = row.Range[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
+                string date = ShefflerWB.DateDelivery;
+                string  orderId = row.Range[1, ShefflerWB.TotalTable.ListColumns["Номер поставки"].Index].Text;
+                if (!string.IsNullOrWhiteSpace(orderId) && !string.IsNullOrWhiteSpace(date))
+                {
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Value = date;
+                }
+            }   
+        }
+
         /// <summary>
         /// Пересобрать авто используя основные маршруты
         /// </summary>
@@ -375,7 +389,7 @@ namespace DomesticTransport
         {
             List<Order> orders = GetOrdersFromTable();
             List<Delivery> deliveries = EditDeliveres(orders);
-
+            ClearListObj(ShefflerWB.TotalTable);
             PrintTotal(deliveries); 
             PrintChanges(deliveries);
         }
@@ -696,6 +710,9 @@ namespace DomesticTransport
                 string idOrder = row.Range[1, column].Text;
                 if (order.Id.Contains(idOrder))
                 {
+                    string dateTable = row.Range[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
+                    order.DateDelivery = dateTable;
+
                     string pc = row.Range[1, ShefflerWB.TotalTable.ListColumns["Кол-во паллет"].Index].text;
                     if (int.TryParse(pc, out int pallets)) order.PalletsCount = pallets;
 
@@ -720,6 +737,9 @@ namespace DomesticTransport
             foreach (ListRow row in ShefflerWB.OrdersTable.ListRows)
             {
                 Order order = new Order();
+
+                string dateTable = row.Range[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
+                order.DateDelivery = dateTable;
                 string strNum = row.Range[1, ShefflerWB.OrdersTable.ListColumns["№ Доставки"].Index].Text;
                 int deliveryNumber = int.TryParse(strNum, out int n) ? n : -1;
                 if (deliveryNumber == -1) continue;
@@ -765,13 +785,13 @@ namespace DomesticTransport
 
             foreach (Range row in range.Rows)
             {
-                string dateTable = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
                 // string dateDelivery = ShefflerWB.DateDelivery;
                 // if (dateTable != dateDelivery) continue;
 
                 string idOrder = row.Cells[1, column].Text;
                 if (string.IsNullOrWhiteSpace(idOrder)) continue;
                 Order order = new Order();
+                string dateTable = row.Cells[1, ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index].Text;
                 order.DateDelivery = dateTable;
 
                 idOrder = idOrder.Length < 10 ? new string('0', 10 - idOrder.Length) + idOrder : idOrder;
@@ -1213,7 +1233,7 @@ namespace DomesticTransport
                 }
 
                 bool mainRow = true;
-                string date = ShefflerWB.DateDelivery;
+            
                 row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
                 row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                 row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
@@ -1225,7 +1245,8 @@ namespace DomesticTransport
                         totalTable.ListRows.Add();
                         row = totalTable.ListRows[totalTable.ListRows.Count - 1];
                     }
-                    row.Range[1, totalTable.ListColumns["Дата отгрузки"].Index].Value = date;
+                    row.Range[1, totalTable.ListColumns["Дата отгрузки"].Index].Value =  ShefflerWB.DateDelivery;   //   string.IsNullOrWhiteSpace( order.DateDelivery) ?
+                    //ShefflerWB.DateDelivery :  string date = ShefflerWB.DateDelivery;
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
 

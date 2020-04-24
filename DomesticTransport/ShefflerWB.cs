@@ -287,6 +287,7 @@ namespace DomesticTransport
             if (calendar.DialogResult == DialogResult.OK)
             {
                 DateCell.Value = calendar.DateDelivery;
+                Functions.SetDate();
             }
             else if (calendar.DialogResult == DialogResult.Yes)
             {
