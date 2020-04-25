@@ -150,9 +150,9 @@ namespace DomesticTransport
                     row = new ShefflerWB().GetRowOrderTotal(idOrder);
                     if (row != null)
                     {
-                        row.Cells[0, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
-                        row.Cells[0, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
-                        row.Cells[0, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value ="";
+                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
+                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
+                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value ="";
                       // row.Cells[0, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Value = "Сборный груз";
 
                     }

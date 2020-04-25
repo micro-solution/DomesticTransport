@@ -303,13 +303,13 @@ namespace DomesticTransport
         internal Range GetRowOrderTotal(string idOrder)
         {
             Range range = null;
-            foreach (ListRow row in TotalTable.ListRows)
+            foreach (Range row in TotalTable.DataBodyRange.Rows)
             {
-                string idOrderCell = row.Range[0, TotalTable.ListColumns["Номер поставки"].Index].Text;
-                idOrder = idOrderCell.Length < 10 ? new string('0', 10 - idOrderCell.Length) + idOrderCell : idOrderCell;
+                string idOrderCell = row.Cells[1, TotalTable.ListColumns["Номер поставки"].Index].Text;
+                idOrderCell = idOrderCell.Length < 10 ? new string('0', 10 - idOrderCell.Length) + idOrderCell : idOrderCell;
                 if ((!string.IsNullOrWhiteSpace(idOrderCell)) && idOrder == idOrderCell)
                 {
-                    range = row.Range;
+                    range = row;
                     break;
                 }
             }
