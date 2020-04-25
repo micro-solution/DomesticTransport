@@ -100,6 +100,59 @@ namespace DomesticTransport.Model
             }
         }
 
+        public void SetOptimalPrice()
+        {
+            Truck truck = null;
+            List<TruckRate> rateVariants = new List<TruckRate>();
+            double tonnageNeed = TotalWeight / 1000 - 0.05;  /// 50kg Допустимый перегруз
+
+            try
+            {
+                int countMSK = MapDelivery.FindAll(m => m.City == "MSK" || m.City == "MO").Count;
+                if (countMSK == MapDelivery.Count)
+                {   //По москве                                
+                    rateVariants = TruckRate.GetCostMskRoutes(tonnageNeed, MapDelivery); //Для Москвы и области  (первая точка с наибольшим приоритетом по таблице)
+                }
+                else
+                {
+                    bool isInternational = false;
+
+                    foreach (string city in ShefflerWB.InternationalCityList) // Nur - Sultan //Yerevan
+                    {
+                        string pointCity = MapDelivery[0].City ?? "";
+                        if (pointCity.Contains(city))
+                        {
+                            isInternational = true;
+                            break;
+                        }
+                    }
+                    rateVariants = isInternational ?
+                    // Для  LTL маршрутов расчет суммы за 100 кг веса + add.point
+                    rateVariants = TruckRate.GetTruckRateInternational(TotalWeight, MapDelivery) :
+                    rateVariants = TruckRate.GetTruckRate(tonnageNeed, MapDelivery);
+                }
+            }
+            catch
+            {
+                truck = new Truck()
+                {
+                    Cost = 0,
+                    Tonnage = 0
+                };
+            }
+
+            if (rateVariants.Count > 0)
+            {
+
+                truck = new Truck(rateVariants.First());
+            }
+
+            Cost = truck.Cost;
+            Truck = truck;
+
+
+        }
+
         ///// <summary>
         ///// Стоимость товаров
         ///// </summary>
