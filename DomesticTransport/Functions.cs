@@ -92,6 +92,7 @@ namespace DomesticTransport
                 Order order = orders.Find(o => o.Id == idOrder);
                 if (order == null) continue;
 
+                row.Cells[1, ShefflerWB.TotalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Брутто вес"].Index].Value = order.WeightBrutto;
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
                 row.Cells[1, ShefflerWB.TotalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
@@ -989,6 +990,13 @@ namespace DomesticTransport
                 if (!string.IsNullOrWhiteSpace(order.Id))
                 {
                     List<string> orderInfo = GetOrderInfo(orderBook.Sheets[1], order.Id);
+
+                    string TTN = GetOrderTTN(orderBook.Sheets[1], order.Id);
+                    if (!string.IsNullOrWhiteSpace(TTN) && 
+                         string.IsNullOrWhiteSpace(order.TransportationUnit))
+                    {
+                        order.TransportationUnit = TTN;
+                    }
                     if (orderInfo != null)
                     {
                         string costStr = orderInfo.Find(x => x.Contains("Стоимость")) ?? "";
@@ -1019,6 +1027,32 @@ namespace DomesticTransport
 
             orderBook.Close();
             return ordersInfo;
+        }
+
+        private string GetOrderTTN(Worksheet sheet, string delivery)
+        {
+            Range findRange = sheet.Columns[1];
+            string search = delivery.Length < 10 ? new string('0', 10 - delivery.Length) + delivery : delivery;
+            Range fcell = findRange.Find(What: search, LookIn: XlFindLookIn.xlValues);
+            if (fcell == null) return null;
+
+            //Начало накладной 
+            int rowStart = fcell.Row;
+            string TTN = "";
+            for (int i = fcell.Row; i > 1; --i)
+            {
+                // Ограничения вверх
+                string strCell = findRange.Cells[i, 1].Text.Trim();
+                if (strCell.Contains("ТТН:") )
+                {                     
+                    Regex regexId = new Regex(@"\d+");
+                    TTN = regexId.Match(strCell).Value;
+                    int NumberTTN = int.Parse(TTN);
+                    TTN =NumberTTN.ToString();
+                    break;
+                }
+            }
+            return TTN;
         }
 
         /// <summary>
