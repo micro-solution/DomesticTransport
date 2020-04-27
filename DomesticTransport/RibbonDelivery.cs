@@ -260,7 +260,7 @@ namespace DomesticTransport
                 ScanMail scanMail = new ScanMail();
                 if (scanMail.SaveAttachments() == 0)
                 {
-                    MessageBox.Show("Сегодня письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
