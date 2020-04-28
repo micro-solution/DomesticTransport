@@ -17,7 +17,7 @@ namespace DomesticTransport {
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
     public sealed partial class Лист10 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
-        internal Microsoft.Office.Tools.Excel.ListObject TableTotal7;
+        internal Microsoft.Office.Tools.Excel.ListObject ArchiveTable;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -116,7 +116,7 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
-            this.TableTotal7.BeginInit();
+            this.ArchiveTable.BeginInit();
         }
         
         /// 
@@ -124,7 +124,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.TableTotal7.EndInit();
+            this.ArchiveTable.EndInit();
             this.EndInit();
         }
         
@@ -133,7 +133,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.TableTotal7 = Globals.Factory.CreateListObject(null, null, "Лист10:TableTotal7", "TableTotal7", this);
+            this.ArchiveTable = Globals.Factory.CreateListObject(null, null, "Лист10:ArchiveTable", "ArchiveTable", this);
         }
         
         /// 
@@ -155,7 +155,7 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
-            this.TableTotal7.Dispose();
+            this.ArchiveTable.Dispose();
             base.OnShutdown();
         }
     }

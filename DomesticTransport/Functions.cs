@@ -80,6 +80,7 @@ namespace DomesticTransport
             if (range == null || ShefflerWB.TotalTable == null) return;
             string file = SapFiles.SelectFile();
             if (!File.Exists(file)) return;
+            Properties.Settings.Default.AllOrders = file;
             List<Order> orders = GetOrdersFromTotalTable(range);
             orders = GetOrdersInfo(file, orders);
             if (orders == null || orders.Count == 0) return;
@@ -600,14 +601,19 @@ namespace DomesticTransport
                 Directory.CreateDirectory(path);
             }
 
-            string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
+            string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
+            //      string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
+            List<string> attachments = new List<string>();
+            string attachment = path + date + ".xlsx";
+            attachments.Add(attachment);
+            string attachmentAllOrders = Properties.Settings.Default.AllOrders ; // path + date + ".xlsx";
+            if (string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[22].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
             Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
 
-            string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
             string to = Properties.Settings.Default.SettingCSLetterTo;
             string copy = Properties.Settings.Default.SettingCSLetterCopy;
             string subject = Properties.Settings.Default.SettingCSLetterSubject;
@@ -617,8 +623,11 @@ namespace DomesticTransport
             message = message.Replace("[date]", date);
 
             Email email = new Email();
-            email.CreateMail(to, copy, subject, message, attachment);
+            email.CreateMail(to, copy, subject, message, attachments);
         }
+        
+
+
 
         /// <summary>
         /// Импорт данных из писем провайдеров
