@@ -80,7 +80,8 @@ namespace DomesticTransport
             if (range == null || ShefflerWB.TotalTable == null) return;
             string file = SapFiles.SelectFile();
             if (!File.Exists(file)) return;
-            Properties.Settings.Default.AllOrders = file;
+         
+
             List<Order> orders = GetOrdersFromTotalTable(range);
             orders = GetOrdersInfo(file, orders);
             if (orders == null || orders.Count == 0) return;
@@ -607,7 +608,7 @@ namespace DomesticTransport
             string attachment = path + date + ".xlsx";
             attachments.Add(attachment);
             string attachmentAllOrders = Properties.Settings.Default.AllOrders ; // path + date + ".xlsx";
-            if (string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
+            if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[22].Delete();
@@ -988,6 +989,10 @@ namespace DomesticTransport
             try
             {
                 orderBook = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: ordersPath);
+
+                // Хранить файл для отправки в CS
+                Properties.Settings.Default.AllOrders = ordersPath;
+                Properties.Settings.Default.Save();
             }
             catch
             {
