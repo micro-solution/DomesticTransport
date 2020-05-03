@@ -581,15 +581,17 @@ namespace DomesticTransport
                     return;
                 }
                 ScanMail scanMail = new ScanMail();
-                TransportTable transportTable = new TransportTable();
-                transportTable.GetDataFromProviderFiles();
+                
                 if (scanMail.SaveAttachments() == 0)
                 {
                     MessageBox.Show("Письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
+                    TransportTable transportTable = new TransportTable();
                     transportTable.GetDataFromProviderFiles();
+                    transportTable.SaveAndClose();
+                    MessageBox.Show("Данные импортированы. Изменения выделены цветом.", "Импорт данных", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)

@@ -302,7 +302,7 @@ namespace DomesticTransport
         /// </summary>
         public void GetDataFromProviderFiles()
         {
-            string path = Globals.ThisWorkbook.Path + "\\MailFronProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+            string path = Globals.ThisWorkbook.Path + "\\MailFromProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
             if (!Directory.Exists(path))
             {
                 MessageBox.Show("Папка " + path + " отсутствует");
@@ -320,7 +320,7 @@ namespace DomesticTransport
                 i++;
                 FileInfo fileInfo = new FileInfo(file);
                 if (pb.Cancel) break;
-                pb.Action($"Вложение {i + 1} из {pb.Count} {fileInfo.Name} ");
+                pb.Action($"Вложение {i} из {pb.Count} {fileInfo.Name} ");
 
                 if (!file.Contains(".xls")) { continue; }
                 ReadMessageFile(file);
@@ -340,11 +340,8 @@ namespace DomesticTransport
             FileInfo fileInfo = new FileInfo(file);
             try
             {
-                if (sh.Cells[1, 1] != "Id")
+                if (sh.Cells[1, 1].Text != TableSheet.Cells[1, 1].Text)
                 {
-                    Globals.ThisWorkbook.Application.DisplayAlerts = false;
-                    wb.Close();
-                    Globals.ThisWorkbook.Application.DisplayAlerts = true;
                     return;
                 }
 
@@ -368,6 +365,9 @@ namespace DomesticTransport
 
                     TableSheet.Cells[findIdRow.Row, ColumnDateDelivery].Value = dateDelivery.Value;
                     TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Value = accountNumber.Value;
+
+                    TableSheet.Cells[findIdRow.Row, ColumnDateDelivery].Interior.Color = 5296274;
+                    TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Interior.Color = 5296274;               
                 }
 
                 if (IdNotFound.Count > 0)

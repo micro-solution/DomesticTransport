@@ -55,7 +55,7 @@ namespace DomesticTransport
                     continue;
                 }
 
-                Forms.ProcessBar pb = Forms.ProcessBar.Init("Сканирование папки " + folder.Name, folder.Items.Count, 1, folder.Name);
+                ProcessBar pb = Forms.ProcessBar.Init("Сканирование папки " + folder.Name, folder.Items.Count, 1, folder.Name);
                 pb.Show();
                 foreach (object item in folder.Items)
                 {
@@ -71,7 +71,7 @@ namespace DomesticTransport
                     if (mail.Attachments.Count == 0) continue;
                     if (mail.ReceivedTime.Date < messageDate.DateStart || mail.ReceivedTime.Date > messageDate.DateEnd) continue;
 
-                    string path = Globals.ThisWorkbook.Path + "\\MailFronProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+                    string path = Globals.ThisWorkbook.Path + "\\MailFromProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
@@ -133,7 +133,7 @@ namespace DomesticTransport
         /// </summary>
         public void GetDataFromProviderFiles()
         {
-            string path = Globals.ThisWorkbook.Path + "\\MailFronProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+            string path = Globals.ThisWorkbook.Path + "\\MailFromProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
             if (!Directory.Exists(path))
             {
                 MessageBox.Show("Папка " + path + " отсутствует");
