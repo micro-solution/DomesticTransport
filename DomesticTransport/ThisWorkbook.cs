@@ -15,11 +15,16 @@
         /// </summary>
         private void InternalStartup()
         {
-          
-            this.Shutdown += new System.EventHandler(ThisWorkbook_Shutdown);
+            this.Shutdown += new System.EventHandler(this.ThisWorkbook_Shutdown);
+            this.Open += new Microsoft.Office.Interop.Excel.WorkbookEvents_OpenEventHandler(this.ThisWorkbook_Open);
+
         }
 
         #endregion
 
+        private void ThisWorkbook_Open()
+        {
+            Properties.Settings.Default.AllOrders = "";
+        }
     }
 }

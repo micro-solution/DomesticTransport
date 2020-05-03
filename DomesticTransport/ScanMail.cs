@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomesticTransport.Forms;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,6 +39,11 @@ namespace DomesticTransport
         /// </summary>
         public int SaveAttachments()
         {
+            MessageDate messageDate = new MessageDate();
+            messageDate.ShowDialog();
+            if (messageDate.DialogResult != DialogResult.OK) return 0;
+            //messageDate.date
+
             int count = 0;
             OutlookApp.Session.Logon();
             foreach (string folderName in FolderNames)
@@ -62,7 +68,7 @@ namespace DomesticTransport
 
                     pb.Action(mail.ReceivedTime.Date.ToString());
                     if (mail.Attachments.Count == 0) continue;
-                    if (mail.ReceivedTime.Date != DateTime.Today) continue;
+                    if (mail.ReceivedTime.Date < messageDate.DateStart || mail.ReceivedTime.Date > messageDate.DateEnd) continue;
 
                     string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
                     if (!Directory.Exists(path))

@@ -3,6 +3,7 @@ using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -127,7 +128,7 @@ namespace DomesticTransport
         /// <param name="subject">тема</param>
         /// <param name="message">сообщение</param>
         /// <param name="attachment">вложение</param>
-        public void CreateMail(string to, string copy, string subject, string message, string attachment)
+        public void CreateMail(string to, string copy, string subject, string message, List<string> attachments)
         {
             string signature = ReadSignature(Properties.Settings.Default.Signature);
             string HtmlBody = message + "<br><br>" + signature;
@@ -140,7 +141,10 @@ namespace DomesticTransport
                 mail.BCC = "";
                 mail.CC = copy;
                 mail.Subject = subject;
-                mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
+                for (int i = 0; i< attachments.Count; i++)
+                {
+                mail.Attachments.Add(attachments[i], Outlook.OlAttachmentType.olByValue);
+                }
                 mail.Display();
             }
             catch (Exception ex)
