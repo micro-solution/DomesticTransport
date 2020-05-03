@@ -143,7 +143,7 @@ namespace DomesticTransport
                     ttns.Add(order.TransportationUnit);
 
                     string client = order.Customer.Name;
-                    client = client.Substring(0, client.IndexOf('/'));
+                    if (client.IndexOf('/') != -1) client = client.Substring(0, client.IndexOf('/'));
                     client = client.Replace(",", "");
                     client = client + "-" + order.Customer.Id;
                     clients.Add(client);
