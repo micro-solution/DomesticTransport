@@ -654,12 +654,10 @@ namespace DomesticTransport
                     };
                     WriteProviderInfo(driver);
                 }
-
             }
             catch
             {
-                throw new System.Exception("Не удалось прочитать таблицу в файле " + file);
-                //  MessageBox.Show(ex.Message);
+                
             }
             finally
             {

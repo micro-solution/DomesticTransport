@@ -136,7 +136,7 @@ namespace DomesticTransport
             string path = Globals.ThisWorkbook.Path + "\\MailFromProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
             if (!Directory.Exists(path))
             {
-                MessageBox.Show("Папка " + path + " отсутствует");
+                //MessageBox.Show("Папка " + path + " отсутствует");
                 return;
             }
             string[] files = Directory.GetFiles(path);
