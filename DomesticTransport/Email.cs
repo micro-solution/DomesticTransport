@@ -37,27 +37,6 @@ namespace DomesticTransport
         }
         private Outlook.Application _outlookApp;
 
-        ///
-        /// <param name="addres">Email</param>        
-        /// <param name="subject">Тема</param>
-        /// <param name="body">Сообщение</param>
-        /// <param name="copyTo">в копию</param>
-        public void CreateMessage(string company, string date, string attachment, string subject)
-        {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
-            string addres = GetAdressProvider(company);
-            List<string> attachments = new List<string>
-            {
-                attachment
-            };
-            string signature = ReadSignature(Properties.Settings.Default.Signature);
-            string textMsg = messageSheet.Cells[10, 2].Text;
-            string copyTo = messageSheet.Cells[9, 2].Text;
-            textMsg = textMsg.Replace("[date]", date);
-            string HtmlBody = textMsg + "<br><br>" + signature;
-            CreateMail(addres, copyTo, subject, HtmlBody, attachments, TypeSend.Display);
-        }
-
         /// <summary>
         /// Получение списка получателей провайдера
         /// </summary>
@@ -79,6 +58,14 @@ namespace DomesticTransport
             return addres;
         }
 
+        /// <summary>
+        /// Сообщения провайдерам
+        /// </summary>
+        /// <param name="сompany"></param>
+        /// <param name="subject"></param>
+        /// <param name="message"></param>
+        /// <param name="attachments"></param>
+        /// <param name="typeSend"></param>
         public void MailToProvider(string сompany, string subject, string message, List<string> attachments, TypeSend typeSend)
         {
             string addres = GetAdressProvider(сompany);
@@ -86,42 +73,15 @@ namespace DomesticTransport
             CreateMail(addres, copyTo, subject, message, attachments, typeSend);
         }
 
+        /// <summary>
+        /// Получение списка адресатов провайдера
+        /// </summary>
+        /// <returns></returns>
         private string GetCopyProviderEmails()
         {
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             string copyTo = messageSheet.Cells[9, 2].Text;
             return copyTo;
-        }
-        public void CreateMessage2(string сompany,
-                                   string date,
-                                  string attachment,
-                                  string subject,
-                                  string message)
-        {
-            string addres = GetAdressProvider(сompany);
-            string signature = ReadSignature(Properties.Settings.Default.Signature);
-            string copyTo = GetCopyProviderEmails();
-            string HtmlBody =
-                  message +
-                   "<br><br>" +
-               signature;
-            try
-            {
-                OutlookApp.Session.Logon();
-                Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
-                mail.To = addres;
-                mail.HTMLBody = HtmlBody;
-                mail.BCC = "";
-                mail.CC = copyTo;
-                mail.Subject = subject;
-                mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
-                mail.Display();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
         }
 
         /// <summary>
@@ -211,53 +171,6 @@ namespace DomesticTransport
                 return "";
             }
         }
-
-        public static void WriteReestrSignature()
-        {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
-            Range range = messageSheet.Range["A1:B7"];
-
-            RegistryKey currentUserKey = Registry.CurrentUser;
-            RegistryKey SignatureKey = currentUserKey.CreateSubKey("Sheffler");
-            string name = range.Cells[1, 2].Text;
-            SignatureKey.SetValue("Ответственное лицо", name);
-            SignatureKey.SetValue("Компания", range.Cells[2, 2].Text);
-            SignatureKey.SetValue("Адрес", range.Cells[3, 2].Text);
-            SignatureKey.SetValue("Город", range.Cells[4, 2].Text);
-            SignatureKey.SetValue("Тел", range.Cells[5, 2].Text);
-            SignatureKey.SetValue("Моб", range.Cells[6, 2].Text);
-            SignatureKey.SetValue("Mail", range.Cells[7, 2].Text);
-            SignatureKey.Close();
-        }
-
-        public static string ReadReestrSignature()
-        {
-            RegistryKey currentUserKey = Registry.CurrentUser;
-
-            RegistryKey SignatureKey = currentUserKey.OpenSubKey("Sheffler");
-            if (SignatureKey == null)
-            {
-                WriteReestrSignature();
-                SignatureKey = currentUserKey.OpenSubKey("Sheffler");
-            }
-
-            string name = SignatureKey.GetValue("Ответственное лицо").ToString();
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                WriteReestrSignature();
-                name = SignatureKey.GetValue("Ответственное лицо").ToString();
-            }
-            string signature =
-            "<br>" + name
-            + "<br>" + SignatureKey.GetValue("Компания").ToString()
-            + "<br>" + SignatureKey.GetValue("Адрес").ToString()
-            + "<br>" + SignatureKey.GetValue("Город").ToString()
-            + "<br>" + SignatureKey.GetValue("Тел").ToString()
-            + "<br>" + SignatureKey.GetValue("Моб").ToString()
-            + "<br>" + SignatureKey.GetValue("Mail").ToString();
-
-            SignatureKey.Close();
-            return signature;
-        }
+       
     }
 }

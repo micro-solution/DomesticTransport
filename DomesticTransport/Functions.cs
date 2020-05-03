@@ -506,9 +506,8 @@ namespace DomesticTransport
         /// <summary>
         /// Подготовка сообщений перевозчикам
         /// </summary>
-        public void CreateMasseges()
+        public void SendEmailToProviderAdoutOrders()
         {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             if (deliveries?.Count == 0) return;
 
@@ -516,14 +515,15 @@ namespace DomesticTransport
             string[] shippingComp = (from d in deliveries
                                      select d.Truck.ProviderCompany.Name).Distinct().ToArray();
             ClearFolder();
+            if (shippingComp.Length == 0) return;
+
             ProcessBar pb = ProcessBar.Init("Сообщения", shippingComp.Length, 1, "Подготовка писем");
+            pb.Show();
+
             //Для каждого провайдера
             for (int i = 0; i < shippingComp.Length; i++)
             {
-                string сompanyShipping = shippingComp[i];
-
-                if (pb == null) return;
-                pb.Show();
+                string сompanyShipping = shippingComp[i];           
                 if (pb.Cancel) break;
                 pb.Action($"Письмо {i + 1} из {pb.Count} {shippingComp[i]} ");
 
@@ -532,62 +532,57 @@ namespace DomesticTransport
                                x.Truck.ProviderCompany.Name == сompanyShipping).ToList();
 
                 string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
-                string subject = messageSheet.Cells[8, 2].Text;
+                string subject = Properties.Settings.Default.ProviderSubjectOrder;
+                string message = Properties.Settings.Default.ProviderMessageOrder;
+
                 subject = subject.Replace("[date]", date).Replace("[provider]", shippingComp[i]);
-                // Прикрепленный файл
+                message = message.Replace("[date]", date).Replace("[provider]", shippingComp[i]);
                 string attachment = GenerateAttachmentFile(deliverShipping, subject);
-                // Найти Email
+                List<string> attachments = new List<string> { attachment };
+
                 Email messenger = new Email();
-                messenger.CreateMessage(company: сompanyShipping,
-                                          date: date,
-                                          attachment: attachment,
-                                          subject: subject);
+                messenger.MailToProvider(сompanyShipping, subject, message, attachments, Email.TypeSend.Display);
             }
             pb.Close();
         }
 
         /// <summary>
-        /// Подготовка сообщений перевозчикам
+        /// Отправка сообщений провайдерам со списком уточнений
         /// </summary>
-        public void CreateMasseges2()
+        public void SendEmailToProviderAdoutAdding()
         {
-            //TODO Сделать универсальную фукнцию отправки сообщения, убрать дублирование
-
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             if (deliveries?.Count == 0) return;
 
             //Уникальны провайдеры в списке доставок
-            string[] shippingComp = (from d in deliveries
-                                     select d.Truck.ProviderCompany.Name).Distinct().ToArray();
+            string[] shippingComp = (from d in deliveries select d.Truck.ProviderCompany.Name).Distinct().ToArray();
             ClearFolder();
+            if (shippingComp.Length == 0) return;
             ProcessBar pb = ProcessBar.Init("Сообщения", shippingComp.Length, 1, "Подготовка писем");
+            pb.Show();
+
             //Для каждого провайдера
             for (int i = 0; i < shippingComp.Length; i++)
             {
                 string сompanyShipping = shippingComp[i];
-
-                if (pb == null) return;
-                pb.Show();
+        
                 if (pb.Cancel) break;
                 pb.Action($"Письмо {i + 1} из {pb.Count} {shippingComp[i]} ");
 
                 if (сompanyShipping == "" || сompanyShipping == "Деловые линии") continue;
-                List<Delivery> deliverShipping = deliveries.FindAll(x =>
-                               x.Truck.ProviderCompany.Name == сompanyShipping).ToList();
+                List<Delivery> deliverShipping = deliveries.FindAll(x => x.Truck.ProviderCompany.Name == сompanyShipping).ToList();
 
                 string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
-                string subject = messageSheet.Cells[8, 2].Text;
+                string subject = Properties.Settings.Default.ProviderSubjectAdd;
+                string message = Properties.Settings.Default.ProviderMessageAdd;
+
                 subject = subject.Replace("[date]", date).Replace("[provider]", shippingComp[i]);
-                // Прикрепленный файл
+                message = message.Replace("[date]", date).Replace("[provider]", shippingComp[i]);
                 string attachment = GenerateAttachmentFile(deliverShipping, subject);
-                // Найти Email
+                List<string> attachments = new List<string> { attachment };
+
                 Email messenger = new Email();
-                string message = "Коллеги, добрый день! Отправляем уточненную информацию по отгрузкам.";
-                messenger.CreateMessage2(сompany: сompanyShipping,
-                                          date: date,
-                                          attachment: attachment,
-                                          subject: subject, message);
+                messenger.MailToProvider(сompanyShipping, subject, message, attachments, Email.TypeSend.Display);
             }
             pb.Close();
         }
@@ -627,9 +622,6 @@ namespace DomesticTransport
             Email email = new Email();
             email.CreateMail(to, copy, subject, message, attachments);
         }
-        
-
-
 
         /// <summary>
         /// Импорт данных из писем провайдеров

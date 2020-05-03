@@ -43,7 +43,7 @@ namespace DomesticTransport
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().CreateMasseges();
+                new Functions().SendEmailToProviderAdoutOrders();
             }
             catch (Exception ex)
             {
@@ -430,7 +430,7 @@ namespace DomesticTransport
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().CreateMasseges2();
+                new Functions().SendEmailToProviderAdoutAdding();
             }
             catch (Exception ex)
             {
