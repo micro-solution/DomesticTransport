@@ -75,6 +75,7 @@ namespace DomesticTransport
 
         public Workbook Workbook;
         private Worksheet TableSheet;
+        private Worksheet TableSheetDeline;
 
         /// <summary>
         /// Следующая (пустая) строка 
@@ -84,6 +85,16 @@ namespace DomesticTransport
             get
             {
                 return TableSheet.UsedRange.Row + TableSheet.UsedRange.Rows.Count;
+            }
+        }
+        /// <summary>
+        /// Следующая (пустая) строка на листе деловые линии
+        /// </summary>
+        private int NextRowDeline
+        {
+            get
+            {
+                return TableSheetDeline.UsedRange.Row + TableSheetDeline.UsedRange.Rows.Count;
             }
         }
 
@@ -100,6 +111,7 @@ namespace DomesticTransport
             if (!File.Exists(FullName)) return;
             Workbook = Globals.ThisWorkbook.Application.Workbooks.Open(FullName);
             TableSheet = Workbook.Worksheets[1];
+            TableSheetDeline = Workbook.Worksheets[2];
         }
 
         /// <summary>
@@ -109,6 +121,7 @@ namespace DomesticTransport
         public void ImportDeliveryes(List<Delivery> deliveries)
         {
             int iRow = NextRow;
+            int iRowDeline = NextRowDeline;
             DateTime dateMax = DateTime.Today;
             SecondDate = dateMax;
             FirstDate = dateMax.AddDays(-(double)dateMax.DayOfWeek);
@@ -160,27 +173,47 @@ namespace DomesticTransport
                 ttns = ttns.Distinct().ToList();
                 clients = clients.Distinct().ToList();
 
-                TableSheet.Cells[iRow, ColumnId].Value = delivery.Driver.Id;
-                TableSheet.Cells[iRow, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
-                TableSheet.Cells[iRow, ColumnCarType].Value = delivery.Truck.Tonnage;
-                TableSheet.Cells[iRow, ColumnDate].Value = delivery.DateDelivery;
-                TableSheet.Cells[iRow, ColumnCarNumber].Value = delivery.Driver.CarNumber;
-                TableSheet.Cells[iRow, ColumnCarDriver].Value = delivery.Driver.Name;
+                Worksheet worksheet;
+                int row;
+                if (delivery.Truck.ProviderCompany.Name == "Деловые линии") 
+                {
+                    worksheet = TableSheetDeline;
+                    row = iRowDeline;
+                }
+                else
+                {
+                    worksheet = TableSheet;
+                    row = iRow;
+                }
 
-                TableSheet.Cells[iRow, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
-                TableSheet.Cells[iRow, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnId].Value = delivery.Driver.Id;
+                worksheet.Cells[row, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
+                worksheet.Cells[row, ColumnCarType].Value = delivery.Truck.Tonnage;
+                worksheet.Cells[row, ColumnDate].Value = delivery.DateDelivery;
+                worksheet.Cells[row, ColumnCarNumber].Value = delivery.Driver.CarNumber;
+                worksheet.Cells[row, ColumnCarDriver].Value = delivery.Driver.Name;
 
-                TableSheet.Cells[iRow, ColumnPointCount].Value = clients.Count;
-                TableSheet.Cells[iRow, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
-                TableSheet.Cells[iRow, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
 
-                TableSheet.Cells[iRow, ColumnWeightBrutto].Value = weightBrutto;
-                TableSheet.Cells[iRow, ColumnWeightNetto].Value = weightNetto;
-                TableSheet.Cells[iRow, ColumnPalleteCount].Value = palletCount;
-                TableSheet.Cells[iRow, ColumnPriceOrder].Value = priceOrder;
-                TableSheet.Cells[iRow, ColumnPriceDelivery].Value = delivery.Cost;
+                worksheet.Cells[row, ColumnPointCount].Value = clients.Count;
+                worksheet.Cells[row, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
 
-                iRow++;
+                worksheet.Cells[row, ColumnWeightBrutto].Value = weightBrutto;
+                worksheet.Cells[row, ColumnWeightNetto].Value = weightNetto;
+                worksheet.Cells[row, ColumnPalleteCount].Value = palletCount;
+                worksheet.Cells[row, ColumnPriceOrder].Value = priceOrder;
+                worksheet.Cells[row, ColumnPriceDelivery].Value = delivery.Cost;
+
+                if (worksheet == TableSheet)
+                {
+                    iRow++;
+                }
+                else
+                {
+                    iRowDeline++;
+                }
             }
             pb.Close();
         }
@@ -351,6 +384,8 @@ namespace DomesticTransport
                     Range dateDelivery = sh.Cells[i, ColumnDateDelivery];
                     Range accountNumber = sh.Cells[i, ColumnAccountNumber];
                     string id = sh.Cells[i, ColumnId].Text;
+
+                    if (string.IsNullOrEmpty(id)) continue;
 
                     Range columnId = TableSheet.Columns[ColumnId];
                     Range findIdRow = columnId.Find(id);
