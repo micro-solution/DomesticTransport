@@ -14,14 +14,17 @@ namespace DomesticTransport
 {
     class Email
     {
-
+        /// <summary>
+        /// Тип отправки письма
+        /// </summary>
         public enum TypeSend
         {
             Save,
             Display,
             Send
         }
-        public Outlook.Application OutlookApp
+
+        private Outlook.Application OutlookApp
         {
             get
             {
@@ -39,49 +42,27 @@ namespace DomesticTransport
         /// <param name="subject">Тема</param>
         /// <param name="body">Сообщение</param>
         /// <param name="copyTo">в копию</param>
-        public void CreateMessage(string сompany,
-                                   string date,
-                                  string attachment,
-                                  string subject)
+        public void CreateMessage(string company, string date, string attachment, string subject)
         {
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
-            ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
-            string addres = "";
-            foreach (Range row in tableEmail.DataBodyRange.Rows)
+            string addres = GetAdressProvider(company);
+            List<string> attachments = new List<string>
             {
-                if (row.Cells[1, 1].Text == сompany)
-                {
-                    string stroka = row.Cells[1, 2].Text;
-                    addres = stroka == "" ? addres : $"{stroka}; {addres}";
-                }
-            }
+                attachment
+            };
             string signature = ReadSignature(Properties.Settings.Default.Signature);
             string textMsg = messageSheet.Cells[10, 2].Text;
             string copyTo = messageSheet.Cells[9, 2].Text;
             textMsg = textMsg.Replace("[date]", date);
-            string HtmlBody =
-                  textMsg +
-                   "<br><br>" +
-               signature;
-            try
-            {
-                OutlookApp.Session.Logon();
-                Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
-                mail.To = addres;
-                mail.HTMLBody = HtmlBody;
-                mail.BCC = "";
-                mail.CC = copyTo;
-                mail.Subject = subject;
-                mail.Attachments.Add(attachment, Outlook.OlAttachmentType.olByValue);
-                mail.Display();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
+            string HtmlBody = textMsg + "<br><br>" + signature;
+            CreateMail(addres, copyTo, subject, HtmlBody, attachments, TypeSend.Display);
         }
 
+        /// <summary>
+        /// Получение списка получателей провайдера
+        /// </summary>
+        /// <param name="company"></param>
+        /// <returns></returns>
         public string GetAdressProvider(string company)
         {
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
@@ -183,7 +164,7 @@ namespace DomesticTransport
                         mail.Send();
                         break;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -228,7 +209,7 @@ namespace DomesticTransport
             catch
             {
                 return "";
-            } 
+            }
         }
 
         public static void WriteReestrSignature()

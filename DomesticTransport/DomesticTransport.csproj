@@ -193,11 +193,11 @@
     <Compile Include="Forms\ProviderEditor.Designer.cs">
       <DependentUpon>ProviderEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SettingLetterToCS.cs">
+    <Compile Include="Forms\SettingLetters.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SettingLetterToCS.Designer.cs">
-      <DependentUpon>SettingLetterToCS.cs</DependentUpon>
+    <Compile Include="Forms\SettingLetters.Designer.cs">
+      <DependentUpon>SettingLetters.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TransportTableSending.cs">
       <SubType>Form</SubType>
@@ -330,8 +330,8 @@
     <EmbeddedResource Include="Forms\ProviderEditor.resx">
       <DependentUpon>ProviderEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SettingLetterToCS.resx">
-      <DependentUpon>SettingLetterToCS.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SettingLetters.resx">
+      <DependentUpon>SettingLetters.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TransportTableSending.resx">
       <DependentUpon>TransportTableSending.cs</DependentUpon>

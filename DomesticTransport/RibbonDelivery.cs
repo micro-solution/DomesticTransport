@@ -306,7 +306,7 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void ButtonSettingLetterCS_Click(object sender, RibbonControlEventArgs e)
         {
-            SettingLetterToCS setting = new SettingLetterToCS();
+            SettingLetters setting = new SettingLetters();
             setting.ShowDialog();
         }
 

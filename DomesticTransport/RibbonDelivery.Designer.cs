@@ -66,7 +66,7 @@
             this.btnDate = this.Factory.CreateRibbonButton();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
-            this.ButtonSettingLetterCS = this.Factory.CreateRibbonButton();
+            this.ButtonSettingLetter = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.menuAbout = this.Factory.CreateRibbonMenu();
@@ -374,7 +374,7 @@
             this.settings.Items.Add(this.btnDate);
             this.settings.Items.Add(this.BtnSaveSignature);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
-            this.settings.Items.Add(this.ButtonSettingLetterCS);
+            this.settings.Items.Add(this.ButtonSettingLetter);
             this.settings.Items.Add(this.btnSettings);
             this.settings.Items.Add(this.separator2);
             this.settings.Items.Add(this.menuAbout);
@@ -410,15 +410,15 @@
             this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма с заявками от провайдеров";
             this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
-            // ButtonSettingLetterCS
+            // ButtonSettingLetter
             // 
-            this.ButtonSettingLetterCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSettingLetterCS.Image")));
-            this.ButtonSettingLetterCS.Label = "Письмо CS";
-            this.ButtonSettingLetterCS.Name = "ButtonSettingLetterCS";
-            this.ButtonSettingLetterCS.ScreenTip = "Настройки письма для CS и WH";
-            this.ButtonSettingLetterCS.ShowImage = true;
-            this.ButtonSettingLetterCS.SuperTip = "Настройка шаблона письма, которое отправляется CS и WH с файлом Отгрузки";
-            this.ButtonSettingLetterCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
+            this.ButtonSettingLetter.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSettingLetter.Image")));
+            this.ButtonSettingLetter.Label = "Настройка писем";
+            this.ButtonSettingLetter.Name = "ButtonSettingLetter";
+            this.ButtonSettingLetter.ScreenTip = "Настройки письма для CS и WH";
+            this.ButtonSettingLetter.ShowImage = true;
+            this.ButtonSettingLetter.SuperTip = "Настройка шаблона письма, которое отправляется CS и WH с файлом Отгрузки";
+            this.ButtonSettingLetter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
             // 
             // btnSettings
             // 
@@ -509,7 +509,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSaveSignature;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSelectFoldersOutlook;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendToCS;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSettingLetterCS;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSettingLetter;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveRoute;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnNunerateDeliveries;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton btnChangeRoute;

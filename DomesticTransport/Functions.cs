@@ -538,7 +538,7 @@ namespace DomesticTransport
                 string attachment = GenerateAttachmentFile(deliverShipping, subject);
                 // Найти Email
                 Email messenger = new Email();
-                messenger.CreateMessage(сompany: сompanyShipping,
+                messenger.CreateMessage(company: сompanyShipping,
                                           date: date,
                                           attachment: attachment,
                                           subject: subject);
