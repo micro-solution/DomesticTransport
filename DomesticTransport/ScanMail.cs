@@ -1,4 +1,5 @@
 ﻿using DomesticTransport.Forms;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -70,7 +71,7 @@ namespace DomesticTransport
                     if (mail.Attachments.Count == 0) continue;
                     if (mail.ReceivedTime.Date < messageDate.DateStart || mail.ReceivedTime.Date > messageDate.DateEnd) continue;
 
-                    string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+                    string path = Globals.ThisWorkbook.Path + "\\MailFronProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
@@ -132,18 +133,30 @@ namespace DomesticTransport
         /// </summary>
         public void GetDataFromProviderFiles()
         {
-            string path = Globals.ThisWorkbook.Path + "\\MailAttachments\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+            string path = Globals.ThisWorkbook.Path + "\\MailFronProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
             if (!Directory.Exists(path))
             {
                 MessageBox.Show("Папка " + path + " отсутствует");
                 return;
             }
             string[] files = Directory.GetFiles(path);
+            if (files.Length == 0) return;
+
+            ProcessBar pb = ProcessBar.Init("Сканирование вложений", files.Length, 1, "Получение данных провайдера");
+            pb.Show();
+
+            int i = 0;
             foreach (string file in files)
             {
+                i++;
+                FileInfo fileInfo = new FileInfo(file);
+                if (pb.Cancel) break;
+                pb.Action($"Вложение {i + 1} из {pb.Count} {fileInfo.Name} ");
+
                 if (!file.Contains(".xls")) { continue; }
                 new Functions().ReadMessageFile(file);
             }
+            pb.Close();
         }
 
     }

@@ -57,7 +57,7 @@
       <Value Profile="(Default)"> Коллеги, добрый день! В приложении уточнения отгрузки на [date].</Value>
     </Setting>
     <Setting Name="ProviderMessageReport" Type="System.String" Scope="User">
-      <Value Profile="(Default)"> Коллеги, добрый день! Отправляем отчет по доставкам за период [dateStart]-[dateEnd]. Прошу заполнить данные столбцы, выделенные желтой заливкой.</Value>
+      <Value Profile="(Default)"> Коллеги, добрый день! Отправляем отчет по доставкам за период [dateStart]-[dateEnd]. Прошу заполнить столбцы, выделенные желтой заливкой.</Value>
     </Setting>
   </Settings>
 </SettingsFile>

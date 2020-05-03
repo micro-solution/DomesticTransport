@@ -564,5 +564,42 @@ namespace DomesticTransport
             }
 
         }
+
+        /// <summary>
+        /// Кнопка сканирования почты для импорта отчетов провайдера
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonScanTransportTable_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                if (Properties.Settings.Default.OutlookFolders == "")
+                {
+                    MessageBox.Show("Задайте папки для сканирования почты", "Необходима настройка программы", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                ScanMail scanMail = new ScanMail();
+                TransportTable transportTable = new TransportTable();
+                transportTable.GetDataFromProviderFiles();
+                if (scanMail.SaveAttachments() == 0)
+                {
+                    MessageBox.Show("Письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    transportTable.GetDataFromProviderFiles();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
     }
 }

@@ -63,11 +63,11 @@
             this.ButtonSendTransportTable = this.Factory.CreateRibbonButton();
             this.ButtonScanTransportTable = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
-            this.btnDate = this.Factory.CreateRibbonButton();
-            this.BtnSaveSignature = this.Factory.CreateRibbonButton();
-            this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.ButtonSettingLetter = this.Factory.CreateRibbonButton();
+            this.BtnSaveSignature = this.Factory.CreateRibbonButton();
+            this.btnDate = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
+            this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.menuAbout = this.Factory.CreateRibbonMenu();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
@@ -363,52 +363,23 @@
             // ButtonScanTransportTable
             // 
             this.ButtonScanTransportTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ButtonScanTransportTable.Enabled = false;
             this.ButtonScanTransportTable.Image = ((System.Drawing.Image)(resources.GetObject("ButtonScanTransportTable.Image")));
-            this.ButtonScanTransportTable.Label = "Заполнить ответ";
+            this.ButtonScanTransportTable.Label = "Сканировать ответ";
             this.ButtonScanTransportTable.Name = "ButtonScanTransportTable";
             this.ButtonScanTransportTable.ShowImage = true;
+            this.ButtonScanTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonScanTransportTable_Click);
             // 
             // settings
             // 
-            this.settings.Items.Add(this.btnDate);
-            this.settings.Items.Add(this.BtnSaveSignature);
-            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Items.Add(this.ButtonSettingLetter);
+            this.settings.Items.Add(this.BtnSaveSignature);
+            this.settings.Items.Add(this.btnDate);
             this.settings.Items.Add(this.btnSettings);
+            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Items.Add(this.separator2);
             this.settings.Items.Add(this.menuAbout);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
-            // 
-            // btnDate
-            // 
-            this.btnDate.Image = ((System.Drawing.Image)(resources.GetObject("btnDate.Image")));
-            this.btnDate.Label = "Выбрать дату";
-            this.btnDate.Name = "btnDate";
-            this.btnDate.ShowImage = true;
-            this.btnDate.SuperTip = "Установить дату отгрузки";
-            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
-            // 
-            // BtnSaveSignature
-            // 
-            this.BtnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("BtnSaveSignature.Image")));
-            this.BtnSaveSignature.Label = "Подпись";
-            this.BtnSaveSignature.Name = "BtnSaveSignature";
-            this.BtnSaveSignature.ScreenTip = "Сохранить подпись";
-            this.BtnSaveSignature.ShowImage = true;
-            this.BtnSaveSignature.SuperTip = "Заполните данные подписи на листе Mail и нажмите сохранить";
-            this.BtnSaveSignature.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveSignature_Click);
-            // 
-            // ButtonSelectFoldersOutlook
-            // 
-            this.ButtonSelectFoldersOutlook.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSelectFoldersOutlook.Image")));
-            this.ButtonSelectFoldersOutlook.Label = "Папки с письмами";
-            this.ButtonSelectFoldersOutlook.Name = "ButtonSelectFoldersOutlook";
-            this.ButtonSelectFoldersOutlook.ScreenTip = "Выбор папок сканирования";
-            this.ButtonSelectFoldersOutlook.ShowImage = true;
-            this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма с заявками от провайдеров";
-            this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
             // ButtonSettingLetter
             // 
@@ -420,6 +391,25 @@
             this.ButtonSettingLetter.SuperTip = "Настройка шаблона письма, которое отправляется CS и WH с файлом Отгрузки";
             this.ButtonSettingLetter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
             // 
+            // BtnSaveSignature
+            // 
+            this.BtnSaveSignature.Image = ((System.Drawing.Image)(resources.GetObject("BtnSaveSignature.Image")));
+            this.BtnSaveSignature.Label = "Подпись";
+            this.BtnSaveSignature.Name = "BtnSaveSignature";
+            this.BtnSaveSignature.ScreenTip = "Сохранить подпись";
+            this.BtnSaveSignature.ShowImage = true;
+            this.BtnSaveSignature.SuperTip = "Заполните данные подписи на листе Mail и нажмите сохранить";
+            this.BtnSaveSignature.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveSignature_Click);
+            // 
+            // btnDate
+            // 
+            this.btnDate.Image = ((System.Drawing.Image)(resources.GetObject("btnDate.Image")));
+            this.btnDate.Label = "Выбрать дату";
+            this.btnDate.Name = "btnDate";
+            this.btnDate.ShowImage = true;
+            this.btnDate.SuperTip = "Установить дату отгрузки";
+            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
+            // 
             // btnSettings
             // 
             this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
@@ -427,6 +417,16 @@
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSettings_Click);
+            // 
+            // ButtonSelectFoldersOutlook
+            // 
+            this.ButtonSelectFoldersOutlook.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSelectFoldersOutlook.Image")));
+            this.ButtonSelectFoldersOutlook.Label = "Папки с письмами";
+            this.ButtonSelectFoldersOutlook.Name = "ButtonSelectFoldersOutlook";
+            this.ButtonSelectFoldersOutlook.ScreenTip = "Выбор папок сканирования";
+            this.ButtonSelectFoldersOutlook.ShowImage = true;
+            this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма с заявками от провайдеров";
+            this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
             // separator2
             // 

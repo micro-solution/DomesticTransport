@@ -1,4 +1,5 @@
-﻿using DomesticTransport.Model;
+﻿using DomesticTransport.Forms;
+using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
 
@@ -34,6 +35,7 @@ namespace DomesticTransport
         public const int ColumnPalleteCount = 15;
         public const int ColumnPriceOrder = 16;
         public const int ColumnPriceDelivery = 17;
+        public const int ColumnAccountNumber = 18;
         #endregion
 
         /// <summary>
@@ -100,6 +102,10 @@ namespace DomesticTransport
             TableSheet = Workbook.Worksheets[1];
         }
 
+        /// <summary>
+        /// Импорт данных из архива
+        /// </summary>
+        /// <param name="deliveries"></param>
         public void ImportDeliveryes(List<Delivery> deliveries)
         {
             int iRow = NextRow;
@@ -227,6 +233,12 @@ namespace DomesticTransport
             Close();
         }
 
+        /// <summary>
+        /// Подготовка отчета провайдеру
+        /// </summary>
+        /// <param name="dateStart"></param>
+        /// <param name="dateEnd"></param>
+        /// <param name="provider"></param>
         private void CreateReportToProvider(DateTime dateStart, DateTime dateEnd, string provider)
         {
             // Создаем копию листа и сохраняем в отдельную книгу
@@ -285,177 +297,95 @@ namespace DomesticTransport
             return success;
         }
 
-
-        private string GenerateAttachmentFile(List<Delivery> deliveries, string name)
+        /// <summary>
+        /// Получение данных из писем провайдеров
+        /// </summary>
+        public void GetDataFromProviderFiles()
         {
-            if (deliveries.Count == 0) return "";
-
-            string folder = GenerateFolder();
-            string filename = $"{folder}\\{name}.xlsx";
-
-            Workbook workbook = Globals.ThisWorkbook.Application.Workbooks.Add();
-
-            Worksheet sh = workbook.Sheets[1];
-            string[] headers = {
-                                "ID",
-                                "Перевозчик",
-                                "Тип ТС, тонн" ,
-                                "Дата подачи ТС" ,
-                                "Номер машины",
-                                "ФИО водителя",
-                                 "Дата доставки",
-                                "Город доставки" ,
-                                "Направление"   ,
-                                "Кол-во точек выгрузки",
-                                "Номера накладных",
-                                "Наименования грузополучателей",
-                                "Брутто вес",
-                                "Нетто вес",
-                                "Кол-во паллет" ,
-                                "Стоимость груза без НДС" ,
-                                "Стоимость доставки без НДС",
-                                "Номер счёта перевозчика",
-                                "Комментарий"
-                                };
-
-            for (int i = 1; i <= headers.Length; i++)
+            string path = Globals.ThisWorkbook.Path + "\\MailFronProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+            if (!Directory.Exists(path))
             {
-                sh.Cells[1, i].Value = headers[i - 1];
+                MessageBox.Show("Папка " + path + " отсутствует");
+                return;
             }
-            int row = 2;
-            for (int ixDelivery = 0; ixDelivery < deliveries.Count; ixDelivery++)
+            string[] files = Directory.GetFiles(path);
+            if (files.Length == 0) return;
+
+            ProcessBar pb = ProcessBar.Init("Сканирование вложений", files.Length, 1, "Получение данных провайдера");
+            pb.Show();
+
+            int i = 0;
+            foreach (string file in files)
             {
-                Delivery delivery = deliveries[ixDelivery];
-                string providerName = delivery.Truck.ProviderCompany.Name;
-                if (string.IsNullOrWhiteSpace(providerName)) continue;
-                sh.Cells[row, 1].Value = delivery.Driver.Id;
-                sh.Cells[row, 7].Value = delivery.Time;
-                sh.Cells[row, 19].Value = delivery.Cost;
-                sh.Cells[row, 4].Value = delivery.Driver.Name;
-                sh.Cells[row, 5].Value = delivery.Driver.CarNumber;
-                sh.Cells[row, 6].Value = delivery.Driver.Phone;
+                i++;
+                FileInfo fileInfo = new FileInfo(file);
+                if (pb.Cancel) break;
+                pb.Action($"Вложение {i + 1} из {pb.Count} {fileInfo.Name} ");
 
-                for (int i = 0; i < delivery.Orders.Count; i++)
+                if (!file.Contains(".xls")) { continue; }
+                ReadMessageFile(file);
+            }
+            pb.Close();
+        }
+
+        /// <summary>
+        /// Импорт данных из писем провайдеров
+        /// </summary>
+        /// <param name="file"></param>
+        public void ReadMessageFile(string file)
+        {
+            List<string> IdNotFound = new List<string>();
+            Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
+            Worksheet sh = wb.Sheets[1];
+            FileInfo fileInfo = new FileInfo(file);
+            try
+            {
+                if (sh.Cells[1, 1] != "Id")
                 {
-                    Range rowColor = sh.Range[sh.Cells[row, 1], sh.Cells[row, headers.Length]];
-                    Order order = delivery.Orders[i];
-                    if (ixDelivery % 2 == 0)
+                    Globals.ThisWorkbook.Application.DisplayAlerts = false;
+                    wb.Close();
+                    Globals.ThisWorkbook.Application.DisplayAlerts = true;
+                    return;
+                }
+
+                int lastRow = sh.UsedRange.Row + sh.UsedRange.Rows.Count;
+                for (int i = 2; i <= lastRow; i++)
+                {
+                    Range dateDelivery = sh.Cells[i, ColumnDateDelivery];
+                    Range accountNumber = sh.Cells[i, ColumnAccountNumber];
+                    string id = sh.Cells[i, ColumnId].Text;
+
+                    Range columnId = TableSheet.Columns[ColumnId];
+                    Range findIdRow = columnId.Find(id);
+
+                    if (findIdRow == null)
                     {
-                        rowColor.Interior.Color = System.Drawing.Color.FromArgb(228, 234, 245);
+                        IdNotFound.Add(id);
+                        Range rowNotFound = sh.Rows[i];
+                        rowNotFound.Interior.Color = 65535;
+                        continue;
                     }
-                    else
-                    {
-                        rowColor.Interior.Color = System.Drawing.Color.FromArgb(252, 253, 255);
-                    }
-                    sh.Cells[row, 2].Value = providerName;
-                    sh.Cells[row, 3].Value = delivery.Truck.Tonnage;
 
+                    TableSheet.Cells[findIdRow.Row, ColumnDateDelivery].Value = dateDelivery.Value;
+                    TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Value = accountNumber.Value;
+                }
 
-
-                    sh.Cells[row, 8].Value = order.DeliveryPoint.City;
-                    sh.Cells[row, 9].Value = order.RouteCity;
-
-                    sh.Cells[row, 10].Value = order.PointNumber;
-                    sh.Cells[row, 11].Value = order.Customer.Id;
-                    sh.Cells[row, 12].Value = order.TransportationUnit;
-                    sh.Cells[row, 13].Value = order.Id;
-                    sh.Cells[row, 14].Value = order.Customer.Name ?? "";
-                    sh.Cells[row, 15].Value = order.WeightBrutto;
-                    sh.Cells[row, 16].Value = order.WeightNetto;
-                    sh.Cells[row, 17].Value = order.PalletsCount;
-                    sh.Cells[row, 18].Value = order.Cost;
-                    row++;
+                if (IdNotFound.Count > 0)
+                {
+                    MessageBox.Show("В файле " + fileInfo.Name + " есть строки, которые не удалось сопоставить автоматически. Они были выделены желтой заливкой в файле", 
+                                    "Обратите внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            Range rng = sh.Range[sh.Cells[1, 1], sh.Cells[row - 1, headers.Length]];
-            ListObject list =
-                sh.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, rng,
-                XlListObjectHasHeaders: XlYesNoGuess.xlYes);
-            workbook.SaveAs(filename);
-            workbook.Close();
-            return filename;
-        }
-
-
-
-        private List<Delivery> GetDeliveries()
-        {
-            List<Delivery> deliveries = new List<Delivery>();
-            Open();
-            XLRange table = new XLRange();
-            table.TableRange = TableSheet.UsedRange;
-            int CountRows = table.TableRange.Rows.Count;
-            for (int i = 1; i < CountRows; i++)
+            catch
             {
-                table.CurrentRowRange = table.TableRange.Rows[i];
-
-                Delivery delivery = GetDeliveryTransportTable(table);
-
-                if (delivery.Truck.ProviderCompany.Name != Compny) delivery = null;
-                DateTime dateDelivery = DateTime.Parse(delivery.DateDelivery);
-                if (dateDelivery > FirstDate && dateDelivery < SecondDate) delivery = null;
-                if (delivery != null) deliveries.Add(delivery);
+                throw new System.Exception("Не удалось прочитать таблицу в файле " + fileInfo.Name);
             }
-            return deliveries;
-        }
-
-        public Delivery GetDeliveryTransportTable(XLRange table)
-        {
-            Delivery delivery = new Delivery();
-
-            delivery.DateDelivery = table.GetValueString("Дата подачи ТС");
-            delivery.DateCompleteDelivery = table.GetValueString("Дата доставки");
-            delivery.Time = table.GetValueString("Время подачи ТС");
-            delivery.Cost = table.GetValueDecimal("Стоимость доставки без НДС");
-            delivery.CostProducts = table.GetValueDecimal("Стоимость груза без НДС");
-            delivery.TotalPalletsCount = table.GetValueInt("Кол-во паллет");
-            delivery.DeliveryPointsCount = table.GetValueInt("Кол-во точек выгрузки");
-            delivery.TotalWeightNetto = table.GetValueDouble("Нетто вес");
-            delivery.TotalWeightBrutto = table.GetValueDouble("Брутто вес");
-            delivery.OrdersInfo = table.GetValueString("Наименования грузополучателей");
-            delivery.TtnInfo = table.GetValueString("Номера накладных");
-            delivery.RouteName = table.GetValueString("Направление");
-            delivery.City = table.GetValueString("Город доставки");
-            string providerName = table.GetValueString("Перевозчик");
-            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
-                                            string.IsNullOrWhiteSpace(providerName)
-                                            ) return null;
-            Truck truck = new Truck();
-            truck.Tonnage = table.GetValueDouble("Тип ТС, тонн");
-            truck.ProviderCompany.Name = providerName;
-            delivery.Truck = truck;
-
-            string id = table.GetValueString("ID");
-            string curNumber = table.GetValueString("Номер машины");
-            string phone = table.GetValueString("Телефон водителя");
-            string fio = table.GetValueString("ФИО водителя");
-            if (string.IsNullOrWhiteSpace(id))
+            finally
             {
-                Driver driver = new Driver()
-                {
-                    Id = id,
-                    CarNumber = curNumber,
-                    Name = fio,
-                    Phone = phone
-                };
-                delivery.Driver = driver;
+                Globals.ThisWorkbook.Application.DisplayAlerts = false;
+                wb.Close(true);
+                Globals.ThisWorkbook.Application.DisplayAlerts = true;
             }
-
-            return delivery;
-        }
-        /// <summary>
-        /// Создать папку для отправки провайдерам
-        /// </summary>
-        /// <returns></returns>
-        private string GenerateFolder()
-        {
-            string folder = Globals.ThisWorkbook.Path + "\\TransportTable";
-
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
-            return folder;
         }
     }
 }

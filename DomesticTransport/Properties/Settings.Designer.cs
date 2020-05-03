@@ -244,7 +244,7 @@ namespace DomesticTransport.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(" Коллеги, добрый день! Отправляем отчет по доставкам за период [dateStart]-[dateE" +
-            "nd]. Прошу заполнить данные столбцы, выделенные желтой заливкой.")]
+            "nd]. Прошу заполнить столбцы, выделенные желтой заливкой.")]
         public string ProviderMessageReport {
             get {
                 return ((string)(this["ProviderMessageReport"]));
