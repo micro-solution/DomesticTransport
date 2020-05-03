@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
@@ -14,54 +7,45 @@ namespace DomesticTransport.Forms
     {
         public string DateDelivery { get; set; }
 
-
         public Calendar()
         {
             InitializeComponent();
         }
 
-        private void btnFormula_Click(object sender, EventArgs e)
+        private void BtnFormula_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Yes;
-            Hide();
+            Close();
         }
 
-        private void btnAcept_Click(object sender, EventArgs e)
+        private void BtnAccept_Click(object sender, EventArgs e)
         {
             DateDelivery = tbDate.Text;
             DialogResult = DialogResult.OK;
-            Hide();
+            Close();
         }
 
-        private void calendarControl_DateChanged(object sender, DateRangeEventArgs e)
+        private void CalendarControl_DateChanged(object sender, DateRangeEventArgs e)
         {
             tbDate.Text = e.Start.ToShortDateString();
         }
 
-        private void tbDate_TextChanged(object sender, EventArgs e)
+        private void TbDate_TextChanged(object sender, EventArgs e)
         {
 
             if (DateTime.TryParse(tbDate.Text, out DateTime dt))
             {
                 if (dt >= calendarControl.MinDate && dt <= calendarControl.MaxDate)
                 {
-
                     DateDelivery = dt.ToShortDateString();
                     calendarControl.SetSelectionRange(dt, dt);
-
                 }
             }
         }
 
         private void Calendar_Load(object sender, EventArgs e)
         {
-
             tbDate.Text = ShefflerWB.DateDelivery;
         }
-        public void  OpenSelectDate()
-            {
-            btnFormula.Visible = false;
-            ShowDialog();            
-            }
     }
 }

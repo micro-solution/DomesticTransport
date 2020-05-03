@@ -3,8 +3,6 @@
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -442,7 +440,7 @@ namespace DomesticTransport
             }
         }
 
-        private void btnDate_Click(object sender, RibbonControlEventArgs e)
+        private void BtnDate_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -500,7 +498,7 @@ namespace DomesticTransport
 
         }
 
-        private void btnSettings_Click(object sender, RibbonControlEventArgs e)
+        private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
         {
 
             try
@@ -544,27 +542,6 @@ namespace DomesticTransport
             }
         }
 
-        private void helper_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (File.Exists(Properties.Settings.Default.HelpPath))
-                {
-                    Process.Start(Properties.Settings.Default.HelpPath);
-                }
-                else
-                {
-                    new Settings().ShowDialog();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
-
         /// <summary>
         /// Кнопка сканирования почты для импорта отчетов провайдера
         /// </summary>
@@ -581,7 +558,7 @@ namespace DomesticTransport
                     return;
                 }
                 ScanMail scanMail = new ScanMail();
-                
+
                 if (scanMail.SaveAttachments() == 0)
                 {
                     MessageBox.Show("Письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);

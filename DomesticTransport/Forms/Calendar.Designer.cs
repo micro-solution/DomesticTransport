@@ -49,7 +49,7 @@
             this.btnAcept.Text = "Принять";
             this.toolTip1.SetToolTip(this.btnAcept, "Установить дату отгрузки");
             this.btnAcept.UseVisualStyleBackColor = true;
-            this.btnAcept.Click += new System.EventHandler(this.btnAcept_Click);
+            this.btnAcept.Click += new System.EventHandler(this.BtnAccept_Click);
             // 
             // btnCancel
             // 
@@ -74,7 +74,7 @@
             this.calendarControl.MinDate = new System.DateTime(2010, 1, 1, 0, 0, 0, 0);
             this.calendarControl.Name = "calendarControl";
             this.calendarControl.TabIndex = 1;
-            this.calendarControl.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calendarControl_DateChanged);
+            this.calendarControl.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.CalendarControl_DateChanged);
             // 
             // tbDate
             // 
@@ -87,7 +87,7 @@
             this.tbDate.Size = new System.Drawing.Size(253, 15);
             this.tbDate.TabIndex = 2;
             this.tbDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbDate.TextChanged += new System.EventHandler(this.tbDate_TextChanged);
+            this.tbDate.TextChanged += new System.EventHandler(this.TbDate_TextChanged);
             // 
             // btnFormula
             // 
@@ -100,7 +100,7 @@
             this.btnFormula.Text = "Вставить формулу";
             this.toolTip1.SetToolTip(this.btnFormula, "Определить дату с помощью формулы (Следующий рабочий день)");
             this.btnFormula.UseVisualStyleBackColor = true;
-            this.btnFormula.Click += new System.EventHandler(this.btnFormula_Click);
+            this.btnFormula.Click += new System.EventHandler(this.BtnFormula_Click);
             // 
             // Calendar
             // 

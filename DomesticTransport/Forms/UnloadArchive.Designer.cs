@@ -54,7 +54,7 @@
             this.btnAcept.TabIndex = 0;
             this.btnAcept.Text = "Принять";
             this.btnAcept.UseVisualStyleBackColor = true;
-            this.btnAcept.Click += new System.EventHandler(this.btnAcept_Click);
+            this.btnAcept.Click += new System.EventHandler(this.BtnAccept_Click);
             // 
             // btnCancel
             // 
@@ -66,7 +66,7 @@
             this.btnCancel.TabIndex = 0;
             this.btnCancel.Text = "Отменить";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // dateTimePicker1
             // 

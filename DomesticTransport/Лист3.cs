@@ -1,10 +1,8 @@
-﻿using Excel = Microsoft.Office.Interop.Excel;
-
-namespace DomesticTransport
+﻿namespace DomesticTransport
 {
     public partial class Лист3
     {
-   
+
 
         #region Код, созданный конструктором VSTO
 
@@ -13,13 +11,13 @@ namespace DomesticTransport
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InternalStartup()
-        {               
- 
+        {
+
 
         }
 
         #endregion
 
-     
+
     }
 }

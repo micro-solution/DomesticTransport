@@ -6,12 +6,7 @@
         public int Id { get; set; }
         public string Name
         {
-            get =>
-                //if (string.IsNullOrWhiteSpace(_name))
-                //{
-                //    _name = "Деловые линии";
-                //}                       
-                _name;
+            get => _name;
             set => _name = value;
         }
         string _name;

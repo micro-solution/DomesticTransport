@@ -58,7 +58,7 @@
             this.btnScan.TabIndex = 1;
             this.btnScan.Text = "Сканировать";
             this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            this.btnScan.Click += new System.EventHandler(this.BtnScan_Click);
             // 
             // btnCancel
             // 
@@ -70,7 +70,7 @@
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Отменить";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // dt2
             // 
@@ -87,7 +87,7 @@
             this.button4.TabIndex = 3;
             this.button4.Text = "Вчера";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
             // label2
             // 
@@ -130,7 +130,7 @@
             this.button2.TabIndex = 6;
             this.button2.Text = "2 дня";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // btnToday
             // 
@@ -140,7 +140,7 @@
             this.btnToday.TabIndex = 7;
             this.btnToday.Text = "Сегодня";
             this.btnToday.UseVisualStyleBackColor = true;
-            this.btnToday.Click += new System.EventHandler(this.btnToday_Click_1);
+            this.btnToday.Click += new System.EventHandler(this.BtnToday_Click_1);
             // 
             // MessageDate
             // 

@@ -175,7 +175,7 @@ namespace DomesticTransport
 
                 Worksheet worksheet;
                 int row;
-                if (delivery.Truck.ProviderCompany.Name == "Деловые линии") 
+                if (delivery.Truck.ProviderCompany.Name == "Деловые линии")
                 {
                     worksheet = TableSheetDeline;
                     row = iRowDeline;
@@ -402,12 +402,12 @@ namespace DomesticTransport
                     TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Value = accountNumber.Value;
 
                     TableSheet.Cells[findIdRow.Row, ColumnDateDelivery].Interior.Color = 5296274;
-                    TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Interior.Color = 5296274;               
+                    TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Interior.Color = 5296274;
                 }
 
                 if (IdNotFound.Count > 0)
                 {
-                    MessageBox.Show("В файле " + fileInfo.Name + " есть строки, которые не удалось сопоставить автоматически. Они были выделены желтой заливкой в файле", 
+                    MessageBox.Show("В файле " + fileInfo.Name + " есть строки, которые не удалось сопоставить автоматически. Они были выделены желтой заливкой в файле",
                                     "Обратите внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }

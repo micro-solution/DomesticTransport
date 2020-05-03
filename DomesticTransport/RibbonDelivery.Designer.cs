@@ -69,9 +69,7 @@
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.separator2 = this.Factory.CreateRibbonSeparator();
-            this.menuAbout = this.Factory.CreateRibbonMenu();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
-            this.helper = this.Factory.CreateRibbonButton();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -376,8 +374,8 @@
             this.settings.Items.Add(this.btnDate);
             this.settings.Items.Add(this.btnSettings);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
+            this.settings.Items.Add(this.BtnAboutProgrramm);
             this.settings.Items.Add(this.separator2);
-            this.settings.Items.Add(this.menuAbout);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
             // 
@@ -386,9 +384,8 @@
             this.ButtonSettingLetter.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSettingLetter.Image")));
             this.ButtonSettingLetter.Label = "Настройка писем";
             this.ButtonSettingLetter.Name = "ButtonSettingLetter";
-            this.ButtonSettingLetter.ScreenTip = "Настройки письма для CS и WH";
             this.ButtonSettingLetter.ShowImage = true;
-            this.ButtonSettingLetter.SuperTip = "Настройка шаблона письма, которое отправляется CS и WH с файлом Отгрузки";
+            this.ButtonSettingLetter.SuperTip = "Настройка шаблонов писем";
             this.ButtonSettingLetter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSettingLetterCS_Click);
             // 
             // BtnSaveSignature
@@ -408,7 +405,7 @@
             this.btnDate.Name = "btnDate";
             this.btnDate.ShowImage = true;
             this.btnDate.SuperTip = "Установить дату отгрузки";
-            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDate_Click);
+            this.btnDate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDate_Click);
             // 
             // btnSettings
             // 
@@ -416,7 +413,7 @@
             this.btnSettings.Label = "Настройки";
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
-            this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSettings_Click);
+            this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
             // 
             // ButtonSelectFoldersOutlook
             // 
@@ -432,16 +429,6 @@
             // 
             this.separator2.Name = "separator2";
             // 
-            // menuAbout
-            // 
-            this.menuAbout.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.menuAbout.Image = ((System.Drawing.Image)(resources.GetObject("menuAbout.Image")));
-            this.menuAbout.Items.Add(this.BtnAboutProgrramm);
-            this.menuAbout.Items.Add(this.helper);
-            this.menuAbout.Label = "Справка";
-            this.menuAbout.Name = "menuAbout";
-            this.menuAbout.ShowImage = true;
-            // 
             // BtnAboutProgrramm
             // 
             this.BtnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("BtnAboutProgrramm.Image")));
@@ -450,15 +437,6 @@
             this.BtnAboutProgrramm.ShowImage = true;
             this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
-            // 
-            // helper
-            // 
-            this.helper.Image = ((System.Drawing.Image)(resources.GetObject("helper.Image")));
-            this.helper.Label = "Справка";
-            this.helper.Name = "helper";
-            this.helper.ShowImage = true;
-            this.helper.SuperTip = "Открыть справку";
-            this.helper.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.helper_Click);
             // 
             // btnChangeRoute
             // 
@@ -525,11 +503,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ToTransportTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendTransportTable;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton helper;
         protected internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFillTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonScanTransportTable;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
     }
 

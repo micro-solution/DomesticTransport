@@ -37,7 +37,8 @@ namespace DomesticTransport.Forms
         /// <param name="e"></param>
         private void ButtonSave_Click(object sender, EventArgs e)
         {
-            if (comboBoxSignatures.SelectedItem == null) {
+            if (comboBoxSignatures.SelectedItem == null)
+            {
                 MessageBox.Show("Необходимо выбрать подпись из списка", "Выбор подписи", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

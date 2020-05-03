@@ -1,12 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
@@ -36,7 +30,7 @@ namespace DomesticTransport.Forms
             {
                 int col = ShefflerWB.ProviderTable.ListColumns["Company"].Index;
                 string compny = row.Range[1, col].Text;
-                if (compny !="Деловые линии" && !string.IsNullOrWhiteSpace(compny))
+                if (compny != "Деловые линии" && !string.IsNullOrWhiteSpace(compny))
                 {
                     ComboboxProvider.Items.Add(compny);
                 }
@@ -84,8 +78,8 @@ namespace DomesticTransport.Forms
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ButtonСancel_Click(object sender, EventArgs e)
-        {              
-           Close();
+        {
+            Close();
         }
 
     }
