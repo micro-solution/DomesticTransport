@@ -206,40 +206,17 @@ namespace DomesticTransport
         {
             // Создаем копию листа и сохраняем в отдельную книгу
             CreateReportToProvider(dateStart, dateEnd, provider);
-
-            string to = Properties.Settings.Default.SettingCSLetterTo;
-            string copy = Properties.Settings.Default.SettingCSLetterCopy;
-            string subject = Properties.Settings.Default.SettingCSLetterSubject;
             string message = "Отчет во вложении";
 
             string path = Globals.ThisWorkbook.Path + "\\MailToProvider\\";
-            string attachment = path + provider + "_" + dateStart.ToString("d") + "-" + dateEnd.ToString("d") + ".xlsx";
-
-            subject = subject.Replace("[date]");
+            List<string> attachments = new List<string>
+            {
+                path + provider + "_" + dateStart.ToString("d") + "-" + dateEnd.ToString("d") + ".xlsx"
+            };
 
             Email email = new Email();
-            email.CreateMessage2(provider, copy, subject, message, attachment);
-
-
+            email.MailToProvider(provider, "Отчет по отгрузкам", message, attachments, Email.TypeSend.Display);
             Close();
-            /*
-
-            
-            Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
-
-            string to = Properties.Settings.Default.SettingCSLetterTo;
-            string copy = Properties.Settings.Default.SettingCSLetterCopy;
-            string subject = Properties.Settings.Default.SettingCSLetterSubject;
-            subject = subject.Replace("[date]", date);
-
-            string message = Properties.Settings.Default.SettingCSLetterMessage;
-            message = message.Replace("[date]", date);
-
-            
-
-            List<Delivery> deliveries = GetDeliveries();
-            string fileName = $"TransportTable_{Compny}_{DateTime.Now.ToShortDateString()}" ;
-            GenerateAttachmentFile(deliveries, fileName);*/
         }
 
         private void CreateReportToProvider(DateTime dateStart, DateTime dateEnd, string provider)
