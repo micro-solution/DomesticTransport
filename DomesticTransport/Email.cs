@@ -14,6 +14,13 @@ namespace DomesticTransport
 {
     class Email
     {
+
+        public enum TypeSend
+        {
+            Save,
+            Display,
+            Send
+        }
         public Outlook.Application OutlookApp
         {
             get
@@ -75,30 +82,46 @@ namespace DomesticTransport
             }
         }
 
-        public void CreateMessage2(string сompany,
-                                   string date,
-                                  string attachment,
-                                  string subject)
+        public string GetAdressProvider(string company)
         {
-            //TODO Сделать универсальную фукнцию отправки сообщения, убрать дублирован
-
             Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             ListObject tableEmail = messageSheet.ListObjects["TableEmail"];
             string addres = "";
             foreach (Range row in tableEmail.DataBodyRange.Rows)
             {
-                if (row.Cells[1, 1].Text == сompany)
+                if (row.Cells[1, 1].Text == company)
                 {
                     string stroka = row.Cells[1, 2].Text;
                     addres = stroka == "" ? addres : $"{stroka}; {addres}";
                 }
             }
-            string signature = ReadSignature(Properties.Settings.Default.Signature);
-            string textMsg = messageSheet.Cells[10, 2].Text;
+            return addres;
+        }
+
+        public void MailToProvider(string сompany, string subject, string message, List<string> attachments, TypeSend typeSend)
+        {
+            string addres = GetAdressProvider(сompany);
+            string copyTo = GetCopyProviderEmails();
+            CreateMail(addres, copyTo, subject, message, attachments, typeSend);
+        }
+
+        private string GetCopyProviderEmails()
+        {
+            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
             string copyTo = messageSheet.Cells[9, 2].Text;
-            textMsg = "Коллеги, добрый день! Отправляем уточненную информацию по отгрузкам.";
+            return copyTo;
+        }
+        public void CreateMessage2(string сompany,
+                                   string date,
+                                  string attachment,
+                                  string subject,
+                                  string message)
+        {
+            string addres = GetAdressProvider(сompany);
+            string signature = ReadSignature(Properties.Settings.Default.Signature);
+            string copyTo = GetCopyProviderEmails();
             string HtmlBody =
-                  textMsg +
+                  message +
                    "<br><br>" +
                signature;
             try
@@ -123,29 +146,44 @@ namespace DomesticTransport
         /// <summary>
         /// Создание сообщения
         /// </summary>
-        /// <param name="to">кому</param>
-        /// <param name="copy">копия</param>
-        /// <param name="subject">тема</param>
-        /// <param name="message">сообщение</param>
-        /// <param name="attachment">вложение</param>
-        public void CreateMail(string to, string copy, string subject, string message, List<string> attachments)
+        /// <param name="to"></param>
+        /// <param name="copy"></param>
+        /// <param name="subject"></param>
+        /// <param name="message"></param>
+        /// <param name="attachments"></param>
+        /// <param name="typeSend"></param>
+        public void CreateMail(string to, string copy, string subject, string message, List<string> attachments, TypeSend typeSend = TypeSend.Display)
         {
             string signature = ReadSignature(Properties.Settings.Default.Signature);
-            string HtmlBody = message + "<br><br>" + signature;
+            message += "<br><br>" + signature;
+
             try
             {
                 OutlookApp.Session.Logon();
                 Outlook.MailItem mail = (Outlook.MailItem)OutlookApp.CreateItem(0);
                 mail.To = to;
-                mail.HTMLBody = HtmlBody;
+                mail.HTMLBody = message;
                 mail.BCC = "";
                 mail.CC = copy;
                 mail.Subject = subject;
-                for (int i = 0; i< attachments.Count; i++)
+                foreach (string attach in attachments)
                 {
-                mail.Attachments.Add(attachments[i], Outlook.OlAttachmentType.olByValue);
+                    mail.Attachments.Add(attach, Outlook.OlAttachmentType.olByValue);
                 }
-                mail.Display();
+
+                switch (typeSend)
+                {
+                    case TypeSend.Save:
+                        mail.Save();
+                        break;
+                    case TypeSend.Display:
+                        mail.Display();
+                        break;
+                    case TypeSend.Send:
+                        mail.Send();
+                        break;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -154,6 +192,11 @@ namespace DomesticTransport
             }
         }
 
+        /// <summary>
+        /// Получение подписи из настроек
+        /// </summary>
+        /// <param name="signatureName"></param>
+        /// <returns></returns>
         private string ReadSignature(string signatureName = "")
         {
             try
@@ -172,7 +215,7 @@ namespace DomesticTransport
                         if (signatureName == "") signatureName = fileName;
                         if (signatureName == fileName)
                         {
-                            StreamReader sr = new StreamReader(fiSignature[0].FullName, Encoding.Default);
+                            StreamReader sr = new StreamReader(file.FullName, Encoding.Default);
                             signature = sr.ReadToEnd();
                             signature = signature.Replace(fileName + ".files/", appDataDir + "/" + fileName + ".files/");
                             sr.Close();

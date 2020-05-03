@@ -189,22 +189,117 @@ namespace DomesticTransport
             Workbook = null;
         }
 
-
-        public void MessageProvider()
+        /// <summary>
+        /// Закрыть без сохранения
+        /// </summary>
+        public void Close()
         {
-            UnloadOnDate unloadOnDate = new UnloadOnDate();
-            unloadOnDate.ShowDialog();
-            if (unloadOnDate.DialogResult != System.Windows.Forms.DialogResult.OK)
-            { return; }
+            Workbook.Close(false);
+            TableSheet = null;
+            Workbook = null;
+        }
 
-            Compny = unloadOnDate.Compny;
-            FirstDate = unloadOnDate.FirstDate;
-            SecondDate = unloadOnDate.SecondDate;
-           
+        /// <summary>
+        /// Отправка отчета провайдеру
+        /// </summary>
+        public void MessageProvider(DateTime dateStart, DateTime dateEnd, string provider)
+        {
+            // Создаем копию листа и сохраняем в отдельную книгу
+            CreateReportToProvider(dateStart, dateEnd, provider);
+
+            string to = Properties.Settings.Default.SettingCSLetterTo;
+            string copy = Properties.Settings.Default.SettingCSLetterCopy;
+            string subject = Properties.Settings.Default.SettingCSLetterSubject;
+            string message = "Отчет во вложении";
+
+            string path = Globals.ThisWorkbook.Path + "\\MailToProvider\\";
+            string attachment = path + provider + "_" + dateStart.ToString("d") + "-" + dateEnd.ToString("d") + ".xlsx";
+
+            subject = subject.Replace("[date]");
+
+            Email email = new Email();
+            email.CreateMessage2(provider, copy, subject, message, attachment);
+
+
+            Close();
+            /*
+
+            
+            Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
+
+            string to = Properties.Settings.Default.SettingCSLetterTo;
+            string copy = Properties.Settings.Default.SettingCSLetterCopy;
+            string subject = Properties.Settings.Default.SettingCSLetterSubject;
+            subject = subject.Replace("[date]", date);
+
+            string message = Properties.Settings.Default.SettingCSLetterMessage;
+            message = message.Replace("[date]", date);
+
+            
+
             List<Delivery> deliveries = GetDeliveries();
             string fileName = $"TransportTable_{Compny}_{DateTime.Now.ToShortDateString()}" ;
-            GenerateAttachmentFile(deliveries, fileName);
+            GenerateAttachmentFile(deliveries, fileName);*/
         }
+
+        private void CreateReportToProvider(DateTime dateStart, DateTime dateEnd, string provider)
+        {
+            // Создаем копию листа и сохраняем в отдельную книгу
+            string path = Globals.ThisWorkbook.Path + "\\MailToProvider\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string attachment = path + provider + "_" + dateStart.ToString("d") + "-" + dateEnd.ToString("d") + ".xlsx";
+            TableSheet.Copy();
+            Workbook workbook = Globals.ThisWorkbook.Application.ActiveWorkbook;
+            workbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
+            Range rangeToDelete = workbook.Sheets[1].cells[NextRow, ColumnDate];
+
+            // удаляем лишние строки
+            for (int i = 2; i < NextRow; i++)
+            {
+                DateTime date;
+
+                Range rangeDate = workbook.Sheets[1].cells[i, ColumnDate];
+                if (string.IsNullOrEmpty(rangeDate.Text) && IsDate(rangeDate.Value))
+                {
+                    date = DateTime.Parse(rangeDate.Value.ToString());
+                }
+                else
+                {
+                    if (!DateTime.TryParse(rangeDate.Text, out date))
+                    {
+                        rangeToDelete = Globals.ThisWorkbook.Application.Union(rangeToDelete, rangeDate);
+                    }
+                }
+
+                if (date < dateStart || date > dateEnd || workbook.Sheets[1].cells[i, ColumnProvider].Text != provider)
+                {
+                    rangeToDelete = Globals.ThisWorkbook.Application.Union(rangeToDelete, rangeDate);
+                }
+            }
+            rangeToDelete.EntireRow.Delete();
+            workbook.Close(true);
+        }
+
+        private bool IsDate(object attemptedDate) {
+        bool Success;
+            if (attemptedDate == null) return false;
+        try
+        {
+                DateTime dtParse = DateTime.Parse(attemptedDate.ToString());
+                Success = true; // это дата
+        }
+        catch (FormatException e)
+        {
+                Success = false; // это не дата
+        }
+         
+        return Success;
+}
+
+
         private string GenerateAttachmentFile(List<Delivery> deliveries, string name)
         {
             if (deliveries.Count == 0) return "";

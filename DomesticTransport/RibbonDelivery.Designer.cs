@@ -60,7 +60,7 @@
             this.ButtonToArchive = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.ToTransportTable = this.Factory.CreateRibbonButton();
-            this.btnMsgTransportTable = this.Factory.CreateRibbonButton();
+            this.ButtonSendTransportTable = this.Factory.CreateRibbonButton();
             this.ButtonScanTransportTable = this.Factory.CreateRibbonButton();
             this.settings = this.Factory.CreateRibbonGroup();
             this.btnDate = this.Factory.CreateRibbonButton();
@@ -334,9 +334,9 @@
             // group3
             // 
             this.group3.Items.Add(this.ToTransportTable);
-            this.group3.Items.Add(this.btnMsgTransportTable);
+            this.group3.Items.Add(this.ButtonSendTransportTable);
             this.group3.Items.Add(this.ButtonScanTransportTable);
-            this.group3.Label = "Transport Table";
+            this.group3.Label = "Отчеты";
             this.group3.Name = "group3";
             // 
             // ToTransportTable
@@ -351,15 +351,14 @@
     "за предыдущую неделю и старше";
             this.ToTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveToTransportTable_Click);
             // 
-            // btnMsgTransportTable
+            // ButtonSendTransportTable
             // 
-            this.btnMsgTransportTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnMsgTransportTable.Enabled = false;
-            this.btnMsgTransportTable.Image = ((System.Drawing.Image)(resources.GetObject("btnMsgTransportTable.Image")));
-            this.btnMsgTransportTable.Label = "Отчет провайдеру";
-            this.btnMsgTransportTable.Name = "btnMsgTransportTable";
-            this.btnMsgTransportTable.ShowImage = true;
-            this.btnMsgTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnMsgTransportTable_Click);
+            this.ButtonSendTransportTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonSendTransportTable.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSendTransportTable.Image")));
+            this.ButtonSendTransportTable.Label = "Отчет провайдеру";
+            this.ButtonSendTransportTable.Name = "ButtonSendTransportTable";
+            this.ButtonSendTransportTable.ShowImage = true;
+            this.ButtonSendTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendTransportTable_Click);
             // 
             // ButtonScanTransportTable
             // 
@@ -525,7 +524,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonToArchive;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ToTransportTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMsgTransportTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendTransportTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton helper;
         protected internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFillTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;

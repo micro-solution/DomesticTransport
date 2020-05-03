@@ -583,10 +583,11 @@ namespace DomesticTransport
                 string attachment = GenerateAttachmentFile(deliverShipping, subject);
                 // Найти Email
                 Email messenger = new Email();
+                string message = "Коллеги, добрый день! Отправляем уточненную информацию по отгрузкам.";
                 messenger.CreateMessage2(сompany: сompanyShipping,
                                           date: date,
                                           attachment: attachment,
-                                          subject: subject);
+                                          subject: subject, message);
             }
             pb.Close();
         }

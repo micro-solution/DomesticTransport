@@ -497,16 +497,16 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOff();
             }
-            
+
         }
 
         private void btnSettings_Click(object sender, RibbonControlEventArgs e)
         {
-            
+
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-               new Settings().ShowDialog() ;
+                new Settings().ShowDialog();
             }
             catch (Exception ex)
             {
@@ -518,12 +518,21 @@ namespace DomesticTransport
             }
         }
 
-        private void btnMsgTransportTable_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка отправки очета провайдеру
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSendTransportTable_Click(object sender, RibbonControlEventArgs e)
         {
+            TransportTableSending tableSending = new TransportTableSending();
+            tableSending.ShowDialog();
+            if (tableSending.DialogResult != DialogResult.OK) return;
+
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-               new TransportTable().MessageProvider();
+                new TransportTable().MessageProvider(tableSending.DateStart, tableSending.DateEnd, tableSending.Provider);
             }
             catch (Exception ex)
             {
@@ -541,19 +550,19 @@ namespace DomesticTransport
             {
                 if (File.Exists(Properties.Settings.Default.HelpPath))
                 {
-                Process.Start(Properties.Settings.Default.HelpPath);
+                    Process.Start(Properties.Settings.Default.HelpPath);
                 }
                 else
                 {
                     new Settings().ShowDialog();
                 }
-                    
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-           
+
         }
     }
 }
