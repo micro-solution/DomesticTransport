@@ -65,6 +65,11 @@ namespace DomesticTransport.Forms
                 MessageBox.Show("Выберите провайдера", "Ошибка заполнения формы", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (monthCalendarStart.SelectionStart > monthCalendarEnd.SelectionStart)
+            {
+                MessageBox.Show("Дата начала отчета не может быть позже даты завершения", "Ошибка заполнения формы", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             DateStart = monthCalendarStart.SelectionStart;
             DateEnd = monthCalendarEnd.SelectionStart;

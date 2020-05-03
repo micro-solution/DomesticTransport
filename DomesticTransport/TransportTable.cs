@@ -1,7 +1,7 @@
-﻿using DomesticTransport.Forms;
-using DomesticTransport.Model;
+﻿using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -121,7 +121,7 @@ namespace DomesticTransport
                 List<string> routes = new List<string>();
                 List<string> ttns = new List<string>();
                 List<string> clients = new List<string>();
-                
+
                 double weightNetto = 0;
                 double weightBrutto = 0;
                 double palletCount = 0;
@@ -206,7 +206,15 @@ namespace DomesticTransport
         {
             // Создаем копию листа и сохраняем в отдельную книгу
             CreateReportToProvider(dateStart, dateEnd, provider);
-            string message = "Отчет во вложении";
+            string message = Properties.Settings.Default.ProviderMessageReport;
+            string subject = Properties.Settings.Default.ProviderSubjectReport;
+
+            message = message.Replace("[provider]", provider);
+            message = message.Replace("[dateStart]", dateStart.ToString("d"));
+            message = message.Replace("[dateEnd]", dateEnd.ToString("d"));
+            subject = subject.Replace("[provider]", provider);
+            subject = subject.Replace("[dateStart]", dateStart.ToString("d"));
+            subject = subject.Replace("[dateEnd]", dateEnd.ToString("d"));
 
             string path = Globals.ThisWorkbook.Path + "\\MailToProvider\\";
             List<string> attachments = new List<string>
@@ -215,7 +223,7 @@ namespace DomesticTransport
             };
 
             Email email = new Email();
-            email.MailToProvider(provider, "Отчет по отгрузкам", message, attachments, Email.TypeSend.Display);
+            email.MailToProvider(provider, subject, message, attachments, Email.TypeSend.Display);
             Close();
         }
 
@@ -260,21 +268,22 @@ namespace DomesticTransport
             workbook.Close(true);
         }
 
-        private bool IsDate(object attemptedDate) {
-        bool Success;
+        private bool IsDate(object attemptedDate)
+        {
+            bool success;
             if (attemptedDate == null) return false;
-        try
-        {
+            try
+            {
                 DateTime dtParse = DateTime.Parse(attemptedDate.ToString());
-                Success = true; // это дата
+                success = true; // это дата
+            }
+            catch
+            {
+                success = false; // это не дата
+            }
+
+            return success;
         }
-        catch (FormatException e)
-        {
-                Success = false; // это не дата
-        }
-         
-        return Success;
-}
 
 
         private string GenerateAttachmentFile(List<Delivery> deliveries, string name)
@@ -282,7 +291,7 @@ namespace DomesticTransport
             if (deliveries.Count == 0) return "";
 
             string folder = GenerateFolder();
-           string filename = $"{folder}\\{name}.xlsx";
+            string filename = $"{folder}\\{name}.xlsx";
 
             Workbook workbook = Globals.ThisWorkbook.Application.Workbooks.Add();
 
@@ -294,12 +303,12 @@ namespace DomesticTransport
                                 "Дата подачи ТС" ,
                                 "Номер машины",
                                 "ФИО водителя",
-                                 "Дата доставки",                                
+                                 "Дата доставки",
                                 "Город доставки" ,
                                 "Направление"   ,
                                 "Кол-во точек выгрузки",
                                 "Номера накладных",
-                                "Наименования грузополучателей",                                                               
+                                "Наименования грузополучателей",
                                 "Брутто вес",
                                 "Нетто вес",
                                 "Кол-во паллет" ,
@@ -307,7 +316,7 @@ namespace DomesticTransport
                                 "Стоимость доставки без НДС",
                                 "Номер счёта перевозчика",
                                 "Комментарий"
-                                };               
+                                };
 
             for (int i = 1; i <= headers.Length; i++)
             {
@@ -376,12 +385,12 @@ namespace DomesticTransport
             XLRange table = new XLRange();
             table.TableRange = TableSheet.UsedRange;
             int CountRows = table.TableRange.Rows.Count;
-            for (int i =1; i < CountRows; i++)
+            for (int i = 1; i < CountRows; i++)
             {
                 table.CurrentRowRange = table.TableRange.Rows[i];
 
                 Delivery delivery = GetDeliveryTransportTable(table);
-              
+
                 if (delivery.Truck.ProviderCompany.Name != Compny) delivery = null;
                 DateTime dateDelivery = DateTime.Parse(delivery.DateDelivery);
                 if (dateDelivery > FirstDate && dateDelivery < SecondDate) delivery = null;
@@ -393,7 +402,7 @@ namespace DomesticTransport
         public Delivery GetDeliveryTransportTable(XLRange table)
         {
             Delivery delivery = new Delivery();
-            
+
             delivery.DateDelivery = table.GetValueString("Дата подачи ТС");
             delivery.DateCompleteDelivery = table.GetValueString("Дата доставки");
             delivery.Time = table.GetValueString("Время подачи ТС");
@@ -408,7 +417,7 @@ namespace DomesticTransport
             delivery.RouteName = table.GetValueString("Направление");
             delivery.City = table.GetValueString("Город доставки");
             string providerName = table.GetValueString("Перевозчик");
-            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||                                            
+            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
                                             string.IsNullOrWhiteSpace(providerName)
                                             ) return null;
             Truck truck = new Truck();

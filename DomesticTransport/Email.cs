@@ -69,19 +69,8 @@ namespace DomesticTransport
         public void MailToProvider(string сompany, string subject, string message, List<string> attachments, TypeSend typeSend)
         {
             string addres = GetAdressProvider(сompany);
-            string copyTo = GetCopyProviderEmails();
+            string copyTo = Properties.Settings.Default.ProviderLettersCopy;
             CreateMail(addres, copyTo, subject, message, attachments, typeSend);
-        }
-
-        /// <summary>
-        /// Получение списка адресатов провайдера
-        /// </summary>
-        /// <returns></returns>
-        private string GetCopyProviderEmails()
-        {
-            Worksheet messageSheet = Globals.ThisWorkbook.Sheets["Mail"];
-            string copyTo = messageSheet.Cells[9, 2].Text;
-            return copyTo;
         }
 
         /// <summary>

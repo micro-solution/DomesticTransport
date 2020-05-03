@@ -654,7 +654,7 @@ namespace DomesticTransport
                 }
 
             }
-            catch (System.Exception ex)
+            catch
             {
                 throw new System.Exception("Не удалось прочитать таблицу в файле " + file);
                 //  MessageBox.Show(ex.Message);
