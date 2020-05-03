@@ -38,5 +38,26 @@
     <Setting Name="AllOrders" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ProviderLettersCopy" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ProviderSubjectOrder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Заявка грузоперевозки [provider] [date]</Value>
+    </Setting>
+    <Setting Name="ProviderSubjectAdd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Заявка грузоперевозки [provider] [date]</Value>
+    </Setting>
+    <Setting Name="ProviderSubjectReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Отчет по доставкам [provider] за период [dateStart]-[dateEnd]</Value>
+    </Setting>
+    <Setting Name="ProviderMessageOrder" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> Коллеги, добрый день! В приложении отгрузка на [date], прошу принять к работе и прислать до 17-00.</Value>
+    </Setting>
+    <Setting Name="ProviderMessageAdd" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> Коллеги, добрый день! В приложении уточнения отгрузки на [date].</Value>
+    </Setting>
+    <Setting Name="ProviderMessageReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> Коллеги, добрый день! Отправляем отчет по доставкам за период [dateStart]-[dateEnd]. Прошу заполнить столбцы, выделенные желтой заливкой.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

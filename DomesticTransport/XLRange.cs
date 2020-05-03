@@ -1,29 +1,25 @@
 ﻿using Microsoft.Office.Interop.Excel;
+
 using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomesticTransport
 {
     /// <summary>
     ///Таблица в виде диапазона
     /// </summary>
-    class XLRange 
+    class XLRange
     {
 
-              /// <summary>
+        /// <summary>
         /// Диапазон таблицы
         /// </summary>
-        public Range TableRange{ get; set; }
-    //    Range _range;
+        public Range TableRange { get; set; }
+        //    Range _range;
 
         /// <summary>
         /// Строка для заполнения
         /// </summary>
-         public Range CurrentRowRange
+        public Range CurrentRowRange
         {
             get
             {
@@ -39,7 +35,7 @@ namespace DomesticTransport
             set => _currentRowRange = value;
         }
         Range _currentRowRange;
-     
+
 
 
 
@@ -55,7 +51,7 @@ namespace DomesticTransport
                 if (_currentRowIndex == 0)
 
                     if (TableRange != null)
-                    { 
+                    {
                         _currentRowIndex = GetLastRowIndex();
                     }
                 return _currentRowIndex;
@@ -64,7 +60,7 @@ namespace DomesticTransport
         }
         int _currentRowIndex;
 
-              
+
 
         //Get
         public string GetValueString(string header)
@@ -123,9 +119,7 @@ namespace DomesticTransport
 
         public int GetLastRowIndex()
         {
-            int ix = 0;
-            ix = TableRange.Rows.Count;
-
+            int ix = TableRange.Rows.Count;
             for (int i = ix; i > 0; i--)
             {
                 string str = TableRange.Cells[i, 1].Text;
@@ -150,11 +144,11 @@ namespace DomesticTransport
         {
             int ix = GetLastRowIndex();
             if (ix == 0)
-            {                   
+            {
                 ix = 1;
             }
             Worksheet sh = (Worksheet)TableRange.Parent;
-            return  sh.Rows[ix].Range;
+            return sh.Rows[ix].Range;
         }
 
         /// <summary>
@@ -178,9 +172,9 @@ namespace DomesticTransport
             }
         }
 
-      
-       
-         public int GetColumn(string header)
+
+
+        public int GetColumn(string header)
         {
             int column = 0;
             if (HeadRow != null)

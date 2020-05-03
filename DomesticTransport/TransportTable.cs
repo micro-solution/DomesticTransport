@@ -2,6 +2,7 @@
 using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,7 @@ namespace DomesticTransport
         public const int ColumnPalleteCount = 15;
         public const int ColumnPriceOrder = 16;
         public const int ColumnPriceDelivery = 17;
+        public const int ColumnAccountNumber = 18;
         #endregion
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace DomesticTransport
 
         public Workbook Workbook;
         private Worksheet TableSheet;
+        private Worksheet TableSheetDeline;
 
         /// <summary>
         /// Следующая (пустая) строка 
@@ -82,6 +85,16 @@ namespace DomesticTransport
             get
             {
                 return TableSheet.UsedRange.Row + TableSheet.UsedRange.Rows.Count;
+            }
+        }
+        /// <summary>
+        /// Следующая (пустая) строка на листе деловые линии
+        /// </summary>
+        private int NextRowDeline
+        {
+            get
+            {
+                return TableSheetDeline.UsedRange.Row + TableSheetDeline.UsedRange.Rows.Count;
             }
         }
 
@@ -98,11 +111,17 @@ namespace DomesticTransport
             if (!File.Exists(FullName)) return;
             Workbook = Globals.ThisWorkbook.Application.Workbooks.Open(FullName);
             TableSheet = Workbook.Worksheets[1];
+            TableSheetDeline = Workbook.Worksheets[2];
         }
 
+        /// <summary>
+        /// Импорт данных из архива
+        /// </summary>
+        /// <param name="deliveries"></param>
         public void ImportDeliveryes(List<Delivery> deliveries)
         {
             int iRow = NextRow;
+            int iRowDeline = NextRowDeline;
             DateTime dateMax = DateTime.Today;
             SecondDate = dateMax;
             FirstDate = dateMax.AddDays(-(double)dateMax.DayOfWeek);
@@ -121,7 +140,7 @@ namespace DomesticTransport
                 List<string> routes = new List<string>();
                 List<string> ttns = new List<string>();
                 List<string> clients = new List<string>();
-                
+
                 double weightNetto = 0;
                 double weightBrutto = 0;
                 double palletCount = 0;
@@ -154,27 +173,47 @@ namespace DomesticTransport
                 ttns = ttns.Distinct().ToList();
                 clients = clients.Distinct().ToList();
 
-                TableSheet.Cells[iRow, ColumnId].Value = delivery.Driver.Id;
-                TableSheet.Cells[iRow, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
-                TableSheet.Cells[iRow, ColumnCarType].Value = delivery.Truck.Tonnage;
-                TableSheet.Cells[iRow, ColumnDate].Value = delivery.DateDelivery;
-                TableSheet.Cells[iRow, ColumnCarNumber].Value = delivery.Driver.CarNumber;
-                TableSheet.Cells[iRow, ColumnCarDriver].Value = delivery.Driver.Name;
+                Worksheet worksheet;
+                int row;
+                if (delivery.Truck.ProviderCompany.Name == "Деловые линии")
+                {
+                    worksheet = TableSheetDeline;
+                    row = iRowDeline;
+                }
+                else
+                {
+                    worksheet = TableSheet;
+                    row = iRow;
+                }
 
-                TableSheet.Cells[iRow, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
-                TableSheet.Cells[iRow, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnId].Value = delivery.Driver.Id;
+                worksheet.Cells[row, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
+                worksheet.Cells[row, ColumnCarType].Value = delivery.Truck.Tonnage;
+                worksheet.Cells[row, ColumnDate].Value = delivery.DateDelivery;
+                worksheet.Cells[row, ColumnCarNumber].Value = delivery.Driver.CarNumber;
+                worksheet.Cells[row, ColumnCarDriver].Value = delivery.Driver.Name;
 
-                TableSheet.Cells[iRow, ColumnPointCount].Value = clients.Count;
-                TableSheet.Cells[iRow, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
-                TableSheet.Cells[iRow, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnSity].Value = string.Join(", ", sityes.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnRoute].Value = string.Join(", ", routes.Select(x => x.ToString()));
 
-                TableSheet.Cells[iRow, ColumnWeightBrutto].Value = weightBrutto;
-                TableSheet.Cells[iRow, ColumnWeightNetto].Value = weightNetto;
-                TableSheet.Cells[iRow, ColumnPalleteCount].Value = palletCount;
-                TableSheet.Cells[iRow, ColumnPriceOrder].Value = priceOrder;
-                TableSheet.Cells[iRow, ColumnPriceDelivery].Value = delivery.Cost;
+                worksheet.Cells[row, ColumnPointCount].Value = clients.Count;
+                worksheet.Cells[row, ColumnTTNs].Value = string.Join(", ", ttns.Select(x => x.ToString()));
+                worksheet.Cells[row, ColumnClients].Value = string.Join(", ", clients.Select(x => x.ToString()));
 
-                iRow++;
+                worksheet.Cells[row, ColumnWeightBrutto].Value = weightBrutto;
+                worksheet.Cells[row, ColumnWeightNetto].Value = weightNetto;
+                worksheet.Cells[row, ColumnPalleteCount].Value = palletCount;
+                worksheet.Cells[row, ColumnPriceOrder].Value = priceOrder;
+                worksheet.Cells[row, ColumnPriceDelivery].Value = delivery.Cost;
+
+                if (worksheet == TableSheet)
+                {
+                    iRow++;
+                }
+                else
+                {
+                    iRowDeline++;
+                }
             }
             pb.Close();
         }
@@ -189,192 +228,199 @@ namespace DomesticTransport
             Workbook = null;
         }
 
-
-        public void MessageProvider()
+        /// <summary>
+        /// Закрыть без сохранения
+        /// </summary>
+        public void Close()
         {
-            UnloadOnDate unloadOnDate = new UnloadOnDate();
-            unloadOnDate.ShowDialog();
-            if (unloadOnDate.DialogResult != System.Windows.Forms.DialogResult.OK)
-            { return; }
-
-            Compny = unloadOnDate.Compny;
-            FirstDate = unloadOnDate.FirstDate;
-            SecondDate = unloadOnDate.SecondDate;
-           
-            List<Delivery> deliveries = GetDeliveries();
-            string fileName = $"TransportTable_{Compny}_{DateTime.Now.ToShortDateString()}" ;
-            GenerateAttachmentFile(deliveries, fileName);
+            Workbook.Close(false);
+            TableSheet = null;
+            Workbook = null;
         }
-        private string GenerateAttachmentFile(List<Delivery> deliveries, string name)
+
+        /// <summary>
+        /// Отправка отчета провайдеру
+        /// </summary>
+        public void MessageProvider(DateTime dateStart, DateTime dateEnd, string provider)
         {
-            if (deliveries.Count == 0) return "";
+            // Создаем копию листа и сохраняем в отдельную книгу
+            CreateReportToProvider(dateStart, dateEnd, provider);
+            string message = Properties.Settings.Default.ProviderMessageReport;
+            string subject = Properties.Settings.Default.ProviderSubjectReport;
 
-            string folder = GenerateFolder();
-           string filename = $"{folder}\\{name}.xlsx";
+            message = message.Replace("[provider]", provider);
+            message = message.Replace("[dateStart]", dateStart.ToString("d"));
+            message = message.Replace("[dateEnd]", dateEnd.ToString("d"));
+            subject = subject.Replace("[provider]", provider);
+            subject = subject.Replace("[dateStart]", dateStart.ToString("d"));
+            subject = subject.Replace("[dateEnd]", dateEnd.ToString("d"));
 
-            Workbook workbook = Globals.ThisWorkbook.Application.Workbooks.Add();
-
-            Worksheet sh = workbook.Sheets[1];
-            string[] headers = {
-                                "ID",
-                                "Перевозчик",
-                                "Тип ТС, тонн" ,
-                                "Дата подачи ТС" ,
-                                "Номер машины",
-                                "ФИО водителя",
-                                 "Дата доставки",                                
-                                "Город доставки" ,
-                                "Направление"   ,
-                                "Кол-во точек выгрузки",
-                                "Номера накладных",
-                                "Наименования грузополучателей",                                                               
-                                "Брутто вес",
-                                "Нетто вес",
-                                "Кол-во паллет" ,
-                                "Стоимость груза без НДС" ,
-                                "Стоимость доставки без НДС",
-                                "Номер счёта перевозчика",
-                                "Комментарий"
-                                };               
-
-            for (int i = 1; i <= headers.Length; i++)
+            string path = Globals.ThisWorkbook.Path + "\\MailToProvider\\";
+            List<string> attachments = new List<string>
             {
-                sh.Cells[1, i].Value = headers[i - 1];
+                path + provider + "_" + dateStart.ToString("d") + "-" + dateEnd.ToString("d") + ".xlsx"
+            };
+
+            Email email = new Email();
+            email.MailToProvider(provider, subject, message, attachments, Email.TypeSend.Display);
+            Close();
+        }
+
+        /// <summary>
+        /// Подготовка отчета провайдеру
+        /// </summary>
+        /// <param name="dateStart"></param>
+        /// <param name="dateEnd"></param>
+        /// <param name="provider"></param>
+        private void CreateReportToProvider(DateTime dateStart, DateTime dateEnd, string provider)
+        {
+            // Создаем копию листа и сохраняем в отдельную книгу
+            string path = Globals.ThisWorkbook.Path + "\\MailToProvider\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
             }
-            int row = 2;
-            for (int ixDelivery = 0; ixDelivery < deliveries.Count; ixDelivery++)
+            string attachment = path + provider + "_" + dateStart.ToString("d") + "-" + dateEnd.ToString("d") + ".xlsx";
+            TableSheet.Copy();
+            Workbook workbook = Globals.ThisWorkbook.Application.ActiveWorkbook;
+            workbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
+            Range rangeToDelete = workbook.Sheets[1].cells[NextRow, ColumnDate];
+
+            // удаляем лишние строки
+            for (int i = 2; i < NextRow; i++)
             {
-                Delivery delivery = deliveries[ixDelivery];
-                string providerName = delivery.Truck.ProviderCompany.Name;
-                if (string.IsNullOrWhiteSpace(providerName)) continue;
-                sh.Cells[row, 1].Value = delivery.Driver.Id;
-                sh.Cells[row, 7].Value = delivery.Time;
-                sh.Cells[row, 19].Value = delivery.Cost;
-                sh.Cells[row, 4].Value = delivery.Driver.Name;
-                sh.Cells[row, 5].Value = delivery.Driver.CarNumber;
-                sh.Cells[row, 6].Value = delivery.Driver.Phone;
+                DateTime date;
 
-                for (int i = 0; i < delivery.Orders.Count; i++)
+                Range rangeDate = workbook.Sheets[1].cells[i, ColumnDate];
+                if (string.IsNullOrEmpty(rangeDate.Text) && IsDate(rangeDate.Value))
                 {
-                    Range rowColor = sh.Range[sh.Cells[row, 1], sh.Cells[row, headers.Length]];
-                    Order order = delivery.Orders[i];
-                    if (ixDelivery % 2 == 0)
+                    date = DateTime.Parse(rangeDate.Value.ToString());
+                }
+                else
+                {
+                    if (!DateTime.TryParse(rangeDate.Text, out date))
                     {
-                        rowColor.Interior.Color = System.Drawing.Color.FromArgb(228, 234, 245);
+                        rangeToDelete = Globals.ThisWorkbook.Application.Union(rangeToDelete, rangeDate);
                     }
-                    else
-                    {
-                        rowColor.Interior.Color = System.Drawing.Color.FromArgb(252, 253, 255);
-                    }
-                    sh.Cells[row, 2].Value = providerName;
-                    sh.Cells[row, 3].Value = delivery.Truck.Tonnage;
+                }
 
-
-
-                    sh.Cells[row, 8].Value = order.DeliveryPoint.City;
-                    sh.Cells[row, 9].Value = order.RouteCity;
-
-                    sh.Cells[row, 10].Value = order.PointNumber;
-                    sh.Cells[row, 11].Value = order.Customer.Id;
-                    sh.Cells[row, 12].Value = order.TransportationUnit;
-                    sh.Cells[row, 13].Value = order.Id;
-                    sh.Cells[row, 14].Value = order.Customer.Name ?? "";
-                    sh.Cells[row, 15].Value = order.WeightBrutto;
-                    sh.Cells[row, 16].Value = order.WeightNetto;
-                    sh.Cells[row, 17].Value = order.PalletsCount;
-                    sh.Cells[row, 18].Value = order.Cost;
-                    row++;
+                if (date < dateStart || date > dateEnd || workbook.Sheets[1].cells[i, ColumnProvider].Text != provider)
+                {
+                    rangeToDelete = Globals.ThisWorkbook.Application.Union(rangeToDelete, rangeDate);
                 }
             }
-            Range rng = sh.Range[sh.Cells[1, 1], sh.Cells[row - 1, headers.Length]];
-            ListObject list =
-                sh.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, rng,
-                XlListObjectHasHeaders: XlYesNoGuess.xlYes);
-            workbook.SaveAs(filename);
-            workbook.Close();
-            return filename;
+            rangeToDelete.EntireRow.Delete();
+            workbook.Close(true);
         }
 
-
-
-        private List<Delivery> GetDeliveries()
+        private bool IsDate(object attemptedDate)
         {
-            List<Delivery> deliveries = new List<Delivery>();
-            Open();
-            XLRange table = new XLRange();
-            table.TableRange = TableSheet.UsedRange;
-            int CountRows = table.TableRange.Rows.Count;
-            for (int i =1; i < CountRows; i++)
+            bool success;
+            if (attemptedDate == null) return false;
+            try
             {
-                table.CurrentRowRange = table.TableRange.Rows[i];
-
-                Delivery delivery = GetDeliveryTransportTable(table);
-              
-                if (delivery.Truck.ProviderCompany.Name != Compny) delivery = null;
-                DateTime dateDelivery = DateTime.Parse(delivery.DateDelivery);
-                if (dateDelivery > FirstDate && dateDelivery < SecondDate) delivery = null;
-                if (delivery != null) deliveries.Add(delivery);
+                DateTime dtParse = DateTime.Parse(attemptedDate.ToString());
+                success = true; // это дата
             }
-            return deliveries;
-        }
-
-        public Delivery GetDeliveryTransportTable(XLRange table)
-        {
-            Delivery delivery = new Delivery();
-            
-            delivery.DateDelivery = table.GetValueString("Дата подачи ТС");
-            delivery.DateCompleteDelivery = table.GetValueString("Дата доставки");
-            delivery.Time = table.GetValueString("Время подачи ТС");
-            delivery.Cost = table.GetValueDecimal("Стоимость доставки без НДС");
-            delivery.CostProducts = table.GetValueDecimal("Стоимость груза без НДС");
-            delivery.TotalPalletsCount = table.GetValueInt("Кол-во паллет");
-            delivery.DeliveryPointsCount = table.GetValueInt("Кол-во точек выгрузки");
-            delivery.TotalWeightNetto = table.GetValueDouble("Нетто вес");
-            delivery.TotalWeightBrutto = table.GetValueDouble("Брутто вес");
-            delivery.OrdersInfo = table.GetValueString("Наименования грузополучателей");
-            delivery.TtnInfo = table.GetValueString("Номера накладных");
-            delivery.RouteName = table.GetValueString("Направление");
-            delivery.City = table.GetValueString("Город доставки");
-            string providerName = table.GetValueString("Перевозчик");
-            if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||                                            
-                                            string.IsNullOrWhiteSpace(providerName)
-                                            ) return null;
-            Truck truck = new Truck();
-            truck.Tonnage = table.GetValueDouble("Тип ТС, тонн");
-            truck.ProviderCompany.Name = providerName;
-            delivery.Truck = truck;
-
-            string id = table.GetValueString("ID");
-            string curNumber = table.GetValueString("Номер машины");
-            string phone = table.GetValueString("Телефон водителя");
-            string fio = table.GetValueString("ФИО водителя");
-            if (string.IsNullOrWhiteSpace(id))
+            catch
             {
-                Driver driver = new Driver()
-                {
-                    Id = id,
-                    CarNumber = curNumber,
-                    Name = fio,
-                    Phone = phone
-                };
-                delivery.Driver = driver;
+                success = false; // это не дата
             }
 
-            return delivery;
+            return success;
         }
+
         /// <summary>
-        /// Создать папку для отправки провайдерам
+        /// Получение данных из писем провайдеров
         /// </summary>
-        /// <returns></returns>
-        private string GenerateFolder()
+        public void GetDataFromProviderFiles()
         {
-            string folder = Globals.ThisWorkbook.Path + "\\TransportTable";
-
-            if (!Directory.Exists(folder))
+            string path = Globals.ThisWorkbook.Path + "\\MailFromProviders\\" + DateTime.Today.ToString("dd.MM.yyyy") + '\\';
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(folder);
+                MessageBox.Show("Папка " + path + " отсутствует");
+                return;
             }
-            return folder;
+            string[] files = Directory.GetFiles(path);
+            if (files.Length == 0) return;
+
+            ProcessBar pb = ProcessBar.Init("Сканирование вложений", files.Length, 1, "Получение данных провайдера");
+            pb.Show();
+
+            int i = 0;
+            foreach (string file in files)
+            {
+                i++;
+                FileInfo fileInfo = new FileInfo(file);
+                if (pb.Cancel) break;
+                pb.Action($"Вложение {i} из {pb.Count} {fileInfo.Name} ");
+
+                if (!file.Contains(".xls")) { continue; }
+                ReadMessageFile(file);
+            }
+            pb.Close();
+        }
+
+        /// <summary>
+        /// Импорт данных из писем провайдеров
+        /// </summary>
+        /// <param name="file"></param>
+        public void ReadMessageFile(string file)
+        {
+            List<string> IdNotFound = new List<string>();
+            Workbook wb = Globals.ThisWorkbook.Application.Workbooks.Open(Filename: file);
+            Worksheet sh = wb.Sheets[1];
+            FileInfo fileInfo = new FileInfo(file);
+            try
+            {
+                if (sh.Cells[1, 1].Text != TableSheet.Cells[1, 1].Text)
+                {
+                    return;
+                }
+
+                int lastRow = sh.UsedRange.Row + sh.UsedRange.Rows.Count;
+                for (int i = 2; i <= lastRow; i++)
+                {
+                    Range dateDelivery = sh.Cells[i, ColumnDateDelivery];
+                    Range accountNumber = sh.Cells[i, ColumnAccountNumber];
+                    string id = sh.Cells[i, ColumnId].Text;
+
+                    if (string.IsNullOrEmpty(id)) continue;
+
+                    Range columnId = TableSheet.Columns[ColumnId];
+                    Range findIdRow = columnId.Find(id);
+
+                    if (findIdRow == null)
+                    {
+                        IdNotFound.Add(id);
+                        Range rowNotFound = sh.Rows[i];
+                        rowNotFound.Interior.Color = 65535;
+                        continue;
+                    }
+
+                    TableSheet.Cells[findIdRow.Row, ColumnDateDelivery].Value = dateDelivery.Value;
+                    TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Value = accountNumber.Value;
+
+                    TableSheet.Cells[findIdRow.Row, ColumnDateDelivery].Interior.Color = 5296274;
+                    TableSheet.Cells[findIdRow.Row, ColumnAccountNumber].Interior.Color = 5296274;
+                }
+
+                if (IdNotFound.Count > 0)
+                {
+                    MessageBox.Show("В файле " + fileInfo.Name + " есть строки, которые не удалось сопоставить автоматически. Они были выделены желтой заливкой в файле",
+                                    "Обратите внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch
+            {
+                throw new System.Exception("Не удалось прочитать таблицу в файле " + fileInfo.Name);
+            }
+            finally
+            {
+                Globals.ThisWorkbook.Application.DisplayAlerts = false;
+                wb.Close(true);
+                Globals.ThisWorkbook.Application.DisplayAlerts = true;
+            }
         }
     }
 }

@@ -17,14 +17,16 @@
         /// <summary>
         /// Дата отгрузки
         /// </summary>
-        public string DateDelivery {
-            get {
+        public string DateDelivery
+        {
+            get
+            {
                 if (string.IsNullOrWhiteSpace(_dateDelivery))
                 {
                     _dateDelivery = ShefflerWB.DateDelivery;
                 }
-                    return _dateDelivery;
-                        }
+                return _dateDelivery;
+            }
             set => _dateDelivery = value;
         }
         string _dateDelivery;
@@ -58,10 +60,11 @@
         private string _transportationUnit;
 
         public double Cost { get; set; }
-        public string RouteCity 
+        public string RouteCity
         {
-            get {
-                if (string.IsNullOrWhiteSpace(_route) && DeliveryPoint.RouteName !="")
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_route) && DeliveryPoint.RouteName != "")
                 {
                     _route = DeliveryPoint.RouteName;
                 }
@@ -70,20 +73,22 @@
             set => _route = value;
         }
         string _route;
-        public DeliveryPoint DeliveryPoint 
+        public DeliveryPoint DeliveryPoint
         {
-            get {
+            get
+            {
                 // if (!string.IsNullOrWhiteSpace(_deliveryPoint.RouteName) && !string.IsNullOrWhiteSpace(RouteCity))
                 ///{
 
-                    // 
-                 ///  _deliveryPoint = new DeliveryPoint(Customer.Id, RouteCity);                   
+                // 
+                ///  _deliveryPoint = new DeliveryPoint(Customer.Id, RouteCity);                   
 
                 //}
                 return _deliveryPoint;
             }
-            set => _deliveryPoint = value; 
+            set => _deliveryPoint = value;
 
-        } DeliveryPoint _deliveryPoint; 
+        }
+        DeliveryPoint _deliveryPoint;
     }
 }

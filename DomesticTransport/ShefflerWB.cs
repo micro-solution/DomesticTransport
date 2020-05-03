@@ -28,7 +28,8 @@ namespace DomesticTransport
                 }
                 return _deliverySheet;
             }
-        } private static Worksheet _deliverySheet;
+        }
+        private static Worksheet _deliverySheet;
         public static Worksheet ArchiveSheet
         {
             get
@@ -39,7 +40,8 @@ namespace DomesticTransport
                 }
                 return _archiveSheet;
             }
-        }       private static Worksheet _archiveSheet;
+        }
+        private static Worksheet _archiveSheet;
 
         public static Range DateCell
         {
@@ -47,43 +49,43 @@ namespace DomesticTransport
             {
                 if (_dateCell == null)
                 {
-                    _dateCell =  DeliverySheet.Range["DateDelivery"];
+                    _dateCell = DeliverySheet.Range["DateDelivery"];
                 }
                 return _dateCell;
             }
         }
-       static Range _dateCell;
+        static Range _dateCell;
 
 
         public static string GetTime(string city)
         {
             ListObject TimeTable = RoutesSheet.ListObjects["Timetable"];
-            string time ="";
-            int     isinternational = (from r in InternationalCityList
-                       where r == city
-                       select r).ToArray().Length;
+            string time = "";
+            int isinternational = (from r in InternationalCityList
+                                   where r == city
+                                   select r).ToArray().Length;
             if (isinternational > 0)
             {
                 city = "LTL";
             }
-          
+
             foreach (ListRow row in TimeTable.ListRows)
             {
                 string direction = row.Range[1, TimeTable.ListColumns["Направление"].Index].Text;
-                if ( direction.Contains(city) )
+                if (direction.Contains(city))
                 {
-                 time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
-                   break;
+                    time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
+                    break;
                 }
                 if (direction.Contains("Межгород"))
                 {
                     time = row.Range[1, TimeTable.ListColumns["Время подачи ТС"].Index].Text;
                 }
-            }  
+            }
             return time;
         }
 
-  
+
         public static Worksheet TotalSheet
         {
             get
@@ -274,16 +276,16 @@ namespace DomesticTransport
             }
         }
         static string _dateDelivery;
-        
-        
+
+
         /// <summary>
         /// Установить значение ячейки "дата отгрузки"
         /// </summary>
         public void SetDateCell()
         {
-             Calendar calendar = new Calendar();
+            Calendar calendar = new Calendar();
             DateCell.Value = calendar.DateDelivery;
-            calendar.ShowDialog();            
+            calendar.ShowDialog();
             if (calendar.DialogResult == DialogResult.OK)
             {
                 DateCell.Value = calendar.DateDelivery;
@@ -292,7 +294,7 @@ namespace DomesticTransport
             else if (calendar.DialogResult == DialogResult.Yes)
             {
                 DateCell.FormulaR1C1 = "=WORKDAY(TODAY(),1)";
-            }            
+            }
         }
 
         /// <summary>
@@ -354,7 +356,7 @@ namespace DomesticTransport
                                         y => y.PriorityRoute).ThenBy(y => y.PriorityPoint).ToList();
                 }
                 return _routes;
-           } 
+            }
             set => _routes = value;
         }
         static List<DeliveryPoint> _routes;
@@ -405,13 +407,13 @@ namespace DomesticTransport
             Range table = DeliveryTable.Range;
             Range col1 = table.Columns[DeliveryTable.ListColumns["№ Доставки"].Index];
             table.Sort(
-                Key1: col1, 
-                Order1: XlSortOrder.xlAscending, 
-                Header: XlYesNoGuess.xlYes, 
-                Type: Type.Missing, 
+                Key1: col1,
+                Order1: XlSortOrder.xlAscending,
+                Header: XlYesNoGuess.xlYes,
+                Type: Type.Missing,
                 OrderCustom: Type.Missing, MatchCase: Type.Missing,
-                DataOption1: XlSortDataOption.xlSortNormal, 
-                Orientation: XlSortOrientation.xlSortColumns, 
+                DataOption1: XlSortDataOption.xlSortNormal,
+                Orientation: XlSortOrientation.xlSortColumns,
                 SortMethod: XlSortMethod.xlPinYin);
         }
 
@@ -424,9 +426,9 @@ namespace DomesticTransport
             Range col1 = table.Columns[OrdersTable.ListColumns["№ Доставки"].Index];
             Range col2 = table.Columns[OrdersTable.ListColumns["Порядок выгрузки"].Index];
             table.Sort(
-                Key1: col1, 
-                Order1: XlSortOrder.xlAscending, 
-                Key2: col2, 
+                Key1: col1,
+                Order1: XlSortOrder.xlAscending,
+                Key2: col2,
                 Order2: XlSortOrder.xlAscending,
                 OrderCustom: Type.Missing, MatchCase: Type.Missing,
                 Header: XlYesNoGuess.xlYes, Orientation: XlSortOrientation.xlSortColumns);

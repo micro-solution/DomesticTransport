@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace DomesticTransport.Model
@@ -76,7 +75,7 @@ namespace DomesticTransport.Model
                     }
                 }
                 catch
-                {                   
+                {
                     throw new Exception("Не удалось найти точку.  Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
                 }
             }

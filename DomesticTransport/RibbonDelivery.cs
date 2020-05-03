@@ -3,8 +3,6 @@
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 
 namespace DomesticTransport
@@ -43,7 +41,7 @@ namespace DomesticTransport
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().CreateMasseges();
+                new Functions().SendEmailToProviderAdoutOrders();
             }
             catch (Exception ex)
             {
@@ -306,7 +304,7 @@ namespace DomesticTransport
         /// <param name="e"></param>
         private void ButtonSettingLetterCS_Click(object sender, RibbonControlEventArgs e)
         {
-            SettingLetterToCS setting = new SettingLetterToCS();
+            SettingLetters setting = new SettingLetters();
             setting.ShowDialog();
         }
 
@@ -430,7 +428,7 @@ namespace DomesticTransport
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().CreateMasseges2();
+                new Functions().SendEmailToProviderAdoutAdding();
             }
             catch (Exception ex)
             {
@@ -442,7 +440,7 @@ namespace DomesticTransport
             }
         }
 
-        private void btnDate_Click(object sender, RibbonControlEventArgs e)
+        private void BtnDate_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -497,16 +495,16 @@ namespace DomesticTransport
             {
                 ShefflerWB.ExcelOptimizateOff();
             }
-            
+
         }
 
-        private void btnSettings_Click(object sender, RibbonControlEventArgs e)
+        private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
         {
-            
+
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-               new Settings().ShowDialog() ;
+                new Settings().ShowDialog();
             }
             catch (Exception ex)
             {
@@ -518,12 +516,21 @@ namespace DomesticTransport
             }
         }
 
-        private void btnMsgTransportTable_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка отправки очета провайдеру
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSendTransportTable_Click(object sender, RibbonControlEventArgs e)
         {
+            TransportTableSending tableSending = new TransportTableSending();
+            tableSending.ShowDialog();
+            if (tableSending.DialogResult != DialogResult.OK) return;
+
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-               new TransportTable().MessageProvider();
+                new TransportTable().MessageProvider(tableSending.DateStart, tableSending.DateEnd, tableSending.Provider);
             }
             catch (Exception ex)
             {
@@ -535,25 +542,43 @@ namespace DomesticTransport
             }
         }
 
-        private void helper_Click(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Кнопка сканирования почты для импорта отчетов провайдера
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonScanTransportTable_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
-                if (File.Exists(Properties.Settings.Default.HelpPath))
+                ShefflerWB.ExcelOptimizateOn();
+                if (Properties.Settings.Default.OutlookFolders == "")
                 {
-                Process.Start(Properties.Settings.Default.HelpPath);
+                    MessageBox.Show("Задайте папки для сканирования почты", "Необходима настройка программы", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                ScanMail scanMail = new ScanMail();
+
+                if (scanMail.SaveAttachments() == 0)
+                {
+                    MessageBox.Show("Письма не обнаружены", "Сканирование почты", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    new Settings().ShowDialog();
+                    TransportTable transportTable = new TransportTable();
+                    transportTable.GetDataFromProviderFiles();
+                    transportTable.SaveAndClose();
+                    MessageBox.Show("Данные импортированы. Изменения выделены цветом.", "Импорт данных", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                    
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-           
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
     }
 }

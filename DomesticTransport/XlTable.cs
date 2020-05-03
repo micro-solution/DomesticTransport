@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Interop.Excel;
-using System;
 
 namespace DomesticTransport
 {
@@ -126,8 +125,7 @@ namespace DomesticTransport
         /// <returns></returns>
         public int GetLastRowIndex()
         {
-            int ix = 0;
-            ix = ListTable.ListRows.Count;
+            int ix = ListTable.ListRows.Count;
 
             for (int i = ix; i > 0; i--)
             {

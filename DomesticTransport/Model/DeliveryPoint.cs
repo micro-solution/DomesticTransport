@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DomesticTransport.Model
+﻿namespace DomesticTransport.Model
 {
     /// <summary>
     /// Строка таблицы Routes (Точка Доставки или Получатель)
@@ -8,8 +6,8 @@ namespace DomesticTransport.Model
     public struct DeliveryPoint
     {
         public int Id { get; set; }
-        public int PriorityRoute { get; set; } 
-        public int PriorityPoint { get; set; } 
+        public int PriorityRoute { get; set; }
+        public int PriorityPoint { get; set; }
 
         public string IdCustomer
         {
@@ -59,20 +57,20 @@ namespace DomesticTransport.Model
             set => _routeName = value.Trim();
         }
         string _routeName;
-      //  private string id;
+        //  private string id;
 
-        public DeliveryPoint(string id , string routeName) : this()
-        {               
-            this = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id   &&
-                x.RouteName ==routeName);
+        public DeliveryPoint(string id, string routeName) : this()
+        {
+            this = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id &&
+                x.RouteName == routeName);
         }
 
         private string GetRouteName()
         {
-            string routename ="";
+            string routename = "";
             string id = IdCustomer;
             DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id && (!string.IsNullOrWhiteSpace(x.RouteName)));
-            if (dp.IdCustomer != null) routename = dp.RouteName;              
+            if (dp.IdCustomer != null) routename = dp.RouteName;
             return routename;
         }
         /// <summary>
@@ -80,7 +78,7 @@ namespace DomesticTransport.Model
         /// </summary>
         public void SetRouteName()
         {
-            string routename =RouteName;
+            string routename = RouteName;
             string id = IdCustomer;
             DeliveryPoint dp = ShefflerWB.RoutesList.Find(x => x.IdCustomer == id && (!string.IsNullOrWhiteSpace(x.RouteName)));
             if (!string.IsNullOrWhiteSpace(dp.RouteName)) routename = dp.RouteName;

@@ -167,5 +167,91 @@ namespace DomesticTransport.Properties {
                 this["AllOrders"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProviderLettersCopy {
+            get {
+                return ((string)(this["ProviderLettersCopy"]));
+            }
+            set {
+                this["ProviderLettersCopy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Заявка грузоперевозки [provider] [date]")]
+        public string ProviderSubjectOrder {
+            get {
+                return ((string)(this["ProviderSubjectOrder"]));
+            }
+            set {
+                this["ProviderSubjectOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Заявка грузоперевозки [provider] [date]")]
+        public string ProviderSubjectAdd {
+            get {
+                return ((string)(this["ProviderSubjectAdd"]));
+            }
+            set {
+                this["ProviderSubjectAdd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Отчет по доставкам [provider] за период [dateStart]-[dateEnd]")]
+        public string ProviderSubjectReport {
+            get {
+                return ((string)(this["ProviderSubjectReport"]));
+            }
+            set {
+                this["ProviderSubjectReport"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(" Коллеги, добрый день! В приложении отгрузка на [date], прошу принять к работе и " +
+            "прислать до 17-00.")]
+        public string ProviderMessageOrder {
+            get {
+                return ((string)(this["ProviderMessageOrder"]));
+            }
+            set {
+                this["ProviderMessageOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(" Коллеги, добрый день! В приложении уточнения отгрузки на [date].")]
+        public string ProviderMessageAdd {
+            get {
+                return ((string)(this["ProviderMessageAdd"]));
+            }
+            set {
+                this["ProviderMessageAdd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(" Коллеги, добрый день! Отправляем отчет по доставкам за период [dateStart]-[dateE" +
+            "nd]. Прошу заполнить столбцы, выделенные желтой заливкой.")]
+        public string ProviderMessageReport {
+            get {
+                return ((string)(this["ProviderMessageReport"]));
+            }
+            set {
+                this["ProviderMessageReport"] = value;
+            }
+        }
     }
 }

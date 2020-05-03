@@ -25,7 +25,7 @@ namespace DomesticTransport.Forms
         }
 
         private void Provider_Load(object sender, EventArgs e)
-        {                  
+        {
             List<DeliveryPoint> mapDpelivery = DeliveryTarget?.MapDelivery;
             int iProviler = 0;
             tbWeight.Text = Weight.ToString();
