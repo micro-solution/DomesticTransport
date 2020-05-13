@@ -13,9 +13,6 @@ namespace DomesticTransport
 {
     class TransportTable
     {
-        public DateTime FirstDate { get; set; }
-        public DateTime SecondDate { get; set; }
-        public string Compny { get; set; }
 
         #region Столбцы таблицы
         public const int ColumnId = 1;
@@ -123,8 +120,7 @@ namespace DomesticTransport
             int iRow = NextRow;
             int iRowDeline = NextRowDeline;
             DateTime dateMax = DateTime.Today;
-            SecondDate = dateMax;
-            FirstDate = dateMax.AddDays(-(double)dateMax.DayOfWeek);
+            dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
 
             Forms.ProcessBar pb = Forms.ProcessBar.Init("Экспорт в Transport Table", deliveries.Count, 1, "Экспорт");
             if (pb == null) return;
@@ -146,8 +142,7 @@ namespace DomesticTransport
                 double palletCount = 0;
                 double priceOrder = 0;
 
-                if (DateTime.Parse(delivery.DateDelivery) > FirstDate &&
-                    DateTime.Parse(delivery.DateDelivery) < SecondDate) continue;
+                if (DateTime.Parse(delivery.DateDelivery) > dateMax) continue;
 
                 foreach (Order order in delivery.Orders)
                 {

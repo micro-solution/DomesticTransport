@@ -68,8 +68,8 @@
             this.btnDate = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -341,12 +341,12 @@
             // 
             this.ToTransportTable.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.ToTransportTable.Image = ((System.Drawing.Image)(resources.GetObject("ToTransportTable.Image")));
-            this.ToTransportTable.Label = "Перенести в архив";
+            this.ToTransportTable.Label = "Перенести в отчет";
             this.ToTransportTable.Name = "ToTransportTable";
-            this.ToTransportTable.ScreenTip = "Перенести в архив";
+            this.ToTransportTable.ScreenTip = "Перенести в отчет";
             this.ToTransportTable.ShowImage = true;
-            this.ToTransportTable.SuperTip = "Перенос данных в архив в таблицы Shipments и Transport Table. Переносятся данные " +
-    "за предыдущую неделю и старше";
+            this.ToTransportTable.SuperTip = "Перенос данных в отчетные таблицы Shipments и Transport Table. Переносятся данные" +
+    " за предыдущую неделю и старше";
             this.ToTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveToTransportTable_Click);
             // 
             // ButtonSendTransportTable
@@ -425,10 +425,6 @@
             this.ButtonSelectFoldersOutlook.SuperTip = "Выбор папок outlook, в которые сохраняются письма с заявками от провайдеров";
             this.ButtonSelectFoldersOutlook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSelectFoldersOutlook_Click);
             // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
-            // 
             // BtnAboutProgrramm
             // 
             this.BtnAboutProgrramm.Image = ((System.Drawing.Image)(resources.GetObject("BtnAboutProgrramm.Image")));
@@ -437,6 +433,10 @@
             this.BtnAboutProgrramm.ShowImage = true;
             this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
+            // 
+            // separator2
+            // 
+            this.separator2.Name = "separator2";
             // 
             // btnChangeRoute
             // 

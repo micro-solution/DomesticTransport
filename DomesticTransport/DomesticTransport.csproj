@@ -16,7 +16,7 @@
     <SolutionID>03e4c1fc-31a2-44d4-99de-0c269eaf8695</SolutionID>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>опубликовать\</PublishUrl>
+    <PublishUrl>D:\YandexDisk\Разработка\Шеффлер\Релиз\Релиз 3.0 Установочный\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
@@ -138,6 +138,12 @@
     </Compile>
     <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SelectProvider.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SelectProvider.Designer.cs">
+      <DependentUpon>SelectProvider.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MessageDate.cs">
       <SubType>Form</SubType>
@@ -305,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MessageDate.resx">
       <DependentUpon>MessageDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SelectProvider.resx">
+      <DependentUpon>SelectProvider.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

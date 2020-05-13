@@ -427,8 +427,20 @@ namespace DomesticTransport
         {
             try
             {
+                SelectProvider selectProvider = new SelectProvider();
+                selectProvider.ShowDialog();
+                if (selectProvider.DialogResult != DialogResult.OK) return;
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().SendEmailToProviderAdoutAdding();
+
+                if (selectProvider.Provider == "Отправить всем")
+                {
+                    new Functions().SendEmailToProviderAdoutAdding();
+                }
+                else
+                {
+                    new Functions().SendEmailToProviderAdoutAdding(selectProvider.Provider);
+                }
+                
             }
             catch (Exception ex)
             {
