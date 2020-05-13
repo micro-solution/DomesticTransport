@@ -551,7 +551,7 @@ namespace DomesticTransport
         /// <summary>
         /// Отправка сообщений провайдерам со списком уточнений
         /// </summary>
-        public void SendEmailToProviderAdoutAdding()
+        public void SendEmailToProviderAdoutAdding(string provider = "all")
         {
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
             if (deliveries?.Count == 0) return;
@@ -571,6 +571,7 @@ namespace DomesticTransport
                 if (pb.Cancel) break;
                 pb.Action($"Письмо {i + 1} из {pb.Count} {shippingComp[i]} ");
 
+                if (provider != "all" && сompanyShipping != provider) continue;
                 if (сompanyShipping == "" || сompanyShipping == "Деловые линии") continue;
                 List<Delivery> deliverShipping = deliveries.FindAll(x => x.Truck.ProviderCompany.Name == сompanyShipping).ToList();
 
