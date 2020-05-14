@@ -84,7 +84,7 @@ namespace DomesticTransport
         public void CreateMail(string to, string copy, string subject, string message, List<string> attachments, TypeSend typeSend = TypeSend.Display)
         {
             string signature = ReadSignature(Properties.Settings.Default.Signature);
-            message += "<br><br>" + signature;
+            message = "<font size=\"11pt\" face=\"Calibri\">" + message + "</font><br><br>" + signature;
 
             try
             {
