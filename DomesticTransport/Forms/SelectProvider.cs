@@ -51,5 +51,10 @@ namespace DomesticTransport.Forms
                 }
             }
         }
+
+        private void ButtonСancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

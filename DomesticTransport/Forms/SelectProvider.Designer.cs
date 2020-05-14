@@ -63,6 +63,7 @@
             this.ButtonСancel.TabIndex = 9;
             this.ButtonСancel.Text = "Отменить";
             this.ButtonСancel.UseVisualStyleBackColor = true;
+            this.ButtonСancel.Click += new System.EventHandler(this.ButtonСancel_Click);
             // 
             // ButtonAccept
             // 
@@ -76,8 +77,10 @@
             // 
             // SelectProvider
             // 
+            this.AcceptButton = this.ButtonAccept;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.ButtonСancel;
             this.ClientSize = new System.Drawing.Size(371, 82);
             this.Controls.Add(this.ComboboxProvider);
             this.Controls.Add(this.label3);
