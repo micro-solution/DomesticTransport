@@ -174,7 +174,7 @@ namespace DomesticTransport
                 string providerName = row.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Text;
                 string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
                 
-                if (numDelivery == deliveryNumber && providerName != "" && providerName != provider)
+                if (numDelivery == deliveryNumber && providerName != "" && providerName != provider && id !="")
                 {
                     DialogResult msg = MessageBox.Show("Обновить Id перевозчика?", "Перевозчик был изменен.", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (DialogResult.Yes == msg)
