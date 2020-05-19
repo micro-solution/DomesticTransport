@@ -130,35 +130,60 @@ namespace DomesticTransport
                 providerFrm.Weight = double.TryParse(wt, out double weight) ? weight : 0;
                 providerFrm.ProviderName = Target.Text;
                 providerFrm.DeliveryTarget = delivery;
+               //=========
                 providerFrm.ShowDialog();
                 if (providerFrm.DialogResult == DialogResult.OK)
                 {
                     Target.Value = providerFrm.ProviderName;
+                    ResetProvider(numStr, providerFrm.ProviderName);
 
+                    //На лист отгрузки 
+                    string idOrder = delivery.Orders[0].Id;
+                    Range row = null;
+                    row = new ShefflerWB().GetRowOrderTotal(idOrder);
                     if (providerFrm.ProviderName == "Деловые линии")
                     {
                         delivery.MapDelivery.ForEach(p => p.RouteName = "Сборный груз");
                         Target.Offset[0, 5].Value = "Сборный груз";
                         Target.Offset[0, 2].Value = "0";
                         Target.Offset[0, 1].Value = "0";
+                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = "0";                        
                     }
-
+                    
                     Target.Offset[0, 4].Value = providerFrm.CostDelivery;
-                    //На лист отгрузки 
-                    string idOrder = delivery.Orders[0].Id;
-                    Range row = null;
-                    row = new ShefflerWB().GetRowOrderTotal(idOrder);
                     if (row != null)
                     {
                         row.Cells[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
                         row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
-                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = "";
-                        // row.Cells[0, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Value = "Сборный груз";
-
                     }
                 }
             }
 
+        }
+
+     
+
+        /// <summary>
+        /// При смене провайдера изменить Id в отгрузках
+        /// </summary>
+        public void ResetProvider( string deliveryNumber, string provider)
+        {             
+            foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
+            {
+                string numDelivery = row.Range[1, ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Text;
+                string providerName = row.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Text;
+                string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
+                
+                if (numDelivery == deliveryNumber && providerName != "" && providerName != provider && id !="")
+                {
+                    DialogResult msg = MessageBox.Show("Обновить Id перевозчика?", "Перевозчик был изменен.", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (DialogResult.Yes == msg)
+                    {
+                        string newIdProvider= provider== "Деловые линии"? "": ShefflerWB.GetProviderId(provider);
+                        row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Value = newIdProvider;
+                    }
+                }
+            }
         }
 
         private void DateDelivery_BeforeDoubleClick(Range Target, ref bool Cancel)
