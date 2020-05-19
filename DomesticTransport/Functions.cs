@@ -658,7 +658,7 @@ namespace DomesticTransport
             }
             catch
             {
-                
+
             }
             finally
             {
@@ -667,6 +667,8 @@ namespace DomesticTransport
                 Globals.ThisWorkbook.Application.DisplayAlerts = true;
             }
         }
+
+
 
         /// <summary>
         ///  Считать заказы с листа
@@ -1467,7 +1469,7 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// 
+        /// Проверить в маршруте 
         /// </summary>
         /// <param name="orders"></param>
         /// <param name="routeId"></param>
@@ -2003,7 +2005,7 @@ namespace DomesticTransport
 
             string folder = GenerateFolder();
             string filename = $"{folder}\\{name}.xlsx";
-
+                                                              
             Workbook workbook = Globals.ThisWorkbook.Application.Workbooks.Add();
 
             Worksheet sh = workbook.Sheets[1];
@@ -2058,12 +2060,8 @@ namespace DomesticTransport
                     }
                     sh.Cells[row, 2].Value = providerName;
                     sh.Cells[row, 3].Value = delivery.Truck.Tonnage;
-
-
-
                     sh.Cells[row, 8].Value = order.DeliveryPoint.City;
                     sh.Cells[row, 9].Value = order.RouteCity;
-
                     sh.Cells[row, 10].Value = order.PointNumber;
                     sh.Cells[row, 11].Value = order.Customer.Id;
                     sh.Cells[row, 12].Value = order.TransportationUnit;
