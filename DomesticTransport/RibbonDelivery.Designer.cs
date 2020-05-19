@@ -69,7 +69,6 @@
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.ButtonSelectFoldersOutlook = this.Factory.CreateRibbonButton();
             this.BtnAboutProgrramm = this.Factory.CreateRibbonButton();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.btnChangeRoute = this.Factory.CreateRibbonSplitButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.ShefflerRibbon.SuspendLayout();
@@ -375,7 +374,6 @@
             this.settings.Items.Add(this.btnSettings);
             this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
             this.settings.Items.Add(this.BtnAboutProgrramm);
-            this.settings.Items.Add(this.separator2);
             this.settings.Label = "Настройки";
             this.settings.Name = "settings";
             // 
@@ -433,10 +431,6 @@
             this.BtnAboutProgrramm.ShowImage = true;
             this.BtnAboutProgrramm.SuperTip = "Некотороые сведения о программе";
             this.BtnAboutProgrramm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAboutProgrramm_Click);
-            // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
             // 
             // btnChangeRoute
             // 
@@ -506,7 +500,6 @@
         protected internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFillTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonScanTransportTable;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
     }
 
     partial class ThisRibbonCollection

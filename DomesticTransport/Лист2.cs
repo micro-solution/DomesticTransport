@@ -176,7 +176,8 @@ namespace DomesticTransport
                 
                 if (numDelivery == deliveryNumber && providerName != "" && providerName != provider && id !="")
                 {
-                    DialogResult msg = MessageBox.Show("Обновить Id перевозчика?", "Перевозчик был изменен.", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult msg = MessageBox.Show("По данной отгрузке уже был назначен провайдер. Также был присвоен Id перевозчика. " +
+                        "Вы хотите назначить нового провайдера? Если да, то будет сформирован новый Id перевозчика", "Перевозчик уже назнчен", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (DialogResult.Yes == msg)
                     {
                         string newIdProvider= provider== "Деловые линии"? "": ShefflerWB.GetProviderId(provider);
