@@ -11,7 +11,7 @@ using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace DomesticTransport
 {
-    class Email
+    internal class Email
     {
         /// <summary>
         /// Тип отправки письма

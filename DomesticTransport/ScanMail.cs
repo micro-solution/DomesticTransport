@@ -13,7 +13,7 @@ namespace DomesticTransport
     /// <summary>
     /// Сканирование писем
     /// </summary>
-    class ScanMail
+    internal class ScanMail
     {
         public Outlook.Application OutlookApp
         {

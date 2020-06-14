@@ -19,7 +19,8 @@ namespace DomesticTransport.Model
             get => _cost;
             set => _cost = Math.Ceiling(value);
         }
-        decimal _cost;
+
+        private decimal _cost;
         public Provider ProviderCompany
         {
             get

@@ -39,8 +39,7 @@ namespace DomesticTransport.Model
         /// </summary>
         /// <param name="rateVariants"></param>
         /// <returns></returns>
-        public static List<TruckRate> GetTruckRate(double tonnageNeed,
-                 List<DeliveryPoint> mapDelivery)
+        public static List<TruckRate> GetTruckRate(double tonnageNeed, List<DeliveryPoint> mapDelivery)
         {
             List<TruckRate> rateVariants = new List<TruckRate>();
             int ix = 0;
@@ -92,12 +91,18 @@ namespace DomesticTransport.Model
                     bool hasFirstpoint = false;
                     TruckRate variantRate = rateVariants[rateIx];
                     variantRate.TotalDeliveryCost = 0;
+                    city = GetCity(tonnageNeed, mapDelivery, variantRate.Company);
                     // считаем общую стоимость
                     for (int pointNumber = 0; pointNumber < mapDelivery.Count; pointNumber++)
                     {
                         if (mapDelivery[pointNumber].City == city && !hasFirstpoint)
                         {
-                            variantRate.TotalDeliveryCost += rateVariants[rateIx].PriceFirstPoint;
+                            TruckRate addPointRate =
+                                 ShefflerWB.RateList.Where(x => x.Company == variantRate.Company &&
+                                                    x.Tonnage == variantRate.Tonnage &&
+                                                    x.City == mapDelivery[pointNumber].City).First();
+
+                            variantRate.TotalDeliveryCost += addPointRate.PriceFirstPoint; // rateVariants[rateIx].PriceFirstPoint;
                             hasFirstpoint = true;
                         }
                         else
@@ -115,6 +120,48 @@ namespace DomesticTransport.Model
                 rateVariants = rateVariants.OrderBy(r => r.TotalDeliveryCost).ToList();
             }
             return rateVariants;
+        }
+
+        private static string GetCity(double tonnageNeed, List<DeliveryPoint> mapDelivery, string provider)
+        {
+            int ix = 0;
+            decimal MaxCost = 0;
+            string city = "";
+
+            /// подходящие варианты перевозчиков
+
+            for (int i = 0; i < mapDelivery.Count; i++)
+            {      //выбор дальней точки
+                DeliveryPoint point = mapDelivery[i];
+                if (ShefflerWB.RateList.FindAll(x => x.City == point.City).Count == 0)
+                {
+                    throw new Exception("В \"Rate\" отсутствует город " + point.City);
+                }
+                try
+                {
+                    decimal? MaxCostPoint = 0;
+                    MaxCostPoint = (from rv in ShefflerWB.RateList
+                                    where rv.City == point.City &&
+                                     rv.Company ==  provider &&
+                                            rv.Tonnage >= tonnageNeed
+                                    select rv.PriceFirstPoint
+                                )?.Max();
+                    if (MaxCostPoint != null)
+                    {
+                        if (MaxCost < MaxCostPoint)
+                        {
+                            MaxCost = (decimal)MaxCostPoint;
+                            ix = i;
+                            city = point.City;
+                        }
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Не удалось найти точку.  Проверьте наличие в Id клиента {mapDelivery[i].IdCustomer} на Листе \"Route\"");
+                }
+            }
+            return city;
         }
 
         /// <summary>

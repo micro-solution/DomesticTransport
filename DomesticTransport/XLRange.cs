@@ -7,7 +7,7 @@ namespace DomesticTransport
     /// <summary>
     ///Таблица в виде диапазона
     /// </summary>
-    class XLRange
+    internal class XLRange
     {
 
         /// <summary>
@@ -34,7 +34,8 @@ namespace DomesticTransport
             }
             set => _currentRowRange = value;
         }
-        Range _currentRowRange;
+
+        private Range _currentRowRange;
 
 
 
@@ -58,7 +59,8 @@ namespace DomesticTransport
             }
             set => _currentRowIndex = value;
         }
-        int _currentRowIndex;
+
+        private int _currentRowIndex;
 
 
 
@@ -164,7 +166,7 @@ namespace DomesticTransport
         /// 
         /// -------------------------
         /// </summary>
-        Range HeadRow
+        private Range HeadRow
         {
             get
             {

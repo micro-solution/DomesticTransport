@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace DomesticTransport
 {
-    class TransportTable
+    internal class TransportTable
     {
 
         #region Столбцы таблицы
