@@ -17,7 +17,7 @@ namespace DomesticTransport
     /// <summary>
     /// Основной алгоритм 
     /// </summary>
-    class Functions
+    internal class Functions
     {
         /// <summary>
         /// Загрузка from SAP
@@ -113,6 +113,24 @@ namespace DomesticTransport
 
             CheckAndAddNewRoute(order);
             Range range = ShefflerWB.TotalTable.DataBodyRange;
+
+            List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
+            List<Delivery> deliveriesSend = new List<Delivery>();
+            List<Order> ordersNoSend = new List<Order>();
+
+            foreach (Delivery delivery in deliveries)
+            {
+                if (string.IsNullOrEmpty(delivery.Driver.Id))
+                {
+                    delivery.Orders.ForEach(x => ordersNoSend.Add(x));
+                }
+                else
+                {
+                    deliveriesSend.Add(delivery);
+                }
+            }
+
+            /*
             List<Order> orders = GetOrdersFromTotalTable(range);
             int countDouble = 0;
             foreach (Order item in orders)
@@ -123,8 +141,21 @@ namespace DomesticTransport
                 }
             }
             if (countDouble > 0) order.Id += $"_{countDouble}";
-            orders.Add(order);
-            List<Delivery> deliveries = CompleteAuto(orders);
+            orders.Add(order);*/
+            ordersNoSend.Add(order);
+
+            deliveries = deliveriesSend;
+            deliveries.AddRange(CompleteAuto(ordersNoSend));
+            // deliveries = CompleteAuto(ordersNoSend);
+            // deliveries.AddRange(deliveriesSend);
+
+            int id = 0;
+            foreach (Delivery delivery in deliveries)
+            {
+                id++;
+                delivery.Number = id;
+            }
+
 
             ClearListObj(ShefflerWB.DeliveryTable);
             ClearListObj(ShefflerWB.OrdersTable);
@@ -165,7 +196,7 @@ namespace DomesticTransport
             // Выделенный диапазон
 
             selection = Globals.ThisWorkbook.Application.Selection;
-            orfderRng = ((Microsoft.Office.Interop.Excel.Application)(Globals.ThisWorkbook.Application)).Intersect(selection, ShefflerWB.OrdersTable.DataBodyRange);
+            orfderRng = Globals.ThisWorkbook.Application.Intersect(selection, ShefflerWB.OrdersTable.DataBodyRange);
 
             Delivery delivery = null;
             int colNumberDelivery = orfderRng.Column;
@@ -851,9 +882,6 @@ namespace DomesticTransport
         }
 
 
-
-
-        //'=============================================================================
         /// <summary>
         /// Получить инфо из выгруза  
         /// </summary>
@@ -1254,20 +1282,6 @@ namespace DomesticTransport
             row.Range[1, ordersTable.ListColumns["Направление"].Index].Value = order.RouteCity;
         }
 
-        //private void ClearTotal()
-        //{
-
-        //    int column = ShefflerWB.TotalTable.ListColumns["Дата отгрузки"].Index;
-        //    foreach (Range row in ShefflerWB.TotalTable.DataBodyRange.Rows)
-        //    {
-        //        string dataRow = row.Cells[1, column].Text;
-        //        if (string.IsNullOrWhiteSpace(dataRow))
-        //        {
-        //            ShefflerWB.TotalSheet.Cells.Rows[row.Row].Delete();
-        //        }
-        //    }
-        //}
-
         /// <summary>
         /// Заполнить таблицу отгрузки
         /// </summary>
@@ -1301,6 +1315,7 @@ namespace DomesticTransport
                 bool mainRow = true;
 
                 row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
+                row.Range[1, totalTable.ListColumns["ID перевозчика"].Index].Value = delivery.Driver?.Id;
                 row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                 row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                 row.Range[1, totalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
@@ -1311,8 +1326,7 @@ namespace DomesticTransport
                         totalTable.ListRows.Add();
                         row = totalTable.ListRows[totalTable.ListRows.Count - 1];
                     }
-                    row.Range[1, totalTable.ListColumns["Дата отгрузки"].Index].Value = ShefflerWB.DateDelivery;   //   string.IsNullOrWhiteSpace( order.DateDelivery) ?
-                    //ShefflerWB.DateDelivery :  string date = ShefflerWB.DateDelivery;
+                    row.Range[1, totalTable.ListColumns["Дата отгрузки"].Index].Value = ShefflerWB.DateDelivery;
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
 
@@ -1331,7 +1345,6 @@ namespace DomesticTransport
 
                     mainRow = false;
                 }
-
             }
         }
 
@@ -1664,7 +1677,6 @@ namespace DomesticTransport
             // Сортировка
             ShefflerWB.TotalTableSort();
             pb.Close();
-            // ShefflerWB.TotalSheet.Activate();
         }
 
         /// <summary>
@@ -2005,7 +2017,7 @@ namespace DomesticTransport
 
             string folder = GenerateFolder();
             string filename = $"{folder}\\{name}.xlsx";
-                                                              
+
             Workbook workbook = Globals.ThisWorkbook.Application.Workbooks.Add();
 
             Worksheet sh = workbook.Sheets[1];

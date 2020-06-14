@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace DomesticTransport
 {
-    class ShipmentsTable
+    internal class ShipmentsTable
     {
         #region Столбцы таблицы
         public const int ColumnDate = 1;

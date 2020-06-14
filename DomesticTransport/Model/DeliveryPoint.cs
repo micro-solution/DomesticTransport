@@ -21,42 +21,48 @@
             get => _city;
             set => _city = value.Trim();
         }
-        string _city;
+
+        private string _city;
 
         public string CityLongName
         {
             get => _cityLongName;
             set => _cityLongName = value.Trim();
         }
-        string _cityLongName;
+
+        private string _cityLongName;
 
         public string CustomerNumber
         {
             get => _customerNumber;
             set => _customerNumber = value.Trim();
         }
-        string _customerNumber;
+
+        private string _customerNumber;
 
         public string Customer
         {
             get => _customer;
             set => _customer = value.Trim();
         }
-        string _customer;
+
+        private string _customer;
 
         public string Route
         {
             get => _route;
             set => _route = value.Trim();
         }
-        string _route;
+
+        private string _route;
 
         public string RouteName
         {
             get => _routeName ?? GetRouteName();
             set => _routeName = value.Trim();
         }
-        string _routeName;
+
+        private string _routeName;
         //  private string id;
 
         public DeliveryPoint(string id, string routeName) : this()

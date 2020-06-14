@@ -17,7 +17,8 @@ namespace DomesticTransport
             }
             set => _range = value;
         }
-        Range _range;
+
+        private Range _range;
 
         public Range CurrentRowRange
         {
@@ -34,7 +35,8 @@ namespace DomesticTransport
             }
             set => _currentRowRange = value;
         }
-        Range _currentRowRange;
+
+        private Range _currentRowRange;
 
         public int CurrentRowIndex
         {
@@ -46,7 +48,8 @@ namespace DomesticTransport
             }
             set => _currentRowIndex = value;
         }
-        int _currentRowIndex;
+
+        private int _currentRowIndex;
 
 
         public int GetColumn(string header)

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace DomesticTransport
 {
-    class Archive
+    internal class Archive
     {
         /// <summary>
         /// Список id товаров в Архиве
@@ -36,7 +36,8 @@ namespace DomesticTransport
             }
             set => _ordersId = value;
         }
-        static List<string> _ordersId;
+
+        private static List<string> _ordersId;
 
         public Archive() { }
 
@@ -64,7 +65,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="deliveries"></param>
         /// <returns></returns>
-        static bool CheckArchive(List<Delivery> deliveries)
+        private static bool CheckArchive(List<Delivery> deliveries)
         {
             bool chk = false;
             OrdersId = null;
@@ -75,12 +76,13 @@ namespace DomesticTransport
             }
             return chk;
         }
+
         /// <summary>
         /// Проверить все заказы доставки
         /// </summary>
         /// <param name="delivery"></param>
         /// <returns></returns>
-        static bool CheckDelivery(Delivery delivery)
+        private static bool CheckDelivery(Delivery delivery)
         {
             bool chk = false;
             ListObject archiveTable = ShefflerWB.ArchiveTable;
@@ -95,7 +97,7 @@ namespace DomesticTransport
         /// <summary>
         /// Сортировка архива
         /// </summary>
-        static void SortArchive()
+        private static void SortArchive()
         {
             Range table = ShefflerWB.ArchiveTable.Range;
             Range col1 = table.Columns[ShefflerWB.ArchiveTable.ListColumns["Дата отгрузки"].Index];
@@ -110,7 +112,7 @@ namespace DomesticTransport
         }
 
         //Скопировать все вставить в архив
-        static void CpopyTotalPastArchive()
+        private static void CpopyTotalPastArchive()
         {
             ShefflerWB.TotalTable.DataBodyRange.Copy();
             XLTable archive = new XLTable() { ListTable = ShefflerWB.ArchiveTable };
@@ -155,7 +157,7 @@ namespace DomesticTransport
         /// <param name="date"></param>
         /// <param name="number"></param>
         /// <param name="table"></param>
-        static void DeleteChangedDelivery(Delivery delivery, XLTable table)
+        private static void DeleteChangedDelivery(Delivery delivery, XLTable table)
         {
             ListObject archive = table.ListTable;
             for (int i = archive.ListRows.Count; i > 0; i--)
@@ -176,7 +178,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="date"></param>
         /// <param name="table"></param>
-        static void DeleteBefore(DateTime date, XLTable table)
+        private static void DeleteBefore(DateTime date, XLTable table)
         {
             ListObject archive = table.ListTable;
             for (int i = archive.ListRows.Count; i > 0; i--)

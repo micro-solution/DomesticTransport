@@ -54,7 +54,8 @@ namespace DomesticTransport
                 return _dateCell;
             }
         }
-        static Range _dateCell;
+
+        private static Range _dateCell;
 
 
         public static string GetTime(string city)
@@ -275,7 +276,8 @@ namespace DomesticTransport
                 return _dateDelivery;
             }
         }
-        static string _dateDelivery;
+
+        private static string _dateDelivery;
 
 
         /// <summary>
@@ -359,7 +361,8 @@ namespace DomesticTransport
             }
             set => _routes = value;
         }
-        static List<DeliveryPoint> _routes;
+
+        private static List<DeliveryPoint> _routes;
 
         /// <summary>
         ///  Список цен международных перевозок

@@ -28,7 +28,8 @@ namespace DomesticTransport.Model
             }
             set => _timetable = value;
         }
-        string _timetable;
+
+        private string _timetable;
 
         /// <summary>
         /// Дата отгрузки
@@ -45,7 +46,8 @@ namespace DomesticTransport.Model
             }
             set => _dateDelivery = value;
         }
-        string _dateDelivery;
+
+        private string _dateDelivery;
 
         public string DateCompleteDelivery { get; set; }
         public string City { get; set; }

@@ -29,7 +29,8 @@
             }
             set => _dateDelivery = value;
         }
-        string _dateDelivery;
+
+        private string _dateDelivery;
         // Прорядковый номер доставки
         public int DeliveryNumber { get; set; }
 
@@ -72,7 +73,8 @@
             }
             set => _route = value;
         }
-        string _route;
+
+        private string _route;
         public DeliveryPoint DeliveryPoint
         {
             get
@@ -89,6 +91,7 @@
             set => _deliveryPoint = value;
 
         }
-        DeliveryPoint _deliveryPoint;
+
+        private DeliveryPoint _deliveryPoint;
     }
 }
