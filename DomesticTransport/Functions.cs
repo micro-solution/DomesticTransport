@@ -2,7 +2,7 @@
 using DomesticTransport.Model;
 
 using Microsoft.Office.Interop.Excel;
-
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -541,7 +541,8 @@ namespace DomesticTransport
         /// </summary>
         public void SendEmailToProviderAdoutOrders()
         {
-            List<Delivery> deliveries = GetDeliveriesFromTotalSheet();
+            List<Delivery> deliveries = GetDeliveriesFromTotalSheet(true);
+            
             if (deliveries?.Count == 0) return;
 
             //Уникальны провайдеры в списке доставок
@@ -579,6 +580,7 @@ namespace DomesticTransport
             pb.Close();
         }
 
+        
         /// <summary>
         /// Отправка сообщений провайдерам со списком уточнений
         /// </summary>
@@ -1916,7 +1918,7 @@ namespace DomesticTransport
         /// Собрать доставки из актуального диапазона таблицы Отгрузка
         /// </summary>
         /// <returns></returns>
-        public List<Delivery> GetDeliveriesFromTotalSheet()
+        public List<Delivery> GetDeliveriesFromTotalSheet(bool setId=false)
         {
             List<Delivery> deliveries = new List<Delivery>();
             Range total = ShefflerWB.TotalTable.DataBodyRange; //GetCurrentTotalRange();
@@ -1952,7 +1954,7 @@ namespace DomesticTransport
                     string phone = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон водителя"].Index].Text;
                     string fio = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Text;
 
-                    if (string.IsNullOrEmpty(id)) id = ShefflerWB.GetProviderId(providerName);
+                    if (setId && string.IsNullOrEmpty(id) ) id = ShefflerWB.GetProviderId(providerName);
 
                     Driver driver = new Driver()
                     {
@@ -2000,6 +2002,7 @@ namespace DomesticTransport
                     string weightNt = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Нетто вес"].Index].Text;
                     order.WeightNetto = double.TryParse(weightNt, out double wn) ? wn : 0;
                     order.RouteCity = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Text;
+                    if (string.IsNullOrWhiteSpace(delivery.RouteName))   delivery.RouteName = order.RouteCity;
                     delivery.Orders.Add(order);
                 }
             }
