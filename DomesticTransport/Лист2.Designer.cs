@@ -19,7 +19,9 @@ namespace DomesticTransport {
         
         internal Microsoft.Office.Tools.Excel.ListObject TableCarrier;
         
-        internal Microsoft.Office.Tools.Excel.ListObject TableInvoicies;
+        internal Microsoft.Office.Tools.Excel.ListObject TableOrders1;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange DateDelivery;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -119,7 +121,8 @@ namespace DomesticTransport {
         private void BeginInitialization() {
             this.BeginInit();
             this.TableCarrier.BeginInit();
-            this.TableInvoicies.BeginInit();
+            this.TableOrders1.BeginInit();
+            this.DateDelivery.BeginInit();
         }
         
         /// 
@@ -127,7 +130,8 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.TableInvoicies.EndInit();
+            this.DateDelivery.EndInit();
+            this.TableOrders1.EndInit();
             this.TableCarrier.EndInit();
             this.EndInit();
         }
@@ -138,7 +142,8 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
             this.TableCarrier = Globals.Factory.CreateListObject(null, null, "Лист2:TableCarrier", "TableCarrier", this);
-            this.TableInvoicies = Globals.Factory.CreateListObject(null, null, "Лист2:TableInvoicies", "TableInvoicies", this);
+            this.TableOrders1 = Globals.Factory.CreateListObject(null, null, "Лист2:TableOrders", "TableOrders1", this);
+            this.DateDelivery = Globals.Factory.CreateNamedRange(null, null, "DateDelivery", "DateDelivery", this);
         }
         
         /// 
@@ -146,6 +151,21 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeComponents() {
+            // 
+            // TableCarrier
+            // 
+            this.TableCarrier.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // TableOrders1
+            // 
+            this.TableOrders1.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // DateDelivery
+            // 
+            this.DateDelivery.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // Лист2
+            // 
         }
         
         /// 
@@ -160,7 +180,8 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
-            this.TableInvoicies.Dispose();
+            this.DateDelivery.Dispose();
+            this.TableOrders1.Dispose();
             this.TableCarrier.Dispose();
             base.OnShutdown();
         }

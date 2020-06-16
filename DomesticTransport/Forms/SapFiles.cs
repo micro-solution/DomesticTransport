@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using Config = DomesticTransport.Properties.Settings;
+﻿using DomesticTransport.Properties;
 
+using System;
+using System.IO;
 using System.Windows.Forms;
+
+using Config = DomesticTransport.Properties.Settings;
 
 namespace DomesticTransport
 {
+    /// <summary>
+    /// Выбор файлоы из SAP
+    /// </summary>
     public partial class SapFiles : Form
     {
         public string ExportFile
@@ -20,46 +21,53 @@ namespace DomesticTransport
                 return tbExport.Text;
             }
         }
-        public string OrderFile
-        {
-            get
-            {
-                CheckPath(tbOrders.Text);
-                return tbOrders.Text;
-            }
-        }
+        public string OrderFile => tbOrders.Text;
 
         public SapFiles()
         {
             InitializeComponent();
+            DateTime date = DateTime.Today;
+            do
+            {
+                date = date.AddDays(1);
+            } while (IsWeekEnd(date));
+
+            calendarControl.SetDate(date);
             DialogResult = DialogResult.None;
         }
 
+        private static bool IsWeekEnd(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Saturday
+                || date.DayOfWeek == DayOfWeek.Sunday;
+        }
+
+
         /// <summary>
         /// Кнопка выбрать папку
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+        private void SelectAllOrders_Click(object sender, EventArgs e)
         {
             tbOrders.Text = SelectFile();
         }
+
         /// <summary>
         /// Кнопка выбрать папку
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
+        private void SelectExport_Click(object sender, EventArgs e)
         {
             tbExport.Text = SelectFile();
         }
-
 
         /// <summary>
         ///  Выбрать файл выгрузки SAP
         /// </summary>
         /// <returns></returns>
-        public string SelectFile()
+        public static string SelectFile()
         {
             string sapUnload = "";
             string defaultPath = Config.Default.SapUnloadPath;
@@ -71,13 +79,13 @@ namespace DomesticTransport
                 InitialDirectory = string.IsNullOrWhiteSpace(defaultPath) ? Directory.GetCurrentDirectory() : defaultPath,
                 ValidateNames = true,
                 Multiselect = false,
-                Filter = "Excel|*.xls*"
+                Filter = "Excel|*.xls*|CSV|*.csv |All files (*.*)|*.*"
             })
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     sapUnload = ofd.FileName;
-                    FileInfo fi = new FileInfo(ofd.FileName); 
+                    FileInfo fi = new FileInfo(ofd.FileName);
                     if (fi.DirectoryName != Config.Default.SapUnloadPath)
                     {
                         Config.Default.SapUnloadPath = fi.DirectoryName;
@@ -88,6 +96,11 @@ namespace DomesticTransport
             return sapUnload;
         }
 
+        /// <summary>
+        /// Проверить существование файла
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private bool CheckPath(string path)
         {
             if (!File.Exists(path))
@@ -98,17 +111,53 @@ namespace DomesticTransport
             return true;
         }
 
+        /// <summary>
+        /// Кнопка ОК
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Accept_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Hide();
+            Close();
         }
 
+        /// <summary>
+        /// Кнопка отмены
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Cancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.None;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        /// <summary>
+        /// Загрузка формы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SapFiles_Load(object sender, EventArgs e)
+        {
+            string path = Settings.Default.SapUnloadPath;
+            if (Directory.Exists(path))
+            {
+                string[] files = Directory.GetFiles(path);
+                foreach (string file in files)
+                {
+                    FileInfo fi = new FileInfo(file);
+                    if (!fi.Name.Contains("~$") &&
+                       (fi.Extension.ToLower().Contains("xls") |
+                        fi.Extension.ToLower().Contains("csv")))
+                    {
+                        if (fi.Name.Contains("Export"))
+                        {
+                            tbExport.Text = file;
+                        }
+                    }
+                }
+            }
         }
     }
-
 }

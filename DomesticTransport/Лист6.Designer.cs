@@ -13,11 +13,17 @@ namespace DomesticTransport {
     
     
     /// 
-    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(5)]
+    [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(2)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
     public sealed partial class Лист6 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
         internal Microsoft.Office.Tools.Excel.ListObject PriceDelivery;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange weght;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange weghtCell;
+        
+        internal Microsoft.Office.Tools.Excel.ListObject ProviderTable;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -117,6 +123,9 @@ namespace DomesticTransport {
         private void BeginInitialization() {
             this.BeginInit();
             this.PriceDelivery.BeginInit();
+            this.weght.BeginInit();
+            this.weghtCell.BeginInit();
+            this.ProviderTable.BeginInit();
         }
         
         /// 
@@ -124,6 +133,9 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
+            this.ProviderTable.EndInit();
+            this.weghtCell.EndInit();
+            this.weght.EndInit();
             this.PriceDelivery.EndInit();
             this.EndInit();
         }
@@ -134,6 +146,9 @@ namespace DomesticTransport {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
             this.PriceDelivery = Globals.Factory.CreateListObject(null, null, "Лист6:PriceDelivery", "PriceDelivery", this);
+            this.weght = Globals.Factory.CreateNamedRange(null, null, "weght", "weght", this);
+            this.weghtCell = Globals.Factory.CreateNamedRange(null, null, "weghtCell", "weghtCell", this);
+            this.ProviderTable = Globals.Factory.CreateListObject(null, null, "Лист6:ProviderTable", "ProviderTable", this);
         }
         
         /// 
@@ -155,6 +170,9 @@ namespace DomesticTransport {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "16.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void OnShutdown() {
+            this.ProviderTable.Dispose();
+            this.weghtCell.Dispose();
+            this.weght.Dispose();
             this.PriceDelivery.Dispose();
             base.OnShutdown();
         }
