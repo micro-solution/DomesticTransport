@@ -25,6 +25,14 @@
         private void ThisWorkbook_Open()
         {
             Properties.Settings.Default.AllOrders = "";
+            Globals.Лист3.Change += SheetChange; 
+            Globals.Лист4.Change += SheetChange;
+            Globals.Лист6.Change += SheetChange;
+        }
+
+        private void SheetChange(Microsoft.Office.Interop.Excel.Range Target)
+        {
+            ShefflerWB.SetToZero();
         }
     }
 }
