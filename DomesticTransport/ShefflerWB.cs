@@ -321,20 +321,6 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Обнуляет из памяти таблицы
-        /// </summary>
-        public static void SetToZero()
-        {            
-            _routesTable = null;
-            _rateList = null;
-            _RateInternationalList = null;
-            _sityTable = null;
-            _providerTable = null;
-            _archiveTable = null;
-            _totalTable = null;
-        }
-
-        /// <summary>
         /// Получить таблицу Маршрутов 
         /// </summary>
         public static List<DeliveryPoint> RoutesList

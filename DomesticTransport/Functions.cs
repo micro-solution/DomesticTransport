@@ -1531,7 +1531,6 @@ namespace DomesticTransport
 
             var uniqueRoutesId = from route in points
                                  where route.PriorityRoute > 1
-                                 orderby route.PriorityRoute
                                  group route by route.Id into g
                                  select new { Id = g.Key, Count = g.Count() };
 
