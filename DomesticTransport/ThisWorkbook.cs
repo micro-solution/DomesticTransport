@@ -28,6 +28,8 @@
             Globals.Лист3.Change += SheetChange; 
             Globals.Лист4.Change += SheetChange;
             Globals.Лист6.Change += SheetChange;
+            Globals.Лист8.Change += SheetChange;
+            Globals.Лист9.Change += SheetChange;
         }
 
         private void SheetChange(Microsoft.Office.Interop.Excel.Range Target)
