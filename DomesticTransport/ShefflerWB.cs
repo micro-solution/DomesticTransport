@@ -279,6 +279,21 @@ namespace DomesticTransport
 
         private static string _dateDelivery;
 
+        /// <summary>
+        /// Обнуляет из памяти таблицы
+        /// </summary>
+        public static void SetToZero()
+        {
+            Globals.ThisWorkbook.Save();
+            _routesTable = null;
+            _rateList = null;
+            _RateInternationalList = null;
+            _sityTable = null;
+            _providerTable = null;
+            _archiveTable = null;
+            _totalTable = null;
+        }
+
 
         /// <summary>
         /// Установить значение ячейки "дата отгрузки"
