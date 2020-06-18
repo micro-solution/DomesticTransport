@@ -205,12 +205,12 @@ namespace DomesticTransport
             //delivery. 
             tableArchive.SetValue("№ Доставки", delivery.Number);
             tableArchive.SetValue("Время подачи ТС", delivery.Time);
-            tableArchive.SetValue("ID перевозчика", delivery.Driver.Id);
+            tableArchive.SetValue("ID перевозчика", delivery.Driver?.Id);
             tableArchive.SetValue("Дата отгрузки", delivery.DateDelivery);
             tableArchive.SetValue("Перевозчик", delivery.Truck.ProviderCompany.Name);
             tableArchive.SetValue("Тип ТС, тонн", delivery.Truck.Tonnage);
             tableArchive.SetValue("Стоимость доставки", delivery.Cost);
-            if (!string.IsNullOrEmpty(delivery.Driver.Id))
+            if (!string.IsNullOrEmpty(delivery.Driver?.Id))
             {
                 tableArchive.SetValue("ID перевозчика", delivery.Driver.Id);
                 tableArchive.SetValue("Водитель (ФИО)", delivery.Driver.Name);

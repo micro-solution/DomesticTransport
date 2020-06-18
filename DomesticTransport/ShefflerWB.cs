@@ -284,7 +284,7 @@ namespace DomesticTransport
         /// </summary>
         public static void SetToZero()
         {
-            Globals.ThisWorkbook.Save();
+           
             _routesTable = null;
             _rateList = null;
             _RateInternationalList = null;
@@ -292,6 +292,7 @@ namespace DomesticTransport
             _providerTable = null;
             _archiveTable = null;
             _totalTable = null;
+            _routes = null;
         }
 
 

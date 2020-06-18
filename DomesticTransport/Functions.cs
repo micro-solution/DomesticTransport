@@ -1484,7 +1484,7 @@ namespace DomesticTransport
         }
 
         /// <summary>
-        /// Проверить в маршруте 
+        /// Проверить наличие в маршруте всех точек из списка заказов 
         /// </summary>
         /// <param name="orders"></param>
         /// <param name="routeId"></param>
@@ -1506,14 +1506,14 @@ namespace DomesticTransport
         private List<Delivery> CompileAutoSecond(List<Delivery> firstDeliveries)
         {
             List<Delivery> deliveries = new List<Delivery>();
+            // Взять заказы по МСК и МО из доставок где меньше 3х точек 
             List<Order> orders = GetOrdersFromIncompleteDelivery(firstDeliveries);
-
+            //Из всех сформированных доставок убрать те, что содержат заказы выбранные на прошлом шаге
             for (int iDelyvery = firstDeliveries.Count - 1; iDelyvery >= 0; iDelyvery--)
             {
                 bool findOrder = false;
                 foreach (Order item in firstDeliveries[iDelyvery].Orders)
                 {
-
                     foreach (Order iorder in orders)
                     {
                         if (item.Id == iorder.Id)
@@ -1526,16 +1526,15 @@ namespace DomesticTransport
                     if (findOrder) break;
                 }
             }
-
+            //Из маршрутов в таблице выбираем с вторичным приоритетом 
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
-
             var uniqueRoutesId = from route in points
                                  where route.PriorityRoute > 1
                                  orderby route.PriorityRoute
                                  group route by route.Id into g
                                  select new { Id = g.Key, Count = g.Count() };
 
-            /// Проверряем каждый маршрут ищем по какомму можно отправить грузы
+            /// Проверряем каждый маршрут ищем по какому можно отправить грузы
             foreach (var routeId in uniqueRoutesId)
             {
                 if (!IsComplete(orders, routeId.Id)) continue;
@@ -1543,7 +1542,7 @@ namespace DomesticTransport
                 var pointsRoute = (from i in points
                                    where i.Id == routeId.Id
                                    select i).ToList();
-
+            //  
                 foreach (DeliveryPoint point in pointsRoute)
                 {
                     for (int iOrder = orders.Count - 1; iOrder >= 0; iOrder--)
