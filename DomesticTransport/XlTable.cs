@@ -100,6 +100,7 @@ namespace DomesticTransport
         public void SetValue(string header, string Value)
         {
             int column = GetColumn(header);
+            if (!string.IsNullOrEmpty(Value))
             CurrentRowRange.Cells[1, column].Value = Value;
 
         }
