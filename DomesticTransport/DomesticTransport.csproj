@@ -16,10 +16,10 @@
     <SolutionID>03e4c1fc-31a2-44d4-99de-0c269eaf8695</SolutionID>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>D:\YandexDisk\Разработка\Шеффлер\Релиз\Релиз 3.4\</PublishUrl>
+    <PublishUrl>D:\YandexDisk\Разработка\Шеффлер\Релиз\Релиз 3.5\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>3.4.0.2</ApplicationVersion>
+    <ApplicationVersion>3.5.0.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -474,10 +474,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>DomesticTransport_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>FF4DB78B086E45B22173CFA468FFC3A3ED873782</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icons8-truck-96 %283%29.ico</ApplicationIcon>
