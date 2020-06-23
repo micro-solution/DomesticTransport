@@ -477,7 +477,7 @@
     <ManifestKeyFile>DomesticTransport_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>7E72940E2624AEBA4E4F29E90D2B5C3886842131</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>FF4DB78B086E45B22173CFA468FFC3A3ED873782</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icons8-truck-96 %283%29.ico</ApplicationIcon>
