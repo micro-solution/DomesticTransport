@@ -290,30 +290,19 @@ namespace DomesticTransport
         {
             List<Order> orders = new List<Order>();
             List<Delivery> deliveries = new List<Delivery>();
-
+            Delivery delivery = new Delivery();
             foreach (ListRow row in table.ListTable.ListRows)
             {
                 table.CurrentRowRange = row.Range;
-                Order order = GetOrdersFromTotalRow(table);
-                if (order != null) orders.Add(order);
-                Delivery delivery = GetDeliveryFromTotalRow(table);
-                if (delivery != null) deliveries.Add(delivery);
-            }
-            SortingOrders(orders, deliveries);
-            return deliveries;
-        }
-
-        private static List<Delivery> SortingOrders(List<Order> orders, List<Delivery> deliveries)
-        {
-            foreach (Delivery delivery in deliveries)
-            {
-                List<Order> ordersDelivery = orders.FindAll(a =>
-                                             a.DeliveryNumber == delivery.Number &&
-                                             a.DateDelivery == delivery.DateDelivery);
-                if (ordersDelivery != null)
+                Delivery deliveryRow = GetDeliveryFromTotalRow(table);
+                
+                if (deliveryRow != null) 
                 {
-                    delivery.Orders = ordersDelivery;
+                    delivery = deliveryRow;
+                    deliveries.Add(delivery);
                 }
+                Order order = GetOrdersFromTotalRow(table);
+                if (order != null) delivery.Orders.Add(order);
             }
             return deliveries;
         }
