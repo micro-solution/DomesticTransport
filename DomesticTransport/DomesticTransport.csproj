@@ -16,10 +16,10 @@
     <SolutionID>03e4c1fc-31a2-44d4-99de-0c269eaf8695</SolutionID>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>D:\YandexDisk\Разработка\Шеффлер\Релиз\Релиз 3.5\</PublishUrl>
+    <PublishUrl>D:\YandexDisk\Разработка\Шеффлер\Релиз\Релиз 3.6\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>3.5.0.1</ApplicationVersion>
+    <ApplicationVersion>3.6.0.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
