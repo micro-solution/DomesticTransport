@@ -216,6 +216,12 @@ namespace DomesticTransport
                 tableArchive.SetValue("Водитель (ФИО)", delivery.Driver.Name);
                 tableArchive.SetValue("Телефон водителя", delivery.Driver.Phone);
                 tableArchive.SetValue("Номер,марка", delivery.Driver.CarNumber);
+
+                tableArchive.SetValue("Наименование организации перевозчика", delivery.Driver.Organization);
+                tableArchive.SetValue("Юр. Адрес с индексом", delivery.Driver.Address);
+                tableArchive.SetValue("ИНН перевозчика", delivery.Driver.INN);
+                tableArchive.SetValue("Телефон перевозчика", delivery.Driver.PhoneOrganization);
+                tableArchive.SetValue("Тип владения", delivery.Driver.TypeOwn);
             }
         }
 
@@ -360,6 +366,14 @@ namespace DomesticTransport
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");
+
+            string organization = xlTable.GetValueString("Наименование организации перевозчика");
+            string address = xlTable.GetValueString("Юр. Адрес с индексом");
+            string inn = xlTable.GetValueString("ИНН перевозчика");
+            string phorneOrg = xlTable.GetValueString("Телефон перевозчика");
+            string ownType = xlTable.GetValueString("Тип владения");
+
+
             if (!string.IsNullOrWhiteSpace(id))
             {
                 Driver driver = new Driver()
@@ -367,7 +381,13 @@ namespace DomesticTransport
                     Id = id,
                     CarNumber = curNumber,
                     Name = fio,
-                    Phone = phone
+                    Phone = phone,
+                    Organization = organization,
+                    Address = address,
+                    INN = inn,
+                    PhoneOrganization = phorneOrg,
+                    TypeOwn = ownType
+
                 };
                 delivery.Driver = driver;
             }

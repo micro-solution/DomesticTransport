@@ -17,22 +17,27 @@ namespace DomesticTransport
         public const int ColumnId = 3;
         public const int ColumnProvider = 4;
         public const int ColumnCarType = 5;
-        public const int ColumnDriver = 6;
-        public const int ColumnCarNumber = 7;
-        public const int ColumnDriverPhone = 8;
-        public const int ColumnDeliveryNumber = 9;
-        public const int ColumnSity = 10;
-        public const int ColumnRoute = 11;
-        public const int ColumnPoint = 12;
-        public const int ColumnClientId = 13;
-        public const int ColumnTTN = 14;
-        public const int ColumnOrderNumber = 15;
-        public const int ColumnClient = 16;
-        public const int ColumnWeightBrutto = 17;
-        public const int ColumnWeightNetto = 18;
-        public const int ColumnPalleteCount = 19;
-        public const int ColumnPriceOrder = 20;
-        public const int ColumnPriceDelivery = 21;
+        public const int ColumnDriverOrgan = 6;
+        public const int ColumnDriverAddress = 7;
+        public const int ColumnDriverINN = 8;
+        public const int ColumnDriverPhoneOrgan = 9;
+        public const int ColumnDriverOwnType = 10;
+        public const int ColumnDriver = 11;
+        public const int ColumnCarNumber = 12;
+        public const int ColumnDriverPhone = 13;
+        public const int ColumnDeliveryNumber = 14;
+        public const int ColumnSity = 15;
+        public const int ColumnRoute = 16;
+        public const int ColumnPoint = 17;
+        public const int ColumnClientId = 18;
+        public const int ColumnTTN = 19;
+        public const int ColumnOrderNumber = 20;
+        public const int ColumnClient = 21;
+        public const int ColumnWeightBrutto = 22;
+        public const int ColumnWeightNetto = 23;
+        public const int ColumnPalleteCount = 24;
+        public const int ColumnPriceOrder = 25;
+        public const int ColumnPriceDelivery = 26;
         #endregion
 
         /// <summary>
@@ -129,6 +134,15 @@ namespace DomesticTransport
                     TableSheet.Cells[iRow, ColumnProvider].Value = delivery.Truck.ProviderCompany.Name;
                     TableSheet.Cells[iRow, ColumnCarType].Value = delivery.Truck.Tonnage;
                     TableSheet.Cells[iRow, ColumnDriver].Value = delivery.Driver.Name;
+
+                    TableSheet.Cells[iRow, ColumnDriverOrgan].Value = delivery.Driver.Organization;
+                    TableSheet.Cells[iRow, ColumnDriverAddress].Value = delivery.Driver.Address;
+                    TableSheet.Cells[iRow, ColumnDriverINN].Value = delivery.Driver.INN;
+                    TableSheet.Cells[iRow, ColumnDriverPhoneOrgan].Value = delivery.Driver.PhoneOrganization;
+                    TableSheet.Cells[iRow, ColumnDriverOwnType].Value = delivery.Driver.TypeOwn;
+
+
+
                     TableSheet.Cells[iRow, ColumnDriverPhone].Value = delivery.Driver.Phone;
                     TableSheet.Cells[iRow, ColumnCarNumber].Value = delivery.Driver.CarNumber;
 

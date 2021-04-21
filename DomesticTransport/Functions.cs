@@ -679,12 +679,23 @@ namespace DomesticTransport
                     string NumberProvider = row.Range[1, list.ListColumns["Номер, марка"].Index].Text;
                     string PhoneProvider = row.Range[1, list.ListColumns["Телефон водителя"].Index].Text;
 
+                    string organ = row.Range[1, list.ListColumns["Наименование организации перевозчика"].Index].Text;
+                    string address = row.Range[1, list.ListColumns["Юр. Адрес с индексом"].Index].Text;
+                    string inn = row.Range[1, list.ListColumns["ИНН перевозчика"].Index].Text;
+                    string phoneOrgan = row.Range[1, list.ListColumns["Телефон перевозчика"].Index].Text;
+                    string typeOwn = row.Range[1, list.ListColumns["Тип владения"].Index].Text;
+
                     Driver driver = new Driver()
                     {
                         Id = idProvider,
                         Name = NameProvider,
                         Phone = PhoneProvider,
-                        CarNumber = NumberProvider
+                        CarNumber = NumberProvider,
+                        Organization = organ,
+                        Address = address,
+                        INN=inn,
+                        PhoneOrganization = phoneOrgan,
+                        TypeOwn = typeOwn
                     };
                     WriteProviderInfo(driver);
                 }
@@ -1160,6 +1171,12 @@ namespace DomesticTransport
                     row.Range[1, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Value = carrier.Name;
                     row.Range[1, ShefflerWB.TotalTable.ListColumns["Телефон водителя"].Index].Value = carrier.Phone;
                     row.Range[1, ShefflerWB.TotalTable.ListColumns["Номер,марка"].Index].Value = carrier.CarNumber;
+
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Наименование организации перевозчика"].Index].Value = carrier.Organization;
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Юр. Адрес с индексом"].Index].Value = carrier.Address;
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["ИНН перевозчика"].Index].Value = carrier.INN;
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Телефон перевозчика"].Index].Value = carrier.PhoneOrganization;
+                    row.Range[1, ShefflerWB.TotalTable.ListColumns["Тип владения"].Index].Value = carrier.TypeOwn;
                 }
             }
         }
@@ -1954,6 +1971,12 @@ namespace DomesticTransport
                     string phone = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон водителя"].Index].Text;
                     string fio = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Text;
 
+                    string organiz = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Наименование организации перевозчика"].Index].Text;
+                    string address = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Юр. Адрес с индексом"].Index].Text;
+                    string inn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["ИНН перевозчика"].Index].Text;
+                    string phoneorg = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон перевозчика"].Index].Text;
+                    string typeOwn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип владения"].Index].Text;
+
                     if (setId && string.IsNullOrEmpty(id) ) id = ShefflerWB.GetProviderId(providerName);
 
                     Driver driver = new Driver()
@@ -1961,7 +1984,12 @@ namespace DomesticTransport
                         Id = id,
                         CarNumber = curNumber,
                         Name = fio,
-                        Phone = phone
+                        Phone = phone,
+                        Organization = organiz,
+                        Address = address,
+                        INN = inn,
+                        PhoneOrganization = phoneorg,
+                        TypeOwn = typeOwn
 
                     };
                     delivery.Driver = driver;
@@ -2028,6 +2056,11 @@ namespace DomesticTransport
                                 "ID перевозчика",
                                 "Перевозчик",
                                 "Тип ТС, тонн" ,
+                                "Наименование организации перевозчика" ,
+                                "Юр. Адрес с индексом" ,
+                                "ИНН перевозчика" ,
+                                "Телефон перевозчика" ,
+                                "Тип владения" ,
                                 "Водитель (ФИО)",
                                 "Номер, марка",
                                 "Телефон водителя",
@@ -2055,11 +2088,18 @@ namespace DomesticTransport
                 string providerName = delivery.Truck.ProviderCompany.Name;
                 if (string.IsNullOrWhiteSpace(providerName)) continue;
                 sh.Cells[row, 1].Value = delivery.Driver.Id;
-                sh.Cells[row, 7].Value = delivery.Time;
-                sh.Cells[row, 19].Value = delivery.Cost;
-                sh.Cells[row, 4].Value = delivery.Driver.Name;
-                sh.Cells[row, 5].Value = delivery.Driver.CarNumber;
-                sh.Cells[row, 6].Value = delivery.Driver.Phone;
+                
+                sh.Cells[row, 4].Value = delivery.Driver.Organization;
+                sh.Cells[row, 5].Value = delivery.Driver.Address;
+                sh.Cells[row, 6].Value = delivery.Driver.INN;
+                sh.Cells[row, 7].Value = delivery.Driver.PhoneOrganization;
+                sh.Cells[row, 8].Value = delivery.Driver.TypeOwn;
+
+                sh.Cells[row, 9].Value = delivery.Driver.Name;
+                sh.Cells[row, 10].Value = delivery.Driver.CarNumber;
+                sh.Cells[row, 11].Value = delivery.Driver.Phone;
+                sh.Cells[row, 12].Value = delivery.Time;
+                sh.Cells[row, 24].Value = delivery.Cost;
 
                 for (int i = 0; i < delivery.Orders.Count; i++)
                 {
@@ -2075,17 +2115,17 @@ namespace DomesticTransport
                     }
                     sh.Cells[row, 2].Value = providerName;
                     sh.Cells[row, 3].Value = delivery.Truck.Tonnage;
-                    sh.Cells[row, 8].Value = order.DeliveryPoint.City;
-                    sh.Cells[row, 9].Value = order.RouteCity;
-                    sh.Cells[row, 10].Value = order.PointNumber;
-                    sh.Cells[row, 11].Value = order.Customer.Id;
-                    sh.Cells[row, 12].Value = order.TransportationUnit;
-                    sh.Cells[row, 13].Value = order.Id;
-                    sh.Cells[row, 14].Value = order.Customer.Name ?? "";
-                    sh.Cells[row, 15].Value = order.WeightBrutto;
-                    sh.Cells[row, 16].Value = order.WeightNetto;
-                    sh.Cells[row, 17].Value = order.PalletsCount;
-                    sh.Cells[row, 18].Value = order.Cost;
+                    sh.Cells[row, 13].Value = order.DeliveryPoint.City;
+                    sh.Cells[row, 14].Value = order.RouteCity;
+                    sh.Cells[row, 15].Value = order.PointNumber;
+                    sh.Cells[row, 16].Value = order.Customer.Id;
+                    sh.Cells[row, 17].Value = order.TransportationUnit;
+                    sh.Cells[row, 18].Value = order.Id;
+                    sh.Cells[row, 19].Value = order.Customer.Name ?? "";
+                    sh.Cells[row, 20].Value = order.WeightBrutto;
+                    sh.Cells[row, 21].Value = order.WeightNetto;
+                    sh.Cells[row, 22].Value = order.PalletsCount;
+                    sh.Cells[row, 23].Value = order.Cost;
                     row++;
                 }
             }
