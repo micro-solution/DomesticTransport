@@ -2095,6 +2095,9 @@ namespace DomesticTransport
                 sh.Cells[row, 7].Value = delivery.Driver.PhoneOrganization;
                 sh.Cells[row, 8].Value = delivery.Driver.TypeOwn;
 
+                Range range = sh.Cells[row, 8];
+                range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, XlFormatConditionOperator.xlBetween, "собственность,аренда,лизинг");
+
                 sh.Cells[row, 9].Value = delivery.Driver.Name;
                 sh.Cells[row, 10].Value = delivery.Driver.CarNumber;
                 sh.Cells[row, 11].Value = delivery.Driver.Phone;
