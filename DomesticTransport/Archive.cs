@@ -205,14 +205,14 @@ namespace DomesticTransport
             //delivery. 
             tableArchive.SetValue("№ Доставки", delivery.Number);
             tableArchive.SetValue("Время подачи ТС", delivery.Time);
-            tableArchive.SetValue("ID перевозчика", delivery.Driver?.Id);
+            tableArchive.SetValue("ID экспедитора", delivery.Driver?.Id);
             tableArchive.SetValue("Дата отгрузки", delivery.DateDelivery);
-            tableArchive.SetValue("Перевозчик", delivery.Truck.ProviderCompany.Name);
+            tableArchive.SetValue("Экспедитор", delivery.Truck.ProviderCompany.Name);
             tableArchive.SetValue("Тип ТС, тонн", delivery.Truck.Tonnage);
             tableArchive.SetValue("Стоимость доставки", delivery.Cost);
             if (!string.IsNullOrEmpty(delivery.Driver?.Id))
             {
-                tableArchive.SetValue("ID перевозчика", delivery.Driver.Id);
+                tableArchive.SetValue("ID экспедитора", delivery.Driver.Id);
                 tableArchive.SetValue("Водитель (ФИО)", delivery.Driver.Name);
                 tableArchive.SetValue("Телефон водителя", delivery.Driver.Phone);
                 tableArchive.SetValue("Номер,марка", delivery.Driver.CarNumber);
@@ -350,7 +350,7 @@ namespace DomesticTransport
                 Time = xlTable.GetValueString("Время подачи ТС"),
                 Cost = xlTable.GetValueDecimal("Стоимость доставки")
             };
-            string providerName = xlTable.GetValueString("Перевозчик");
+            string providerName = xlTable.GetValueString("Экспедитор");
             if (string.IsNullOrWhiteSpace(delivery.DateDelivery) ||
                                             delivery.Number == 0 ||
                                             string.IsNullOrWhiteSpace(providerName)
@@ -362,7 +362,7 @@ namespace DomesticTransport
             truck.ProviderCompany.Name = providerName;
             delivery.Truck = truck;
 
-            string id = xlTable.GetValueString("ID перевозчика");
+            string id = xlTable.GetValueString("ID экспедитора");
             string curNumber = xlTable.GetValueString("Номер,марка");
             string phone = xlTable.GetValueString("Телефон водителя");
             string fio = xlTable.GetValueString("Водитель (ФИО)");

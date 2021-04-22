@@ -669,11 +669,11 @@ namespace DomesticTransport
             Worksheet sh = wb.Sheets[1];
             try
             {
-                ListObject list = sh.ListObjects["Таблица1"];
+                ListObject list = sh.ListObjects[1];
                 for (int i = 1; i <= list.ListRows.Count; i++)
                 {
                     ListRow row = list.ListRows[i];
-                    string idProvider = row.Range[1, list.ListColumns["ID перевозчика"].Index].Text;
+                    string idProvider = row.Range[1, list.ListColumns["ID экспедитора"].Index].Text;
                     if (string.IsNullOrWhiteSpace(idProvider)) continue;
                     string NameProvider = row.Range[1, list.ListColumns["Водитель (ФИО)"].Index].Text;
                     string NumberProvider = row.Range[1, list.ListColumns["Номер, марка"].Index].Text;
@@ -1165,7 +1165,7 @@ namespace DomesticTransport
         {
             foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
             {
-                string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
+                string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID экспедитора"].Index].Text;
                 if (id == carrier.Id)
                 {
                     row.Range[1, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Value = carrier.Name;
@@ -1334,8 +1334,8 @@ namespace DomesticTransport
                 bool mainRow = true;
 
                 row.Range[1, totalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
-                row.Range[1, totalTable.ListColumns["ID перевозчика"].Index].Value = delivery.Driver?.Id;
-                row.Range[1, totalTable.ListColumns["Перевозчик"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
+                row.Range[1, totalTable.ListColumns["ID экспедитора"].Index].Value = delivery.Driver?.Id;
+                row.Range[1, totalTable.ListColumns["Экспедитор"].Index].Value = delivery.Truck?.ProviderCompany?.Name;
                 row.Range[1, totalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                 row.Range[1, totalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
                 foreach (Order order in delivery.Orders)
@@ -1678,7 +1678,7 @@ namespace DomesticTransport
                     {
                         //Если Заказ 1й в списке доставки выводим инфо о заказе
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = delivery.Cost;
-                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value =
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Экспедитор"].Index].Value =
                                                                                 delivery.Truck?.ProviderCompany?.Name ?? "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = delivery.Truck?.Tonnage ?? 0;
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Value = delivery.Time;
@@ -1686,7 +1686,7 @@ namespace DomesticTransport
                     else
                     {
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = "";
-                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = "";
+                        totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Экспедитор"].Index].Value = "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Value = "";
                         totalRow.Range[1, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Value = "";
 
@@ -1958,7 +1958,7 @@ namespace DomesticTransport
                             ProviderCompany = new Provider()
                         }
                     };
-                    string providerName = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Text;
+                    string providerName = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Экспедитор"].Index].Text;
                     delivery.Truck.ProviderCompany.Name = providerName;
                     delivery.Time = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Время подачи ТС"].Index].Text;
                     string tonn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип ТС, тонн"].Index].Text;
@@ -1966,7 +1966,7 @@ namespace DomesticTransport
                     string costDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value.ToString();
                     delivery.Cost = decimal.TryParse(costDelivery, out decimal cd) ? cd : 0;
 
-                    string id = total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
+                    string id = total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID экспедитора"].Index].Text;
                     string curNumber = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Номер,марка"].Index].Text;
                     string phone = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон водителя"].Index].Text;
                     string fio = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Водитель (ФИО)"].Index].Text;
@@ -1993,7 +1993,7 @@ namespace DomesticTransport
 
                     };
                     delivery.Driver = driver;
-                    total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Value = driver.Id;
+                    total.Cells[i, ShefflerWB.TotalTable.ListColumns["ID экспедитора"].Index].Value = driver.Id;
 
                     deliveries.Add(delivery);
                 }
@@ -2053,8 +2053,8 @@ namespace DomesticTransport
 
             Worksheet sh = workbook.Sheets[1];
             string[] headers = {
-                                "ID перевозчика",
-                                "Перевозчик",
+                                "ID экспедитора",
+                                "Экспедитор",
                                 "Тип ТС, тонн" ,
                                 "Наименование организации перевозчика" ,
                                 "Юр. Адрес с индексом" ,

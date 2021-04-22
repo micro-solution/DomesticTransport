@@ -153,7 +153,7 @@ namespace DomesticTransport
                     Target.Offset[0, 4].Value = providerFrm.CostDelivery;
                     if (row != null)
                     {
-                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Value = providerFrm.ProviderName;
+                        row.Cells[1, ShefflerWB.TotalTable.ListColumns["Экспедитор"].Index].Value = providerFrm.ProviderName;
                         row.Cells[1, ShefflerWB.TotalTable.ListColumns["Стоимость доставки"].Index].Value = providerFrm.CostDelivery;
                     }
                 }
@@ -171,17 +171,17 @@ namespace DomesticTransport
             foreach (ListRow row in ShefflerWB.TotalTable.ListRows)
             {
                 string numDelivery = row.Range[1, ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Text;
-                string providerName = row.Range[1, ShefflerWB.TotalTable.ListColumns["Перевозчик"].Index].Text;
-                string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Text;
+                string providerName = row.Range[1, ShefflerWB.TotalTable.ListColumns["Экспедитор"].Index].Text;
+                string id = row.Range[1, ShefflerWB.TotalTable.ListColumns["ID экспедитора"].Index].Text;
 
                 if (numDelivery == deliveryNumber && providerName != "" && providerName != provider && id != "")
                 {
-                    DialogResult msg = MessageBox.Show("По данной отгрузке уже был назначен провайдер. Также был присвоен Id перевозчика. " +
-                        "Вы хотите назначить нового провайдера? Если да, то будет сформирован новый Id перевозчика", "Перевозчик уже назнчен", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult msg = MessageBox.Show("По данной отгрузке уже был назначен провайдер. Также был присвоен ID экспедитора. " +
+                        "Вы хотите назначить нового провайдера? Если да, то будет сформирован новый ID экспедитора", "Экспедитор уже назнчен", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (DialogResult.Yes == msg)
                     {
                         string newIdProvider = provider == "Деловые линии" ? "" : ShefflerWB.GetProviderId(provider);
-                        row.Range[1, ShefflerWB.TotalTable.ListColumns["ID перевозчика"].Index].Value = newIdProvider;
+                        row.Range[1, ShefflerWB.TotalTable.ListColumns["ID экспедитора"].Index].Value = newIdProvider;
                     }
                 }
             }
