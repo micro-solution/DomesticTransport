@@ -643,7 +643,7 @@ namespace DomesticTransport
             if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
-            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[22].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
             Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
 
