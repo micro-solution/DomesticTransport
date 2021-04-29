@@ -192,6 +192,7 @@ namespace DomesticTransport
                     row.Range.EntireRow.Delete();
                 //}
             }
+            table.ListTable.ListRows.Add();
         }
 
 

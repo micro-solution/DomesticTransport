@@ -114,7 +114,7 @@ namespace DomesticTransport
             //DateTime dateMax = DateTime.Today;
             //dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
 
-            Forms.ProcessBar pb = Forms.ProcessBar.Init("Экспорт в Transport Table", deliveries.Count, 1, "Экспорт");
+            Forms.ProcessBar pb = Forms.ProcessBar.Init("Экспорт в Shipments", deliveries.Count, 1, "Экспорт");
             if (pb == null) return;
             pb.Show();
             int i = 0;
