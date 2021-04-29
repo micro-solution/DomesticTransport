@@ -178,19 +178,19 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="date"></param>
         /// <param name="table"></param>
-        private static void DeleteBefore(DateTime date, XLTable table)
+        private static void DeleteBefore(XLTable table)
         {
             ListObject archive = table.ListTable;
             for (int i = archive.ListRows.Count; i > 0; i--)
             {
                 ListRow row = archive.ListRows[i];
                 table.CurrentRowRange = row.Range;
-                string currentOrderDate = table.GetValueString("Дата отгрузки");
-                DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
-                if (orderDate <= date)
-                {
+                //string currentOrderDate = table.GetValueString("Дата отгрузки");
+                //DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
+                //if (orderDate <= date)
+                //{
                     row.Range.EntireRow.Delete();
-                }
+                //}
             }
         }
 
@@ -268,9 +268,9 @@ namespace DomesticTransport
             shipmentsTable.ImportDeliveryes(deliveries);
             shipmentsTable.SaveAndClose();
 
-            DateTime dateMax = DateTime.Today;
-            dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
-            DeleteBefore(dateMax, tableArchive);
+           // DateTime dateMax = DateTime.Today;
+            //dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
+            DeleteBefore(tableArchive);
 
             System.Windows.Forms.MessageBox.Show("Архив перенесен", "Операция выполнена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 

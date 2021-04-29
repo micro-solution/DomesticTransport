@@ -111,8 +111,8 @@ namespace DomesticTransport
         public void ImportDeliveryes(List<Delivery> deliveries)
         {
             int iRow = NextRow;
-            DateTime dateMax = DateTime.Today;
-            dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
+            //DateTime dateMax = DateTime.Today;
+            //dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
 
             Forms.ProcessBar pb = Forms.ProcessBar.Init("Экспорт в Transport Table", deliveries.Count, 1, "Экспорт");
             if (pb == null) return;
@@ -125,7 +125,7 @@ namespace DomesticTransport
                 if (pb.Cancel) break;
                 pb.Action($"Доставка {i} из {pb.Count}");
 
-                if (DateTime.Parse(delivery.DateDelivery) > dateMax) continue;
+                //if (DateTime.Parse(delivery.DateDelivery) > dateMax) continue;
                 TableSheet.Cells[iRow, ColumnPriceDelivery].Value = delivery.Cost;
 
                 foreach (Order order in delivery.Orders)
