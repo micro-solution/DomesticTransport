@@ -592,5 +592,27 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
+
+        private void ButtonTask1_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().CreateLetterToCSWithOutlegalEntitiesInformation();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+        private void RibbonDelivery_Load(object sender, RibbonUIEventArgs e)
+        {
+
+        }
     }
 }

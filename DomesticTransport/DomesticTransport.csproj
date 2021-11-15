@@ -376,6 +376,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="DomesticTransport.xlsx" />
+    <None Include="DomesticTransport_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -470,11 +471,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>DomesticTransport_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3859940EBAEEEA8982A3D90F7FD7CB2FA2FE3AC4</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>

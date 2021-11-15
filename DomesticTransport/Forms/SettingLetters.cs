@@ -13,6 +13,13 @@ namespace DomesticTransport.Forms
             textBoxCSCopy.Text = Properties.Settings.Default.SettingCSLetterCopy;
             textBoxCSSubject.Text = Properties.Settings.Default.SettingCSLetterSubject;
             textBoxCSMessage.Text = Properties.Settings.Default.SettingCSLetterMessage;
+            
+            #region Kirirll 15.11.21
+            textBoxCSLETo.Text = Properties.Settings.Default.SettingCSLELetterTo;
+            textBoxCSLECopy.Text = Properties.Settings.Default.SettingCSLELetterCopy;
+            textBoxCSLESubject.Text = Properties.Settings.Default.SettingCSLELetterSubject;
+            textBoxCSLEMessage.Text = Properties.Settings.Default.SettingCSLELetterMessage;
+            #endregion
 
             textBoxProviderCopy.Text = Properties.Settings.Default.ProviderLettersCopy;
             textBoxProviderOrderSubject.Text = Properties.Settings.Default.ProviderSubjectOrder;
@@ -47,6 +54,11 @@ namespace DomesticTransport.Forms
             Properties.Settings.Default.SettingCSLetterCopy = textBoxCSCopy.Text;
             Properties.Settings.Default.SettingCSLetterSubject = textBoxCSSubject.Text;
             Properties.Settings.Default.SettingCSLetterMessage = textBoxCSMessage.Text;
+
+            Properties.Settings.Default.SettingCSLELetterTo = textBoxCSLETo.Text;
+            Properties.Settings.Default.SettingCSLELetterCopy = textBoxCSLECopy.Text;
+            Properties.Settings.Default.SettingCSLELetterSubject = textBoxCSLESubject.Text;
+            Properties.Settings.Default.SettingCSLELetterMessage = textBoxCSLEMessage.Text;
 
             Properties.Settings.Default.ProviderLettersCopy = textBoxProviderCopy.Text;
             Properties.Settings.Default.ProviderSubjectOrder = textBoxProviderOrderSubject.Text;

@@ -57,6 +57,7 @@
             this.MenuSendTotal = this.Factory.CreateRibbonMenu();
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.ButtonSendToCS = this.Factory.CreateRibbonButton();
+            this.ButtonTask1 = this.Factory.CreateRibbonButton();
             this.ButtonToArchive = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.ToTransportTable = this.Factory.CreateRibbonButton();
@@ -293,6 +294,7 @@
             this.MenuSendTotal.Image = ((System.Drawing.Image)(resources.GetObject("MenuSendTotal.Image")));
             this.MenuSendTotal.Items.Add(this.ButtonTotalToProviders);
             this.MenuSendTotal.Items.Add(this.ButtonSendToCS);
+            this.MenuSendTotal.Items.Add(this.ButtonTask1);
             this.MenuSendTotal.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.MenuSendTotal.Label = "Отправка Отгрузок";
             this.MenuSendTotal.Name = "MenuSendTotal";
@@ -317,6 +319,14 @@
             this.ButtonSendToCS.ShowImage = true;
             this.ButtonSendToCS.SuperTip = "Подготовка письма с данными об отгрузках для CS и WH";
             this.ButtonSendToCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendToCS_Click);
+            // 
+            // ButtonTask1
+            // 
+            this.ButtonTask1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.ButtonTask1.Label = "button1";
+            this.ButtonTask1.Name = "ButtonTask1";
+            this.ButtonTask1.ShowImage = true;
+            this.ButtonTask1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTask1_Click);
             // 
             // ButtonToArchive
             // 
@@ -447,6 +457,7 @@
             this.Name = "RibbonDelivery";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.ShefflerRibbon);
+            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.RibbonDelivery_Load);
             this.ShefflerRibbon.ResumeLayout(false);
             this.ShefflerRibbon.PerformLayout();
             this.groupGeneral.ResumeLayout(false);
@@ -500,6 +511,7 @@
         protected internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFillTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonScanTransportTable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTask1;
     }
 
     partial class ThisRibbonCollection

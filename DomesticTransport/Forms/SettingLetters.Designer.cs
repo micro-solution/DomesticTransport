@@ -60,6 +60,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textBoxCSLEMessage = new System.Windows.Forms.TextBox();
+            this.textBoxCSLESubject = new System.Windows.Forms.TextBox();
+            this.textBoxCSLECopy = new System.Windows.Forms.TextBox();
+            this.textBoxCSLETo = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -67,6 +76,7 @@
             this.tabPage7.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOk
@@ -390,11 +400,105 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(2, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(836, 381);
             this.tabControl1.TabIndex = 10;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.textBoxCSLEMessage);
+            this.tabPage3.Controls.Add(this.textBoxCSLESubject);
+            this.tabPage3.Controls.Add(this.textBoxCSLECopy);
+            this.tabPage3.Controls.Add(this.textBoxCSLETo);
+            this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Controls.Add(this.label14);
+            this.tabPage3.Controls.Add(this.label15);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(828, 355);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Письма в CS и WH без юр. данных  перевозчиков";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // textBoxCSLEMessage
+            // 
+            this.textBoxCSLEMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSLEMessage.Location = new System.Drawing.Point(87, 144);
+            this.textBoxCSLEMessage.Multiline = true;
+            this.textBoxCSLEMessage.Name = "textBoxCSLEMessage";
+            this.textBoxCSLEMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSLEMessage.TabIndex = 15;
+            // 
+            // textBoxCSLESubject
+            // 
+            this.textBoxCSLESubject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSLESubject.Location = new System.Drawing.Point(86, 112);
+            this.textBoxCSLESubject.Name = "textBoxCSLESubject";
+            this.textBoxCSLESubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSLESubject.TabIndex = 14;
+            // 
+            // textBoxCSLECopy
+            // 
+            this.textBoxCSLECopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSLECopy.Location = new System.Drawing.Point(86, 37);
+            this.textBoxCSLECopy.Multiline = true;
+            this.textBoxCSLECopy.Name = "textBoxCSLECopy";
+            this.textBoxCSLECopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSLECopy.TabIndex = 13;
+            // 
+            // textBoxCSLETo
+            // 
+            this.textBoxCSLETo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSLETo.Location = new System.Drawing.Point(86, 9);
+            this.textBoxCSLETo.Name = "textBoxCSLETo";
+            this.textBoxCSLETo.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSLETo.TabIndex = 12;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(10, 12);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(36, 13);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Кому:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(10, 40);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 9;
+            this.label13.Text = "Копия:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(10, 115);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(37, 13);
+            this.label14.TabIndex = 10;
+            this.label14.Text = "Тема:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(9, 141);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(68, 13);
+            this.label15.TabIndex = 11;
+            this.label15.Text = "Сообщение:";
             // 
             // SettingLetters
             // 
@@ -422,6 +526,8 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -458,5 +564,14 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TextBox textBoxCSLEMessage;
+        private System.Windows.Forms.TextBox textBoxCSLESubject;
+        private System.Windows.Forms.TextBox textBoxCSLECopy;
+        private System.Windows.Forms.TextBox textBoxCSLETo;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
     }
 }

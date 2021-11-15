@@ -542,7 +542,7 @@ namespace DomesticTransport
         public void SendEmailToProviderAdoutOrders()
         {
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet(true);
-            
+
             if (deliveries?.Count == 0) return;
 
             //Уникальны провайдеры в списке доставок
@@ -580,7 +580,7 @@ namespace DomesticTransport
             pb.Close();
         }
 
-        
+
         /// <summary>
         /// Отправка сообщений провайдерам со списком уточнений
         /// </summary>
@@ -660,6 +660,56 @@ namespace DomesticTransport
         }
 
         /// <summary>
+        /// Отправка письма в кастом сервис без данных о юр. лиц перевозчиков
+        /// </summary>
+        public void CreateLetterToCSWithOutlegalEntitiesInformation()
+        {
+            string path = Globals.ThisWorkbook.Path + "\\MailToCS\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
+            //      string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
+            List<string> attachments = new List<string>();
+            string attachment = path + date + ".xlsx";
+            attachments.Add(attachment);
+            string attachmentAllOrders = Properties.Settings.Default.AllOrders; // path + date + ".xlsx";
+            if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
+
+            ShefflerWB.TotalSheet.Copy();
+            SetUpColumsToLetter();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
+            Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
+
+            string to = Properties.Settings.Default.SettingCSLELetterTo;
+            string copy = Properties.Settings.Default.SettingCSLELetterCopy;
+            string subject = Properties.Settings.Default.SettingCSLELetterSubject;
+            subject = subject.Replace("[date]", date);
+
+            string message = Properties.Settings.Default.SettingCSLELetterMessage;
+            message = message.Replace("[date]", date);
+
+            Email email = new Email();
+            email.CreateMail(to, copy, subject, message, attachments);
+        }
+        /// <summary>
+        /// Убрал сюда настройку колннок для письма
+        /// </summary>
+        public void SetUpColumsToLetter()
+        {
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[11].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[10].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[9].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[7].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[8].Delete();
+            //Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+        }
+
+
+        /// <summary>
         /// Импорт данных из писем провайдеров
         /// </summary>
         /// <param name="file"></param>
@@ -693,7 +743,7 @@ namespace DomesticTransport
                         CarNumber = NumberProvider,
                         Organization = organ,
                         Address = address,
-                        INN=inn,
+                        INN = inn,
                         PhoneOrganization = phoneOrgan,
                         TypeOwn = typeOwn
                     };
@@ -1559,7 +1609,7 @@ namespace DomesticTransport
                 var pointsRoute = (from i in points
                                    where i.Id == routeId.Id
                                    select i).ToList();
-            //  
+                //  
                 foreach (DeliveryPoint point in pointsRoute)
                 {
                     for (int iOrder = orders.Count - 1; iOrder >= 0; iOrder--)
@@ -1935,7 +1985,7 @@ namespace DomesticTransport
         /// Собрать доставки из актуального диапазона таблицы Отгрузка
         /// </summary>
         /// <returns></returns>
-        public List<Delivery> GetDeliveriesFromTotalSheet(bool setId=false)
+        public List<Delivery> GetDeliveriesFromTotalSheet(bool setId = false)
         {
             List<Delivery> deliveries = new List<Delivery>();
             Range total = ShefflerWB.TotalTable.DataBodyRange; //GetCurrentTotalRange();
@@ -1977,7 +2027,7 @@ namespace DomesticTransport
                     string phoneorg = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон перевозчика"].Index].Text;
                     string typeOwn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип владения"].Index].Text;
 
-                    if (setId && string.IsNullOrEmpty(id) ) id = ShefflerWB.GetProviderId(providerName);
+                    if (setId && string.IsNullOrEmpty(id)) id = ShefflerWB.GetProviderId(providerName);
 
                     Driver driver = new Driver()
                     {
@@ -2030,7 +2080,7 @@ namespace DomesticTransport
                     string weightNt = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Нетто вес"].Index].Text;
                     order.WeightNetto = double.TryParse(weightNt, out double wn) ? wn : 0;
                     order.RouteCity = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Text;
-                    if (string.IsNullOrWhiteSpace(delivery.RouteName))   delivery.RouteName = order.RouteCity;
+                    if (string.IsNullOrWhiteSpace(delivery.RouteName)) delivery.RouteName = order.RouteCity;
                     delivery.Orders.Add(order);
                 }
             }
@@ -2088,7 +2138,7 @@ namespace DomesticTransport
                 string providerName = delivery.Truck.ProviderCompany.Name;
                 if (string.IsNullOrWhiteSpace(providerName)) continue;
                 sh.Cells[row, 1].Value = delivery.Driver.Id;
-                
+
                 sh.Cells[row, 4].Value = delivery.Driver.Organization;
                 sh.Cells[row, 5].Value = delivery.Driver.Address;
                 sh.Cells[row, 6].Value = delivery.Driver.INN;

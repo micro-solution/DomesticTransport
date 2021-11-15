@@ -119,7 +119,70 @@ namespace DomesticTransport.Properties {
                 this["SettingCSLetterMessage"] = value;
             }
         }
-        
+
+        #region Kirill 15.11.21
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("whschaeffler@quehenberger.ru; Vadim Bogdanov <vadim.bogdanov@quehenberger.ru>; Mi" +
+            "khail Borovik <Mikhail.Borovik@quehenberger.ru>")]
+        public string SettingCSLELetterTo
+        {
+            get
+            {
+                return ((string)(this["SettingCSLELetterTo"]));
+            }
+            set
+            {
+                this["SettingCSLELetterTo"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"Sedova Galina  (ext.)  SWCSRG-LWA <sedovgli@schaeffler.com>; Koltsov Alexander  SWCSRG-LT <koltcaek@schaeffler.com>; Shurygina Alina  (ext.)  SWCSRG-LWA <shuryain@schaeffler.com>; Gumennikov Andrey  SWCSRG-ADC <gumenadr@schaeffler.com>; Morokhov Konstantin  SWCSRG-LWA <morokkns@schaeffler.com>; Sinyatkin Alexey  SWCSRG-LWA <SINYAAEX@schaeffler.com>; Konina Ekaterina  WI/SRG-CERO <konineat@schaeffler.com>; Chaplina Olga  WI/SRG-CERO <CHAPLOGA@schaeffler.com>; Sulak Olga  WI/SRG-CERO <sulakoga@schaeffler.com>; Kozlov Alexey  SWCSRG-ADC <alexey.kozlov@schaeffler.com>; Voitkevich Arkadii  SWCSRG-LT <voitkaka@schaeffler.com>; maxim.derbin@quehenberger.ru; Smorodov Vladimir  WI/SRG-CERO <smorovad@schaeffler.com>; Boldyreva Olga  WI/SRG-CERO <Tomskoga@schaeffler.com>; Zsilak Alekszandra  SWCSRG-ADC <zhilaaex@schaeffler.com>; Grinivezkaja Maria  SWCSRG-ADC <gerzomri@schaeffler.com>; Khovalyg Maadyr  WI/SRG-CERO <khovamad@schaeffler.com>; Grin Liliya  (ext.)  SWCSRG-LWA <grinlli@schaeffler.com>; Budnikova Iuliia  SWCSRG-ADC <budniili@schaeffler.com>")]
+        public string SettingCSLELetterCopy
+        {
+            get
+            {
+                return ((string)(this["SettingCSLELetterCopy"]));
+            }
+            set
+            {
+                this["SettingCSLELetterCopy"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Отгрузка на [date]")]
+        public string SettingCSLELetterSubject
+        {
+            get
+            {
+                return ((string)(this["SettingCSLELetterSubject"]));
+            }
+            set
+            {
+                this["SettingCSLELetterSubject"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Коллеги, добрый день! В приложении отгрузка на [date], прошу принять к работе.")]
+        public string SettingCSLELetterMessage
+        {
+            get
+            {
+                return ((string)(this["SettingCSLELetterMessage"]));
+            }
+            set
+            {
+                this["SettingCSLELetterMessage"] = value;
+            }
+        }
+        #endregion
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
