@@ -37,33 +37,35 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonDelivery));
             this.ShefflerRibbon = this.Factory.CreateRibbonTab();
             this.groupGeneral = this.Factory.CreateRibbonGroup();
+            this.groupEdit = this.Factory.CreateRibbonGroup();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.group3 = this.Factory.CreateRibbonGroup();
+            this.settings = this.Factory.CreateRibbonGroup();
             this.BtnExportFromSap = this.Factory.CreateRibbonButton();
             this.ButtonOrderFromCS = this.Factory.CreateRibbonButton();
             this.BtnLoadAllOrders = this.Factory.CreateRibbonButton();
-            this.groupEdit = this.Factory.CreateRibbonGroup();
             this.splitButtonUpdateAuto = this.Factory.CreateRibbonSplitButton();
             this.ButtonUpdateAutoMain = this.Factory.CreateRibbonButton();
             this.ButtonUpdateAutoSecond = this.Factory.CreateRibbonButton();
             this.ButtonAddAuto = this.Factory.CreateRibbonButton();
             this.ButtonDeleteAuto = this.Factory.CreateRibbonButton();
             this.btnSaveRoute = this.Factory.CreateRibbonButton();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.BtnRecalcilate = this.Factory.CreateRibbonButton();
             this.btnNunerateDeliveries = this.Factory.CreateRibbonButton();
             this.BtnFillTable = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnSendShippingCompany = this.Factory.CreateRibbonButton();
             this.BtnReadCarrierInvoice = this.Factory.CreateRibbonButton();
             this.MenuSendTotal = this.Factory.CreateRibbonMenu();
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
-            this.ButtonSendToCS = this.Factory.CreateRibbonButton();
-            this.ButtonTask1 = this.Factory.CreateRibbonButton();
+            this.menu1 = this.Factory.CreateRibbonMenu();
+            this.ButtonTaskSendToWithOutLE = this.Factory.CreateRibbonButton();
+            this.ButtonTaskSendToWithLE = this.Factory.CreateRibbonButton();
+            this.ButtonTaskSendLetterToCSStorekeepe = this.Factory.CreateRibbonButton();
             this.ButtonToArchive = this.Factory.CreateRibbonButton();
-            this.group3 = this.Factory.CreateRibbonGroup();
             this.ToTransportTable = this.Factory.CreateRibbonButton();
             this.ButtonSendTransportTable = this.Factory.CreateRibbonButton();
             this.ButtonScanTransportTable = this.Factory.CreateRibbonButton();
-            this.settings = this.Factory.CreateRibbonGroup();
             this.ButtonSettingLetter = this.Factory.CreateRibbonButton();
             this.BtnSaveSignature = this.Factory.CreateRibbonButton();
             this.btnDate = this.Factory.CreateRibbonButton();
@@ -99,6 +101,51 @@
             this.groupGeneral.Label = "Загрузка заказов";
             this.groupGeneral.Name = "groupGeneral";
             // 
+            // groupEdit
+            // 
+            this.groupEdit.Items.Add(this.splitButtonUpdateAuto);
+            this.groupEdit.Items.Add(this.ButtonAddAuto);
+            this.groupEdit.Items.Add(this.ButtonDeleteAuto);
+            this.groupEdit.Items.Add(this.btnSaveRoute);
+            this.groupEdit.Items.Add(this.separator1);
+            this.groupEdit.Items.Add(this.BtnRecalcilate);
+            this.groupEdit.Items.Add(this.btnNunerateDeliveries);
+            this.groupEdit.Items.Add(this.BtnFillTable);
+            this.groupEdit.Label = "Формирование транспорта";
+            this.groupEdit.Name = "groupEdit";
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.BtnSendShippingCompany);
+            this.group1.Items.Add(this.BtnReadCarrierInvoice);
+            this.group1.Items.Add(this.MenuSendTotal);
+            this.group1.Items.Add(this.ButtonToArchive);
+            this.group1.Label = "Отгрузки";
+            this.group1.Name = "group1";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.ToTransportTable);
+            this.group3.Items.Add(this.ButtonSendTransportTable);
+            this.group3.Items.Add(this.ButtonScanTransportTable);
+            this.group3.Label = "Отчеты";
+            this.group3.Name = "group3";
+            // 
+            // settings
+            // 
+            this.settings.Items.Add(this.ButtonSettingLetter);
+            this.settings.Items.Add(this.BtnSaveSignature);
+            this.settings.Items.Add(this.btnDate);
+            this.settings.Items.Add(this.btnSettings);
+            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
+            this.settings.Items.Add(this.BtnAboutProgrramm);
+            this.settings.Label = "Настройки";
+            this.settings.Name = "settings";
+            // 
             // BtnExportFromSap
             // 
             this.BtnExportFromSap.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -132,19 +179,6 @@
             this.BtnLoadAllOrders.SuperTip = "Выберите файл с выгрузкой из SAP с информацией о собранных поставках для загрузки" +
     " брутто веса, количества паллет, стоимости поставки";
             this.BtnLoadAllOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadAllOrders_Click);
-            // 
-            // groupEdit
-            // 
-            this.groupEdit.Items.Add(this.splitButtonUpdateAuto);
-            this.groupEdit.Items.Add(this.ButtonAddAuto);
-            this.groupEdit.Items.Add(this.ButtonDeleteAuto);
-            this.groupEdit.Items.Add(this.btnSaveRoute);
-            this.groupEdit.Items.Add(this.separator1);
-            this.groupEdit.Items.Add(this.BtnRecalcilate);
-            this.groupEdit.Items.Add(this.btnNunerateDeliveries);
-            this.groupEdit.Items.Add(this.BtnFillTable);
-            this.groupEdit.Label = "Формирование транспорта";
-            this.groupEdit.Name = "groupEdit";
             // 
             // splitButtonUpdateAuto
             // 
@@ -219,10 +253,6 @@
     "аршруты в таблицу Routes";
             this.btnSaveRoute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSaveRoute_Click);
             // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
             // BtnRecalcilate
             // 
             this.BtnRecalcilate.Image = ((System.Drawing.Image)(resources.GetObject("BtnRecalcilate.Image")));
@@ -255,15 +285,6 @@
             this.BtnFillTable.SuperTip = "Переносит данные из таблиц Транспорт и Поставки в таблицу Отгрузки";
             this.BtnFillTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillTable_Click);
             // 
-            // group1
-            // 
-            this.group1.Items.Add(this.BtnSendShippingCompany);
-            this.group1.Items.Add(this.BtnReadCarrierInvoice);
-            this.group1.Items.Add(this.MenuSendTotal);
-            this.group1.Items.Add(this.ButtonToArchive);
-            this.group1.Label = "Отгрузки";
-            this.group1.Name = "group1";
-            // 
             // BtnSendShippingCompany
             // 
             this.BtnSendShippingCompany.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -293,8 +314,7 @@
             this.MenuSendTotal.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.MenuSendTotal.Image = ((System.Drawing.Image)(resources.GetObject("MenuSendTotal.Image")));
             this.MenuSendTotal.Items.Add(this.ButtonTotalToProviders);
-            this.MenuSendTotal.Items.Add(this.ButtonSendToCS);
-            this.MenuSendTotal.Items.Add(this.ButtonTask1);
+            this.MenuSendTotal.Items.Add(this.menu1);
             this.MenuSendTotal.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.MenuSendTotal.Label = "Отправка Отгрузок";
             this.MenuSendTotal.Name = "MenuSendTotal";
@@ -309,24 +329,40 @@
             this.ButtonTotalToProviders.ShowImage = true;
             this.ButtonTotalToProviders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTotalToProviders_Click);
             // 
-            // ButtonSendToCS
+            // menu1
             // 
-            this.ButtonSendToCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ButtonSendToCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSendToCS.Image")));
-            this.ButtonSendToCS.Label = "В CS и WH";
-            this.ButtonSendToCS.Name = "ButtonSendToCS";
-            this.ButtonSendToCS.ScreenTip = "Отправить отгрузки в CS и WH";
-            this.ButtonSendToCS.ShowImage = true;
-            this.ButtonSendToCS.SuperTip = "Подготовка письма с данными об отгрузках для CS и WH";
-            this.ButtonSendToCS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonSendToCS_Click);
+            this.menu1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.menu1.Image = ((System.Drawing.Image)(resources.GetObject("menu1.Image")));
+            this.menu1.Items.Add(this.ButtonTaskSendToWithOutLE);
+            this.menu1.Items.Add(this.ButtonTaskSendToWithLE);
+            this.menu1.Items.Add(this.ButtonTaskSendLetterToCSStorekeepe);
+            this.menu1.Label = "В CS  и WH";
+            this.menu1.Name = "menu1";
+            this.menu1.ShowImage = true;
             // 
-            // ButtonTask1
+            // ButtonTaskSendToWithOutLE
             // 
-            this.ButtonTask1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ButtonTask1.Label = "button1";
-            this.ButtonTask1.Name = "ButtonTask1";
-            this.ButtonTask1.ShowImage = true;
-            this.ButtonTask1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTask1_Click);
+            this.ButtonTaskSendToWithOutLE.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendToWithOutLE.Image")));
+            this.ButtonTaskSendToWithOutLE.Label = "Отправка письма в кастом сервис без данных о юр. лиц перевозчиков";
+            this.ButtonTaskSendToWithOutLE.Name = "ButtonTaskSendToWithOutLE";
+            this.ButtonTaskSendToWithOutLE.ShowImage = true;
+            this.ButtonTaskSendToWithOutLE.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSWithOutLE_Click);
+            // 
+            // ButtonTaskSendToWithLE
+            // 
+            this.ButtonTaskSendToWithLE.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendToWithLE.Image")));
+            this.ButtonTaskSendToWithLE.Label = "Отправка письма в кастом сервис c данными о юр. лиц перевозчиков";
+            this.ButtonTaskSendToWithLE.Name = "ButtonTaskSendToWithLE";
+            this.ButtonTaskSendToWithLE.ShowImage = true;
+            this.ButtonTaskSendToWithLE.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSWithLE_Click);
+            // 
+            // ButtonTaskSendLetterToCSStorekeepe
+            // 
+            this.ButtonTaskSendLetterToCSStorekeepe.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendLetterToCSStorekeepe.Image")));
+            this.ButtonTaskSendLetterToCSStorekeepe.Label = "Отправка письма Отправка письма в кастом сервис кладовщику ";
+            this.ButtonTaskSendLetterToCSStorekeepe.Name = "ButtonTaskSendLetterToCSStorekeepe";
+            this.ButtonTaskSendLetterToCSStorekeepe.ShowImage = true;
+            this.ButtonTaskSendLetterToCSStorekeepe.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSStorekeeper_Click);
             // 
             // ButtonToArchive
             // 
@@ -337,14 +373,6 @@
             this.ButtonToArchive.ShowImage = true;
             this.ButtonToArchive.SuperTip = "Сохранение листа Отгрузки во временный архив";
             this.ButtonToArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveToArchive_Click);
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.ToTransportTable);
-            this.group3.Items.Add(this.ButtonSendTransportTable);
-            this.group3.Items.Add(this.ButtonScanTransportTable);
-            this.group3.Label = "Отчеты";
-            this.group3.Name = "group3";
             // 
             // ToTransportTable
             // 
@@ -375,17 +403,6 @@
             this.ButtonScanTransportTable.Name = "ButtonScanTransportTable";
             this.ButtonScanTransportTable.ShowImage = true;
             this.ButtonScanTransportTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonScanTransportTable_Click);
-            // 
-            // settings
-            // 
-            this.settings.Items.Add(this.ButtonSettingLetter);
-            this.settings.Items.Add(this.BtnSaveSignature);
-            this.settings.Items.Add(this.btnDate);
-            this.settings.Items.Add(this.btnSettings);
-            this.settings.Items.Add(this.ButtonSelectFoldersOutlook);
-            this.settings.Items.Add(this.BtnAboutProgrramm);
-            this.settings.Label = "Настройки";
-            this.settings.Name = "settings";
             // 
             // ButtonSettingLetter
             // 
@@ -457,7 +474,6 @@
             this.Name = "RibbonDelivery";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.ShefflerRibbon);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.RibbonDelivery_Load);
             this.ShefflerRibbon.ResumeLayout(false);
             this.ShefflerRibbon.PerformLayout();
             this.groupGeneral.ResumeLayout(false);
@@ -491,7 +507,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonOrderFromCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSaveSignature;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSelectFoldersOutlook;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSendToCS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonSettingLetter;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveRoute;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnNunerateDeliveries;
@@ -511,7 +526,10 @@
         protected internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFillTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonScanTransportTable;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTask1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendToWithOutLE;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendToWithLE;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendLetterToCSStorekeepe;
     }
 
     partial class ThisRibbonCollection

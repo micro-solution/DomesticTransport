@@ -69,6 +69,15 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.textBoxCSStorekeeperMessage = new System.Windows.Forms.TextBox();
+            this.textBoxCSStorekeeperSubject = new System.Windows.Forms.TextBox();
+            this.textBoxCSStorekeeperCopy = new System.Windows.Forms.TextBox();
+            this.textBoxCSStorekeeperTo = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -77,6 +86,7 @@
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOk
@@ -401,6 +411,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(2, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -430,7 +441,7 @@
             this.textBoxCSLEMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxCSLEMessage.Location = new System.Drawing.Point(87, 144);
+            this.textBoxCSLEMessage.Location = new System.Drawing.Point(86, 138);
             this.textBoxCSLEMessage.Multiline = true;
             this.textBoxCSLEMessage.Name = "textBoxCSLEMessage";
             this.textBoxCSLEMessage.Size = new System.Drawing.Size(735, 211);
@@ -500,6 +511,99 @@
             this.label15.TabIndex = 11;
             this.label15.Text = "Сообщение:";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.textBoxCSStorekeeperMessage);
+            this.tabPage4.Controls.Add(this.textBoxCSStorekeeperSubject);
+            this.tabPage4.Controls.Add(this.textBoxCSStorekeeperCopy);
+            this.tabPage4.Controls.Add(this.textBoxCSStorekeeperTo);
+            this.tabPage4.Controls.Add(this.label16);
+            this.tabPage4.Controls.Add(this.label17);
+            this.tabPage4.Controls.Add(this.label18);
+            this.tabPage4.Controls.Add(this.label19);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(828, 355);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Письма в CS и WH (Кладовщик)";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // textBoxCSStorekeeperMessage
+            // 
+            this.textBoxCSStorekeeperMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSStorekeeperMessage.Location = new System.Drawing.Point(86, 138);
+            this.textBoxCSStorekeeperMessage.Multiline = true;
+            this.textBoxCSStorekeeperMessage.Name = "textBoxCSStorekeeperMessage";
+            this.textBoxCSStorekeeperMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSStorekeeperMessage.TabIndex = 23;
+            // 
+            // textBoxCSStorekeeperSubject
+            // 
+            this.textBoxCSStorekeeperSubject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSStorekeeperSubject.Location = new System.Drawing.Point(86, 112);
+            this.textBoxCSStorekeeperSubject.Name = "textBoxCSStorekeeperSubject";
+            this.textBoxCSStorekeeperSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSStorekeeperSubject.TabIndex = 22;
+            // 
+            // textBoxCSStorekeeperCopy
+            // 
+            this.textBoxCSStorekeeperCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSStorekeeperCopy.Location = new System.Drawing.Point(86, 37);
+            this.textBoxCSStorekeeperCopy.Multiline = true;
+            this.textBoxCSStorekeeperCopy.Name = "textBoxCSStorekeeperCopy";
+            this.textBoxCSStorekeeperCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSStorekeeperCopy.TabIndex = 21;
+            // 
+            // textBoxCSStorekeeperTo
+            // 
+            this.textBoxCSStorekeeperTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSStorekeeperTo.Location = new System.Drawing.Point(86, 9);
+            this.textBoxCSStorekeeperTo.Name = "textBoxCSStorekeeperTo";
+            this.textBoxCSStorekeeperTo.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSStorekeeperTo.TabIndex = 20;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(10, 12);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(36, 13);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "Кому:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(10, 40);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(41, 13);
+            this.label17.TabIndex = 17;
+            this.label17.Text = "Копия:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(10, 115);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(37, 13);
+            this.label18.TabIndex = 18;
+            this.label18.Text = "Тема:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(9, 141);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(68, 13);
+            this.label19.TabIndex = 19;
+            this.label19.Text = "Сообщение:";
+            // 
             // SettingLetters
             // 
             this.AcceptButton = this.buttonOk;
@@ -528,6 +632,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -573,5 +679,14 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TextBox textBoxCSStorekeeperMessage;
+        private System.Windows.Forms.TextBox textBoxCSStorekeeperSubject;
+        private System.Windows.Forms.TextBox textBoxCSStorekeeperCopy;
+        private System.Windows.Forms.TextBox textBoxCSStorekeeperTo;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
     }
 }

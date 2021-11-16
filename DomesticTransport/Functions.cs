@@ -635,7 +635,6 @@ namespace DomesticTransport
             }
 
             string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
-            //      string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
             List<string> attachments = new List<string>();
             string attachment = path + date + ".xlsx";
             attachments.Add(attachment);
@@ -679,7 +678,7 @@ namespace DomesticTransport
             if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
-            SetUpColumsToLetter();
+            SetUpColumsToLetterWithOutLE();
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
             Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
 
@@ -697,15 +696,66 @@ namespace DomesticTransport
         /// <summary>
         /// Убрал сюда настройку колннок для письма
         /// </summary>
-        public void SetUpColumsToLetter()
+        public void SetUpColumsToLetterWithOutLE()
         {
-            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            //Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[11].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[10].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[9].Delete();
-            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[7].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[8].Delete();
-            //Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[7].Delete();
+        }
+
+
+        /// <summary>
+        /// Отправка письма в кастом сервис для кладовщиков
+        /// </summary>
+        public void CreateLetterToCSStorekeepe()
+        {
+            string path = Globals.ThisWorkbook.Path + "\\MailToCS\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
+            //      string attachment = path + DateTime.Today.ToString("dd.MM.yyyy") + ".xlsx";
+            List<string> attachments = new List<string>();
+            string attachment = path + date + ".xlsx";
+            attachments.Add(attachment);
+            string attachmentAllOrders = Properties.Settings.Default.AllOrders; // path + date + ".xlsx";
+            if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
+
+            ShefflerWB.TotalSheet.Copy();
+            SetUpColumsToLetterStorekeepe();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
+            Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
+
+            string to = Properties.Settings.Default.SettingCSLetterStorekeeperTo;
+            string copy = Properties.Settings.Default.SettingCSLetterStorekeeperCopy;
+            string subject = Properties.Settings.Default.SettingCSLetterStorekeeperSubject;
+            subject = subject.Replace("[date]", date);
+
+            string message = Properties.Settings.Default.SettingCSLetterStorekeeperMessage;
+            message = message.Replace("[date]", date);
+
+            Email email = new Email();
+            email.CreateMail(to, copy, subject, message, attachments);
+        }
+        /// <summary>
+        /// Убрал сюда настройку колннок для письма
+        /// </summary>
+        public void SetUpColumsToLetterStorekeepe()
+        {
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[14].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[13].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[12].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[11].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[10].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[9].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[8].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[7].Delete();
         }
 
 

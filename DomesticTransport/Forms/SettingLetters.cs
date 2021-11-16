@@ -19,6 +19,11 @@ namespace DomesticTransport.Forms
             textBoxCSLECopy.Text = Properties.Settings.Default.SettingCSLELetterCopy;
             textBoxCSLESubject.Text = Properties.Settings.Default.SettingCSLELetterSubject;
             textBoxCSLEMessage.Text = Properties.Settings.Default.SettingCSLELetterMessage;
+
+            textBoxCSStorekeeperTo.Text = Properties.Settings.Default.SettingCSLetterStorekeeperTo;
+            textBoxCSStorekeeperCopy.Text = Properties.Settings.Default.SettingCSLetterStorekeeperCopy;
+            textBoxCSStorekeeperSubject.Text = Properties.Settings.Default.SettingCSLetterStorekeeperSubject;
+            textBoxCSStorekeeperMessage.Text = Properties.Settings.Default.SettingCSLetterStorekeeperMessage;
             #endregion
 
             textBoxProviderCopy.Text = Properties.Settings.Default.ProviderLettersCopy;
@@ -54,11 +59,17 @@ namespace DomesticTransport.Forms
             Properties.Settings.Default.SettingCSLetterCopy = textBoxCSCopy.Text;
             Properties.Settings.Default.SettingCSLetterSubject = textBoxCSSubject.Text;
             Properties.Settings.Default.SettingCSLetterMessage = textBoxCSMessage.Text;
-
+            #region Kirill
             Properties.Settings.Default.SettingCSLELetterTo = textBoxCSLETo.Text;
             Properties.Settings.Default.SettingCSLELetterCopy = textBoxCSLECopy.Text;
             Properties.Settings.Default.SettingCSLELetterSubject = textBoxCSLESubject.Text;
             Properties.Settings.Default.SettingCSLELetterMessage = textBoxCSLEMessage.Text;
+
+            Properties.Settings.Default.SettingCSLetterStorekeeperTo = textBoxCSStorekeeperTo .Text;
+            Properties.Settings.Default.SettingCSLetterStorekeeperCopy = textBoxCSStorekeeperCopy.Text;
+            Properties.Settings.Default.SettingCSLetterStorekeeperSubject = textBoxCSStorekeeperSubject.Text;
+            Properties.Settings.Default.SettingCSLetterStorekeeperMessage = textBoxCSStorekeeperMessage.Text;
+            #endregion
 
             Properties.Settings.Default.ProviderLettersCopy = textBoxProviderCopy.Text;
             Properties.Settings.Default.ProviderSubjectOrder = textBoxProviderOrderSubject.Text;

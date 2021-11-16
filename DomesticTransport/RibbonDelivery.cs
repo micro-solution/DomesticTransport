@@ -275,27 +275,8 @@ namespace DomesticTransport
             }
         }
 
-        /// <summary>
-        /// Отправка файла отгрузки в CS
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonSendToCS_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                ShefflerWB.ExcelOptimizateOn();
-                new Functions().CreateLetterToCS();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                ShefflerWB.ExcelOptimizateOff();
-            }
-        }
+
+       
 
         /// <summary>
         /// Настройки письма для CS
@@ -593,7 +574,13 @@ namespace DomesticTransport
             }
         }
 
-        private void ButtonTask1_Click(object sender, RibbonControlEventArgs e)
+
+        /// <summary>
+        /// Отправка файла отгрузки в CS без данных о юр. лицах
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonTaskSendLetterToCSWithOutLE_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -610,9 +597,50 @@ namespace DomesticTransport
             }
         }
 
-        private void RibbonDelivery_Load(object sender, RibbonUIEventArgs e)
-        {
 
+        /// <summary>
+        /// Отправка файла отгрузки в CS с всеми данными
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonTaskSendLetterToCSWithLE_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().CreateLetterToCS();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
+
+        /// <summary>
+        /// Отправка файла отгрузки в CS кладовщику
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonTaskSendLetterToCSStorekeeper_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().CreateLetterToCSStorekeepe();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
         }
     }
 }
