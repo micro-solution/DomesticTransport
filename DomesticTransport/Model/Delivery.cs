@@ -46,6 +46,15 @@ namespace DomesticTransport.Model
             }
             set => _dateDelivery = value;
         }
+        public string DateDeliveryCopyAndMove
+        {
+            get
+            {
+                
+                return _dateDelivery;
+            }
+            set => _dateDelivery = value;
+        }
 
         private string _dateDelivery;
 
