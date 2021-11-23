@@ -341,6 +341,7 @@ namespace DomesticTransport
             DeliveryPoint point = new DeliveryPoint() { City = city };
             order.DeliveryPoint = point;
             return order;
+
         }
         private static Delivery GetDeliveryFromTotalRow(XLTable xlTable)
         {
