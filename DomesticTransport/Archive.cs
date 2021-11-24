@@ -5,6 +5,7 @@ using Microsoft.Office.Interop.Excel;
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace DomesticTransport
 {
@@ -254,28 +255,35 @@ namespace DomesticTransport
         public static void ToTransportTableAndShepments()
         {
 
+            //
             XLTable tableArchive = new XLTable
             {
                 ListTable = ShefflerWB.ArchiveTable
             };
+            try
+            {
 
-            List<Delivery> deliveries = GetAllDeliveries(tableArchive);
+                List<Delivery> deliveries = GetAllDeliveries(tableArchive);
 
-            TransportTable transportTable = new TransportTable();
-            transportTable.ImportDeliveryes(deliveries);
-            transportTable.SaveAndClose();
+                TransportTable transportTable = new TransportTable();
+                transportTable.ImportDeliveryes(deliveries);
+                transportTable.SaveAndClose();
 
-            ShipmentsTable shipmentsTable = new ShipmentsTable();
-            shipmentsTable.ImportDeliveryes(deliveries);
-            shipmentsTable.SaveAndClose();
+                ShipmentsTable shipmentsTable = new ShipmentsTable();
+                shipmentsTable.ImportDeliveryes(deliveries);
+                shipmentsTable.SaveAndClose();
 
-           // DateTime dateMax = DateTime.Today;
-            //dateMax = dateMax.AddDays(-(double)dateMax.DayOfWeek);
-            DeleteBefore(tableArchive);
+                DeleteBefore(tableArchive);
 
-            System.Windows.Forms.MessageBox.Show("Архив перенесен", "Операция выполнена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                System.Windows.Forms.MessageBox.Show("Архив перенесен", "Операция выполнена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            }
 
-            return;
+            catch
+            {
+                System.Windows.Forms.MessageBox.Show("Обнаружены ошибки", "Операция Остановлена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                return;
+            }
+
         }
 
 
@@ -298,12 +306,21 @@ namespace DomesticTransport
             List<Order> orders = new List<Order>();
             List<Delivery> deliveries = new List<Delivery>();
             Delivery delivery = new Delivery();
+            bool isWrongCells = false;
+            bool isthrowException = false;
             foreach (ListRow row in table.ListTable.ListRows)
             {
+                isWrongCells = MarkWrongCells(table);
+
+                if (isWrongCells == true)
+                {
+                    isthrowException = true;
+                }
+
                 table.CurrentRowRange = row.Range;
                 Delivery deliveryRow = GetDeliveryFromTotalRow(table);
-                
-                if (deliveryRow != null) 
+
+                if (deliveryRow != null)
                 {
                     delivery = deliveryRow;
                     deliveries.Add(delivery);
@@ -311,7 +328,42 @@ namespace DomesticTransport
                 Order order = GetOrdersFromTotalRow(table);
                 if (order != null) delivery.Orders.Add(order);
             }
+            if (isthrowException == true)
+            {
+                throw new Exception($"Ошибка при проверке файла"); ;
+            }
             return deliveries;
+        }
+
+        private static bool MarkWrongCells(XLTable xlTable)
+        {
+            Range tableTange = xlTable.TableRange;
+            int row = xlTable.CurrentRowRange.Row;
+            object[,] cellsValue = xlTable.CurrentRowRange.Range[tableTange.Cells[0, 1], tableTange.Cells[0, 12]].Value;
+            object TimeCell = xlTable.CurrentRowRange.Cells[1, 1].Value;
+
+            if (TimeCell != null)
+            {
+                if (cellsValue.GetValue(1, 1) != null)
+                {
+                    for (int i = 1; i < cellsValue.GetLength(1); i++)
+                    {
+                        if (cellsValue[1, i] == null)
+                        {
+                            tableTange.Cells[row - 1, 0].Interior.Color = Color.Yellow;
+                            return true;
+                        }
+                    }
+                }
+                tableTange.Cells[row - 1, 0].Interior.Color = Color.White;
+                return false;
+            }
+
+            else
+            {
+                tableTange.Cells[row - 1, 0].Interior.Color = Color.Red;
+                return true;
+            }
         }
 
         private static Order GetOrdersFromTotalRow(XLTable xlTable)
