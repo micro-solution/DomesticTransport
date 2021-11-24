@@ -5,6 +5,7 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -1499,6 +1500,16 @@ namespace DomesticTransport
                 }
             }
         }
+        /// <summary>
+        ///  Применят штраф к выбранному экспедитору
+        /// </summary>
+        public void SetFine()
+        {
+            Fine fine = new Fine();
+            fine.SetFine();
+          
+        }
+
 
         /// <summary>
         /// очистка таблицы удалением строк листа

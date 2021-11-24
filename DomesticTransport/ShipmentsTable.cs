@@ -146,7 +146,7 @@ namespace DomesticTransport
                     TableSheet.Cells[iRow, ColumnDriverPhone].Value = delivery.Driver.Phone;
                     TableSheet.Cells[iRow, ColumnCarNumber].Value = delivery.Driver.CarNumber;
 
-                    TableSheet.Cells[iRow, ColumnDate].Value = delivery.DateDelivery;
+                    TableSheet.Cells[iRow, ColumnDate].Value = Convert.ToDateTime(delivery.DateDelivery);
                     TableSheet.Cells[iRow, ColumnTime].Value = delivery.Time;
                     TableSheet.Cells[iRow, ColumnDeliveryNumber].Value = order.DeliveryNumber;
                     TableSheet.Cells[iRow, ColumnSity].Value = order.DeliveryPoint.City;

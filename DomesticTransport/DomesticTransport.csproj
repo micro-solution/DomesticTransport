@@ -133,6 +133,7 @@
   <ItemGroup>
     <Compile Include="Archive.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="Fine.cs" />
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
