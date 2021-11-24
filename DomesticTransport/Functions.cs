@@ -626,7 +626,7 @@ namespace DomesticTransport
         /// <summary>
         /// Отправка письма в кастом сервис
         /// </summary>
-        public void CreateLetterToCS()
+        public void CreateLetterToCSAAM()
         {
             string path = Globals.ThisWorkbook.Path + "\\MailToCS\\";
             if (!Directory.Exists(path))
@@ -646,17 +646,50 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
             Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
 
-            string to = Properties.Settings.Default.SettingCSLetterTo;
-            string copy = Properties.Settings.Default.SettingCSLetterCopy;
-            string subject = Properties.Settings.Default.SettingCSLetterSubject;
+            string to = Properties.Settings.Default.SettingCSAAMTO;
+            string copy = Properties.Settings.Default.SettingCSAAMCopy;
+            string subject = Properties.Settings.Default.SettingCSAAMSubject;
             subject = subject.Replace("[date]", date);
 
-            string message = Properties.Settings.Default.SettingCSLetterMessage;
+            string message = Properties.Settings.Default.SettingCSAAMMessage;
             message = message.Replace("[date]", date);
 
             Email email = new Email();
             email.CreateMail(to, copy, subject, message, attachments);
         }
+
+        public void CreateLetterToCSAAMIND()
+        {
+            string path = Globals.ThisWorkbook.Path + "\\MailToCS\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string date = ShefflerWB.DeliverySheet.Range["DateDelivery"].Text;
+            List<string> attachments = new List<string>();
+            string attachment = path + date + ".xlsx";
+            attachments.Add(attachment);
+            string attachmentAllOrders = Properties.Settings.Default.AllOrders; // path + date + ".xlsx";
+            if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
+
+            ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
+            Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
+
+            string to = Properties.Settings.Default.SettingCSAAMINDTo;
+            string copy = Properties.Settings.Default.SettingCSAAMINDCopy;
+            string subject = Properties.Settings.Default.SettingCSAAMINDSubject;
+            subject = subject.Replace("[date]", date);
+
+            string message = Properties.Settings.Default.SettingCSAAMINDMessage;
+            message = message.Replace("[date]", date);
+
+            Email email = new Email();
+            email.CreateMail(to, copy, subject, message, attachments);
+        }
+
 
         /// <summary>
         /// Отправка письма в кастом сервис без данных о юр. лиц перевозчиков

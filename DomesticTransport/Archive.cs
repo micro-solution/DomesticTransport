@@ -312,7 +312,7 @@ namespace DomesticTransport
             {
                 isWrongCells = MarkWrongCells(table);
 
-                if (isWrongCells == true)
+                if (isWrongCells == true && isthrowException==false)
                 {
                     isthrowException = true;
                 }

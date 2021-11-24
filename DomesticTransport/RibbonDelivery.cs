@@ -603,12 +603,12 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ButtonTaskSendLetterToCSWithLE_Click(object sender, RibbonControlEventArgs e)
+        private void ButtonTaskSendLetterToCSAAM(object sender, RibbonControlEventArgs e)
         {
             try
             {
                 ShefflerWB.ExcelOptimizateOn();
-                new Functions().CreateLetterToCS();
+                new Functions().CreateLetterToCSAAM();
             }
             catch (Exception ex)
             {
@@ -619,6 +619,23 @@ namespace DomesticTransport
                 ShefflerWB.ExcelOptimizateOff();
             }
         }
+        private void ButtonTaskSendLetterToCSAAMIND(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().CreateLetterToCSAAMIND();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
+
 
 
         /// <summary>

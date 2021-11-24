@@ -59,7 +59,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.textBoxCSLEMessage = new System.Windows.Forms.TextBox();
             this.textBoxCSLESubject = new System.Windows.Forms.TextBox();
@@ -78,15 +78,35 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.textBoxCSAAMMessage = new System.Windows.Forms.TextBox();
+            this.textBoxCSAAMSubject = new System.Windows.Forms.TextBox();
+            this.textBoxCSAAMCopy = new System.Windows.Forms.TextBox();
+            this.textBoxCSAAMTO = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.textBoxCSAAMINDMessage = new System.Windows.Forms.TextBox();
+            this.textBoxCSAAMINDSubject = new System.Windows.Forms.TextBox();
+            this.textBoxCSAAMINDCopy = new System.Windows.Forms.TextBox();
+            this.textBoxCSAAMINDTO = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.TabControl.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOk
@@ -403,20 +423,22 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "Сообщение:";
             // 
-            // tabControl1
+            // TabControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(2, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(836, 381);
-            this.tabControl1.TabIndex = 10;
+            this.TabControl.Controls.Add(this.tabPage1);
+            this.TabControl.Controls.Add(this.tabPage2);
+            this.TabControl.Controls.Add(this.tabPage3);
+            this.TabControl.Controls.Add(this.tabPage4);
+            this.TabControl.Controls.Add(this.tabPage8);
+            this.TabControl.Controls.Add(this.tabPage9);
+            this.TabControl.Location = new System.Drawing.Point(2, 0);
+            this.TabControl.Name = "TabControl";
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.Size = new System.Drawing.Size(836, 381);
+            this.TabControl.TabIndex = 10;
             // 
             // tabPage3
             // 
@@ -604,6 +626,192 @@
             this.label19.TabIndex = 19;
             this.label19.Text = "Сообщение:";
             // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.textBoxCSAAMMessage);
+            this.tabPage8.Controls.Add(this.textBoxCSAAMSubject);
+            this.tabPage8.Controls.Add(this.textBoxCSAAMCopy);
+            this.tabPage8.Controls.Add(this.textBoxCSAAMTO);
+            this.tabPage8.Controls.Add(this.label20);
+            this.tabPage8.Controls.Add(this.label21);
+            this.tabPage8.Controls.Add(this.label22);
+            this.tabPage8.Controls.Add(this.label23);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(828, 355);
+            this.tabPage8.TabIndex = 4;
+            this.tabPage8.Text = "CS AAM и WH";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDMessage);
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDSubject);
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDCopy);
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDTO);
+            this.tabPage9.Controls.Add(this.label24);
+            this.tabPage9.Controls.Add(this.label25);
+            this.tabPage9.Controls.Add(this.label26);
+            this.tabPage9.Controls.Add(this.label27);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(828, 355);
+            this.tabPage9.TabIndex = 5;
+            this.tabPage9.Text = "CS AAM + CS IND и WH";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // textBoxCSAAMMessage
+            // 
+            this.textBoxCSAAMMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMMessage.Location = new System.Drawing.Point(86, 138);
+            this.textBoxCSAAMMessage.Multiline = true;
+            this.textBoxCSAAMMessage.Name = "textBoxCSAAMMessage";
+            this.textBoxCSAAMMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSAAMMessage.TabIndex = 31;
+            // 
+            // textBoxCSAAMSubject
+            // 
+            this.textBoxCSAAMSubject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMSubject.Location = new System.Drawing.Point(86, 112);
+            this.textBoxCSAAMSubject.Name = "textBoxCSAAMSubject";
+            this.textBoxCSAAMSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMSubject.TabIndex = 30;
+            // 
+            // textBoxCSAAMCopy
+            // 
+            this.textBoxCSAAMCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMCopy.Location = new System.Drawing.Point(86, 37);
+            this.textBoxCSAAMCopy.Multiline = true;
+            this.textBoxCSAAMCopy.Name = "textBoxCSAAMCopy";
+            this.textBoxCSAAMCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSAAMCopy.TabIndex = 29;
+            // 
+            // textBoxCSAAMTO
+            // 
+            this.textBoxCSAAMTO.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMTO.Location = new System.Drawing.Point(86, 9);
+            this.textBoxCSAAMTO.Name = "textBoxCSAAMTO";
+            this.textBoxCSAAMTO.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMTO.TabIndex = 28;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(10, 12);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(36, 13);
+            this.label20.TabIndex = 24;
+            this.label20.Text = "Кому:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(10, 40);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(41, 13);
+            this.label21.TabIndex = 25;
+            this.label21.Text = "Копия:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(10, 115);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(37, 13);
+            this.label22.TabIndex = 26;
+            this.label22.Text = "Тема:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(9, 141);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(68, 13);
+            this.label23.TabIndex = 27;
+            this.label23.Text = "Сообщение:";
+            // 
+            // textBoxCSAAMINDMessage
+            // 
+            this.textBoxCSAAMINDMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMINDMessage.Location = new System.Drawing.Point(86, 138);
+            this.textBoxCSAAMINDMessage.Multiline = true;
+            this.textBoxCSAAMINDMessage.Name = "textBoxCSAAMINDMessage";
+            this.textBoxCSAAMINDMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSAAMINDMessage.TabIndex = 31;
+            // 
+            // textBoxCSAAMINDSubject
+            // 
+            this.textBoxCSAAMINDSubject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMINDSubject.Location = new System.Drawing.Point(86, 112);
+            this.textBoxCSAAMINDSubject.Name = "textBoxCSAAMINDSubject";
+            this.textBoxCSAAMINDSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMINDSubject.TabIndex = 30;
+            // 
+            // textBoxCSAAMINDCopy
+            // 
+            this.textBoxCSAAMINDCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMINDCopy.Location = new System.Drawing.Point(86, 37);
+            this.textBoxCSAAMINDCopy.Multiline = true;
+            this.textBoxCSAAMINDCopy.Name = "textBoxCSAAMINDCopy";
+            this.textBoxCSAAMINDCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSAAMINDCopy.TabIndex = 29;
+            // 
+            // textBoxCSAAMINDTO
+            // 
+            this.textBoxCSAAMINDTO.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxCSAAMINDTO.Location = new System.Drawing.Point(86, 9);
+            this.textBoxCSAAMINDTO.Name = "textBoxCSAAMINDTO";
+            this.textBoxCSAAMINDTO.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMINDTO.TabIndex = 28;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(10, 12);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(36, 13);
+            this.label24.TabIndex = 24;
+            this.label24.Text = "Кому:";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(10, 40);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(41, 13);
+            this.label25.TabIndex = 25;
+            this.label25.Text = "Копия:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(10, 115);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(37, 13);
+            this.label26.TabIndex = 26;
+            this.label26.Text = "Тема:";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(9, 141);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(68, 13);
+            this.label27.TabIndex = 27;
+            this.label27.Text = "Сообщение:";
+            // 
             // SettingLetters
             // 
             this.AcceptButton = this.buttonOk;
@@ -611,7 +819,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(838, 412);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TabControl);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -629,11 +837,15 @@
             this.tabPage7.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.TabControl.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -669,7 +881,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox textBoxCSLEMessage;
         private System.Windows.Forms.TextBox textBoxCSLESubject;
@@ -688,5 +900,23 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.TextBox textBoxCSAAMMessage;
+        private System.Windows.Forms.TextBox textBoxCSAAMSubject;
+        private System.Windows.Forms.TextBox textBoxCSAAMCopy;
+        private System.Windows.Forms.TextBox textBoxCSAAMTO;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.TextBox textBoxCSAAMINDMessage;
+        private System.Windows.Forms.TextBox textBoxCSAAMINDSubject;
+        private System.Windows.Forms.TextBox textBoxCSAAMINDCopy;
+        private System.Windows.Forms.TextBox textBoxCSAAMINDTO;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
     }
 }

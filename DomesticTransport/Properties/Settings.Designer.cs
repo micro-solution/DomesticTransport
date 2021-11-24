@@ -244,6 +244,130 @@ namespace DomesticTransport.Properties {
             }
         }
 
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("whschaeffler@quehenberger.ru; Vadim Bogdanov <vadim.bogdanov@quehenberger.ru>; Mi" +
+            "khail Borovik <Mikhail.Borovik@quehenberger.ru>")]
+        public string SettingCSAAMTO
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMTO"]));
+            }
+            set
+            {
+                this["SettingCSAAMTO"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"Sedova Galina  (ext.)  SWCSRG-LWA <sedovgli@schaeffler.com>; Koltsov Alexander  SWCSRG-LT <koltcaek@schaeffler.com>; Shurygina Alina  (ext.)  SWCSRG-LWA <shuryain@schaeffler.com>; Gumennikov Andrey  SWCSRG-ADC <gumenadr@schaeffler.com>; Morokhov Konstantin  SWCSRG-LWA <morokkns@schaeffler.com>; Sinyatkin Alexey  SWCSRG-LWA <SINYAAEX@schaeffler.com>; Konina Ekaterina  WI/SRG-CERO <konineat@schaeffler.com>; Chaplina Olga  WI/SRG-CERO <CHAPLOGA@schaeffler.com>; Sulak Olga  WI/SRG-CERO <sulakoga@schaeffler.com>; Kozlov Alexey  SWCSRG-ADC <alexey.kozlov@schaeffler.com>; Voitkevich Arkadii  SWCSRG-LT <voitkaka@schaeffler.com>; maxim.derbin@quehenberger.ru; Smorodov Vladimir  WI/SRG-CERO <smorovad@schaeffler.com>; Boldyreva Olga  WI/SRG-CERO <Tomskoga@schaeffler.com>; Zsilak Alekszandra  SWCSRG-ADC <zhilaaex@schaeffler.com>; Grinivezkaja Maria  SWCSRG-ADC <gerzomri@schaeffler.com>; Khovalyg Maadyr  WI/SRG-CERO <khovamad@schaeffler.com>; Grin Liliya  (ext.)  SWCSRG-LWA <grinlli@schaeffler.com>; Budnikova Iuliia  SWCSRG-ADC <budniili@schaeffler.com>")]
+        public string SettingCSAAMCopy
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMCopy"]));
+            }
+            set
+            {
+                this["SettingCSAAMCopy"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Отгрузка на [date]")]
+        public string SettingCSAAMSubject
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMSubject"]));
+            }
+            set
+            {
+                this["SettingCSAAMSubject"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Коллеги, добрый день! В приложении отгрузка на [date], прошу принять к работе.")]
+        public string SettingCSAAMMessage
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMMessage"]));
+            }
+            set
+            {
+                this["SettingCSAAMMessage"] = value;
+            }
+        }
+
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("whschaeffler@quehenberger.ru; Vadim Bogdanov <vadim.bogdanov@quehenberger.ru>; Mi" +
+            "khail Borovik <Mikhail.Borovik@quehenberger.ru>")]
+        public string SettingCSAAMINDTo
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMINDTo"]));
+            }
+            set
+            {
+                this["SettingCSAAMINDTo"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"Sedova Galina  (ext.)  SWCSRG-LWA <sedovgli@schaeffler.com>; Koltsov Alexander  SWCSRG-LT <koltcaek@schaeffler.com>; Shurygina Alina  (ext.)  SWCSRG-LWA <shuryain@schaeffler.com>; Gumennikov Andrey  SWCSRG-ADC <gumenadr@schaeffler.com>; Morokhov Konstantin  SWCSRG-LWA <morokkns@schaeffler.com>; Sinyatkin Alexey  SWCSRG-LWA <SINYAAEX@schaeffler.com>; Konina Ekaterina  WI/SRG-CERO <konineat@schaeffler.com>; Chaplina Olga  WI/SRG-CERO <CHAPLOGA@schaeffler.com>; Sulak Olga  WI/SRG-CERO <sulakoga@schaeffler.com>; Kozlov Alexey  SWCSRG-ADC <alexey.kozlov@schaeffler.com>; Voitkevich Arkadii  SWCSRG-LT <voitkaka@schaeffler.com>; maxim.derbin@quehenberger.ru; Smorodov Vladimir  WI/SRG-CERO <smorovad@schaeffler.com>; Boldyreva Olga  WI/SRG-CERO <Tomskoga@schaeffler.com>; Zsilak Alekszandra  SWCSRG-ADC <zhilaaex@schaeffler.com>; Grinivezkaja Maria  SWCSRG-ADC <gerzomri@schaeffler.com>; Khovalyg Maadyr  WI/SRG-CERO <khovamad@schaeffler.com>; Grin Liliya  (ext.)  SWCSRG-LWA <grinlli@schaeffler.com>; Budnikova Iuliia  SWCSRG-ADC <budniili@schaeffler.com>")]
+        public string SettingCSAAMINDCopy
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMINDCopy"]));
+            }
+            set
+            {
+                this["SettingCSAAMINDCopy"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Отгрузка на [date]")]
+        public string SettingCSAAMINDSubject
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMINDSubject"]));
+            }
+            set
+            {
+                this["SettingCSAAMINDSubject"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Коллеги, добрый день! В приложении отгрузка на [date], прошу принять к работе.")]
+        public string SettingCSAAMINDMessage
+        {
+            get
+            {
+                return ((string)(this["SettingCSAAMINDMessage"]));
+            }
+            set
+            {
+                this["SettingCSAAMINDMessage"] = value;
+            }
+        }
+
+
         #endregion
 
         [global::System.Configuration.UserScopedSettingAttribute()]

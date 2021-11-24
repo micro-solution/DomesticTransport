@@ -58,8 +58,10 @@
             this.ButtonTotalToProviders = this.Factory.CreateRibbonButton();
             this.menu1 = this.Factory.CreateRibbonMenu();
             this.ButtonTaskSendToWithOutLE = this.Factory.CreateRibbonButton();
-            this.ButtonTaskSendToWithLE = this.Factory.CreateRibbonButton();
             this.ButtonTaskSendLetterToCSStorekeepe = this.Factory.CreateRibbonButton();
+            this.menu2 = this.Factory.CreateRibbonMenu();
+            this.ButtonTaskSendToCSAAM = this.Factory.CreateRibbonButton();
+            this.ButtonTaskSendToCSAAMIND = this.Factory.CreateRibbonButton();
             this.ButtonToArchive = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.ToTransportTable = this.Factory.CreateRibbonButton();
@@ -296,6 +298,7 @@
             this.MenuSendTotal.Image = ((System.Drawing.Image)(resources.GetObject("MenuSendTotal.Image")));
             this.MenuSendTotal.Items.Add(this.ButtonTotalToProviders);
             this.MenuSendTotal.Items.Add(this.menu1);
+            this.MenuSendTotal.Items.Add(this.menu2);
             this.MenuSendTotal.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.MenuSendTotal.Label = "Отправка Отгрузок";
             this.MenuSendTotal.Name = "MenuSendTotal";
@@ -315,7 +318,6 @@
             this.menu1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.menu1.Image = ((System.Drawing.Image)(resources.GetObject("menu1.Image")));
             this.menu1.Items.Add(this.ButtonTaskSendToWithOutLE);
-            this.menu1.Items.Add(this.ButtonTaskSendToWithLE);
             this.menu1.Items.Add(this.ButtonTaskSendLetterToCSStorekeepe);
             this.menu1.Label = "В CS  и WH";
             this.menu1.Name = "menu1";
@@ -329,14 +331,6 @@
             this.ButtonTaskSendToWithOutLE.ShowImage = true;
             this.ButtonTaskSendToWithOutLE.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSWithOutLE_Click);
             // 
-            // ButtonTaskSendToWithLE
-            // 
-            this.ButtonTaskSendToWithLE.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendToWithLE.Image")));
-            this.ButtonTaskSendToWithLE.Label = "Отправка письма в кастом сервис c данными о юр. лиц перевозчиков";
-            this.ButtonTaskSendToWithLE.Name = "ButtonTaskSendToWithLE";
-            this.ButtonTaskSendToWithLE.ShowImage = true;
-            this.ButtonTaskSendToWithLE.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSWithLE_Click);
-            // 
             // ButtonTaskSendLetterToCSStorekeepe
             // 
             this.ButtonTaskSendLetterToCSStorekeepe.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendLetterToCSStorekeepe.Image")));
@@ -344,6 +338,32 @@
             this.ButtonTaskSendLetterToCSStorekeepe.Name = "ButtonTaskSendLetterToCSStorekeepe";
             this.ButtonTaskSendLetterToCSStorekeepe.ShowImage = true;
             this.ButtonTaskSendLetterToCSStorekeepe.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSStorekeeper_Click);
+            // 
+            // menu2
+            // 
+            this.menu2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.menu2.Image = ((System.Drawing.Image)(resources.GetObject("menu2.Image")));
+            this.menu2.Items.Add(this.ButtonTaskSendToCSAAM);
+            this.menu2.Items.Add(this.ButtonTaskSendToCSAAMIND);
+            this.menu2.Label = "CS AAM/AAM+IND и WH";
+            this.menu2.Name = "menu2";
+            this.menu2.ShowImage = true;
+            // 
+            // ButtonTaskSendToCSAAM
+            // 
+            this.ButtonTaskSendToCSAAM.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendToCSAAM.Image")));
+            this.ButtonTaskSendToCSAAM.Label = "CS AAM и WH";
+            this.ButtonTaskSendToCSAAM.Name = "ButtonTaskSendToCSAAM";
+            this.ButtonTaskSendToCSAAM.ShowImage = true;
+            this.ButtonTaskSendToCSAAM.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSAAM);
+            // 
+            // ButtonTaskSendToCSAAMIND
+            // 
+            this.ButtonTaskSendToCSAAMIND.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTaskSendToCSAAMIND.Image")));
+            this.ButtonTaskSendToCSAAMIND.Label = "CS AAM + CS IND и WH";
+            this.ButtonTaskSendToCSAAMIND.Name = "ButtonTaskSendToCSAAMIND";
+            this.ButtonTaskSendToCSAAMIND.ShowImage = true;
+            this.ButtonTaskSendToCSAAMIND.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonTaskSendLetterToCSAAMIND);
             // 
             // ButtonToArchive
             // 
@@ -528,8 +548,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonScanTransportTable;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendToWithOutLE;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendToWithLE;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendToCSAAM;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendLetterToCSStorekeepe;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonTaskSendToCSAAMIND;
     }
 
     partial class ThisRibbonCollection

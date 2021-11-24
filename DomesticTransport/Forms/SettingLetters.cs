@@ -24,6 +24,16 @@ namespace DomesticTransport.Forms
             textBoxCSStorekeeperCopy.Text = Properties.Settings.Default.SettingCSLetterStorekeeperCopy;
             textBoxCSStorekeeperSubject.Text = Properties.Settings.Default.SettingCSLetterStorekeeperSubject;
             textBoxCSStorekeeperMessage.Text = Properties.Settings.Default.SettingCSLetterStorekeeperMessage;
+
+            textBoxCSAAMTO.Text = Properties.Settings.Default.SettingCSAAMTO;
+            textBoxCSAAMCopy.Text = Properties.Settings.Default.SettingCSAAMCopy;
+            textBoxCSAAMSubject.Text = Properties.Settings.Default.SettingCSAAMSubject;
+            textBoxCSAAMMessage.Text = Properties.Settings.Default.SettingCSAAMMessage;
+
+            textBoxCSAAMINDTO.Text = Properties.Settings.Default.SettingCSAAMINDTo;
+            textBoxCSAAMINDCopy.Text = Properties.Settings.Default.SettingCSAAMINDCopy;
+            textBoxCSAAMINDSubject.Text = Properties.Settings.Default.SettingCSAAMINDSubject;
+            textBoxCSAAMINDMessage.Text = Properties.Settings.Default.SettingCSAAMINDMessage;
             #endregion
 
             textBoxProviderCopy.Text = Properties.Settings.Default.ProviderLettersCopy;
@@ -69,6 +79,16 @@ namespace DomesticTransport.Forms
             Properties.Settings.Default.SettingCSLetterStorekeeperCopy = textBoxCSStorekeeperCopy.Text;
             Properties.Settings.Default.SettingCSLetterStorekeeperSubject = textBoxCSStorekeeperSubject.Text;
             Properties.Settings.Default.SettingCSLetterStorekeeperMessage = textBoxCSStorekeeperMessage.Text;
+
+            Properties.Settings.Default.SettingCSAAMTO = textBoxCSAAMTO.Text;
+            Properties.Settings.Default.SettingCSAAMCopy = textBoxCSAAMCopy.Text;
+            Properties.Settings.Default.SettingCSAAMSubject = textBoxCSAAMSubject.Text;
+            Properties.Settings.Default.SettingCSAAMMessage = textBoxCSAAMMessage.Text;
+
+            Properties.Settings.Default.SettingCSAAMINDTo = textBoxCSAAMINDTO.Text;
+            Properties.Settings.Default.SettingCSAAMINDCopy = textBoxCSAAMINDCopy.Text;
+            Properties.Settings.Default.SettingCSAAMINDSubject = textBoxCSAAMINDSubject.Text;
+            Properties.Settings.Default.SettingCSAAMINDMessage = textBoxCSAAMINDMessage.Text;
             #endregion
 
             Properties.Settings.Default.ProviderLettersCopy = textBoxProviderCopy.Text;
