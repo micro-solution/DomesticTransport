@@ -143,6 +143,8 @@
             this.sbtnAddOrodersNongroup.ItemSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.sbtnAddOrodersNongroup.Label = "Загрузить без групприовки";
             this.sbtnAddOrodersNongroup.Name = "sbtnAddOrodersNongroup";
+            this.sbtnAddOrodersNongroup.ScreenTip = "Функционал в разработке. ";
+            this.sbtnAddOrodersNongroup.SuperTip = "Добавление заказов без перерасчета доставок.";
             // 
             // BtnAddSapOrodersNongroup
             // 
