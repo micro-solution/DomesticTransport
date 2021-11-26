@@ -7,6 +7,9 @@ namespace DomesticTransport.Forms
     {
         public string DateDelivery { get; set; }
 
+        /// <summary>
+        /// Календарь
+        /// </summary>
         public Calendar()
         {
             InitializeComponent();
