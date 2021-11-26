@@ -681,5 +681,42 @@ namespace DomesticTransport
         {
 
         }
+
+    
+
+        private void BtnAddSapOrodersNongroup_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().ExportFromSAP_WithoutComlete();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        
+        }
+
+        private void BtnAddCsOrodersNongroup_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                ShefflerWB.ExcelOptimizateOn();
+                new Functions().ExportFromCS_WithoutComlete();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ShefflerWB.ExcelOptimizateOff();
+            }
+        }
     }
 }

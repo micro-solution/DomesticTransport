@@ -360,5 +360,11 @@ namespace DomesticTransport.Model
             }
             return chk;
         }
+
+
+        public bool OrderExist(string id)
+        {
+            return Orders.Find(x => x.Id == id) is Order;
+        }
     }
 }

@@ -70,6 +70,92 @@ namespace DomesticTransport
         }
 
         /// <summary>
+        /// Загрузка from SAP без комплектовки доставок
+        /// </summary>
+        public void ExportFromSAP_WithoutComlete()
+        {
+            SapFiles sapFiles = new SapFiles();
+            sapFiles.ShowDialog();
+            if (sapFiles.DialogResult != DialogResult.OK) return;
+
+            ShefflerWB.DateCell.Value = sapFiles.calendarControl.SelectionStart;
+
+            string sapPath = "";
+            string ordersPath = "";
+            try
+            {
+                sapPath = sapFiles.ExportFile;
+                ordersPath = sapFiles.OrderFile;
+            }
+            catch
+            {
+                return;
+            }
+            finally
+            {
+                sapFiles.Close();
+            }
+            List<Order> orders = GetOrdersFromSap(sapPath);
+            List<Delivery> existDeliveries = GetDeliveriesFromTotalSheet();         
+            orders = orders.FindAll(x => existDeliveries.Find(d => d.OrderExist(x.Id)) is null).ToList();
+
+            if (ordersPath != "" && File.Exists(ordersPath))
+            {
+                orders = GetOrdersInfo(ordersPath, orders); // Поиск свойств в файле All orders
+            }           
+            List<Delivery> deliveries = NonCompeteDeliveries(orders, existDeliveries.Count);
+            if (deliveries != null && deliveries.Count > 0)
+            {
+                PrintDelivery(deliveries);
+                PrintOrders(deliveries);
+                PrintTotal(deliveries);
+            }
+            ShefflerWB.DeliverySheet.Columns.AutoFit();
+        }
+
+
+        internal void ExportFromCS_WithoutComlete()
+        {
+            string file = SapFiles.SelectFile();
+            if (!File.Exists(file)) return;
+            Order order = GetFromFile(file);
+            if (order == null) return;
+            CheckAndAddNewRoute(order);
+            List<Order> orders = new List<Order>();
+            orders.Add(order);
+            List<Delivery> existDeliveries = GetDeliveriesFromTotalSheet();
+            List<Delivery> deliveries = NonCompeteDeliveries(orders, existDeliveries.Count);
+            if (deliveries != null && deliveries.Count > 0)
+            {
+                PrintDelivery(deliveries);
+                PrintOrders(deliveries);
+                PrintTotal(deliveries);
+            }
+            ShefflerWB.DeliverySheet.Columns.AutoFit();
+            return;
+        }
+
+
+        private List<Delivery> NonCompeteDeliveries(List<Order> allOrders, int startNumber)
+        {
+            List<Delivery> deliveries = new List<Delivery>();
+            allOrders = allOrders.OrderBy(x => x.WeightNetto).ToList();
+            foreach (Order order in allOrders)
+            {
+                List<Order> orderList = new List<Order>();
+                orderList.Add(order);
+                deliveries.Add(
+                    new Delivery()
+                    {
+                        Orders = orderList,
+                        HasRoute = false,
+                        Number = startNumber++
+                    }) ;
+            }
+            return deliveries;
+        }
+
+        /// <summary>
         /// Загрузка All Orders 
         /// </summary>
         public void LoadAllOrders()
@@ -471,6 +557,8 @@ namespace DomesticTransport
             }
             CopyDeliveryToTotal(deliveries);
         }
+
+        
 
 
         /// <summary>
