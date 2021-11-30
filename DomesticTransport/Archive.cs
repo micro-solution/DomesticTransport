@@ -310,14 +310,14 @@ namespace DomesticTransport
             bool isthrowException = false;
             foreach (ListRow row in table.ListTable.ListRows)
             {
+                table.CurrentRowIndex = row.Index;
                 isWrongCells = MarkWrongCells(table);
 
-                if (isWrongCells == true && isthrowException==false)
+                if (isWrongCells && !isthrowException)
                 {
                     isthrowException = true;
                 }
 
-                table.CurrentRowRange = row.Range;
                 Delivery deliveryRow = GetDeliveryFromTotalRow(table);
 
                 if (deliveryRow != null)
@@ -335,14 +335,19 @@ namespace DomesticTransport
             return deliveries;
         }
 
+        //private static 
+
         private static bool MarkWrongCells(XLTable xlTable)
         {
-            Range tableTange = xlTable.TableRange;
-            int row = xlTable.CurrentRowRange.Row;
-            object[,] cellsValue = xlTable.CurrentRowRange.Range[tableTange.Cells[0, 1], tableTange.Cells[0, 12]].Value;
-            object TimeCell = xlTable.CurrentRowRange.Cells[1, 1].Value;
+            //Range tableTange = xlTable.TableRange;
+            //int row = xlTable.CurrentRowRange.Row;
+            Range row = xlTable.CurrentRowRange;
+            //object[,] cellsValue = xlTable.CurrentRowRange.Range[tableTange.Cells[0, 1], tableTange.Cells[0, 12]].Value;
+            object[,] cellsValue = row.Range[row.Cells[0, 1], row.Cells[0, 12]].Value;
 
-            if (TimeCell != null)
+            object timeCell = xlTable.CurrentRowRange.Cells[1, 1].Value;
+
+            if (timeCell != null)
             {
                 if (cellsValue.GetValue(1, 1) != null)
                 {
@@ -350,8 +355,11 @@ namespace DomesticTransport
                     {
                         if (cellsValue[1, i] == null)
                         {
-                            tableTange.Cells[row - 1, 0].Interior.Color = Color.Yellow;
+                            if(  xlTable.ListTable.ListColumns[""].Index == i)
+                            {
+                            tableTange.Cells[row, 0].Interior.Color = Color.Yellow;
                             return true;
+                            }
                         }
                     }
                 }
@@ -365,6 +373,37 @@ namespace DomesticTransport
                 return true;
             }
         }
+
+        //private static bool MarkWrongCells(XLTable xlTable)
+        //{
+        //    Range tableTange = xlTable.TableRange;
+        //    int row = xlTable.CurrentRowRange.Row;
+        //    object[,] cellsValue = xlTable.CurrentRowRange.Range[tableTange.Cells[0, 1], tableTange.Cells[0, 12]].Value;
+        //    object TimeCell = xlTable.CurrentRowRange.Cells[1, 1].Value;
+
+        //    if (TimeCell != null)
+        //    {
+        //        if (cellsValue.GetValue(1, 1) != null)
+        //        {
+        //            for (int i = 1; i < cellsValue.GetLength(1); i++)
+        //            {
+        //                if (cellsValue[1, i] == null)
+        //                {
+        //                    tableTange.Cells[row - 1, 0].Interior.Color = Color.Yellow;
+        //                    return true;
+        //                }
+        //            }
+        //        }
+        //        tableTange.Cells[row - 1, 0].Interior.Color = Color.White;
+        //        return false;
+        //    }
+
+        //    else
+        //    {
+        //        tableTange.Cells[row - 1, 0].Interior.Color = Color.Red;
+        //        return true;
+        //    }
+        //}
 
         private static Order GetOrdersFromTotalRow(XLTable xlTable)
         {
