@@ -190,7 +190,7 @@ namespace DomesticTransport
                 //DateTime orderDate = DateTime.TryParse(currentOrderDate, out DateTime currentDate) ? currentDate : DateTime.MaxValue;
                 //if (orderDate <= date)
                 //{
-                    row.Range.EntireRow.Delete();
+                row.Range.EntireRow.Delete();
                 //}
             }
             table.ListTable.ListRows.Add();
@@ -280,7 +280,7 @@ namespace DomesticTransport
 
             catch
             {
-                System.Windows.Forms.MessageBox.Show("Обнаружены ошибки", "Операция Остановлена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                System.Windows.Forms.MessageBox.Show("Обнаружены ошибки", "Операция oстановлена", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 return;
             }
 
@@ -310,8 +310,9 @@ namespace DomesticTransport
             bool isthrowException = false;
             foreach (ListRow row in table.ListTable.ListRows)
             {
+                if (row.Index == 1) continue;
                 table.CurrentRowIndex = row.Index;
-                isWrongCells = MarkWrongCells(table);
+                isWrongCells = MarkWrongCells(row, table);
 
                 if (isWrongCells && !isthrowException)
                 {
@@ -335,43 +336,52 @@ namespace DomesticTransport
             return deliveries;
         }
 
-        //private static 
 
-        private static bool MarkWrongCells(XLTable xlTable)
+        private static bool MarkWrongCells(ListRow row, XLTable xlTable)
         {
-            //Range tableTange = xlTable.TableRange;
-            //int row = xlTable.CurrentRowRange.Row;
-            Range row = xlTable.CurrentRowRange;
-            //object[,] cellsValue = xlTable.CurrentRowRange.Range[tableTange.Cells[0, 1], tableTange.Cells[0, 12]].Value;
-            object[,] cellsValue = row.Range[row.Cells[0, 1], row.Cells[0, 12]].Value;
+            object[,] cellsValue = row.Range.Value;
+            object time = row.Range[1, 1].Value;
+            bool isTotalRow = false;
+            bool hasError = false;
+            int colEnd = 14;
 
-            object timeCell = xlTable.CurrentRowRange.Cells[1, 1].Value;
-
-            if (timeCell != null)
+            if (time != null)
             {
-                if (cellsValue.GetValue(1, 1) != null)
+                string provider = row.Range[1, xlTable.ListTable.ListColumns["Экспедитор"].Index].Value?.ToString() ?? "";
+
+
+                if (provider == "DPD" || provider == "Деловые линии")
+                    colEnd = 4;
+
+                for (int i = 2; i < colEnd; i++)
                 {
-                    for (int i = 1; i < cellsValue.GetLength(1); i++)
+                    object val = row.Range[1, i].Value;
+                    if (val != null)
                     {
-                        if (cellsValue[1, i] == null)
-                        {
-                            if(  xlTable.ListTable.ListColumns[""].Index == i)
-                            {
-                            tableTange.Cells[row, 0].Interior.Color = Color.Yellow;
-                            return true;
-                            }
-                        }
+                        isTotalRow = true;
                     }
-                }
-                tableTange.Cells[row - 1, 0].Interior.Color = Color.White;
-                return false;
-            }
+                    else 
+                    {
+                        hasError = true;
+                    }
 
-            else
-            {
-                tableTange.Cells[row - 1, 0].Interior.Color = Color.Red;
-                return true;
+                       if (hasError &&  isTotalRow)
+                    {
+                        row.Range[1, 0].Interior.Color = Color.Yellow;
+                        return true;
+                    }
+                   
+                }                
+                row.Range[1, 0].Interior.Color = Color.White;
             }
+            else if (row.Index < xlTable.ListTable.ListRows.Count)
+            {
+
+                row.Range[1, 0].Interior.Color = Color.Red;
+                return true;
+
+            }
+            return false;
         }
 
         //private static bool MarkWrongCells(XLTable xlTable)
