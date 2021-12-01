@@ -262,13 +262,10 @@ namespace DomesticTransport
             };
             try
             {
-
                 List<Delivery> deliveries = GetAllDeliveries(tableArchive);
-
                 TransportTable transportTable = new TransportTable();
                 transportTable.ImportDeliveryes(deliveries);
                 transportTable.SaveAndClose();
-
                 ShipmentsTable shipmentsTable = new ShipmentsTable();
                 shipmentsTable.ImportDeliveryes(deliveries);
                 shipmentsTable.SaveAndClose();
@@ -310,8 +307,8 @@ namespace DomesticTransport
             bool isthrowException = false;
             foreach (ListRow row in table.ListTable.ListRows)
             {
-                if (row.Index == 1) continue;
-                table.CurrentRowIndex = row.Index;
+                table.SetCurentRow(row.Index);
+                    
                 isWrongCells = MarkWrongCells(row, table);
 
                 if (isWrongCells && !isthrowException)
