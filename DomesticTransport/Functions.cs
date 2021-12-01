@@ -734,7 +734,7 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[29].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[28].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
-            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[26].Delete();
+            
             DeleteColumnsLegalInformation();
 
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
@@ -771,7 +771,7 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[29].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[28].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
-            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[26].Delete();
+            
             DeleteColumnsLegalInformation();
 
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
