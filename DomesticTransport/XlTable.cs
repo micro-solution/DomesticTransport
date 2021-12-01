@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using System;
 
 namespace DomesticTransport
 {
@@ -166,7 +167,10 @@ namespace DomesticTransport
             CurrentRowRange = GetLastRow();
         }
 
-
-
+        internal void SetCurentRow(int index)
+        {
+            CurrentRowIndex = index;
+            CurrentRowRange = ListTable.ListRows[index].Range;
+        }
     }
 }
