@@ -79,7 +79,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.textBoxCSAAMMessage = new System.Windows.Forms.TextBox();
             this.textBoxCSAAMSubject = new System.Windows.Forms.TextBox();
             this.textBoxCSAAMCopy = new System.Windows.Forms.TextBox();
@@ -88,6 +87,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.textBoxCSAAMINDMessage = new System.Windows.Forms.TextBox();
             this.textBoxCSAAMINDSubject = new System.Windows.Forms.TextBox();
             this.textBoxCSAAMINDCopy = new System.Windows.Forms.TextBox();
@@ -112,7 +112,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(671, 383);
+            this.buttonOk.Location = new System.Drawing.Point(848, 417);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 8;
@@ -124,7 +124,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(752, 383);
+            this.buttonCancel.Location = new System.Drawing.Point(929, 417);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 9;
@@ -140,7 +140,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(828, 355);
+            this.tabPage2.Size = new System.Drawing.Size(1003, 396);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Провайдерам";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -327,7 +327,7 @@
             this.textBoxProviderCopy.Location = new System.Drawing.Point(85, 7);
             this.textBoxProviderCopy.Multiline = true;
             this.textBoxProviderCopy.Name = "textBoxProviderCopy";
-            this.textBoxProviderCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxProviderCopy.Size = new System.Drawing.Size(910, 69);
             this.textBoxProviderCopy.TabIndex = 13;
             // 
             // tabPage1
@@ -343,7 +343,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(828, 355);
+            this.tabPage1.Size = new System.Drawing.Size(1003, 396);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Письма в CS и WH";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -356,7 +356,7 @@
             this.textBoxCSMessage.Location = new System.Drawing.Point(86, 138);
             this.textBoxCSMessage.Multiline = true;
             this.textBoxCSMessage.Name = "textBoxCSMessage";
-            this.textBoxCSMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSMessage.Size = new System.Drawing.Size(910, 252);
             this.textBoxCSMessage.TabIndex = 7;
             // 
             // textBoxCSSubject
@@ -365,7 +365,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSSubject.Location = new System.Drawing.Point(86, 112);
             this.textBoxCSSubject.Name = "textBoxCSSubject";
-            this.textBoxCSSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSSubject.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSSubject.TabIndex = 6;
             // 
             // textBoxCSCopy
@@ -375,7 +375,7 @@
             this.textBoxCSCopy.Location = new System.Drawing.Point(86, 37);
             this.textBoxCSCopy.Multiline = true;
             this.textBoxCSCopy.Name = "textBoxCSCopy";
-            this.textBoxCSCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSCopy.Size = new System.Drawing.Size(910, 69);
             this.textBoxCSCopy.TabIndex = 5;
             // 
             // textBoxCSTo
@@ -384,7 +384,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSTo.Location = new System.Drawing.Point(86, 9);
             this.textBoxCSTo.Name = "textBoxCSTo";
-            this.textBoxCSTo.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSTo.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSTo.TabIndex = 4;
             // 
             // label1
@@ -435,9 +435,10 @@
             this.TabControl.Controls.Add(this.tabPage8);
             this.TabControl.Controls.Add(this.tabPage9);
             this.TabControl.Location = new System.Drawing.Point(2, 0);
+            this.TabControl.Multiline = true;
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(836, 381);
+            this.TabControl.Size = new System.Drawing.Size(1013, 415);
             this.TabControl.TabIndex = 10;
             // 
             // tabPage3
@@ -453,9 +454,9 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(828, 355);
+            this.tabPage3.Size = new System.Drawing.Size(1005, 389);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Письма в CS и WH без юр. данных  перевозчиков";
+            this.tabPage3.Text = "Письма с предварительной загрузкой кладовщику на склад";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // textBoxCSLEMessage
@@ -466,7 +467,7 @@
             this.textBoxCSLEMessage.Location = new System.Drawing.Point(86, 138);
             this.textBoxCSLEMessage.Multiline = true;
             this.textBoxCSLEMessage.Name = "textBoxCSLEMessage";
-            this.textBoxCSLEMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSLEMessage.Size = new System.Drawing.Size(912, 245);
             this.textBoxCSLEMessage.TabIndex = 15;
             // 
             // textBoxCSLESubject
@@ -475,7 +476,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSLESubject.Location = new System.Drawing.Point(86, 112);
             this.textBoxCSLESubject.Name = "textBoxCSLESubject";
-            this.textBoxCSLESubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSLESubject.Size = new System.Drawing.Size(912, 20);
             this.textBoxCSLESubject.TabIndex = 14;
             // 
             // textBoxCSLECopy
@@ -485,7 +486,7 @@
             this.textBoxCSLECopy.Location = new System.Drawing.Point(86, 37);
             this.textBoxCSLECopy.Multiline = true;
             this.textBoxCSLECopy.Name = "textBoxCSLECopy";
-            this.textBoxCSLECopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSLECopy.Size = new System.Drawing.Size(912, 69);
             this.textBoxCSLECopy.TabIndex = 13;
             // 
             // textBoxCSLETo
@@ -494,7 +495,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSLETo.Location = new System.Drawing.Point(86, 9);
             this.textBoxCSLETo.Name = "textBoxCSLETo";
-            this.textBoxCSLETo.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSLETo.Size = new System.Drawing.Size(912, 20);
             this.textBoxCSLETo.TabIndex = 12;
             // 
             // label12
@@ -546,9 +547,9 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(828, 355);
+            this.tabPage4.Size = new System.Drawing.Size(1003, 396);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Письма в CS и WH (Кладовщик)";
+            this.tabPage4.Text = "Письма менеджеру по отгрузке с данными юр. лиц ";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // textBoxCSStorekeeperMessage
@@ -559,7 +560,7 @@
             this.textBoxCSStorekeeperMessage.Location = new System.Drawing.Point(86, 138);
             this.textBoxCSStorekeeperMessage.Multiline = true;
             this.textBoxCSStorekeeperMessage.Name = "textBoxCSStorekeeperMessage";
-            this.textBoxCSStorekeeperMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSStorekeeperMessage.Size = new System.Drawing.Size(910, 252);
             this.textBoxCSStorekeeperMessage.TabIndex = 23;
             // 
             // textBoxCSStorekeeperSubject
@@ -568,7 +569,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSStorekeeperSubject.Location = new System.Drawing.Point(86, 112);
             this.textBoxCSStorekeeperSubject.Name = "textBoxCSStorekeeperSubject";
-            this.textBoxCSStorekeeperSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSStorekeeperSubject.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSStorekeeperSubject.TabIndex = 22;
             // 
             // textBoxCSStorekeeperCopy
@@ -578,7 +579,7 @@
             this.textBoxCSStorekeeperCopy.Location = new System.Drawing.Point(86, 37);
             this.textBoxCSStorekeeperCopy.Multiline = true;
             this.textBoxCSStorekeeperCopy.Name = "textBoxCSStorekeeperCopy";
-            this.textBoxCSStorekeeperCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSStorekeeperCopy.Size = new System.Drawing.Size(910, 69);
             this.textBoxCSStorekeeperCopy.TabIndex = 21;
             // 
             // textBoxCSStorekeeperTo
@@ -587,7 +588,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSStorekeeperTo.Location = new System.Drawing.Point(86, 9);
             this.textBoxCSStorekeeperTo.Name = "textBoxCSStorekeeperTo";
-            this.textBoxCSStorekeeperTo.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSStorekeeperTo.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSStorekeeperTo.TabIndex = 20;
             // 
             // label16
@@ -639,28 +640,10 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(828, 355);
+            this.tabPage8.Size = new System.Drawing.Size(1003, 396);
             this.tabPage8.TabIndex = 4;
             this.tabPage8.Text = "CS AAM и WH";
             this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // tabPage9
-            // 
-            this.tabPage9.Controls.Add(this.textBoxCSAAMINDMessage);
-            this.tabPage9.Controls.Add(this.textBoxCSAAMINDSubject);
-            this.tabPage9.Controls.Add(this.textBoxCSAAMINDCopy);
-            this.tabPage9.Controls.Add(this.textBoxCSAAMINDTO);
-            this.tabPage9.Controls.Add(this.label24);
-            this.tabPage9.Controls.Add(this.label25);
-            this.tabPage9.Controls.Add(this.label26);
-            this.tabPage9.Controls.Add(this.label27);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(828, 355);
-            this.tabPage9.TabIndex = 5;
-            this.tabPage9.Text = "CS AAM + CS IND и WH";
-            this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // textBoxCSAAMMessage
             // 
@@ -670,7 +653,7 @@
             this.textBoxCSAAMMessage.Location = new System.Drawing.Point(86, 138);
             this.textBoxCSAAMMessage.Multiline = true;
             this.textBoxCSAAMMessage.Name = "textBoxCSAAMMessage";
-            this.textBoxCSAAMMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSAAMMessage.Size = new System.Drawing.Size(910, 252);
             this.textBoxCSAAMMessage.TabIndex = 31;
             // 
             // textBoxCSAAMSubject
@@ -679,7 +662,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSAAMSubject.Location = new System.Drawing.Point(86, 112);
             this.textBoxCSAAMSubject.Name = "textBoxCSAAMSubject";
-            this.textBoxCSAAMSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMSubject.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSAAMSubject.TabIndex = 30;
             // 
             // textBoxCSAAMCopy
@@ -689,7 +672,7 @@
             this.textBoxCSAAMCopy.Location = new System.Drawing.Point(86, 37);
             this.textBoxCSAAMCopy.Multiline = true;
             this.textBoxCSAAMCopy.Name = "textBoxCSAAMCopy";
-            this.textBoxCSAAMCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSAAMCopy.Size = new System.Drawing.Size(910, 69);
             this.textBoxCSAAMCopy.TabIndex = 29;
             // 
             // textBoxCSAAMTO
@@ -698,7 +681,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSAAMTO.Location = new System.Drawing.Point(86, 9);
             this.textBoxCSAAMTO.Name = "textBoxCSAAMTO";
-            this.textBoxCSAAMTO.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMTO.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSAAMTO.TabIndex = 28;
             // 
             // label20
@@ -737,6 +720,24 @@
             this.label23.TabIndex = 27;
             this.label23.Text = "Сообщение:";
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDMessage);
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDSubject);
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDCopy);
+            this.tabPage9.Controls.Add(this.textBoxCSAAMINDTO);
+            this.tabPage9.Controls.Add(this.label24);
+            this.tabPage9.Controls.Add(this.label25);
+            this.tabPage9.Controls.Add(this.label26);
+            this.tabPage9.Controls.Add(this.label27);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(1003, 396);
+            this.tabPage9.TabIndex = 5;
+            this.tabPage9.Text = "CS AAM + CS IND и WH";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
             // textBoxCSAAMINDMessage
             // 
             this.textBoxCSAAMINDMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -745,7 +746,7 @@
             this.textBoxCSAAMINDMessage.Location = new System.Drawing.Point(86, 138);
             this.textBoxCSAAMINDMessage.Multiline = true;
             this.textBoxCSAAMINDMessage.Name = "textBoxCSAAMINDMessage";
-            this.textBoxCSAAMINDMessage.Size = new System.Drawing.Size(735, 211);
+            this.textBoxCSAAMINDMessage.Size = new System.Drawing.Size(910, 252);
             this.textBoxCSAAMINDMessage.TabIndex = 31;
             // 
             // textBoxCSAAMINDSubject
@@ -754,7 +755,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSAAMINDSubject.Location = new System.Drawing.Point(86, 112);
             this.textBoxCSAAMINDSubject.Name = "textBoxCSAAMINDSubject";
-            this.textBoxCSAAMINDSubject.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMINDSubject.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSAAMINDSubject.TabIndex = 30;
             // 
             // textBoxCSAAMINDCopy
@@ -764,7 +765,7 @@
             this.textBoxCSAAMINDCopy.Location = new System.Drawing.Point(86, 37);
             this.textBoxCSAAMINDCopy.Multiline = true;
             this.textBoxCSAAMINDCopy.Name = "textBoxCSAAMINDCopy";
-            this.textBoxCSAAMINDCopy.Size = new System.Drawing.Size(735, 69);
+            this.textBoxCSAAMINDCopy.Size = new System.Drawing.Size(910, 69);
             this.textBoxCSAAMINDCopy.TabIndex = 29;
             // 
             // textBoxCSAAMINDTO
@@ -773,7 +774,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCSAAMINDTO.Location = new System.Drawing.Point(86, 9);
             this.textBoxCSAAMINDTO.Name = "textBoxCSAAMINDTO";
-            this.textBoxCSAAMINDTO.Size = new System.Drawing.Size(735, 20);
+            this.textBoxCSAAMINDTO.Size = new System.Drawing.Size(910, 20);
             this.textBoxCSAAMINDTO.TabIndex = 28;
             // 
             // label24
@@ -818,7 +819,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(838, 412);
+            this.ClientSize = new System.Drawing.Size(1015, 446);
             this.Controls.Add(this.TabControl);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
