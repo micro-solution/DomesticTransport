@@ -731,6 +731,8 @@ namespace DomesticTransport
             if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[29].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[28].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[26].Delete();
             DeleteColumnsLegalInformation();
@@ -766,6 +768,8 @@ namespace DomesticTransport
             if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[29].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[28].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[26].Delete();
             DeleteColumnsLegalInformation();
@@ -840,6 +844,8 @@ namespace DomesticTransport
         /// </summary>
         public void SetUpColumsToLetterStorekeepe()
         {
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[29].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[28].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[14].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[13].Delete();
@@ -868,6 +874,8 @@ namespace DomesticTransport
             if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
             ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[29].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[28].Delete();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
             //DeleteColumnsLegalInformation();
 
