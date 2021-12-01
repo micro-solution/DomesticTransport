@@ -732,6 +732,7 @@ namespace DomesticTransport
 
             ShefflerWB.TotalSheet.Copy();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[26].Delete();
             DeleteColumnsLegalInformation();
 
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
@@ -766,6 +767,7 @@ namespace DomesticTransport
 
             ShefflerWB.TotalSheet.Copy();
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[26].Delete();
             DeleteColumnsLegalInformation();
 
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
@@ -785,7 +787,7 @@ namespace DomesticTransport
 
 
         /// <summary>
-        /// Отправка письма в кастом сервис без данных о юр. лиц перевозчиков
+        ///  Отправка предварительной загрузки кладовщику на склад
         /// </summary>
         public void CreateLetterToCSWithOutlegalEntitiesInformation()
         {
@@ -834,7 +836,7 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[7].Delete();
         }
         /// <summary>
-        /// Убрал сюда настройку колннок для письма
+        ///  Отправка предварительной загрузки кладовщику на склад
         /// </summary>
         public void SetUpColumsToLetterStorekeepe()
         {
@@ -844,9 +846,10 @@ namespace DomesticTransport
             Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[12].Delete();
             DeleteColumnsLegalInformation();
         }
+        /// Отправка письма в кастом сервис для кладовщиков
 
         /// <summary>
-        /// Отправка письма в кастом сервис для кладовщиков
+        /// Отправка письма менеджеру по отгрузке с данными юр. лиц 
         /// </summary>
         public void CreateLetterToCSStorekeepe()
         {
@@ -864,9 +867,10 @@ namespace DomesticTransport
             string attachmentAllOrders = Properties.Settings.Default.AllOrders; // path + date + ".xlsx";
             if (!string.IsNullOrWhiteSpace(attachmentAllOrders)) attachments.Add(attachmentAllOrders);
 
-            ShefflerWB.TotalSheet.Copy();                  
-            DeleteColumnsLegalInformation();
-            
+            ShefflerWB.TotalSheet.Copy();
+            Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet.Columns[27].Delete();
+            //DeleteColumnsLegalInformation();
+
             Globals.ThisWorkbook.Application.ActiveWorkbook.SaveAs(attachment, XlFileFormat.xlWorkbookDefault);
             Globals.ThisWorkbook.Application.ActiveWorkbook.Close();
 

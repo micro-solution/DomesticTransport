@@ -637,9 +637,10 @@ namespace DomesticTransport
         }
 
 
+        /// Отправка файла отгрузки в CS кладовщику
 
         /// <summary>
-        /// Отправка файла отгрузки в CS кладовщику
+        /// Отправка письма менеджеру по отгрузке с данными юр. лиц 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
