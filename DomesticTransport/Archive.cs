@@ -143,7 +143,7 @@ namespace DomesticTransport
                 }
                 for (int i = 0; i < delivery.Orders.Count; i++)
                 {
-                    tableArchive.SetCurrentRow();
+                    tableArchive.SetCurrentRowLast();
                     if (i == 0) PrintArchiveDelivery(delivery, tableArchive);
 
                     Order order = delivery.Orders[i];

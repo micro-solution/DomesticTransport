@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DomesticTransport
 {
+    /// <summary>
+    ///  Штрафы
+    /// </summary>
     internal class Fine
     {
         private ListObject table;
@@ -29,7 +32,6 @@ namespace DomesticTransport
             {
                 row.Range.Cells[1, column].Value = DataFromList[1, i];
                 column++;
-
             }
         }
 

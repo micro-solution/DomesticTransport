@@ -620,32 +620,7 @@ namespace DomesticTransport
             return idRoute;
         }
 
-        /// <summary>
-        /// Собирает диапазон Отгрузки с текущей даты
-        /// </summary>
-        /// <returns></returns>
-        //public Range GetCurrentTotalRange()
-        //{
-        //    Range currentRng = null;
-        //    string dateDelivery = DateDelivery;
-        //    int columnDelivery = TotalTable.ListColumns["Дата отгрузки"].Index;
-        //    foreach (ListRow row in TotalTable.ListRows)
-        //    {
-        //        string dateTable = row.Range[1, columnDelivery].Text;
-        //        if (dateTable == dateDelivery )
-        //        {
-        //            if (currentRng == null)
-        //            {
-        //                currentRng = row.Range;
-        //            }
-        //            else
-        //            {
-        //                currentRng = Globals.ThisWorkbook.Application.Union(currentRng, row.Range);
-        //            }
-        //        }
-        //    }
-        //    return currentRng;
-        //}
+    
         #region Вспомогательные
 
         /// <summary>

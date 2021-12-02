@@ -4,7 +4,14 @@ namespace DomesticTransport
 {
     public class XLTable
     {
+        /// <summary>
+        /// Умная таблица
+        /// </summary>
         public ListObject ListTable { get; set; }
+
+        /// <summary>
+        /// Диапазон таблицы
+        /// </summary>
         public Range TableRange
         {
             get
@@ -20,6 +27,9 @@ namespace DomesticTransport
 
         private Range _range;
 
+        /// <summary>
+        /// Диапазон текущшей строки
+        /// </summary>
         public Range CurrentRowRange
         {
             get
@@ -38,6 +48,9 @@ namespace DomesticTransport
 
         private Range _currentRowRange;
 
+        /// <summary>
+        /// Номер текущей строки
+        /// </summary>
         public int CurrentRowIndex
         {
             get
@@ -52,6 +65,11 @@ namespace DomesticTransport
         private int _currentRowIndex;
 
 
+        /// <summary>
+        /// Получить номер столбца по заголовку
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public int GetColumn(string header)
         {
             int column = 0;
@@ -67,12 +85,22 @@ namespace DomesticTransport
             return column;
         }
 
-        //Get
+        /// <summary>
+        /// Получить из текущей строки значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public string GetValueString(string header)
         {
             int column = GetColumn(header);
             return CurrentRowRange.Cells[1, column].Text;
         }
+
+        /// <summary>
+        /// Получить из текущей строки значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public double GetValueDouble(string header)
         {
             int column = GetColumn(header);
@@ -80,6 +108,12 @@ namespace DomesticTransport
             double val = double.TryParse(str, out double v) ? v : 0;
             return val;
         }
+
+        /// <summary>
+        /// Получить из текущей строки значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public decimal GetValueDecimal(string header)
         {
             int column = GetColumn(header);
@@ -87,6 +121,12 @@ namespace DomesticTransport
             decimal val = decimal.TryParse(str, out decimal v) ? v : 0;
             return val;
         }
+
+        /// <summary>
+        /// Получить из текущей строки значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public int GetValueInt(string header)
         {
             int column = GetColumn(header);
@@ -96,7 +136,11 @@ namespace DomesticTransport
         }
 
 
-        ///  Set
+        /// <summary>
+        /// Записать в текущую строку значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="Value"></param>
         public void SetValue(string header, string Value)
         {
             int column = GetColumn(header);
@@ -104,23 +148,39 @@ namespace DomesticTransport
             CurrentRowRange.Cells[1, column].Value = Value;
 
         }
+        /// <summary>
+        /// Записать в текущую строку значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="Value"></param>
         public void SetValue(string header, int Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
 
         }
+
+        /// <summary>
+        /// Записать в текущую строку значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="Value"></param>
         public void SetValue(string header, double Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
 
         }
+
+        /// <summary>
+        /// Записать в текущую строку значение 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="Value"></param>
         public void SetValue(string header, decimal Value)
         {
             int column = GetColumn(header);
             CurrentRowRange.Cells[1, column].Value = Value;
-
         }
 
         /// <summary>
@@ -146,11 +206,14 @@ namespace DomesticTransport
                     break;
                 }
             }
-
             //Добавить провекрку на пустоту в строке
             return ix;
         }
 
+        /// <summary>
+        ///  Получить последнюю строку
+        /// </summary>
+        /// <returns></returns>
         public Range GetLastRow()
         {
             int ix = GetLastRowIndex();
@@ -161,7 +224,11 @@ namespace DomesticTransport
             }
             return ListTable.ListRows[ix].Range;
         }
-        public void SetCurrentRow()
+
+        /// <summary>
+        /// Установить последнюю строку текущей
+        /// </summary>
+        public void SetCurrentRowLast()
         {
             CurrentRowRange = GetLastRow();
         }

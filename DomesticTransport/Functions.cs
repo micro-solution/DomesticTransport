@@ -1465,8 +1465,6 @@ namespace DomesticTransport
                                                                                 = delivery.Truck?.Tonnage ?? 0;
                 rowDelivery.Range[1, DeliveryTable.ListColumns["Вес доставки"].Index].Value
                                                                                = delivery.TotalWeight;
-                //FormulaR1C1 =
-                // "=IF(SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто])=0, SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес нетто]), SUMIF(TableOrders[№ Доставки],[@[№ Доставки]],TableOrders[Вес брутто]))";
             }
             pb.Close();
         }
@@ -1798,7 +1796,7 @@ namespace DomesticTransport
                                  group route by route.Id into g
                                  select new { Id = g.Key, Count = g.Count() };
 
-            /// Проверряем каждый маршрут ищем по какому можно отправить грузы
+            // Проверряем каждый маршрут ищем по какому можно отправить грузы
             foreach (var routeId in uniqueRoutesId)
             {
                 if (!IsComplete(orders, routeId.Id)) continue;
@@ -1806,7 +1804,7 @@ namespace DomesticTransport
                 var pointsRoute = (from i in points
                                    where i.Id == routeId.Id
                                    select i).ToList();
-                //  
+                 
                 foreach (DeliveryPoint point in pointsRoute)
                 {
                     for (int iOrder = orders.Count - 1; iOrder >= 0; iOrder--)
