@@ -262,7 +262,7 @@ namespace DomesticTransport
             };
             try
             {
-                List<Delivery> deliveries = GetAllDeliveries(tableArchive);
+                List<Delivery> deliveries = GetAllDeliveriesWithCheckCells(tableArchive);
                 TransportTable transportTable = new TransportTable();
                 transportTable.ImportDeliveryes(deliveries);
                 transportTable.SaveAndClose();
@@ -298,7 +298,7 @@ namespace DomesticTransport
         /// </summary>
         /// <param name="range"></param>
         /// <returns></returns>
-        public static List<Delivery> GetAllDeliveries(XLTable table)
+        public static List<Delivery> GetAllDeliveriesWithCheckCells(XLTable table)
         {
             List<Order> orders = new List<Order>();
             List<Delivery> deliveries = new List<Delivery>();
@@ -329,6 +329,31 @@ namespace DomesticTransport
             if (isthrowException == true)
             {
                 throw new Exception($"Ошибка при проверке файла"); 
+            }
+            return deliveries;
+        }
+        /// <summary>
+        /// Собрать доставки из таблицы
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static List<Delivery> GetAllDeliveries(XLTable table)
+        {
+            List<Order> orders = new List<Order>();
+            List<Delivery> deliveries = new List<Delivery>();
+            Delivery delivery = new Delivery();
+            foreach (ListRow row in table.ListTable.ListRows)
+            {
+                table.SetCurentRow(row.Index);
+                Delivery deliveryRow = GetDeliveryFromTotalRow(table);
+
+                if (deliveryRow != null)
+                {
+                    delivery = deliveryRow;
+                    deliveries.Add(delivery);
+                }
+                Order order = GetOrdersFromTotalRow(table);
+                if (order != null) delivery.Orders.Add(order);
             }
             return deliveries;
         }
