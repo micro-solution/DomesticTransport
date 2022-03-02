@@ -4,12 +4,12 @@
 ; Основные переменные установщика
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define AppName      "DomesticTransports"                                            ; Название приложения
-#define AppVersion   "2.0.0.1"                                               ; Версия программы
+#define AppVersion   "3.12.2.0"                                               ; Версия программы
 #define AppPublisher "Micro-Solution LLC"
 #define AppURL       "https://micro-solution.ru"
 #define AppGUI       "63EFF963-1E2F-41A0-8AD8-0D23FB6B4087"
 
-#define ProjectPath  "C:\Users\zhelt\Source\Repos\DomesticTransport\"
+#define ProjectPath  "C:\Users\aevse\Source\Repos\DomesticTransport\"
 #define SetupPath    ProjectPath + "Setup\"                        
 #define AppIco       SetupPath + "icon-application.ico"                       ; Файл с иконкой
 
