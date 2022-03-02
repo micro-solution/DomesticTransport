@@ -542,7 +542,7 @@ namespace DomesticTransport
         public void SendEmailToProviderAdoutOrders()
         {
             List<Delivery> deliveries = GetDeliveriesFromTotalSheet(true);
-            
+
             if (deliveries?.Count == 0) return;
 
             //Уникальны провайдеры в списке доставок
@@ -580,7 +580,7 @@ namespace DomesticTransport
             pb.Close();
         }
 
-        
+
         /// <summary>
         /// Отправка сообщений провайдерам со списком уточнений
         /// </summary>
@@ -693,7 +693,7 @@ namespace DomesticTransport
                         CarNumber = NumberProvider,
                         Organization = organ,
                         Address = address,
-                        INN=inn,
+                        INN = inn,
                         PhoneOrganization = phoneOrgan,
                         TypeOwn = typeOwn
                     };
@@ -1009,7 +1009,7 @@ namespace DomesticTransport
             // Вес брутто для товара будет весом нетто для доставки 
             string weight = row.Cells[1, GetColumn(row.Parent, "Вес брутто", 1)].Text;
             order.WeightNetto = double.TryParse(weight, out double wgt) ? wgt : 0;
-            //  order.Route = row.Cells[1, GetColumn(row.Parent, "Направление", 1)].Text;
+            //order.Route = row.Cells[1, GetColumn(row.Parent, "Направление", 1)].Text;
             return order;
         }
 
@@ -1320,16 +1320,19 @@ namespace DomesticTransport
             foreach (Delivery delivery in deliveries)
             {
                 ListRow row;
-                if (totalTable.ListRows.Count == 0)
-                {
-                    ShefflerWB.TotalTable.ListRows.Add();
-                    row = totalTable.ListRows[1];
-                }
-                else
-                {
-                    ShefflerWB.TotalTable.ListRows.Add();
-                    row = totalTable.ListRows[totalTable.ListRows.Count - 1];
-                }
+                ShefflerWB.TotalTable.ListRows.Add();
+                row = totalTable.ListRows[totalTable.ListRows.Count];
+                /// Здесь была проблема с первой строкой на листе отгрузки 
+                //if (totalTable.ListRows.Count == 0)
+                //{
+                //   // ShefflerWB.TotalTable.ListRows.Add();
+                //   // row = totalTable.ListRows[1];
+                //}
+                //else
+                //{
+                //    ShefflerWB.TotalTable.ListRows.Add();
+                //    row = totalTable.ListRows[totalTable.ListRows.Count - 1];                                                                         
+                //}
 
                 bool mainRow = true;
 
@@ -1343,13 +1346,12 @@ namespace DomesticTransport
                     if (!mainRow)
                     {
                         totalTable.ListRows.Add();
-                        row = totalTable.ListRows[totalTable.ListRows.Count - 1];
+                        row = totalTable.ListRows[totalTable.ListRows.Count];
+                        // row = totalTable.ListRows[totalTable.ListRows.Count - 1];
                     }
                     row.Range[1, totalTable.ListColumns["Дата отгрузки"].Index].Value = ShefflerWB.DateDelivery;
                     row.Range[1, totalTable.ListColumns["Порядок выгрузки"].Index].Value =
                             delivery.MapDelivery.FindIndex(x => x.IdCustomer == order.Customer.Id) + 1;
-
-
                     row.Range[1, totalTable.ListColumns["№ Доставки"].Index].Value = delivery.Number;
                     row.Range[1, totalTable.ListColumns["Номер накладной"].Index].Value = order.TransportationUnit;
                     row.Range[1, totalTable.ListColumns["Номер поставки"].Index].Value = order.Id;
@@ -1361,7 +1363,6 @@ namespace DomesticTransport
                     row.Range[1, totalTable.ListColumns["Грузополучатель"].Index].Value = $"{order.Customer?.Name ?? ""}";
                     row.Range[1, totalTable.ListColumns["Стоимость поставки"].Index].Value = order.Cost;
                     row.Range[1, totalTable.ListColumns["Кол-во паллет"].Index].Value = order.PalletsCount;
-
                     mainRow = false;
                 }
             }
@@ -1559,7 +1560,7 @@ namespace DomesticTransport
                 var pointsRoute = (from i in points
                                    where i.Id == routeId.Id
                                    select i).ToList();
-            //  
+                //  
                 foreach (DeliveryPoint point in pointsRoute)
                 {
                     for (int iOrder = orders.Count - 1; iOrder >= 0; iOrder--)
@@ -1935,7 +1936,7 @@ namespace DomesticTransport
         /// Собрать доставки из актуального диапазона таблицы Отгрузка
         /// </summary>
         /// <returns></returns>
-        public List<Delivery> GetDeliveriesFromTotalSheet(bool setId=false)
+        public List<Delivery> GetDeliveriesFromTotalSheet(bool setId = false)
         {
             List<Delivery> deliveries = new List<Delivery>();
             Range total = ShefflerWB.TotalTable.DataBodyRange; //GetCurrentTotalRange();
@@ -1977,7 +1978,7 @@ namespace DomesticTransport
                     string phoneorg = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Телефон перевозчика"].Index].Text;
                     string typeOwn = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Тип владения"].Index].Text;
 
-                    if (setId && string.IsNullOrEmpty(id) ) id = ShefflerWB.GetProviderId(providerName);
+                    if (setId && string.IsNullOrEmpty(id)) id = ShefflerWB.GetProviderId(providerName);
 
                     Driver driver = new Driver()
                     {
@@ -2030,7 +2031,7 @@ namespace DomesticTransport
                     string weightNt = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Нетто вес"].Index].Text;
                     order.WeightNetto = double.TryParse(weightNt, out double wn) ? wn : 0;
                     order.RouteCity = total.Cells[i, ShefflerWB.TotalTable.ListColumns["Направление"].Index].Text;
-                    if (string.IsNullOrWhiteSpace(delivery.RouteName))   delivery.RouteName = order.RouteCity;
+                    if (string.IsNullOrWhiteSpace(delivery.RouteName)) delivery.RouteName = order.RouteCity;
                     delivery.Orders.Add(order);
                 }
             }
@@ -2088,7 +2089,7 @@ namespace DomesticTransport
                 string providerName = delivery.Truck.ProviderCompany.Name;
                 if (string.IsNullOrWhiteSpace(providerName)) continue;
                 sh.Cells[row, 1].Value = delivery.Driver.Id;
-                
+
                 sh.Cells[row, 4].Value = delivery.Driver.Organization;
                 sh.Cells[row, 5].Value = delivery.Driver.Address;
                 sh.Cells[row, 6].Value = delivery.Driver.INN;
