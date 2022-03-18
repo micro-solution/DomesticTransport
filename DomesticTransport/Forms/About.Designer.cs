@@ -34,7 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lbVer = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.LinkMS = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -91,15 +91,15 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Версия программы:";
             // 
-            // label7
+            // lbVer
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(127, 139);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(22, 13);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "2.0";
+            this.lbVer.AutoSize = true;
+            this.lbVer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbVer.Location = new System.Drawing.Point(127, 139);
+            this.lbVer.Name = "lbVer";
+            this.lbVer.Size = new System.Drawing.Size(22, 13);
+            this.lbVer.TabIndex = 7;
+            this.lbVer.Text = "2.0";
             // 
             // label6
             // 
@@ -128,7 +128,7 @@
             this.ClientSize = new System.Drawing.Size(413, 241);
             this.Controls.Add(this.LinkMS);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.lbVer);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -152,7 +152,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbVer;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel LinkMS;
     }

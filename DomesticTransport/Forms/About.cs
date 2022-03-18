@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace DomesticTransport.Forms
 {
@@ -7,6 +9,8 @@ namespace DomesticTransport.Forms
         public About()
         {
             InitializeComponent();
+            string productVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+            lbVer.Text = productVersion;
         }
 
         private void LinkMS_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

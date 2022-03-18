@@ -310,7 +310,6 @@
             // ButtonSendToCS
             // 
             this.ButtonSendToCS.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.ButtonSendToCS.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSendToCS.Image")));
             this.ButtonSendToCS.Label = "В CS и WH";
             this.ButtonSendToCS.Name = "ButtonSendToCS";
             this.ButtonSendToCS.ScreenTip = "Отправить отгрузки в CS и WH";

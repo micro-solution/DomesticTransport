@@ -1321,18 +1321,9 @@ namespace DomesticTransport
             {
                 ListRow row;
                 ShefflerWB.TotalTable.ListRows.Add();
-                row = totalTable.ListRows[totalTable.ListRows.Count];
+
                 /// Здесь была проблема с первой строкой на листе отгрузки 
-                //if (totalTable.ListRows.Count == 0)
-                //{
-                //   // ShefflerWB.TotalTable.ListRows.Add();
-                //   // row = totalTable.ListRows[1];
-                //}
-                //else
-                //{
-                //    ShefflerWB.TotalTable.ListRows.Add();
-                //    row = totalTable.ListRows[totalTable.ListRows.Count - 1];                                                                         
-                //}
+                row = totalTable.ListRows[totalTable.ListRows.Count];
 
                 bool mainRow = true;
 
@@ -1943,7 +1934,7 @@ namespace DomesticTransport
             List<DeliveryPoint> points = ShefflerWB.RoutesList;
             if (total == null) return deliveries;
 
-            for (int i = 0; i < total.Rows.Count; i++)
+            for (int i = 1; i <= total.Rows.Count; i++)
             {
                 string numDelivery = total.Cells[i, ShefflerWB.TotalTable.ListColumns["№ Доставки"].Index].Text;
                 int numD = int.TryParse(numDelivery, out int numDel) ? numDel : 0;
